@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { IExtension } from 'molecule/esm/model/extension';
+import '../../../src/flinksql/flinksql.contribution';
+import '../../../src/sparksql/sparksql.contribution';
 import { activityBarService, sidebarService, editorService, statusBarService } from 'molecule';
 
 import Sidebar from './sidebar';
-import { defaultEditorTab, defaultLanguage, defaultLanguageStatusItem } from './common';
+import { defaultEditorTab, defaultLanguageStatusItem } from './common';
 
 export const ExtendsWorkbench: IExtension = {
 	activate() {

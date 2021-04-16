@@ -1,16 +1,19 @@
 import * as React from 'react';
+import * as monaco from 'monaco-editor';
+import { FlinkSQL } from 'dt-sql-parser';
 
 import { Button } from 'molecule/esm/components/button';
 import { Select, Option } from 'molecule/esm/components/select';
 import { defaultLanguage, defaultLanguageStatusItem, languages } from './common';
-import { editorService, statusBarService } from 'molecule';
+import { editorService, panelService, statusBarService } from 'molecule';
 import { defaultEditorTab } from './common';
 
 export default class Sidebar extends React.Component {
 	private _language = defaultLanguage;
-
+	private flinkSQLParser;
 	constructor(props) {
 		super(props);
+		this.flinkSQLParser = new FlinkSQL();
 	}
 
 	onClick = (e, item) => {
@@ -21,21 +24,35 @@ export default class Sidebar extends React.Component {
 		if (option && option.value) {
 			console.log('onChangeTheme:', option.value);
 			this._language = option.value;
-			const nextTab = Object.assign(defaultEditorTab, {
-				name: option.value,
-				data: { language: option.value.toLowerCase(), value: '' }
-			});
-			editorService.updateTab(nextTab);
-
-			const nextStatusItem = Object.assign(defaultLanguageStatusItem, {
-				name: option.value
-			});
-
-			statusBarService.updateItem(nextStatusItem);
+			this.updateLanguage(option.value);
 		}
 	};
 
-	parse = () => {};
+	updateLanguage(language: string) {
+		const languageId = language.toLowerCase();
+		const nextTab = Object.assign(defaultEditorTab, {
+			name: language,
+			data: { language: languageId, value: '' }
+		});
+		const group = editorService.getState().current?.id || -1;
+		editorService.updateTab(nextTab, group);
+		monaco.editor.setModelLanguage(editorService.editorInstance?.getModel(), languageId);
+
+		const nextStatusItem = Object.assign(defaultLanguageStatusItem, {
+			name: language
+		});
+
+		statusBarService.updateItem(nextStatusItem);
+	}
+
+	parse = () => {
+		const sql = editorService.editorInstance.getValue();
+		const result = this.flinkSQLParser.parserTreeToString(sql);
+		// const parser = new GenericSQL();
+		// const resultValidation = parser.validate(sql);
+		panelService.clearOutput();
+		panelService.appendOutput(result);
+	};
 
 	renderColorThemes() {
 		const options = languages.map((language: string) => {
@@ -60,7 +77,9 @@ export default class Sidebar extends React.Component {
 		return (
 			<div>
 				<div style={{ margin: '20px 20px' }}>
-					<h1 style={{ fontSize: 20 }}>Select a language: </h1>
+					<h1 style={{ fontSize: 20, textTransform: 'uppercase' }}>
+						Select a language:{' '}
+					</h1>
 					{this.renderColorThemes()}
 					<Button onClick={this.parse}>Parse</Button>
 				</div>

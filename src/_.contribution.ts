@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { languages } from './fillers/monaco-editor-core';
+import { languages, Emitter, IEvent } from './fillers/monaco-editor-core';
 
 interface ILang extends languages.ILanguageExtensionPoint {
 	loader: () => Promise<ILangImpl>;
@@ -76,4 +76,139 @@ export function registerLanguage(def: ILang): void {
 			languages.setLanguageConfiguration(languageId, mod.conf);
 		});
 	});
+}
+
+export interface ICreateData {
+	languageId: string;
+}
+
+export interface ModeConfiguration {
+	/**
+	 * Defines whether the built-in completionItemProvider is enabled.
+	 */
+	readonly completionItems?: boolean;
+
+	/**
+	 * Defines whether the built-in hoverProvider is enabled.
+	 */
+	readonly hovers?: boolean;
+
+	/**
+	 * Defines whether the built-in documentSymbolProvider is enabled.
+	 */
+	readonly documentSymbols?: boolean;
+
+	/**
+	 * Defines whether the built-in definitions provider is enabled.
+	 */
+	readonly definitions?: boolean;
+
+	/**
+	 * Defines whether the built-in references provider is enabled.
+	 */
+	readonly references?: boolean;
+
+	/**
+	 * Defines whether the built-in references provider is enabled.
+	 */
+	readonly documentHighlights?: boolean;
+
+	/**
+	 * Defines whether the built-in rename provider is enabled.
+	 */
+	readonly rename?: boolean;
+
+	/**
+	 * Defines whether the built-in color provider is enabled.
+	 */
+	readonly colors?: boolean;
+
+	/**
+	 * Defines whether the built-in foldingRange provider is enabled.
+	 */
+	readonly foldingRanges?: boolean;
+
+	/**
+	 * Defines whether the built-in diagnostic provider is enabled.
+	 */
+	readonly diagnostics?: boolean;
+
+	/**
+	 * Defines whether the built-in selection range provider is enabled.
+	 */
+	readonly selectionRanges?: boolean;
+}
+
+export interface DiagnosticsOptions {
+	readonly validate?: boolean;
+}
+
+export interface LanguageServiceDefaults {
+	readonly languageId: string;
+	readonly onDidChange: IEvent<LanguageServiceDefaults>;
+	readonly diagnosticsOptions: DiagnosticsOptions;
+	readonly modeConfiguration: ModeConfiguration;
+	setDiagnosticsOptions(options: DiagnosticsOptions): void;
+	setModeConfiguration(modeConfiguration: ModeConfiguration): void;
+}
+
+export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
+	private _onDidChange = new Emitter<LanguageServiceDefaults>();
+	private _diagnosticsOptions!: DiagnosticsOptions;
+	private _modeConfiguration!: ModeConfiguration;
+	private _languageId: string;
+
+	constructor(
+		languageId: string,
+		diagnosticsOptions: DiagnosticsOptions,
+		modeConfiguration: ModeConfiguration
+	) {
+		this._languageId = languageId;
+		this.setDiagnosticsOptions(diagnosticsOptions);
+		this.setModeConfiguration(modeConfiguration);
+	}
+
+	get onDidChange(): IEvent<LanguageServiceDefaults> {
+		return this._onDidChange.event;
+	}
+
+	get languageId(): string {
+		return this._languageId;
+	}
+
+	get modeConfiguration(): ModeConfiguration {
+		return this._modeConfiguration;
+	}
+
+	get diagnosticsOptions(): DiagnosticsOptions {
+		return this._diagnosticsOptions;
+	}
+
+	setDiagnosticsOptions(options: DiagnosticsOptions): void {
+		this._diagnosticsOptions = options || Object.create(null);
+		this._onDidChange.fire(this);
+	}
+
+	setModeConfiguration(modeConfiguration: ModeConfiguration): void {
+		this._modeConfiguration = modeConfiguration || Object.create(null);
+		this._onDidChange.fire(this);
+	}
+}
+
+export function debounce(func: Function, timeout: number, immediate?: boolean) {
+	let timer: any = null;
+	return (...args: any) => {
+		if (timer) {
+			clearTimeout(timer);
+		}
+		if (immediate && !timer) {
+			func?.(...args);
+		}
+
+		timer = setTimeout(() => {
+			clearTimeout(timer);
+			timer = null;
+			func?.(...args);
+		}, timeout);
+	};
 }

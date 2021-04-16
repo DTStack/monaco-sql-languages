@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -8,10 +8,16 @@ module.exports = {
 		extensions: ['.js', '.jsx', '.tsx', '.ts'],
 		alias: {
 			mo: path.resolve(__dirname, '../node_modules/molecule/esm')
-		}
+		},
+		fallback: { fs: false }
 	},
-	entry: [path.resolve(__dirname, '../web/app.js')],
+	entry: {
+		app: path.resolve(__dirname, '../web/app.js'),
+		'sparksql.worker': path.resolve(__dirname, '../src/sparksql/sparksql.worker.ts'),
+		'flinksql.worker': path.resolve(__dirname, '../src/flinksql/flinksql.worker.ts')
+	},
 	output: {
+		globalObject: 'self',
 		path: path.resolve(__dirname, '../public')
 	},
 	module: {
@@ -42,9 +48,9 @@ module.exports = {
 		]
 	},
 	plugins: [
-		// new MonacoWebpackPlugin({
-		//     languages: ['html', 'typescript', 'javascript', 'css'],
-		// }),
+		new MonacoWebpackPlugin({
+			languages: ['html', 'typescript', 'javascript', 'css']
+		}),
 		new webpack.DefinePlugin({
 			__DEVELOPMENT__: true
 		}),

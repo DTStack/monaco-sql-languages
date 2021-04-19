@@ -46,6 +46,7 @@ export default class Sidebar extends React.Component {
 	}
 
 	parse = () => {
+		// TODO There need declare different SQL parser
 		const sql = editorService.editorInstance.getValue();
 		const result = this.flinkSQLParser.parserTreeToString(sql);
 		// const parser = new GenericSQL();

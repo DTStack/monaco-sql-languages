@@ -10,7 +10,8 @@
 		"prepublishOnly": "mrmdir ./release && npm run compile && node ./scripts/release.js && node ./scripts/bundle",
 		"prettier": "prettier --write .",
 		"dev": "webpack serve --config ./scripts/webpack.dev.js",
-		"prod": "node --max_old_space_size=4092 & webpack --config ./scripts/webpack.prod.js"
+		"prod": "node --max_old_space_size=4092 & webpack --config ./scripts/webpack.prod.js",
+		"gh-pages": "npm run prod & git subtree push --prefix public origin gh-pages --force"
 	},
 	"author": "Microsoft Corporation",
 	"license": "MIT",

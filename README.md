@@ -1,16 +1,21 @@
-# Monaco Languages [![Build Status](https://dev.azure.com/ms/monaco-languages/_apis/build/status/microsoft.monaco-languages?branchName=master)](https://dev.azure.com/ms/monaco-languages/_build/latest?definitionId=140&branchName=master)
+# Monaco SQL Languages [![Build Status](https://dev.azure.com/ms/monaco-languages/_apis/build/status/microsoft.monaco-languages?branchName=master)](https://dev.azure.com/ms/monaco-languages/_build/latest?definitionId=140&branchName=master)
 
-Colorization and configuration supports for multiple languages for the Monaco Editor:
+This is a SQL Languages project for Monaco Editor forked it from [monaco-languages](https://github.com/microsoft/monaco-languages). The differences are we integrated with
+many kind of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL and so on. We provided the basic **SQL syntax** validation feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser), and we are going to provide **Autocomplete** feature in future.
+
+Online preview: <https://dtstack.github.io/monaco-sql-languages/>
 
 ![monaco-languages](https://cloud.githubusercontent.com/assets/5047891/15938606/1fd4bac6-2e74-11e6-8839-d455da8bc8a7.gif)
 
-## Issues
+## Supported SQL Languages
 
-Please file issues concerning `monaco-languages` in the [`monaco-editor`-repository](https://github.com/Microsoft/monaco-editor/issues).
-
-## Installing
-
-This npm module is bundled and distributed in the [monaco-editor](https://www.npmjs.com/package/monaco-editor) npm module.
+-   Generic SQL
+-   MySQL
+-   FLinkSQL
+-   SparkSQL
+-   HiveSQL
+-   PGSQL
+-   PLSQL
 
 ## Dev: cheat sheet
 

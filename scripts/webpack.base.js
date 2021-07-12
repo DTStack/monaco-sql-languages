@@ -1,20 +1,22 @@
 const path = require('path');
 const webpack = require('webpack');
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
 	resolve: {
 		extensions: ['.js', '.jsx', '.tsx', '.ts'],
-		alias: {
-			mo: path.resolve(__dirname, '../node_modules/molecule/esm')
-		},
+		alias: {},
 		fallback: { fs: false }
 	},
 	entry: {
 		app: path.resolve(__dirname, '../web/app.js'),
 		'sparksql.worker': path.resolve(__dirname, '../src/sparksql/sparksql.worker.ts'),
-		'flinksql.worker': path.resolve(__dirname, '../src/flinksql/flinksql.worker.ts')
+		'flinksql.worker': path.resolve(__dirname, '../src/flinksql/flinksql.worker.ts'),
+		'hivesql.worker': path.resolve(__dirname, '../src/hivesql/hivesql.worker.ts'),
+		'mysql.worker': path.resolve(__dirname, '../src/mysql/mysql.worker.ts'),
+		'plsql.worker': path.resolve(__dirname, '../src/plsql/plsql.worker.ts'),
+		'sql.worker': path.resolve(__dirname, '../src/sql/sql.worker.ts')
 	},
 	output: {
 		globalObject: 'self',
@@ -49,10 +51,10 @@ module.exports = {
 	},
 	plugins: [
 		new MonacoWebpackPlugin({
-			languages: ['html', 'typescript', 'javascript', 'css']
+			languages: ['clojure', 'json', 'typescript']
 		}),
 		new webpack.DefinePlugin({
-			__DEVELOPMENT__: true
+			__DEVELOPMENT__: false
 		}),
 		new HtmlWebPackPlugin({
 			template: path.resolve(__dirname, '../web/public/index.html')

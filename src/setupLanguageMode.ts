@@ -28,8 +28,6 @@ export function setupLanguageMode<T extends languageFeatures.IWorker>(
 
 	registerProviders();
 
-	setupWorkerUrl();
-
 	disposables.push(asDisposable(providers));
 
 	return asDisposable(disposables);
@@ -45,20 +43,30 @@ function disposeAll(disposables: IDisposable[]) {
 	}
 }
 
-function setupWorkerUrl() {
-	(window as any).MonacoEnvironment = {
-		getWorkerUrl: function (moduleId: string, label: string) {
-			switch (label) {
-				case 'sparksql': {
-					return './sparksql.worker.js';
-				}
-				case 'flinksql': {
-					return './flinksql.worker.js';
-				}
-				default: {
-					return './editor.worker.js';
-				}
+(window as any).MonacoEnvironment = {
+	getWorkerUrl: function (moduleId: string, label: string) {
+		switch (label) {
+			case 'sparksql': {
+				return './sparksql.worker.js';
+			}
+			case 'flinksql': {
+				return './flinksql.worker.js';
+			}
+			case 'hivesql': {
+				return './hivesql.worker.js';
+			}
+			case 'mysql': {
+				return './mysql.worker.js';
+			}
+			case 'plsql': {
+				return './plsql.worker.js';
+			}
+			case 'sql': {
+				return './sql.worker.js';
+			}
+			default: {
+				return './editor.worker.js';
 			}
 		}
-	};
-}
+	}
+};

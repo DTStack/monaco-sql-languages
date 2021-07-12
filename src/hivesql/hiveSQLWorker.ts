@@ -1,13 +1,13 @@
 import { worker } from 'monaco-editor';
-import SparkSQL from 'dt-sql-parser/dist/parser/spark';
+import HiveSQL from 'dt-sql-parser/dist/parser/hive';
 import { ICreateData } from '../_.contribution';
 
-export class SparkSQLWorker {
+export class HiveSQLWorker {
 	private _ctx: worker.IWorkerContext;
-	private parser: typeof SparkSQL;
+	private parser: typeof HiveSQL;
 	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
 		this._ctx = ctx;
-		this.parser = new SparkSQL();
+		this.parser = new HiveSQL();
 	}
 
 	async doValidation(uri: string): Promise<any> {
@@ -25,6 +25,6 @@ export class SparkSQLWorker {
 	}
 }
 
-export function create(ctx: worker.IWorkerContext, createData: ICreateData): SparkSQLWorker {
-	return new SparkSQLWorker(ctx, createData);
+export function create(ctx: worker.IWorkerContext, createData: ICreateData): HiveSQLWorker {
+	return new HiveSQLWorker(ctx, createData);
 }

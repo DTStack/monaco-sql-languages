@@ -59,7 +59,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: 'declare _x int = /* a simple comment */ 1;',
+			line: 'declare @x int = /* a simple comment */ 1;',
 			tokens: [
 				{ startIndex: 0, type: 'keyword.sql' },
 				{ startIndex: 7, type: 'white.sql' },
@@ -83,7 +83,7 @@ testTokenization('sql', [
 	// i.e. http://stackoverflow.com/questions/728172/are-there-multiline-comment-delimiters-in-sql-that-are-vendor-agnostic
 	[
 		{
-			line: '_x=/* a /* nested comment  1*/;',
+			line: '@x=/* a /* nested comment  1*/;',
 			tokens: [
 				{ startIndex: 0, type: 'identifier.sql' },
 				{ startIndex: 2, type: 'operator.sql' },
@@ -97,7 +97,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: '_x=/* another comment */ 1*/;',
+			line: '@x=/* another comment */ 1*/;',
 			tokens: [
 				{ startIndex: 0, type: 'identifier.sql' },
 				{ startIndex: 2, type: 'operator.sql' },
@@ -114,7 +114,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: '_x=/*/;',
+			line: '@x=/*/;',
 			tokens: [
 				{ startIndex: 0, type: 'identifier.sql' },
 				{ startIndex: 2, type: 'operator.sql' },
@@ -386,8 +386,22 @@ testTokenization('sql', [
 
 	[
 		{
+			line: '$action',
+			tokens: [{ startIndex: 0, type: 'predefined.sql' }]
+		}
+	],
+
+	[
+		{
 			line: '$nonexistent',
 			tokens: [{ startIndex: 0, type: 'identifier.sql' }]
+		}
+	],
+
+	[
+		{
+			line: '@@DBTS',
+			tokens: [{ startIndex: 0, type: 'predefined.sql' }]
 		}
 	],
 
@@ -400,7 +414,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: 'declare "abc 321";',
+			line: 'declare [abc 321];',
 			tokens: [
 				{ startIndex: 0, type: 'keyword.sql' },
 				{ startIndex: 7, type: 'white.sql' },
@@ -414,7 +428,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: '"abc"" 321 "" xyz"',
+			line: '[abc[[ 321 ]] xyz]',
 			tokens: [
 				{ startIndex: 0, type: 'identifier.quote.sql' },
 				{ startIndex: 1, type: 'identifier.sql' },
@@ -425,7 +439,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: '"abc',
+			line: '[abc',
 			tokens: [
 				{ startIndex: 0, type: 'identifier.quote.sql' },
 				{ startIndex: 1, type: 'identifier.sql' }
@@ -477,7 +491,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: '"int"',
+			line: '[int]',
 			tokens: [
 				{ startIndex: 0, type: 'identifier.quote.sql' },
 				{ startIndex: 1, type: 'identifier.sql' },
@@ -489,7 +503,7 @@ testTokenization('sql', [
 	// Strings
 	[
 		{
-			line: "declare _x='a string';",
+			line: "declare @x='a string';",
 			tokens: [
 				{ startIndex: 0, type: 'keyword.sql' },
 				{ startIndex: 7, type: 'white.sql' },
@@ -510,7 +524,21 @@ testTokenization('sql', [
 
 	[
 		{
+			line: "'a \" string with quotes'",
+			tokens: [{ startIndex: 0, type: 'string.sql' }]
+		}
+	],
+
+	[
+		{
 			line: "'a -- string with comment'",
+			tokens: [{ startIndex: 0, type: 'string.sql' }]
+		}
+	],
+
+	[
+		{
+			line: "N'a unicode string'",
 			tokens: [{ startIndex: 0, type: 'string.sql' }]
 		}
 	],
@@ -525,20 +553,22 @@ testTokenization('sql', [
 	// Operators
 	[
 		{
-			line: 'x=x+1',
+			line: 'SET @x=@x+1',
 			tokens: [
-				{ startIndex: 0, type: 'identifier.sql' },
-				{ startIndex: 1, type: 'operator.sql' },
-				{ startIndex: 2, type: 'identifier.sql' },
-				{ startIndex: 3, type: 'operator.sql' },
-				{ startIndex: 4, type: 'number.sql' }
+				{ startIndex: 0, type: 'keyword.sql' },
+				{ startIndex: 3, type: 'white.sql' },
+				{ startIndex: 4, type: 'identifier.sql' },
+				{ startIndex: 6, type: 'operator.sql' },
+				{ startIndex: 7, type: 'identifier.sql' },
+				{ startIndex: 9, type: 'operator.sql' },
+				{ startIndex: 10, type: 'number.sql' }
 			]
 		}
 	],
 
 	[
 		{
-			line: '_x^=_x',
+			line: '@x^=@x',
 			tokens: [
 				{ startIndex: 0, type: 'identifier.sql' },
 				{ startIndex: 2, type: 'operator.sql' },
@@ -566,7 +596,7 @@ testTokenization('sql', [
 
 	[
 		{
-			line: 'SELECT * FROM sch.MyTable WHERE MyColumn IN (1,2)',
+			line: 'SELECT * FROM dbo.MyTable WHERE MyColumn IN (1,2)',
 			tokens: [
 				{ startIndex: 0, type: 'keyword.sql' },
 				{ startIndex: 6, type: 'white.sql' },
@@ -589,6 +619,73 @@ testTokenization('sql', [
 				{ startIndex: 46, type: 'delimiter.sql' },
 				{ startIndex: 47, type: 'number.sql' },
 				{ startIndex: 48, type: 'delimiter.parenthesis.sql' }
+			]
+		}
+	],
+
+	// Scopes
+	[
+		{
+			line: 'WHILE() BEGIN END',
+			tokens: [
+				{ startIndex: 0, type: 'keyword.sql' },
+				{ startIndex: 5, type: 'delimiter.parenthesis.sql' },
+				{ startIndex: 7, type: 'white.sql' },
+				{ startIndex: 8, type: 'keyword.block.sql' },
+				{ startIndex: 13, type: 'white.sql' },
+				{ startIndex: 14, type: 'keyword.block.sql' }
+			]
+		}
+	],
+
+	[
+		{
+			line: 'BEGIN TRAN BEGIN TRY SELECT $ COMMIT END TRY BEGIN CATCH ROLLBACK END CATCH',
+			tokens: [
+				{ startIndex: 0, type: 'keyword.sql' },
+				{ startIndex: 10, type: 'white.sql' },
+				{ startIndex: 11, type: 'keyword.try.sql' },
+				{ startIndex: 20, type: 'white.sql' },
+				{ startIndex: 21, type: 'keyword.sql' },
+				{ startIndex: 27, type: 'white.sql' },
+				{ startIndex: 28, type: 'number.sql' },
+				{ startIndex: 29, type: 'white.sql' },
+				{ startIndex: 30, type: 'keyword.sql' },
+				{ startIndex: 36, type: 'white.sql' },
+				{ startIndex: 37, type: 'keyword.try.sql' },
+				{ startIndex: 44, type: 'white.sql' },
+				{ startIndex: 45, type: 'keyword.catch.sql' },
+				{ startIndex: 56, type: 'white.sql' },
+				{ startIndex: 57, type: 'keyword.sql' },
+				{ startIndex: 65, type: 'white.sql' },
+				{ startIndex: 66, type: 'keyword.catch.sql' }
+			]
+		}
+	],
+
+	[
+		{
+			line: 'SELECT CASE $ WHEN 3 THEN 4 ELSE 5 END',
+			tokens: [
+				{ startIndex: 0, type: 'keyword.sql' },
+				{ startIndex: 6, type: 'white.sql' },
+				{ startIndex: 7, type: 'keyword.block.sql' },
+				{ startIndex: 11, type: 'white.sql' },
+				{ startIndex: 12, type: 'number.sql' },
+				{ startIndex: 13, type: 'white.sql' },
+				{ startIndex: 14, type: 'keyword.choice.sql' },
+				{ startIndex: 18, type: 'white.sql' },
+				{ startIndex: 19, type: 'number.sql' },
+				{ startIndex: 20, type: 'white.sql' },
+				{ startIndex: 21, type: 'keyword.choice.sql' },
+				{ startIndex: 25, type: 'white.sql' },
+				{ startIndex: 26, type: 'number.sql' },
+				{ startIndex: 27, type: 'white.sql' },
+				{ startIndex: 28, type: 'keyword.sql' },
+				{ startIndex: 32, type: 'white.sql' },
+				{ startIndex: 33, type: 'number.sql' },
+				{ startIndex: 34, type: 'white.sql' },
+				{ startIndex: 35, type: 'keyword.block.sql' }
 			]
 		}
 	]

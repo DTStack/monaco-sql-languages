@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as monaco from 'monaco-editor';
-import { FlinkSQL } from 'dt-sql-parser';
+import FlinkSQL from 'dt-sql-parser/dist/parser/flinksql';
 
 import { Button } from 'molecule/esm/components/button';
 import { Select, Option } from 'molecule/esm/components/select';
 import { defaultLanguage, defaultLanguageStatusItem, languages } from './common';
-import { editorService, panelService, statusBarService } from 'molecule';
+import molecule from 'molecule';
 import { defaultEditorTab } from './common';
 
 export default class Sidebar extends React.Component {
@@ -14,6 +14,14 @@ export default class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.flinkSQLParser = new FlinkSQL();
+	}
+
+	componentDidMount() {
+		// Update Output language model
+		monaco.editor.setModelLanguage(
+			molecule.panel.outputEditorInstance?.getModel(),
+			'typescript'
+		);
 	}
 
 	onClick = (e, item) => {
@@ -30,29 +38,29 @@ export default class Sidebar extends React.Component {
 
 	updateLanguage(language: string) {
 		const languageId = language.toLowerCase();
+
 		const nextTab = Object.assign(defaultEditorTab, {
 			name: language,
 			data: { language: languageId, value: '' }
 		});
-		const group = editorService.getState().current?.id || -1;
-		editorService.updateTab(nextTab, group);
-		monaco.editor.setModelLanguage(editorService.editorInstance?.getModel(), languageId);
+		const group = molecule.editor.getState().current?.id || -1;
+		molecule.editor.updateTab(nextTab, group);
+		monaco.editor.setModelLanguage(molecule.editor.editorInstance?.getModel(), languageId);
 
 		const nextStatusItem = Object.assign(defaultLanguageStatusItem, {
-			name: language
+			name: language,
+			sortIndex: 3
 		});
 
-		statusBarService.updateItem(nextStatusItem);
+		molecule.statusBar.updateItem(nextStatusItem);
 	}
 
 	parse = () => {
-		// TODO There need declare different SQL parser
-		const sql = editorService.editorInstance.getValue();
+		const sql = molecule.editor.editorInstance.getValue();
 		const result = this.flinkSQLParser.parserTreeToString(sql);
-		// const parser = new GenericSQL();
-		// const resultValidation = parser.validate(sql);
-		panelService.clearOutput();
-		panelService.appendOutput(result);
+		// Setup Console language
+		molecule.panel.clearOutput();
+		molecule.panel.appendOutput(result);
 	};
 
 	renderColorThemes() {

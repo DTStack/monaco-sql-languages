@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { IExtension } from 'molecule/esm/model/extension';
-import '../../../src/flinksql/flinksql.contribution';
-import '../../../src/sparksql/sparksql.contribution';
-import { activityBarService, sidebarService, editorService, statusBarService } from 'molecule';
-import {
-	CONTEXT_MENU_EXPLORER,
-	CONTEXT_MENU_SEARCH
-} from 'molecule/esm/model/workbench/activityBar';
+
+import molecule from 'molecule';
 
 import Sidebar from './sidebar';
 import { defaultEditorTab, defaultLanguageStatusItem } from './common';
+
+require('../../../src/flinksql/flinksql.contribution');
+require('../../../src/hivesql/hivesql.contribution');
+require('../../../src/sparksql/sparksql.contribution');
+require('../../../src/mysql/mysql.contribution');
+require('../../../src/plsql/plsql.contribution');
+require('../../../src/sql/sql.contribution');
 
 export const ExtendsWorkbench: IExtension = {
 	activate() {
@@ -21,8 +23,8 @@ export const ExtendsWorkbench: IExtension = {
 			}
 		};
 
-		sidebarService.push(ParserSidebar);
-		sidebarService.setState({
+		molecule.sidebar.addPane(ParserSidebar);
+		molecule.sidebar.setState({
 			current: ParserSidebar.id
 		});
 
@@ -32,16 +34,16 @@ export const ExtendsWorkbench: IExtension = {
 			name: 'SQL Languages Online Parse'
 		};
 
-		activityBarService.remove(CONTEXT_MENU_EXPLORER.id);
-		activityBarService.remove(CONTEXT_MENU_SEARCH.id);
+		molecule.activityBar.remove('sidebar.explore.title');
+		molecule.activityBar.remove('sidebar.search.title');
 
-		activityBarService.addBar(parserActivityBarItem);
-		activityBarService.setState({
+		molecule.activityBar.addBar(parserActivityBarItem);
+		molecule.activityBar.setState({
 			selected: parserActivityBarItem.id
 		});
 
-		editorService.open(defaultEditorTab);
+		molecule.editor.open(defaultEditorTab);
 
-		statusBarService.appendRightItem(defaultLanguageStatusItem);
+		molecule.statusBar.appendRightItem(defaultLanguageStatusItem);
 	}
 };

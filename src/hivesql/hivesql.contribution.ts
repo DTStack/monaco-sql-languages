@@ -12,13 +12,13 @@ import {
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
-const languageId = 'mysql';
+const languageId = 'hivesql';
 
 registerLanguage({
 	id: languageId,
-	extensions: [],
-	aliases: ['MySQL', 'mysql'],
-	loader: () => import('./mysql')
+	extensions: ['.hivesql'],
+	aliases: ['HiveSQL'],
+	loader: () => import('./hivesql')
 });
 
 const diagnosticDefault: Required<DiagnosticsOptions> = {

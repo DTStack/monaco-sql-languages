@@ -1,5 +1,5 @@
 import { worker } from 'monaco-editor';
-import { FlinkSQL } from 'dt-sql-parser';
+import FlinkSQL from 'dt-sql-parser/dist/parser/flinksql';
 
 export interface ICreateData {
 	languageId: string;

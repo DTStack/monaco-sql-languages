@@ -12,13 +12,13 @@ import {
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
-const languageId = 'mysql';
+const languageId = 'plsql';
 
 registerLanguage({
 	id: languageId,
-	extensions: [],
-	aliases: ['MySQL', 'mysql'],
-	loader: () => import('./mysql')
+	extensions: ['.sql'],
+	aliases: ['PLSQL'],
+	loader: () => import('./plsql')
 });
 
 const diagnosticDefault: Required<DiagnosticsOptions> = {

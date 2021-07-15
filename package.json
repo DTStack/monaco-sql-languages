@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "2.3.0",
+	"version": "0.9.0",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"compile": "mrmdir ./out && tsc -p ./src/tsconfig.json && tsc -p ./src/tsconfig.esm.json",
@@ -10,8 +10,8 @@
 		"prepublishOnly": "mrmdir ./release && npm run compile && node ./scripts/release.js && node ./scripts/bundle",
 		"prettier": "prettier --write .",
 		"dev": "webpack serve --config ./scripts/webpack.dev.js",
-		"prod": "node --max_old_space_size=4092 & webpack --config ./scripts/webpack.prod.js",
-		"gh-pages": "npm run prod & git subtree push --prefix public origin gh-pages --force"
+		"prod": "mrmdir ./public && node --max_old_space_size=4092 & webpack --config ./scripts/webpack.prod.js",
+		"gh-pages": "npm run prod && git subtree push --prefix public origin gh-pages"
 	},
 	"author": "DTStack Corporation",
 	"license": "MIT",
@@ -26,14 +26,16 @@
 		"@babel/core": "^7.12.16",
 		"@babel/plugin-proposal-class-properties": "^7.12.13",
 		"@babel/plugin-proposal-decorators": "^7.12.13",
+		"@babel/plugin-proposal-private-methods": "^7.14.5",
 		"@babel/plugin-transform-runtime": "^7.12.15",
 		"@babel/preset-env": "^7.12.16",
 		"@babel/preset-react": "^7.12.13",
 		"@babel/preset-typescript": "^7.12.16",
+		"@jcubic/lips": "^1.0.0-beta.14",
 		"@types/tape": "^4.13.0",
 		"babel-loader": "^8.2.2",
+		"babel-plugin-transform-typescript-metadata": "^0.3.2",
 		"css-loader": "^4.3.0",
-		"dt-sql-parser": "^4.0.0-beta.1",
 		"eslint": "^7.1.0",
 		"eslint-config-google": "^0.14.0",
 		"eslint-config-prettier": "^6.15.0",
@@ -43,7 +45,7 @@
 		"html-webpack-plugin": "^5.3.1",
 		"husky": "^4.3.8",
 		"jsdom": "^16.4.0",
-		"molecule": "^0.9.0-alpha.3",
+		"molecule": "^0.9.0-alpha.3.1",
 		"monaco-editor-core": "^0.25.1",
 		"monaco-editor-webpack-plugin": "^3.1.0",
 		"monaco-plugin-helpers": "^1.0.3",
@@ -51,6 +53,7 @@
 		"pretty-quick": "^3.1.0",
 		"react": "^16.14.0",
 		"react-dom": "^16.14.0",
+		"reflect-metadata": "^0.1.13",
 		"requirejs": "^2.3.6",
 		"sass": "^1.26.10",
 		"sass-loader": "^10.0.2",
@@ -69,5 +72,7 @@
 			"pre-commit": "pretty-quick --staged"
 		}
 	},
-	"dependencies": {}
+	"dependencies": {
+		"dt-sql-parser": "^4.0.0-beta.2"
+	}
 }

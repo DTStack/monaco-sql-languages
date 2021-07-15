@@ -65,10 +65,6 @@ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
-/*! https://mths.be/codepointat v0.2.0 by @mathias */
-
-/*! https://mths.be/fromcodepoint v0.2.1 by @mathias */
-
 /**
  * @license
  * Lodash <https://lodash.com/>
@@ -112,4 +108,43 @@ PERFORMANCE OF THIS SOFTWARE.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
+ */
+
+/**@license
+ *   __ __                          __
+ *  / / \ \       _    _  ___  ___  \ \
+ * | |   \ \     | |  | || . \/ __>  | |
+ * | |    > \    | |_ | ||  _/\__ \  | |
+ * | |   / ^ \   |___||_||_|  <___/  | |
+ *  \_\ /_/ \_\                     /_/
+ *
+ * <https://lips.js.org>
+ *
+ * LIPS is Pretty Simple - Scheme based Powerful LISP in JavaScript
+ *
+ * Copyright (c) 2018-2021 Jakub T. Jankiewicz <https://jcubic.pl/me>
+ * Released under the MIT license
+ *
+ * includes:
+ *
+ * unfetch by Jason Miller (@developit) MIT License
+ *
+ * contentloaded.js
+ *
+ * ucs2decode function from Punycode v 2.1.1 by Mathias Bynens MIT License
+ *
+ * Author: Diego Perini (diego.perini at gmail.com)
+ * Summary: cross-browser wrapper for DOMContentLoaded
+ * Updated: 20101020
+ * License: MIT
+ * Version: 1.2
+ *
+ * URL:
+ * http://javascript.nwbox.com/ContentLoaded/
+ * http://javascript.nwbox.com/ContentLoaded/MIT-LICENSE
+ *
+ * The rationalize algorithm is by Per M.A. Bothner, Alan Bawden and Marc Feeley.
+ * source: Kawa, C-Gambit
+ *
+ * Build time: {{DATE}}
  */

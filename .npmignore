@@ -1,5 +1,4 @@
 /.vscode/
-/out/
 /release/**/*.test.js
 /release/**/test/
 /scripts/
@@ -13,5 +12,8 @@
 /.travis.yml
 /.editorconfig
 /azure-pipelines.yml
-public
-docs
+/public/
+/docs/
+/web/
+.history
+node_modules

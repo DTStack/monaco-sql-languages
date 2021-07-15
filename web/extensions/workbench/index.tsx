@@ -31,15 +31,27 @@ export const ExtendsWorkbench: IExtension = {
 		const parserActivityBarItem = {
 			id: 'OnlineParser',
 			iconName: 'codicon-beaker',
-			name: 'SQL Languages Online Parse'
+			title: 'SQL Languages Online Parse'
+		};
+
+		const githubPageActivityBarItem = {
+			id: 'GotoGithub',
+			iconName: 'codicon-github',
+			title: 'Go To Github'
 		};
 
 		molecule.activityBar.remove('sidebar.explore.title');
 		molecule.activityBar.remove('sidebar.search.title');
 
-		molecule.activityBar.addBar(parserActivityBarItem);
+		molecule.activityBar.addBar([parserActivityBarItem, githubPageActivityBarItem]);
 		molecule.activityBar.setState({
 			selected: parserActivityBarItem.id
+		});
+
+		molecule.activityBar.onClick((id: string) => {
+			if (id === githubPageActivityBarItem.id) {
+				window.location.href = 'https://github.com/DTStack/monaco-sql-languages';
+			}
 		});
 
 		molecule.editor.open(defaultEditorTab);

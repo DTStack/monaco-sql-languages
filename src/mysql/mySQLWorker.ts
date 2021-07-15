@@ -4,7 +4,7 @@ import { ICreateData } from '../_.contribution';
 
 export class MySQLWorker {
 	private _ctx: worker.IWorkerContext;
-	private parser: typeof MySQL;
+	private parser: MySQL;
 	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
 		this._ctx = ctx;
 		this.parser = new MySQL();
@@ -14,6 +14,22 @@ export class MySQLWorker {
 		const code = this.getTextDocument();
 		if (code) {
 			const result = this.parser.validate(code);
+			return Promise.resolve(result);
+		}
+		return Promise.resolve([]);
+	}
+
+	async valid(code: string): Promise<any> {
+		if (code) {
+			const result = this.parser.validate(code);
+			return Promise.resolve(result);
+		}
+		return Promise.resolve([]);
+	}
+
+	async parserTreeToString(code: string): Promise<any> {
+		if (code) {
+			const result = this.parser.parserTreeToString(code);
 			return Promise.resolve(result);
 		}
 		return Promise.resolve([]);

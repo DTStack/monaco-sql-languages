@@ -35,7 +35,10 @@ module.exports = {
 				exclude: /node_modules/,
 				use: [
 					{
-						loader: 'babel-loader'
+						loader: 'babel-loader',
+						options: {
+							rootMode: 'upward'
+						}
 					}
 				]
 			},
@@ -51,7 +54,7 @@ module.exports = {
 	},
 	plugins: [
 		new MonacoWebpackPlugin({
-			languages: ['clojure', 'json', 'typescript']
+			languages: ['javascript', 'typescript', 'json', 'clojure']
 		}),
 		new webpack.DefinePlugin({
 			__DEVELOPMENT__: false

@@ -7,7 +7,7 @@
 		"watch": "tsc -p ./src --watch",
 		"watch-esm": "tsc -p ./src/tsconfig.esm.json --watch",
 		"test": "tape -r ./test/all.js",
-		"prepublishOnly": "mrmdir ./release && npm run compile && node ./scripts/release.js && node ./scripts/bundle",
+		"prepublishOnly": "mrmdir ./release && npm run compile",
 		"prettier": "prettier --write .",
 		"dev": "webpack serve --config ./scripts/webpack.dev.js",
 		"prod": "mrmdir ./public && node --max_old_space_size=4092 & webpack --config ./scripts/webpack.prod.js",
@@ -17,10 +17,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Microsoft/monaco-languages"
+		"url": "https://github.com/DTStack/monaco-sql-languages"
 	},
 	"bugs": {
-		"url": "https://github.com/Microsoft/monaco-languages/issues"
+		"url": "https://github.com/DTStack/monaco-sql-languages/issues"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.16",

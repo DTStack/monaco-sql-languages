@@ -20,7 +20,9 @@ module.exports = {
 	},
 	output: {
 		globalObject: 'self',
-		path: path.resolve(__dirname, '../public')
+		path: path.resolve(__dirname, '../public'),
+		chunkFilename: '[name].[contenthash].js',
+		filename: '[name].js'
 	},
 	module: {
 		rules: [

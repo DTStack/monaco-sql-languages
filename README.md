@@ -93,9 +93,9 @@ monaco.editor.create(document.getElementById("container"), {
  language: "sql" // you need
 });
 
-> Tips: you can change the editor model language by `monaco.editor.setModelLanguage(model, language)`
-
 ```
+
+> Tips: you can change the editor model language by `monaco.editor.setModelLanguage(model, language)`
 
 ## Example
 

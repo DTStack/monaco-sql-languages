@@ -7,6 +7,8 @@ export interface WorkerAccessor<T> {
 
 export interface IWorker {
 	doValidation(uri: string): Promise<any>;
+	valid(code: string): Promise<any>;
+	parserTreeToString(code: string): Promise<any>;
 }
 
 export class DiagnosticsAdapter<T extends IWorker> {

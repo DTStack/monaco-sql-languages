@@ -4,7 +4,7 @@ import { ICreateData } from '../_.contribution';
 
 export class HiveSQLWorker {
 	private _ctx: worker.IWorkerContext;
-	private parser: typeof HiveSQL;
+	private parser: HiveSQL;
 	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
 		this._ctx = ctx;
 		this.parser = new HiveSQL();
@@ -14,6 +14,22 @@ export class HiveSQLWorker {
 		const code = this.getTextDocument();
 		if (code) {
 			const result = this.parser.validate(code);
+			return Promise.resolve(result);
+		}
+		return Promise.resolve([]);
+	}
+
+	async valid(code: string): Promise<any> {
+		if (code) {
+			const result = this.parser.validate(code);
+			return Promise.resolve(result);
+		}
+		return Promise.resolve([]);
+	}
+
+	async parserTreeToString(code: string): Promise<any> {
+		if (code) {
+			const result = this.parser.parserTreeToString(code);
 			return Promise.resolve(result);
 		}
 		return Promise.resolve([]);

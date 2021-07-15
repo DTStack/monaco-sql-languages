@@ -4,10 +4,9 @@ import FlinkSQL from 'dt-sql-parser/dist/parser/flinksql';
 export interface ICreateData {
 	languageId: string;
 }
-
 export class FLinkSQLWorker {
 	private _ctx: worker.IWorkerContext;
-	private parser: typeof FlinkSQL;
+	private parser: FlinkSQL;
 	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
 		this._ctx = ctx;
 		this.parser = new FlinkSQL();
@@ -17,6 +16,22 @@ export class FLinkSQLWorker {
 		const code = this.getTextDocument();
 		if (code) {
 			const result = this.parser.validate(code);
+			return Promise.resolve(result);
+		}
+		return Promise.resolve([]);
+	}
+
+	async valid(code: string): Promise<any> {
+		if (code) {
+			const result = this.parser.validate(code);
+			return Promise.resolve(result);
+		}
+		return Promise.resolve([]);
+	}
+
+	async parserTreeToString(code: string): Promise<any> {
+		if (code) {
+			const result = this.parser.parserTreeToString(code);
 			return Promise.resolve(result);
 		}
 		return Promise.resolve([]);

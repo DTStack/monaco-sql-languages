@@ -42,6 +42,38 @@ entry: {
 },
 ```
 
+Define the `MonacoEnvironment` for `worker` file:
+
+```javascript
+window.MonacoEnvironment = {
+	getWorkerUrl: function (moduleId, label) {
+		switch (label) {
+			case 'sparksql': {
+				return './sparksql.worker.js';
+			}
+			case 'flinksql': {
+				return './flinksql.worker.js';
+			}
+			case 'hivesql': {
+				return './hivesql.worker.js';
+			}
+			case 'mysql': {
+				return './mysql.worker.js';
+			}
+			case 'plsql': {
+				return './plsql.worker.js';
+			}
+			case 'sql': {
+				return './sql.worker.js';
+			}
+			default: {
+				return './editor.worker.js';
+			}
+		}
+	}
+};
+```
+
 Import the language contribution before creating the editor by `monaco-editor`.
 
 ```javascript
@@ -72,6 +104,7 @@ Reference from [here](https://github.com/DTStack/monaco-sql-languages/blob/main/
 ## Dev: cheat sheet
 
 -   initial setup with `npm install .`
+-   open the dev web with `npm run dev`
 -   compile with `npm run watch`
 -   test with `npm run test`
 -   bundle with `npm run prepublishOnly`

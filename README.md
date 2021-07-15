@@ -24,12 +24,12 @@ or
 
 ```bash
 
-> yarn add monaco-sql-languages
+yarn add monaco-sql-languages
 ```
 
 ## Usage
 
-Add language worker in `Webpack` `entry` field:
+Add language worker in the `Webpack` `entry` field:
 
 ```javascript
 entry: {
@@ -74,7 +74,7 @@ window.MonacoEnvironment = {
 };
 ```
 
-Import the language contribution before creating the editor by `monaco-editor`.
+Import the language contribution before creating the editor by `monaco-editor`:
 
 ```javascript
 import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';

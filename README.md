@@ -1,21 +1,73 @@
 # Monaco SQL Languages [![Build Status](https://dev.azure.com/ms/monaco-languages/_apis/build/status/microsoft.monaco-languages?branchName=master)](https://dev.azure.com/ms/monaco-languages/_build/latest?definitionId=140&branchName=master)
 
 This is a SQL Languages project for Monaco Editor forked it from [monaco-languages](https://github.com/microsoft/monaco-languages). The differences are we integrated with
-many kind of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL and so on. We provided the basic **SQL syntax** validation feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser), and we are going to provide **Autocomplete** feature in future.
+many kinds of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL and so on. We provided the basic **SQL syntax** validation feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser), and we are going to provide **Autocomplete** feature in future.
 
 Online preview: <https://dtstack.github.io/monaco-sql-languages/>
 
-![monaco-languages](https://cloud.githubusercontent.com/assets/5047891/15938606/1fd4bac6-2e74-11e6-8839-d455da8bc8a7.gif)
-
 ## Supported SQL Languages
 
--   Generic SQL
--   MySQL
+-   Generic SQL (MySQL)
 -   FLinkSQL
 -   SparkSQL
 -   HiveSQL
 -   PGSQL
 -   PLSQL
+
+## Installation
+
+```bash
+npm install monaco-sql-languages
+```
+
+or
+
+```bash
+
+> yarn add monaco-sql-languages
+```
+
+## Usage
+
+Add language worker in `Webpack` `entry` field:
+
+```javascript
+entry: {
+ 'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.ts',
+ 'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.ts'),
+ 'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.ts'),
+ 'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.ts'),
+ 'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.ts'),
+ 'sql.worker': 'monaco-sql-languages/out/esm/sql/sql.worker.ts')
+},
+```
+
+Import the language contribution before creating the editor by `monaco-editor`.
+
+```javascript
+import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
+import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
+import 'monaco-sql-languages/out/esm/sparksql.contribution';
+import 'monaco-sql-languages/out/esm/mysql.contribution';
+import 'monaco-sql-languages/out/esm/plsql.contribution';
+import 'monaco-sql-languages/out/esm/sql/sql.contribution';
+```
+
+Then, set the language value you need when creating the `moanco-editor` instance:
+
+```
+monaco.editor.create(document.getElementById("container"), {
+ value: "select * from tb_test",
+ language: "sql" // you need
+});
+
+> Tips: you can change the editor model language by `monaco.editor.setModelLanguage(model, language)`
+
+```
+
+## Example
+
+Reference from [here](https://github.com/DTStack/monaco-sql-languages/blob/main/web/extensions/workbench/index.tsx).
 
 ## Dev: cheat sheet
 

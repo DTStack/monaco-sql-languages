@@ -2,7 +2,6 @@
 
 [npm-image]: https://img.shields.io/npm/v/monaco-sql-languages.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/monaco-sql-languages
-
 [download-img]: https://img.shields.io/npm/dm/monaco-sql-languages.svg?style=flat
 [download-url]: https://www.npmjs.com/package/monaco-sql-languages
 
@@ -13,12 +12,12 @@ Online preview: <https://dtstack.github.io/monaco-sql-languages/>
 
 ## Supported SQL Languages
 
-- Generic SQL (MySQL)
-- FLinkSQL
-- SparkSQL
-- HiveSQL
-- PGSQL
-- PLSQL
+-   Generic SQL (MySQL)
+-   FLinkSQL
+-   SparkSQL
+-   HiveSQL
+-   PGSQL
+-   PLSQL
 
 ## Installation
 
@@ -52,31 +51,31 @@ Define the `MonacoEnvironment` for `worker` file:
 
 ```javascript
 window.MonacoEnvironment = {
- getWorkerUrl: function (moduleId, label) {
-  switch (label) {
-   case 'sparksql': {
-    return './sparksql.worker.js';
-   }
-   case 'flinksql': {
-    return './flinksql.worker.js';
-   }
-   case 'hivesql': {
-    return './hivesql.worker.js';
-   }
-   case 'mysql': {
-    return './mysql.worker.js';
-   }
-   case 'plsql': {
-    return './plsql.worker.js';
-   }
-   case 'sql': {
-    return './sql.worker.js';
-   }
-   default: {
-    return './editor.worker.js';
-   }
-  }
- }
+	getWorkerUrl: function (moduleId, label) {
+		switch (label) {
+			case 'sparksql': {
+				return './sparksql.worker.js';
+			}
+			case 'flinksql': {
+				return './flinksql.worker.js';
+			}
+			case 'hivesql': {
+				return './hivesql.worker.js';
+			}
+			case 'mysql': {
+				return './mysql.worker.js';
+			}
+			case 'plsql': {
+				return './plsql.worker.js';
+			}
+			case 'sql': {
+				return './sql.worker.js';
+			}
+			default: {
+				return './editor.worker.js';
+			}
+		}
+	}
 };
 ```
 
@@ -85,9 +84,9 @@ Import the language contribution before creating the editor by `monaco-editor`:
 ```javascript
 import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
 import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
-import 'monaco-sql-languages/out/esm/sparksql.contribution';
-import 'monaco-sql-languages/out/esm/mysql.contribution';
-import 'monaco-sql-languages/out/esm/plsql.contribution';
+import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
+import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
+import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
 import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 ```
 
@@ -109,18 +108,18 @@ Reference from [here](https://github.com/DTStack/monaco-sql-languages/blob/main/
 
 ## Dev: cheat sheet
 
-- initial setup with `npm install .`
-- open the dev web with `npm run dev`
-- compile with `npm run watch`
-- test with `npm run test`
-- bundle with `npm run prepublishOnly`
+-   initial setup with `npm install .`
+-   open the dev web with `npm run dev`
+-   compile with `npm run watch`
+-   test with `npm run test`
+-   bundle with `npm run prepublishOnly`
 
 ## Dev: Adding a new language
 
-- create `$/src/myLang/myLang.contribution.ts`
-- create `$/src/myLang/myLang.ts`
-- create `$/src/myLang/myLang.test.ts`
-- edit `$/src/monaco.contribution.ts` and register your new language
+-   create `$/src/myLang/myLang.contribution.ts`
+-   create `$/src/myLang/myLang.ts`
+-   create `$/src/myLang/myLang.test.ts`
+-   edit `$/src/monaco.contribution.ts` and register your new language
 
 ```js
 import './myLang/myLang.contribution';

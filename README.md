@@ -1,4 +1,10 @@
-# Monaco SQL Languages [![Build Status](https://dev.azure.com/ms/monaco-languages/_apis/build/status/microsoft.monaco-languages?branchName=master)](https://dev.azure.com/ms/monaco-languages/_build/latest?definitionId=140&branchName=master)
+# Monaco SQL Languages [![NPM version][npm-image]][npm-url] [![NPM downloads][download-img]][download-url]
+
+[npm-image]: https://img.shields.io/npm/v/monaco-sql-languages.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/monaco-sql-languages
+
+[download-img]: https://img.shields.io/npm/dm/monaco-sql-languages.svg?style=flat
+[download-url]: https://www.npmjs.com/package/monaco-sql-languages
 
 This is a SQL Languages project for Monaco Editor forked it from [monaco-languages](https://github.com/microsoft/monaco-languages). The differences are we integrated with
 many kinds of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL and so on. We provided the basic **SQL syntax** validation feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser), and we are going to provide **Autocomplete** feature in future.
@@ -33,12 +39,12 @@ Add language worker in the `Webpack` `entry` field:
 
 ```javascript
 entry: {
- 'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.ts',
- 'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.ts'),
- 'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.ts'),
- 'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.ts'),
- 'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.ts'),
- 'sql.worker': 'monaco-sql-languages/out/esm/sql/sql.worker.ts')
+	'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.ts',
+	'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.ts'),
+	'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.ts'),
+	'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.ts'),
+	'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.ts'),
+	'sql.worker': 'monaco-sql-languages/out/esm/sql/sql.worker.ts')
 },
 ```
 
@@ -89,8 +95,8 @@ Then, set the language value you need when creating the `moanco-editor` instance
 
 ```
 monaco.editor.create(document.getElementById("container"), {
- value: "select * from tb_test",
- language: "sql" // you need
+	value: "select * from tb_test",
+	language: "sql" // you need
 });
 
 ```

@@ -73,6 +73,6 @@
 		}
 	},
 	"dependencies": {
-		"dt-sql-parser": "^4.0.0-beta.2"
+		"dt-sql-parser": "^4.0.0-beta.2.1"
 	}
 }

@@ -25,7 +25,7 @@ export default class Sidebar extends React.Component {
 	}
 
 	componentDidMount() {
-		// molecule.editor.onUpdateTab(this.analyseProblems)
+		molecule.editor.onUpdateTab(this.analyseProblems);
 	}
 
 	private get language(): string {
@@ -53,7 +53,6 @@ export default class Sidebar extends React.Component {
 					}
 				})
 			);
-			console.log('Valid SQL:', res);
 			molecule.problems.clearProblems();
 			const problems = this.convertMsgToProblemItem(tab, sql, res);
 			problems.forEach((item) => {

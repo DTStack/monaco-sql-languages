@@ -12,7 +12,7 @@ import {
 	MarkerSeverity
 } from 'molecule/esm/model';
 
-import { LanguageService } from '../services/languageService';
+import { LanguageService } from '../../../src/languageService';
 import { debounce } from '../../../src/_.contribution';
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
 

@@ -6,9 +6,9 @@ import molecule from 'molecule';
 import Sidebar from './sidebar';
 import { defaultEditorTab, defaultLanguageStatusItem } from './common';
 
+require('../../../src/sparksql/sparksql.contribution');
 require('../../../src/flinksql/flinksql.contribution');
 require('../../../src/hivesql/hivesql.contribution');
-require('../../../src/sparksql/sparksql.contribution');
 require('../../../src/mysql/mysql.contribution');
 require('../../../src/plsql/plsql.contribution');
 require('../../../src/sql/sql.contribution');

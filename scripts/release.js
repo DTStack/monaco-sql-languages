@@ -13,5 +13,5 @@ helpers.packageESM({
 	esmSource: 'out/esm',
 	esmDestination: 'release/esm',
 	entryPoints: ['monaco.contribution.js'],
-	resolveSkip: ['monaco-editor-core']
+	resolveSkip: ['monaco-editor']
 });

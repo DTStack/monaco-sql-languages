@@ -1,31 +1,13 @@
 import {
-	ModeConfiguration,
-	DiagnosticsOptions,
 	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl
-} from '../../../src/_.contribution';
-import { IWorker, WorkerAccessor } from '../../../src/languageFeatures';
-import { WorkerManager } from '../../../src/workerManager';
+	LanguageServiceDefaultsImpl,
+	diagnosticDefault,
+	modeConfigurationDefault
+} from './_.contribution';
+import { IWorker, WorkerAccessor } from './languageFeatures';
+import { WorkerManager } from './workerManager';
 
-const modeConfigurationDefault: Required<ModeConfiguration> = {
-	completionItems: true,
-	hovers: true,
-	documentSymbols: true,
-	definitions: true,
-	references: true,
-	documentHighlights: true,
-	rename: true,
-	colors: true,
-	foldingRanges: true,
-	diagnostics: true,
-	selectionRanges: true
-};
-
-const diagnosticDefault: Required<DiagnosticsOptions> = {
-	validate: true
-};
-
-type ClientWorker = (...uris) => Promise<IWorker>;
+type ClientWorker = (...uris: any) => Promise<IWorker>;
 
 export class LanguageService {
 	private worker: Map<string, WorkerAccessor<any>> = new Map();
@@ -57,7 +39,7 @@ export class LanguageService {
 		return existWorker;
 	}
 
-	private getLanguageServiceDefault(languageId): LanguageServiceDefaults {
+	private getLanguageServiceDefault(languageId: string): LanguageServiceDefaults {
 		return new LanguageServiceDefaultsImpl(
 			languageId,
 			diagnosticDefault,

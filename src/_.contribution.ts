@@ -195,6 +195,24 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 	}
 }
 
+export const modeConfigurationDefault: Required<ModeConfiguration> = {
+	completionItems: true,
+	hovers: true,
+	documentSymbols: true,
+	definitions: true,
+	references: true,
+	documentHighlights: true,
+	rename: true,
+	colors: true,
+	foldingRanges: true,
+	diagnostics: true,
+	selectionRanges: true
+};
+
+export const diagnosticDefault: Required<DiagnosticsOptions> = {
+	validate: true
+};
+
 export function debounce(func: Function, timeout: number, immediate?: boolean) {
 	let timer: any = null;
 	return (...args: any) => {

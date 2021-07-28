@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import {
-	DiagnosticsOptions,
+	diagnosticDefault,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
-	ModeConfiguration,
+	modeConfigurationDefault,
 	registerLanguage
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
@@ -19,24 +19,6 @@ registerLanguage({
 	aliases: ['SQL'],
 	loader: () => import('./sql')
 });
-
-const diagnosticDefault: Required<DiagnosticsOptions> = {
-	validate: true
-};
-
-const modeConfigurationDefault: Required<ModeConfiguration> = {
-	completionItems: true,
-	hovers: true,
-	documentSymbols: true,
-	definitions: true,
-	references: true,
-	documentHighlights: true,
-	rename: true,
-	colors: true,
-	foldingRanges: true,
-	diagnostics: true,
-	selectionRanges: true
-};
 
 const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 	languageId,

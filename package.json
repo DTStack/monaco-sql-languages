@@ -7,7 +7,7 @@
 		"watch": "tsc -p ./src --watch",
 		"watch-esm": "tsc -p ./src/tsconfig.esm.json --watch",
 		"test": "tape -r ./test/all.js",
-		"prepublishOnly": "mrmdir ./release && npm run compile",
+		"prepublishOnly": "mrmdir ./release && npm run compile && node ./scripts/release.js && node ./scripts/bundle",
 		"prettier": "prettier --write .",
 		"dev": "webpack serve --config ./scripts/webpack.dev.js",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & webpack --config ./scripts/webpack.prod.js",
@@ -15,6 +15,8 @@
 	},
 	"author": "DTStack Corporation",
 	"license": "MIT",
+	"module": "./out/esm/monaco.contribution.js",
+	"types": "./out/esm/monaco.contribution.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/DTStack/monaco-sql-languages"

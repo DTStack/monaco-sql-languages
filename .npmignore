@@ -1,6 +1,5 @@
 /.vscode/
-/release/**/*.test.js
-/release/**/test/
+/release/
 /scripts/
 /src/
 /test/

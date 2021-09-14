@@ -29,7 +29,7 @@ export class DiagnosticsAdapter<T extends IWorker> {
 			this._listener[model.uri.toString()] = model.onDidChangeContent(
 				debounce(() => {
 					this._doValidate(model.uri, modeId);
-				}, 500)
+				}, 600)
 			);
 
 			this._doValidate(model.uri, modeId);
@@ -83,7 +83,7 @@ export class DiagnosticsAdapter<T extends IWorker> {
 	private _doValidate(resource: Uri, languageId: string): void {
 		this._worker(resource)
 			.then((worker) => {
-				return worker.doValidation(resource.toString());
+				return worker.doValidation(editor.getModel(resource)?.getValue() || '');
 			})
 			.then((diagnostics) => {
 				const markers = diagnostics.map((d: any) => toDiagnostics(resource, d));

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { IExtension } from 'molecule/esm/model/extension';
-
 import molecule from 'molecule';
-
 import Sidebar from './sidebar';
 import { defaultEditorTab, defaultLanguageStatusItem } from './common';
+import { Float } from 'molecule/esm/model';
 
 require('../../../src/sparksql/sparksql.contribution');
 require('../../../src/flinksql/flinksql.contribution');
@@ -23,27 +22,27 @@ export const ExtendsWorkbench: IExtension = {
 			}
 		};
 
-		molecule.sidebar.addPane(ParserSidebar);
+		molecule.sidebar.add(ParserSidebar);
 		molecule.sidebar.setState({
 			current: ParserSidebar.id
 		});
 
 		const parserActivityBarItem = {
 			id: 'OnlineParser',
-			iconName: 'codicon-beaker',
+			icon: 'beaker',
 			title: 'SQL Languages Online Parse'
 		};
 
 		const githubPageActivityBarItem = {
 			id: 'GotoGithub',
-			iconName: 'codicon-github',
+			icon: 'github',
 			title: 'Go To Github'
 		};
 
 		molecule.activityBar.remove('sidebar.explore.title');
 		molecule.activityBar.remove('sidebar.search.title');
 
-		molecule.activityBar.addBar([parserActivityBarItem, githubPageActivityBarItem]);
+		molecule.activityBar.add([parserActivityBarItem, githubPageActivityBarItem]);
 		molecule.activityBar.setState({
 			selected: parserActivityBarItem.id
 		});
@@ -56,6 +55,6 @@ export const ExtendsWorkbench: IExtension = {
 
 		molecule.editor.open(defaultEditorTab);
 
-		molecule.statusBar.appendRightItem(defaultLanguageStatusItem);
+		molecule.statusBar.add(defaultLanguageStatusItem, Float.right);
 	}
 };

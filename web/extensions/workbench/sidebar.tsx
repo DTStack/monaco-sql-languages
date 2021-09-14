@@ -5,12 +5,7 @@ import lips from '@jcubic/lips';
 import molecule from 'molecule';
 import { Button } from 'molecule/esm/components';
 import { Select, Option } from 'molecule/esm/components/select';
-import {
-	builtInStatusProblems,
-	IEditorTab,
-	IProblemsItem,
-	MarkerSeverity
-} from 'molecule/esm/model';
+import { IEditorTab, IProblemsItem, MarkerSeverity } from 'molecule/esm/model';
 
 import { LanguageService } from '../../../src/languageService';
 import { debounce } from '../../../src/_.contribution';
@@ -46,28 +41,36 @@ export default class Sidebar extends React.Component {
 	analyseProblems = debounce((tab) => {
 		const sql = tab.data.value;
 		this.languageService.valid(this.language, sql).then((res) => {
-			molecule.problems.updateStatus(
-				Object.assign(builtInStatusProblems(), {
-					data: {
-						error: res?.length | 0
-					}
-				})
-			);
-			molecule.problems.clearProblems();
+			molecule.problems.reset();
 			const problems = this.convertMsgToProblemItem(tab, sql, res);
-			problems.forEach((item) => {
-				molecule.problems.addProblems(item);
-			});
+			molecule.problems.add(problems);
 		});
 	}, 200);
 
-	convertMsgToProblemItem = (tab: IEditorTab, code, msgs = []): IProblemsItem[] => {
-		const problems: IProblemsItem[] = msgs.map((msg) => {
+	convertMsgToProblemItem = (tab: IEditorTab, code, msgs = []): IProblemsItem => {
+		const rootId = Number(tab.id);
+		const rootName = `${tab.name || ''}`;
+		const languageProblems: IProblemsItem = {
+			id: rootId,
+			name: rootName,
+			value: {
+				code: rootName,
+				message: '',
+				startLineNumber: 0,
+				startColumn: 1,
+				endLineNumber: 0,
+				endColumn: 1,
+				status: MarkerSeverity.Hint
+			},
+			children: []
+		};
+
+		languageProblems.children = msgs.map((msg: any, index: number) => {
 			return {
-				id: Number(tab.id),
-				name: tab.name,
+				id: rootId + index,
+				name: code || '',
 				value: {
-					code: code,
+					code: '',
 					message: msg.message,
 					startLineNumber: Number(msg.startLine),
 					startColumn: Number(msg.startCol),
@@ -79,7 +82,7 @@ export default class Sidebar extends React.Component {
 			};
 		});
 
-		return problems;
+		return languageProblems;
 	};
 
 	updateLanguage(language: string) {
@@ -97,14 +100,14 @@ export default class Sidebar extends React.Component {
 			name: language,
 			sortIndex: 3
 		});
-
-		molecule.statusBar.updateItem(nextStatusItem);
+		this.analyseProblems(nextTab);
+		molecule.statusBar.update(nextStatusItem);
 	}
 
 	parse = () => {
 		this.setupOutputLanguage();
 		const sql = molecule.editor.editorInstance.getValue();
-		molecule.panel.clearOutput();
+		molecule.panel.cleanOutput();
 
 		this.languageService.parserTreeToString(this.language, sql).then((res) => {
 			const pre = res?.replace(/(\(|\))/g, '$1\n');
@@ -113,7 +116,6 @@ export default class Sidebar extends React.Component {
 				indent: 2,
 				offset: 2
 			});
-			console.log('format:', formatted);
 			molecule.panel.appendOutput(formatted);
 		});
 	};

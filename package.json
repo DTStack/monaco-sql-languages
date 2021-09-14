@@ -11,7 +11,7 @@
 		"prettier": "prettier --write .",
 		"dev": "node --max_old_space_size=4092 & webpack serve --config ./scripts/webpack.dev.js",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & webpack --config ./scripts/webpack.prod.js",
-		"gh-pages": "npm run prod && git subtree push --prefix docs origin gh-pages"
+		"gh-pages": "npm run prod && git push origin :gh-pages && git subtree push --prefix docs origin gh-pages"
 	},
 	"author": "DTStack Corporation",
 	"license": "MIT",

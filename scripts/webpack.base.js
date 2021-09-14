@@ -56,7 +56,7 @@ module.exports = {
 	},
 	plugins: [
 		new MonacoWebpackPlugin({
-			languages: ['javascript', 'typescript', 'json', 'clojure']
+			languages: []
 		}),
 		new webpack.DefinePlugin({
 			__DEVELOPMENT__: false

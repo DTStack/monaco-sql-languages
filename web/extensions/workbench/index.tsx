@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { IExtension } from 'molecule/esm/model/extension';
-import molecule from 'molecule';
+import molecule from '@dtinsight/molecule';
+import { Float } from '@dtinsight/molecule/esm/model';
+import { IExtension } from '@dtinsight/molecule/esm/model/extension';
 import Sidebar from './sidebar';
 import { defaultEditorTab, defaultLanguageStatusItem } from './common';
-import { Float } from 'molecule/esm/model';
 
 require('../../../src/sparksql/sparksql.contribution');
 require('../../../src/flinksql/flinksql.contribution');

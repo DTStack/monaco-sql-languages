@@ -8,7 +8,7 @@
 This is a SQL Languages project for Monaco Editor forked it from [monaco-languages](https://github.com/microsoft/monaco-languages). The differences are we integrated with
 many kinds of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL, and so on. We provided the basic **SQL syntax** validation feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser), and we are going to provide **Autocomplete** feature in future.
 
-Online preview: <https://dtstack.github.io/monaco-sql-languages/>
+Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 
 ## Supported SQL Languages
 

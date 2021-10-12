@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as monaco from 'monaco-editor';
 
 import lips from '@jcubic/lips';
-import molecule from 'molecule';
-import { Button } from 'molecule/esm/components';
-import { Select, Option } from 'molecule/esm/components/select';
-import { IEditorTab, IProblemsItem, MarkerSeverity } from 'molecule/esm/model';
+import molecule from '@dtinsight/molecule';
+import { Button } from '@dtinsight/molecule/esm/components';
+import { Select, Option } from '@dtinsight/molecule/esm/components/select';
+import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/esm/model';
 
 import { LanguageService } from '../../../src/languageService';
 import { debounce } from '../../../src/_.contribution';

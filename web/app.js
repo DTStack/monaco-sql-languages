@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MoleculeProvider, Workbench } from 'molecule';
-import 'molecule/esm/style/mo.css';
+import { MoleculeProvider, Workbench } from '@dtinsight/molecule';
+import '@dtinsight/molecule/esm/style/mo.css';
 import { ExtendsWorkbench } from './extensions/workbench';
 
 window.MonacoEnvironment = {

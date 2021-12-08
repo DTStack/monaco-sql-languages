@@ -13,6 +13,9 @@ require('../../../src/plsql/plsql.contribution');
 require('../../../src/sql/sql.contribution');
 
 export const ExtendsWorkbench: IExtension = {
+	id: 'ExtendWorkbench',
+	name: 'ExtendWorkbench',
+
 	activate() {
 		const ParserSidebar = {
 			id: 'ParserSidebar',
@@ -56,5 +59,6 @@ export const ExtendsWorkbench: IExtension = {
 		molecule.editor.open(defaultEditorTab);
 
 		molecule.statusBar.add(defaultLanguageStatusItem, Float.right);
-	}
+	},
+	dispose() {}
 };

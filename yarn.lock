@@ -999,21 +999,21 @@
     lodash "^4.17.21"
     standard-version "^9.3.1"
 
-"@dtinsight/molecule@^0.9.0-alpha.5.1":
-  version "0.9.0-alpha.5.1"
-  resolved "https://registry.npmjs.org/@dtinsight/molecule/-/molecule-0.9.0-alpha.5.1.tgz#d868f19894002551af48f213d45b6d7f98c6adeb"
-  integrity sha512-2AC4owSwd2XI/RnjIWkGyUYrDGLHwxRPJvzuqQ1MIPZOFZWLF9sWLb3vbus0fvAb7jvBb1XgFVuTcp/MId0COQ==
+"@dtinsight/molecule@^0.9.0-beta.1":
+  version "0.9.0-beta.1"
+  resolved "https://registry.npmjs.org/@dtinsight/molecule/-/molecule-0.9.0-beta.1.tgz#cda3dce1d46a1189c191b4f27e5e9bef4b8d68cb"
+  integrity sha512-81xRvx+fHWGmksqSE9h4CmR/PnDWhCdaz7FEi7/dp0gFjlvd6TgpE+ubvSeqS6fKtryAI8H8CuuKbxtvHWw+EA==
   dependencies:
     "@dtinsight/dt-utils" "^1.0.3"
     "@types/react" "^17.0.3"
     "@types/react-dom" "^17.0.3"
+    "@vscode/codicons" "^0.0.26"
     immutability-helper "^3.1.1"
     lodash "^4.17.21"
-    monaco-editor "^0.23.0"
+    monaco-editor "^0.30.1"
     rc-dialog "8.2.1"
     rc-textarea "~0.3.1"
     rc-tooltip "^5.1.1"
-    rc-tree "~3.10.0"
     rc-util "~5.5.0"
     react-dnd "^9.3.4"
     react-dnd-html5-backend "^9.3.4"
@@ -1021,7 +1021,6 @@
     react-split-pane "^2.0.3"
     reflect-metadata "^0.1.13"
     tsyringe "4.5.0"
-    vscode-codicons "^0.0.12"
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -1206,6 +1205,11 @@
   integrity sha512-V1ez/RtYRGN9cNYApw5xf27DpMkTB0033X6a2i3KUmKhSojBfbWN0i3EgZxboUG96WJLHLdOyZ01aiZwVW5aSA==
   dependencies:
     "@types/node" "*"
+
+"@vscode/codicons@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.npmjs.org/@vscode/codicons/-/codicons-0.0.26.tgz#affdbc4499d3bd0db1156e4c9d323f885d299e03"
+  integrity sha512-GrYFJPbZ+hRM3NUVdAIpDepWkYCizVb13a6pJDAhckElDvaf4UCmNpuBS4MSydXNK63Ccts0XpvJ6JOW+/aU1g==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
@@ -5063,22 +5067,17 @@ modify-values@^1.0.0:
   resolved "https://registry.npmjs.org/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-monaco-editor-core@^0.25.1:
-  version "0.25.1"
-  resolved "https://registry.npmjs.org/monaco-editor-core/-/monaco-editor-core-0.25.1.tgz#83bff762be72cc8f96714b235db0424840c88a36"
-  integrity sha512-QHYiTAJ8tehH/ZjmsXP/QXQaxFJBfZNgKTuUOEl2/EezSZDozBdQlgKgJZiC6cjVuuo0VaUEb06EWYaDYi2xLA==
-
-monaco-editor-webpack-plugin@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/monaco-editor-webpack-plugin/-/monaco-editor-webpack-plugin-3.1.0.tgz#972efc47a91b3bf3bd977885684a3180eb8f341b"
-  integrity sha512-TP5NkCAV0OeFTry5k/d60KR7CkhTXL4kgJKtE3BzjgbDb5TGEPEhoKmHBrSa6r7Oc0sNbPLZhKD/TP2ig7A+/A==
+monaco-editor-webpack-plugin@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/monaco-editor-webpack-plugin/-/monaco-editor-webpack-plugin-6.0.0.tgz#628956ce1851afa2a5f6c88d0ecbb24e9a444898"
+  integrity sha512-vC886Mzpd2AkSM35XLkfQMjH+Ohz6RISVwhAejDUzZDheJAiz6G34lky1vyO8fZ702v7IrcKmsGwL1rRFnwvUA==
   dependencies:
     loader-utils "^2.0.0"
 
-monaco-editor@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.23.0.tgz#24844ba5640c7adb3a2a3ff3b520cf2d7170a6f0"
-  integrity sha512-q+CP5zMR/aFiMTE9QlIavGyGicKnG2v/H8qVvybLzeFsARM8f6G9fL0sMST2tyVYCwDKkGamZUI6647A0jR/Lg==
+monaco-editor@^0.30.1:
+  version "0.30.1"
+  resolved "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.30.1.tgz#47f8d18a0aa2264fc5654581741ab8d7bec01689"
+  integrity sha512-B/y4+b2O5G2gjuxIFtCE2EkM17R2NM7/3F8x0qcPsqy4V83bitJTIO4TIeZpYlzu/xy6INiY/+84BEm6+7Cmzg==
 
 monaco-plugin-helpers@^1.0.3:
   version "1.0.3"
@@ -5970,7 +5969,7 @@ rc-dialog@8.2.1:
     rc-animate "3.x"
     rc-util "^5.0.1"
 
-rc-motion@^2.0.0, rc-motion@^2.0.1:
+rc-motion@^2.0.0:
   version "2.4.4"
   resolved "https://registry.npmjs.org/rc-motion/-/rc-motion-2.4.4.tgz#e995d5fa24fc93065c24f714857cf2677d655bb0"
   integrity sha512-ms7n1+/TZQBS0Ydd2Q5P4+wJTSOrhIrwNxLXCZpR7Fa3/oac7Yi803HDALc2hLAKaCTQtw9LmQeB58zcwOsqlQ==
@@ -6007,17 +6006,6 @@ rc-tooltip@^5.1.1:
     "@babel/runtime" "^7.11.2"
     rc-trigger "^5.0.0"
 
-rc-tree@~3.10.0:
-  version "3.10.0"
-  resolved "https://registry.npmjs.org/rc-tree/-/rc-tree-3.10.0.tgz#897498b3756f6c84f41ad2b244ee9489abf43b7f"
-  integrity sha512-kf7J/f2E2T8Kfta3/1BIg65AzTmXOgOjn0KOpvD3KI/gqkfKMRKUS1ybkxW39JUPpKwdeOHFnYH+nFFMq7tkfg==
-  dependencies:
-    "@babel/runtime" "^7.10.1"
-    classnames "2.x"
-    rc-motion "^2.0.1"
-    rc-util "^5.0.0"
-    rc-virtual-list "^3.0.1"
-
 rc-trigger@^5.0.0:
   version "5.2.10"
   resolved "https://registry.npmjs.org/rc-trigger/-/rc-trigger-5.2.10.tgz#8a0057a940b1b9027eaa33beec8a6ecd85cce2b1"
@@ -6040,7 +6028,7 @@ rc-util@^4.15.3:
     react-lifecycles-compat "^3.0.4"
     shallowequal "^1.1.0"
 
-rc-util@^5.0.0, rc-util@^5.0.1, rc-util@^5.0.7, rc-util@^5.2.1, rc-util@^5.3.0, rc-util@^5.5.0, rc-util@^5.7.0:
+rc-util@^5.0.0, rc-util@^5.0.1, rc-util@^5.2.1, rc-util@^5.3.0, rc-util@^5.5.0, rc-util@^5.7.0:
   version "5.14.0"
   resolved "https://registry.npmjs.org/rc-util/-/rc-util-5.14.0.tgz#52c650e27570c2c47f7936c7d32eaec5212492a8"
   integrity sha512-2vy6/Z1BJUcwLjm/UEJb/htjUTQPigITUIemCcFEo1fQevAumc9sA32x2z5qyWoa9uhrXbiAjSDpPIUqyg65sA==
@@ -6056,15 +6044,6 @@ rc-util@~5.5.0:
   dependencies:
     react-is "^16.12.0"
     shallowequal "^1.1.0"
-
-rc-virtual-list@^3.0.1:
-  version "3.4.1"
-  resolved "https://registry.npmjs.org/rc-virtual-list/-/rc-virtual-list-3.4.1.tgz#1f3b41391acf033a6c7e84c2f4e8a4ee0dc72807"
-  integrity sha512-YexJy+Cx8qjnQdV8+0JBeM65VF2kvO9lnsfrIvHsL3lIH1adMZ85HqmePGUzKkKMZC+CRAJc2K4g2iJS1dOjPw==
-  dependencies:
-    classnames "^2.2.6"
-    rc-resize-observer "^1.0.0"
-    rc-util "^5.0.7"
 
 react-dnd-html5-backend@^9.3.4:
   version "9.5.1"
@@ -7531,11 +7510,6 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
-
-vscode-codicons@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/vscode-codicons/-/vscode-codicons-0.0.12.tgz#94b867156f3e3a6a4cf7661e9bf2bd0060042390"
-  integrity sha512-CyGFDf3OmQhtBql/BFheUAlvEZ1MKAgvyCrGktGXEsqYvK5m9456kckDTNvnEAGG8gYjE2ds5O1cle82sMgmAg==
 
 w3c-hr-time@^1.0.2:
   version "1.0.2"

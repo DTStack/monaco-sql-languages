@@ -120,10 +120,10 @@ export default class Sidebar extends React.Component {
 		});
 	};
 
-	setupOutputLanguage() {
-		const model = molecule.panel.outputEditorInstance.getModel();
-		if (model && model.getModeId() !== 'clojure') {
-			monaco.editor.setModelLanguage(model, 'clojure');
+	async setupOutputLanguage() {
+		const editorIns = await molecule.panel.outputEditorInstance;
+		if (editorIns) {
+			monaco.editor.setModelLanguage(editorIns.getModel(), 'clojure');
 		}
 	}
 

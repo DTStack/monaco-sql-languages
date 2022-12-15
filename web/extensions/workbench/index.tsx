@@ -10,6 +10,7 @@ require('../../../src/flinksql/flinksql.contribution');
 require('../../../src/hivesql/hivesql.contribution');
 require('../../../src/mysql/mysql.contribution');
 require('../../../src/plsql/plsql.contribution');
+require('../../../src/pgsql/pgsql.contribution');
 require('../../../src/sql/sql.contribution');
 
 export const ExtendsWorkbench: IExtension = {

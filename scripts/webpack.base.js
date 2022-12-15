@@ -16,6 +16,7 @@ module.exports = {
 		'hivesql.worker': path.resolve(__dirname, '../src/hivesql/hivesql.worker.ts'),
 		'mysql.worker': path.resolve(__dirname, '../src/mysql/mysql.worker.ts'),
 		'plsql.worker': path.resolve(__dirname, '../src/plsql/plsql.worker.ts'),
+		'pgsql.worker': path.resolve(__dirname, '../src/pgsql/pgsql.worker.ts'),
 		'sql.worker': path.resolve(__dirname, '../src/sql/sql.worker.ts')
 	},
 	output: {

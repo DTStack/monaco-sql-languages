@@ -87,6 +87,7 @@ import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
 import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
 import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
 import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
+import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
 import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 ```
 

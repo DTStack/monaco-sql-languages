@@ -1083,7 +1083,7 @@
 
 "@types/antlr4@4.7.0":
   version "4.7.0"
-  resolved "https://registry.npmjs.org/@types/antlr4/-/antlr4-4.7.0.tgz#e6300119bddff6e23f5bbd299f5cf3c722a6249b"
+  resolved "https://registry.yarnpkg.com/@types/antlr4/-/antlr4-4.7.0.tgz#e6300119bddff6e23f5bbd299f5cf3c722a6249b"
   integrity sha512-WdyHH4PHxBQkeWoRTbuC/dvf0QErJpJE4UpESQSRmKoMER15DCLFHAHQjkwevMKQie0kqawS/eTY563GGMbz/g==
 
 "@types/asap@^2.0.0":
@@ -1513,7 +1513,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
 
 antlr4@4.7.2:
   version "4.7.2"
-  resolved "https://registry.npmjs.org/antlr4/-/antlr4-4.7.2.tgz#9d0b5987bb63660de658055ee9149141b4d9b462"
+  resolved "https://registry.yarnpkg.com/antlr4/-/antlr4-4.7.2.tgz#9d0b5987bb63660de658055ee9149141b4d9b462"
   integrity sha512-vZA1xYufXLe3LX+ja9rIVxjRmILb1x3k7KYZHltRbfJtXjJ1DlFIqt+CbPYmghx0EuzY9DajiDw+MdyEt1qAsQ==
 
 anymatch@^2.0.0:
@@ -2867,10 +2867,10 @@ dotignore@^0.1.2:
   dependencies:
     minimatch "^3.0.4"
 
-dt-sql-parser@^4.0.0-beta.2.2:
-  version "4.0.0-beta.2.2"
-  resolved "https://registry.npmjs.org/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.2.2.tgz#84fbed385afc19ca6464cd266889e3f52e73083a"
-  integrity sha512-LLAE659zgizdokkDniHFPk0PsLPV3cXFOQPW+QT+3W1/TQJ2h8yzKCBBufXmKAHMpAr+KjTRTa71VJRzWJx8Zg==
+"dt-sql-parser@npm:@salvoravida/dt-sql-parser@4.0.0-beta.2.10":
+  version "4.0.0-beta.2.10"
+  resolved "https://registry.yarnpkg.com/@salvoravida/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.2.10.tgz#5fdc0326e838048d3154f4839d14006a1e659a08"
+  integrity sha512-BaCMXOaM5Ev9JtT4mQl/nMlHbePg9FqEucAMHey+0AU5gw54arTxmUjJ2t9rkZD8PLdUZGtTZEZNtSle5M7OYw==
   dependencies:
     "@types/antlr4" "4.7.0"
     antlr4 "4.7.2"

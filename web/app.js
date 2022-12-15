@@ -22,6 +22,9 @@ window.MonacoEnvironment = {
 			case 'plsql': {
 				return './plsql.worker.js';
 			}
+			case 'pgsql': {
+				return './pgsql.worker.js';
+			}
 			case 'sql': {
 				return './sql.worker.js';
 			}

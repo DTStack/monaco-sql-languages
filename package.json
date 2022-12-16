@@ -77,6 +77,6 @@
 		}
 	},
 	"dependencies": {
-		"dt-sql-parser": "npm:@salvoravida/dt-sql-parser@4.0.0-beta.2.10"
+		"dt-sql-parser": "^4.0.0-beta.3"
 	}
 }

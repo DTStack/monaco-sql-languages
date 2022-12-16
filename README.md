@@ -42,6 +42,7 @@ entry: {
  'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js'),
  'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js'),
  'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js'),
+ 'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js'),
  'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.js'),
  'sql.worker': 'monaco-sql-languages/out/esm/sql/sql.worker.js')
 },
@@ -65,6 +66,9 @@ window.MonacoEnvironment = {
 			case 'mysql': {
 				return './mysql.worker.js';
 			}
+			case 'pgsql': {
+				return './pgsql.worker.js';
+			}
 			case 'plsql': {
 				return './plsql.worker.js';
 			}
@@ -86,8 +90,8 @@ import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
 import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
 import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
 import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
-import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
 import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
+import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
 import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 ```
 

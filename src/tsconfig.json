@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"skipLibCheck": true,
 		"module": "amd",
 		"moduleResolution": "node",
 		"outDir": "../out/amd",

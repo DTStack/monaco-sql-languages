@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"skipLibCheck": true,
 		"module": "esnext",
 		"moduleResolution": "node",
 		"outDir": "../out/esm",

@@ -48,11 +48,12 @@ export default class Sidebar extends React.Component {
 	}, 200);
 
 	convertMsgToProblemItem = (tab: IEditorTab, code, msgs = []): IProblemsItem => {
-		const rootId = Number(tab.id);
+		const rootId = tab.id;
 		const rootName = `${tab.name || ''}`;
 		const languageProblems: IProblemsItem = {
 			id: rootId,
 			name: rootName,
+			isLeaf: false,
 			value: {
 				code: rootName,
 				message: '',
@@ -67,15 +68,16 @@ export default class Sidebar extends React.Component {
 
 		languageProblems.children = msgs.map((msg: any, index: number) => {
 			return {
-				id: rootId + index,
-				name: code || '',
+				id: `${rootId}-${index}`,
+				name: msg.code || '',
+				isLeaf: true,
 				value: {
-					code: '',
+					code: msg.code,
 					message: msg.message,
 					startLineNumber: Number(msg.startLine),
 					startColumn: Number(msg.startCol),
 					endLineNumber: Number(msg.endLine),
-					endColumn: Number(msg.endLine),
+					endColumn: Number(msg.endCol),
 					status: MarkerSeverity.Error
 				},
 				children: []
@@ -129,11 +131,7 @@ export default class Sidebar extends React.Component {
 
 	renderColorThemes() {
 		const options = languages.map((language: string) => {
-			return (
-				<Option key={language} value={language}>
-					{language}
-				</Option>
-			);
+			return <Option value={language}>{language}</Option>;
 		});
 		return (
 			<Select

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MoleculeProvider, Workbench } from '@dtinsight/molecule';
+import { create, Workbench } from '@dtinsight/molecule';
 import '@dtinsight/molecule/esm/style/mo.css';
 import { ExtendsWorkbench } from './extensions/workbench';
 
@@ -35,10 +35,10 @@ window.MonacoEnvironment = {
 	}
 };
 
-const App = () => (
-	<MoleculeProvider extensions={[ExtendsWorkbench]}>
-		<Workbench />
-	</MoleculeProvider>
-);
+const moInstance = create({
+	extensions: [ExtendsWorkbench]
+});
+
+const App = () => moInstance.render(<Workbench />);
 
 ReactDOM.render(<App />, document.getElementById('root'));

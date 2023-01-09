@@ -2765,10 +2765,10 @@ dotignore@^0.1.2:
   dependencies:
     minimatch "^3.0.4"
 
-dt-sql-parser@^4.0.0-beta.3:
-  version "4.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.3.tgz#c23a642278ed5ae73a2ae7570edcdf0071091af0"
-  integrity sha512-5RKiYz8hp5RpdEf60P7+y0aWUyI4IHQCENhHu4hhfutHe1IJA60HB7xJkL2qczlWJRCe9bzqa4IfWwQMqwc3sg==
+dt-sql-parser@^4.0.0-beta.3.2:
+  version "4.0.0-beta.3.2"
+  resolved "https://registry.npmjs.org/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.3.2.tgz#1df3341b5e12eaa31d6fd9174d440ed17c1e2f15"
+  integrity sha512-QrgsWzpqqUy6vAGkK4Ep4WdZfhy0s2SNR7QuwQ3RsdDNQ4rMzH1jQTdEBK6oU+16o1xpStwjnzk3vuxMOhiisw==
   dependencies:
     "@types/antlr4" "4.7.0"
     antlr4 "4.7.2"

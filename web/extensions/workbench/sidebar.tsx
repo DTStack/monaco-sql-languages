@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as monaco from 'monaco-editor';
 
 import lips from '@jcubic/lips';
@@ -7,9 +7,9 @@ import { Button } from '@dtinsight/molecule/esm/components';
 import { Select, Option } from '@dtinsight/molecule/esm/components/select';
 import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/esm/model';
 
-import { LanguageService } from '../../../src/languageService';
-import { debounce } from '../../../src/_.contribution';
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
+import { LanguageService } from '../../../src/common/languageService';
+import { debounce } from '../../../src/common/utils';
 
 export default class Sidebar extends React.Component {
 	private _language = defaultLanguage;

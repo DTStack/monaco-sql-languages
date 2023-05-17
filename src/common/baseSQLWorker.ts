@@ -29,6 +29,8 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([]);
 	}
 
+	async autocomplete(code: string, position: any): Promise<any> {}
+
 	private getTextDocument(): string {
 		const model = this._ctx.getMirrorModels()[0]; // When there are multiple files open, this will be an array
 		return model && model.getValue();

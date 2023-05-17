@@ -1,7 +1,7 @@
 import { worker } from 'monaco-editor';
 import SparkSQL from 'dt-sql-parser/dist/parser/spark';
-import { ICreateData } from '../_.contribution';
-import { BaseSQLWorker } from '../baseSQLWorker';
+import { ICreateData } from '../common/_.contribution';
+import { BaseSQLWorker } from '../common/baseSQLWorker';
 
 export class SparkSQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;

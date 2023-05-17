@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { languages, Emitter, IEvent } from './fillers/monaco-editor-core';
+import { languages, Emitter, IEvent } from '../fillers/monaco-editor-core';
 
 interface ILang extends languages.ILanguageExtensionPoint {
 	loader: () => Promise<ILangImpl>;
@@ -212,21 +212,3 @@ export const modeConfigurationDefault: Required<ModeConfiguration> = {
 export const diagnosticDefault: Required<DiagnosticsOptions> = {
 	validate: true
 };
-
-export function debounce(func: Function, timeout: number, immediate?: boolean) {
-	let timer: any = null;
-	return (...args: any) => {
-		if (timer) {
-			clearTimeout(timer);
-		}
-		if (immediate && !timer) {
-			func?.(...args);
-		}
-
-		timer = setTimeout(() => {
-			clearTimeout(timer);
-			timer = null;
-			func?.(...args);
-		}, timeout);
-	};
-}

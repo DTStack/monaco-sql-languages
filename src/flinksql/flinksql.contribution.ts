@@ -9,7 +9,7 @@ import {
 	LanguageServiceDefaultsImpl,
 	modeConfigurationDefault,
 	registerLanguage
-} from '../_.contribution';
+} from '../common/_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'flinksql';
@@ -28,5 +28,5 @@ const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 );
 
 languages.onLanguage(languageId, () => {
-	import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(flinkDefaults));
+	import('../common/setupLanguageMode').then((mode) => mode.setupLanguageMode(flinkDefaults));
 });

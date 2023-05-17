@@ -1,5 +1,6 @@
-import { debounce, LanguageServiceDefaults } from './_.contribution';
-import { editor, Uri, IDisposable, MarkerSeverity } from './fillers/monaco-editor-core';
+import { LanguageServiceDefaults } from './_.contribution';
+import { editor, Uri, IDisposable, MarkerSeverity } from '../fillers/monaco-editor-core';
+import { debounce } from './utils';
 
 export interface WorkerAccessor<T> {
 	(first: Uri, ...more: Uri[]): Promise<T>;

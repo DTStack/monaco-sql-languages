@@ -1686,22 +1686,10 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antlr4-c3@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/antlr4-c3/-/antlr4-c3-3.0.1.tgz#e9b6ba7b796e7afc35630ffa6fac4d915f152c99"
-  integrity sha512-Vbizas0WK4Id6l1f48ANYHFZgfzmj82LZx4OuB/a87vCpyoUwofrlJ+sCiL1qT/D2SWf8HEcBPCsgskdx8NnzQ==
-  dependencies:
-    antlr4ts "0.5.0-alpha.4"
-
 antlr4@4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/antlr4/-/antlr4-4.7.2.tgz#9d0b5987bb63660de658055ee9149141b4d9b462"
   integrity sha512-vZA1xYufXLe3LX+ja9rIVxjRmILb1x3k7KYZHltRbfJtXjJ1DlFIqt+CbPYmghx0EuzY9DajiDw+MdyEt1qAsQ==
-
-antlr4ts@0.5.0-alpha.4:
-  version "0.5.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/antlr4ts/-/antlr4ts-0.5.0-alpha.4.tgz#71702865a87478ed0b40c0709f422cf14d51652a"
-  integrity sha512-WPQDt1B74OfPv/IMS2ekXAKkTZIHl88uMetg6q3OTqgFxZ/dxDXI0EWLyZid/1Pe6hTftyg5N7gel5wNAGxXyQ==
 
 anymatch@~3.1.2:
   version "3.1.2"

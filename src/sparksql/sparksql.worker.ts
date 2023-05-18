@@ -1,6 +1,6 @@
 import { worker } from 'monaco-editor';
 import * as EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker.js';
-import { ICreateData } from '../_.contribution';
+import { ICreateData } from '../common/_.contribution';
 import { SparkSQLWorker } from './sparkSQLWorker';
 
 self.onmessage = (e: any) => {

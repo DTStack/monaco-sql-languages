@@ -6,8 +6,8 @@ import './plsql/plsql.contribution';
 import './pgsql/pgsql.contribution';
 import './sparksql/sparksql.contribution';
 
-export * from './_.contribution';
-export * from './languageService';
-export * from './languageFeatures';
-export * from './setupLanguageMode';
-export * from './workerManager';
+export * from './common/_.contribution';
+export * from './common/languageService';
+export * from './common/languageFeatures';
+export * from './common/setupLanguageMode';
+export * from './common/workerManager';

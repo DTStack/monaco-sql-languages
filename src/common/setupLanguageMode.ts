@@ -1,7 +1,7 @@
 import { WorkerManager } from './workerManager';
 import { LanguageServiceDefaults } from './_.contribution';
 import * as languageFeatures from './languageFeatures';
-import { Uri, IDisposable } from '../fillers/monaco-editor-core';
+import { Uri, IDisposable, languages } from '../fillers/monaco-editor-core';
 
 export function setupLanguageMode<T extends languageFeatures.IWorker>(
 	defaults: LanguageServiceDefaults
@@ -23,6 +23,15 @@ export function setupLanguageMode<T extends languageFeatures.IWorker>(
 
 		if (modeConfiguration.diagnostics) {
 			providers.push(new languageFeatures.DiagnosticsAdapter(languageId, worker, defaults));
+		}
+
+		if (modeConfiguration.completionItems) {
+			providers.push(
+				languages.registerCompletionItemProvider(
+					languageId,
+					new languageFeatures.CompletionAdapter(worker)
+				)
+			);
 		}
 	}
 

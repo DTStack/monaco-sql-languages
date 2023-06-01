@@ -8,7 +8,7 @@ import {
 	LanguageServiceDefaultsImpl,
 	modeConfigurationDefault,
 	registerLanguage
-} from '../common/_.contribution';
+} from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'sql';
@@ -27,5 +27,5 @@ const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 );
 
 languages.onLanguage(languageId, () => {
-	import('../common/setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+	import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
 });

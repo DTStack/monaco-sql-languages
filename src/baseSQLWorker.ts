@@ -1,4 +1,4 @@
-import { worker } from 'monaco-editor';
+import { worker } from './fillers/monaco-editor-core';
 
 export abstract class BaseSQLWorker {
 	protected abstract _ctx: worker.IWorkerContext;

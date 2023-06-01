@@ -1,7 +1,7 @@
-import { worker } from 'monaco-editor';
+import { worker } from '../fillers/monaco-editor-core';
 import MySQL from 'dt-sql-parser/dist/parser/generic';
-import { ICreateData } from '../common/_.contribution';
-import { BaseSQLWorker } from '../common/baseSQLWorker';
+import { ICreateData } from '../_.contribution';
+import { BaseSQLWorker } from '../baseSQLWorker';
 
 export class MySQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;

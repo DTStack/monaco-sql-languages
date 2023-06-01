@@ -1,6 +1,6 @@
-import { worker } from 'monaco-editor';
+import { worker } from '../fillers/monaco-editor-core';
 import FlinkSQL from 'dt-sql-parser/dist/parser/flinksql';
-import { BaseSQLWorker } from '../common/baseSQLWorker';
+import { BaseSQLWorker } from '../baseSQLWorker';
 
 export interface ICreateData {
 	languageId: string;

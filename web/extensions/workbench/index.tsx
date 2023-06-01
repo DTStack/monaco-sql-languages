@@ -5,13 +5,13 @@ import { IExtension } from '@dtinsight/molecule/esm/model/extension';
 import Sidebar from './sidebar';
 import { defaultEditorTab, defaultLanguageStatusItem } from './common';
 
-require('../../../src/sparksql/sparksql.contribution');
-require('../../../src/flinksql/flinksql.contribution');
-require('../../../src/hivesql/hivesql.contribution');
-require('../../../src/mysql/mysql.contribution');
-require('../../../src/plsql/plsql.contribution');
-require('../../../src/pgsql/pgsql.contribution');
-require('../../../src/sql/sql.contribution');
+import '../../../src/sparksql/sparksql.contribution.ts';
+import '../../../src/flinksql/flinksql.contribution.ts';
+import '../../../src/hivesql/hivesql.contribution.ts';
+import '../../../src/mysql/mysql.contribution.ts';
+import '../../../src/plsql/plsql.contribution.ts';
+import '../../../src/pgsql/pgsql.contribution.ts';
+import '../../../src/sql/sql.contribution.ts';
 
 export const ExtendsWorkbench: IExtension = {
 	id: 'ExtendWorkbench',

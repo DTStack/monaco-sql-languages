@@ -1,6 +1,6 @@
-import { worker } from 'monaco-editor';
+import { worker } from '../fillers/monaco-editor-core';
 import * as EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker.js';
-import { ICreateData } from '../common/_.contribution';
+import { ICreateData } from '../_.contribution';
 import { MySQLWorker } from './mySQLWorker';
 
 self.onmessage = (e: any) => {

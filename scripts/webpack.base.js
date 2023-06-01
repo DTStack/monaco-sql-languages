@@ -5,9 +5,14 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
 	resolve: {
-		extensions: ['.js', '.jsx', '.tsx', '.ts'],
+		extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'],
 		alias: {},
-		fallback: { fs: false }
+		fallback: {
+			fs: false,
+			symlinks: false,
+			assert: require.resolve('assert/'),
+			util: require.resolve('util/')
+		}
 	},
 	entry: {
 		app: path.resolve(__dirname, '../web/app.js'),
@@ -16,14 +21,23 @@ module.exports = {
 		'hivesql.worker': path.resolve(__dirname, '../src/hivesql/hivesql.worker.ts'),
 		'mysql.worker': path.resolve(__dirname, '../src/mysql/mysql.worker.ts'),
 		'plsql.worker': path.resolve(__dirname, '../src/plsql/plsql.worker.ts'),
-		'pgsql.worker': path.resolve(__dirname, '../src/pgsql/pgsql.worker.ts'),
-		'sql.worker': path.resolve(__dirname, '../src/sql/sql.worker.ts')
+		'pgsql.worker': path.resolve(__dirname, '../src/pgsql/pgsql.worker.ts')
+		// 'sql.worker': path.resolve(__dirname, '../src/sql/sql.worker.ts')
 	},
 	output: {
 		globalObject: 'self',
+		// assetModuleFilename: '[name].[contenthash].js',
 		path: path.resolve(__dirname, '../docs'),
-		chunkFilename: '[name].[contenthash].js',
-		filename: '[name].js'
+		chunkFilename(pathData) {
+			console.log('path:', pathData);
+			const outDir =
+				pathData.chunk.name.indexOf('.worker') > 0
+					? '[name].worker.js'
+					: '[name].[contenthash].bundle.js';
+			return outDir;
+		},
+		filename: '[name].js',
+		clean: true
 	},
 	module: {
 		rules: [
@@ -35,10 +49,20 @@ module.exports = {
 			},
 			{
 				test: /\.(js|jsx|tsx|ts)$/,
-				exclude: /node_modules/,
+				exclude: [/node_modules/, /.*(dt-sql-parser)/],
 				use: [
 					{
-						loader: 'babel-loader'
+						loader: 'thread-loader',
+						options: {
+							workers: 5,
+							workerNodeArgs: ['--max-old-space-size=4096']
+						}
+					},
+					{
+						loader: 'babel-loader',
+						options: {
+							cacheDirectory: false
+						}
 					}
 				]
 			},

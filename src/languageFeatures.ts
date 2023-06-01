@@ -9,8 +9,8 @@ import {
 	Position,
 	CancellationToken,
 	IRange
-} from '../fillers/monaco-editor-core';
-import { debounce } from './utils';
+} from './fillers/monaco-editor-core';
+import { debounce } from './common/utils';
 
 export interface WorkerAccessor<T> {
 	(first: Uri, ...more: Uri[]): Promise<T>;

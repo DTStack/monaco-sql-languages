@@ -1,4 +1,4 @@
-import { worker } from 'monaco-editor';
+import { worker } from '../fillers/monaco-editor-core';
 import * as EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker.js';
 import { FLinkSQLWorker, ICreateData } from './flinkSQLWorker';
 

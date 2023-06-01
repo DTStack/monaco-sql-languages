@@ -8,7 +8,7 @@ import { Select, Option } from '@dtinsight/molecule/esm/components/select';
 import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/esm/model';
 
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
-import { LanguageService } from '../../../src/common/languageService';
+import { LanguageService } from '../../../src/languageService';
 import { debounce } from '../../../src/common/utils';
 
 export default class Sidebar extends React.Component {
@@ -131,7 +131,11 @@ export default class Sidebar extends React.Component {
 
 	renderColorThemes() {
 		const options = languages.map((language: string) => {
-			return <Option value={language}>{language}</Option>;
+			return (
+				<Option key={language} value={language}>
+					{language}
+				</Option>
+			);
 		});
 		return (
 			<Select

@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import '../monaco.contribution';
-import { loadLanguage } from '../common/_.contribution';
+import { loadLanguage } from '../_.contribution';
 import * as test from 'tape';
 import { editor } from '../fillers/monaco-editor-core';
 

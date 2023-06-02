@@ -1,8 +1,22 @@
+import BasicParser from 'dt-sql-parser/dist/parser/common/basicParser';
 import { worker } from './fillers/monaco-editor-core';
 
 export abstract class BaseSQLWorker {
 	protected abstract _ctx: worker.IWorkerContext;
-	protected abstract parser: any;
+	protected abstract parser: BasicParser;
+	protected keywords: string[] = [];
+
+	private getKeywords(): string[] {
+		this.keywords = this.keywords;
+		if (this.keywords.length === 0) {
+			const lexer = this.parser.createLexer('');
+			this.keywords =
+				lexer.vocabulary.symbolicNames
+					.filter((keyword: string) => keyword?.startsWith('KW_'))
+					.map((k: string) => k.replace('KW_', '')) || [];
+		}
+		return this.keywords;
+	}
 
 	async doValidation(code: string): Promise<any> {
 		code = code || this.getTextDocument();
@@ -29,17 +43,12 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([]);
 	}
 
-	async autocomplete(code: string, position: any): Promise<any> {}
-
 	async doComplete(code: string, position: any): Promise<any> {
 		code = code || this.getTextDocument();
+
 		if (code) {
 			// TODO: going to do server side search in future, but now just get all keywords for completion
-			const keywords: string[] =
-				this.parser
-					.createParser('')
-					.symbolicNames?.filter((keyword: string) => keyword?.startsWith('KW_'))
-					.map((k: string) => k.replace('KW_', '')) || [];
+			const keywords: string[] = this.getKeywords();
 			return Promise.resolve({
 				items: keywords.map((i) => ({
 					label: i,

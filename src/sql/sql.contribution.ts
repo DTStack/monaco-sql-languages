@@ -6,6 +6,7 @@ import {
 	diagnosticDefault,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
+	loadLanguage,
 	modeConfigurationDefault,
 	registerLanguage
 } from '../_.contribution';
@@ -19,6 +20,8 @@ registerLanguage({
 	aliases: ['SQL'],
 	loader: () => import('./sql')
 });
+
+loadLanguage(languageId);
 
 const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 	languageId,

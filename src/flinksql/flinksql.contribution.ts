@@ -7,6 +7,7 @@ import {
 	diagnosticDefault,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
+	loadLanguage,
 	modeConfigurationDefault,
 	registerLanguage
 } from '../_.contribution';
@@ -20,6 +21,8 @@ registerLanguage({
 	aliases: ['FlinkSQL'],
 	loader: () => import('./flinksql')
 });
+
+loadLanguage(languageId);
 
 const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 	languageId,

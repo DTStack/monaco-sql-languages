@@ -7,6 +7,7 @@ import {
 	diagnosticDefault,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
+	loadLanguage,
 	modeConfigurationDefault,
 	registerLanguage
 } from '../_.contribution';
@@ -20,6 +21,8 @@ registerLanguage({
 	aliases: ['PgSQL', 'pgsql'],
 	loader: () => import('./pgsql')
 });
+
+loadLanguage(languageId);
 
 const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 	languageId,

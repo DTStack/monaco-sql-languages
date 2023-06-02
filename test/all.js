@@ -9,7 +9,7 @@ requirejs.config({
 		'vs/css': 'test/css.mock',
 		'vs/nls': 'test/nls.mock',
 		'out/amd/fillers/monaco-editor-core': 'out/amd/fillers/monaco-editor-core-amd',
-		vs: 'node_modules/monaco-editor-core/dev/vs'
+		vs: 'node_modules/monaco-editor/dev/vs'
 	},
 	nodeRequire: require
 });

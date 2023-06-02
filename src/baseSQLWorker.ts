@@ -12,8 +12,10 @@ export abstract class BaseSQLWorker {
 			const lexer = this.parser.createLexer('');
 			this.keywords =
 				lexer.vocabulary.symbolicNames
-					.filter((keyword: string) => keyword?.startsWith('KW_'))
-					.map((k: string) => k.replace('KW_', '')) || [];
+					.filter((keyword: string) => !!keyword)
+					.map((k: string) => {
+						return k.includes('KW_') ? k.replace('KW_', '') : k;
+					}) || [];
 		}
 		return this.keywords;
 	}

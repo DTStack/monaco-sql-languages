@@ -11,3 +11,4 @@ export * from './languageService';
 export * from './languageFeatures';
 export * from './setupLanguageMode';
 export * from './workerManager';
+export * from './common/utils';

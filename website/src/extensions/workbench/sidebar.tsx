@@ -8,13 +8,21 @@ import { Select, Option } from '@dtinsight/molecule/esm/components/select';
 import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/esm/model';
 
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
-import { LanguageService } from '../../../src/languageService';
-import { debounce } from '../../../src/common/utils';
+import { LanguageService } from 'monaco-sql-languages/out/esm/languageService';
+import { debounce } from 'monaco-sql-languages/out/esm/common/utils';
+
+import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
+import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
+import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
+import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
+import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
+import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
+import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 
 export default class Sidebar extends React.Component {
 	private _language = defaultLanguage;
 	private languageService: LanguageService;
-	constructor(props) {
+	constructor(props: any) {
 		super(props);
 		this.languageService = new LanguageService();
 	}
@@ -27,18 +35,18 @@ export default class Sidebar extends React.Component {
 		return this._language.toLowerCase();
 	}
 
-	onClick = (e, item) => {
+	onClick = (e: any, item: any) => {
 		console.log('onClick:', e, item);
 	};
 
-	onChangeLanguage = (e, option) => {
+	onChangeLanguage = (e: any, option: any) => {
 		if (option && option.value) {
 			this._language = option.value;
 			this.updateLanguage(option.value);
 		}
 	};
 
-	analyseProblems = debounce((tab) => {
+	analyseProblems = debounce((tab: any) => {
 		const sql = tab.data.value;
 		this.languageService.valid(this.language, sql).then((res) => {
 			molecule.problems.reset();
@@ -47,7 +55,7 @@ export default class Sidebar extends React.Component {
 		});
 	}, 200);
 
-	convertMsgToProblemItem = (tab: IEditorTab, code, msgs = []): IProblemsItem => {
+	convertMsgToProblemItem = (tab: IEditorTab, code: string, msgs = []): IProblemsItem => {
 		const rootId = tab.id;
 		const rootName = `${tab.name || ''}`;
 		const languageProblems: IProblemsItem = {
@@ -96,7 +104,10 @@ export default class Sidebar extends React.Component {
 		});
 		const group = molecule.editor.getState().current?.id || -1;
 		molecule.editor.updateTab(nextTab, group);
-		monaco.editor.setModelLanguage(molecule.editor.editorInstance?.getModel(), languageId);
+		const model = molecule.editor.editorInstance.getModel();
+		if (model) {
+			monaco.editor.setModelLanguage(model, languageId);
+		}
 
 		const nextStatusItem = Object.assign(defaultLanguageStatusItem, {
 			name: language,
@@ -123,9 +134,9 @@ export default class Sidebar extends React.Component {
 	};
 
 	async setupOutputLanguage() {
-		const editorIns = await molecule.panel.outputEditorInstance;
-		if (editorIns) {
-			monaco.editor.setModelLanguage(editorIns.getModel(), 'clojure');
+		const model = await molecule.panel.outputEditorInstance?.getModel();
+		if (model) {
+			monaco.editor.setModelLanguage(model, 'clojure');
 		}
 	}
 

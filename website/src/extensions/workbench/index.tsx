@@ -1,17 +1,8 @@
-import * as React from 'react';
 import molecule from '@dtinsight/molecule';
 import { Float } from '@dtinsight/molecule/esm/model';
 import { IExtension } from '@dtinsight/molecule/esm/model/extension';
 import Sidebar from './sidebar';
 import { defaultEditorTab, defaultLanguageStatusItem } from './common';
-
-import '../../../src/sparksql/sparksql.contribution.ts';
-import '../../../src/flinksql/flinksql.contribution.ts';
-import '../../../src/hivesql/hivesql.contribution.ts';
-import '../../../src/mysql/mysql.contribution.ts';
-import '../../../src/plsql/plsql.contribution.ts';
-import '../../../src/pgsql/pgsql.contribution.ts';
-import '../../../src/sql/sql.contribution.ts';
 
 export const ExtendsWorkbench: IExtension = {
 	id: 'ExtendWorkbench',
@@ -51,7 +42,7 @@ export const ExtendsWorkbench: IExtension = {
 			selected: parserActivityBarItem.id
 		});
 
-		molecule.activityBar.onClick((id: string) => {
+		molecule.activityBar.onClick((id) => {
 			if (id === githubPageActivityBarItem.id) {
 				window.location.href = 'https://github.com/DTStack/monaco-sql-languages';
 			}

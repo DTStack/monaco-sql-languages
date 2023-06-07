@@ -11,6 +11,7 @@ export abstract class BaseSQLWorker {
 		if (this.keywords.length === 0) {
 			const lexer = this.parser.createLexer('');
 			this.keywords =
+				// @ts-ignore
 				lexer.vocabulary.symbolicNames
 					.filter((keyword: string) => !!keyword)
 					.map((k: string) => {
@@ -51,12 +52,12 @@ export abstract class BaseSQLWorker {
 		if (code) {
 			// TODO: going to do server side search in future, but now just get all keywords for completion
 			const keywords: string[] = this.getKeywords();
-			return Promise.resolve({
-				items: keywords.map((i) => ({
+			return Promise.resolve(
+				keywords.map((i) => ({
 					label: i,
-					kind: 14
+					kind: 17
 				}))
-			});
+			);
 		}
 		return Promise.resolve();
 	}

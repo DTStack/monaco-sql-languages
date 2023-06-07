@@ -1,27 +1,14 @@
 import BasicParser from 'dt-sql-parser/dist/parser/common/basicParser';
 import { worker } from './fillers/monaco-editor-core';
+import { Suggestions, ParserError } from 'dt-sql-parser';
+import { Position } from './fillers/monaco-editor-core';
 
 export abstract class BaseSQLWorker {
 	protected abstract _ctx: worker.IWorkerContext;
 	protected abstract parser: BasicParser;
 	protected keywords: string[] = [];
 
-	private getKeywords(): string[] {
-		this.keywords = this.keywords;
-		if (this.keywords.length === 0) {
-			const lexer = this.parser.createLexer('');
-			this.keywords =
-				// @ts-ignore
-				lexer.vocabulary.symbolicNames
-					.filter((keyword: string) => !!keyword)
-					.map((k: string) => {
-						return k.includes('KW_') ? k.replace('KW_', '') : k;
-					}) || [];
-		}
-		return this.keywords;
-	}
-
-	async doValidation(code: string): Promise<any> {
+	async doValidation(code: string): Promise<ParserError[]> {
 		code = code || this.getTextDocument();
 		if (code) {
 			const result = this.parser.validate(code);
@@ -30,7 +17,7 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([]);
 	}
 
-	async valid(code: string): Promise<any> {
+	async valid(code: string): Promise<ParserError[]> {
 		if (code) {
 			const result = this.parser.validate(code);
 			return Promise.resolve(result);
@@ -38,28 +25,21 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([]);
 	}
 
-	async parserTreeToString(code: string): Promise<any> {
+	async parserTreeToString(code: string): Promise<string> {
 		if (code) {
 			const result = this.parser.parserTreeToString(code);
 			return Promise.resolve(result);
 		}
-		return Promise.resolve([]);
+		return Promise.resolve('');
 	}
 
-	async doComplete(code: string, position: any): Promise<any> {
+	async doComplete(code: string, position: Position): Promise<Suggestions | null> {
 		code = code || this.getTextDocument();
-
 		if (code) {
-			// TODO: going to do server side search in future, but now just get all keywords for completion
-			const keywords: string[] = this.getKeywords();
-			return Promise.resolve(
-				keywords.map((i) => ({
-					label: i,
-					kind: 17
-				}))
-			);
+			const suggestions = this.parser.getSuggestionAtCaretPosition(code, position);
+			return Promise.resolve(suggestions);
 		}
-		return Promise.resolve();
+		return Promise.resolve(null);
 	}
 
 	private getTextDocument(): string {

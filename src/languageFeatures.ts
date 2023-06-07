@@ -10,19 +10,20 @@ import {
 	CancellationToken
 } from './fillers/monaco-editor-core';
 import { debounce } from './common/utils';
+import type { Suggestions, ParserError } from 'dt-sql-parser';
 
 export interface WorkerAccessor<T> {
 	(first: Uri, ...more: Uri[]): Promise<T>;
 }
 
 export interface IWorker extends ILanguageWorkerWithCompletions {
-	doValidation(uri: string): Promise<any>;
-	valid(code: string): Promise<any>;
-	parserTreeToString(code: string): Promise<any>;
+	doValidation(uri: string): Promise<ParserError[]>;
+	valid(code: string): Promise<ParserError[]>;
+	parserTreeToString(code: string): Promise<ParserError[]>;
 }
 
 export interface ILanguageWorkerWithCompletions {
-	doComplete(uri: string, position: Position): Promise<languages.CompletionItem[] | null>;
+	doComplete(uri: string, position: Position): Promise<Suggestions | null>;
 }
 
 export class DiagnosticsAdapter<T extends IWorker> {
@@ -100,7 +101,7 @@ export class DiagnosticsAdapter<T extends IWorker> {
 				return worker.doValidation(editor.getModel(resource)?.getValue() || '');
 			})
 			.then((diagnostics) => {
-				const markers = diagnostics.map((d: any) => toDiagnostics(resource, d));
+				const markers = diagnostics.map((d) => toDiagnostics(resource, d));
 				let model = editor.getModel(resource);
 				if (model && model.getLanguageId() === languageId) {
 					editor.setModelMarkers(model, languageId, markers);
@@ -119,6 +120,10 @@ function toSeverity(lsSeverity: number): MarkerSeverity {
 	}
 }
 
+/**
+ * TODO: diag is actually a type ParserError
+ * @see {@link ParserError}
+ */
 function toDiagnostics(resource: Uri, diag: any): editor.IMarkerData {
 	let code = typeof diag.code === 'number' ? String(diag.code) : <string>diag.code;
 
@@ -137,6 +142,10 @@ function toDiagnostics(resource: Uri, diag: any): editor.IMarkerData {
 export class CompletionAdapter<T extends IWorker> implements languages.CompletionItemProvider {
 	constructor(private readonly _worker: WorkerAccessor<T>) {}
 
+	get triggerCharacters() {
+		return ['.'];
+	}
+
 	provideCompletionItems(
 		model: editor.IReadOnlyModel,
 		position: Position,
@@ -149,11 +158,13 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 			.then((worker) => {
 				return worker.doComplete(editor.getModel(resource)?.getValue() || '', position);
 			})
-			.then((info) => {
-				console.log('info:', info);
-				if (!info) {
+			.then((suggestions) => {
+				if (!suggestions) {
 					return;
 				}
+				const offset = model.getOffsetAt(position);
+				const { syntax, keywords } = suggestions;
+
 				const wordInfo = model.getWordUntilPosition(position);
 				const wordRange = new Range(
 					position.lineNumber,
@@ -162,18 +173,18 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 					wordInfo.endColumn
 				);
 
-				const items: languages.CompletionItem[] = info.map((entry: any) => {
-					const item: languages.CompletionItem = {
-						label: entry.label,
-						insertText: entry.insertText || entry.label,
-						range: wordRange,
-						kind: entry.kind
-					};
-					return item;
-				});
+				const keywordsCompletionItems: languages.CompletionItem[] = keywords.map((kw) => ({
+					label: kw,
+					kind: languages.CompletionItemKind.Keyword,
+					insertText: kw,
+					range: wordRange,
+					insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+					offset,
+					detail: '关键字'
+				}));
 
 				return {
-					suggestions: items
+					suggestions: keywordsCompletionItems
 				};
 			});
 	}

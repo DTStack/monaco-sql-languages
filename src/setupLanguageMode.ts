@@ -29,7 +29,7 @@ export function setupLanguageMode<T extends languageFeatures.IWorker>(
 			providers.push(
 				languages.registerCompletionItemProvider(
 					languageId,
-					new languageFeatures.CompletionAdapter(worker)
+					new languageFeatures.CompletionAdapter(worker, defaults)
 				)
 			);
 		}

@@ -4,6 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
+	CompletionService,
 	diagnosticDefault,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
@@ -15,21 +16,24 @@ import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'flinksql';
 
-registerLanguage({
-	id: languageId,
-	extensions: ['.flinksql'],
-	aliases: ['FlinkSQL'],
-	loader: () => import('./flinksql')
-});
+export function registerFlinkSQLLanguage(completionService?: CompletionService) {
+	registerLanguage({
+		id: languageId,
+		extensions: ['.flinksql'],
+		aliases: ['FlinkSQL'],
+		loader: () => import('./flinksql')
+	});
 
-loadLanguage(languageId);
+	loadLanguage(languageId);
 
-const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-	languageId,
-	diagnosticDefault,
-	modeConfigurationDefault
-);
+	const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
+		languageId,
+		diagnosticDefault,
+		modeConfigurationDefault,
+		completionService
+	);
 
-languages.onLanguage(languageId, () => {
-	import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(flinkDefaults));
-});
+	languages.onLanguage(languageId, () => {
+		import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(flinkDefaults));
+	});
+}

@@ -3,7 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { languages, Emitter, IEvent, editor } from './fillers/monaco-editor-core';
+import { languages, Emitter, IEvent, editor, Position } from './fillers/monaco-editor-core';
+import { Suggestions } from 'dt-sql-parser';
 
 interface ILang extends languages.ILanguageExtensionPoint {
 	loader: () => Promise<ILangImpl>;
@@ -144,11 +145,35 @@ export interface DiagnosticsOptions {
 	readonly validate?: boolean;
 }
 
+/**
+ * A completion item, it will be convert to monaco.languages.CompletionItem.
+ */
+export interface ICompletionItem extends Partial<languages.CompletionItem> {
+	label: string | languages.CompletionItemLabel;
+	kind: languages.CompletionItemKind;
+	detail: string;
+}
+
+/**
+ * A service to build completions.
+ * @param model monaco TextModel which triggers completion
+ * @param position location that triggers completion
+ * @param completionContext context of completion
+ * @param suggestions suggestions for completion
+ */
+export type CompletionService = (
+	model: editor.IReadOnlyModel,
+	position: Position,
+	completionContext: languages.CompletionContext,
+	suggestions: Suggestions | null
+) => Promise<ICompletionItem[]>;
+
 export interface LanguageServiceDefaults {
 	readonly languageId: string;
 	readonly onDidChange: IEvent<LanguageServiceDefaults>;
 	readonly diagnosticsOptions: DiagnosticsOptions;
 	readonly modeConfiguration: ModeConfiguration;
+	readonly completionService?: CompletionService;
 	setDiagnosticsOptions(options: DiagnosticsOptions): void;
 	setModeConfiguration(modeConfiguration: ModeConfiguration): void;
 }
@@ -158,15 +183,18 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 	private _diagnosticsOptions!: DiagnosticsOptions;
 	private _modeConfiguration!: ModeConfiguration;
 	private _languageId: string;
+	private _completionService?: CompletionService;
 
 	constructor(
 		languageId: string,
 		diagnosticsOptions: DiagnosticsOptions,
-		modeConfiguration: ModeConfiguration
+		modeConfiguration: ModeConfiguration,
+		completionService?: CompletionService
 	) {
 		this._languageId = languageId;
 		this.setDiagnosticsOptions(diagnosticsOptions);
 		this.setModeConfiguration(modeConfiguration);
+		this._completionService = completionService;
 	}
 
 	get onDidChange(): IEvent<LanguageServiceDefaults> {
@@ -183,6 +211,10 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 
 	get diagnosticsOptions(): DiagnosticsOptions {
 		return this._diagnosticsOptions;
+	}
+
+	get completionService(): CompletionService | undefined {
+		return this._completionService;
 	}
 
 	setDiagnosticsOptions(options: DiagnosticsOptions): void {

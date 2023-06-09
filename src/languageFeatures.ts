@@ -1,4 +1,3 @@
-import { LanguageServiceDefaults } from './_.contribution';
 import {
 	editor,
 	Uri,
@@ -11,6 +10,7 @@ import {
 } from './fillers/monaco-editor-core';
 import { debounce } from './common/utils';
 import type { Suggestions, ParserError } from 'dt-sql-parser';
+import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
 
 export interface WorkerAccessor<T> {
 	(first: Uri, ...more: Uri[]): Promise<T>;
@@ -140,10 +140,14 @@ function toDiagnostics(resource: Uri, diag: any): editor.IMarkerData {
 }
 
 export class CompletionAdapter<T extends IWorker> implements languages.CompletionItemProvider {
-	constructor(private readonly _worker: WorkerAccessor<T>) {}
+	constructor(private readonly _worker: WorkerAccessor<T>, defaults: LanguageServiceDefaults) {
+		this._defaults = defaults;
+	}
 
-	get triggerCharacters() {
-		return ['.'];
+	private _defaults: LanguageServiceDefaults;
+
+	public get triggerCharacters(): string[] {
+		return ['.', ' '];
 	}
 
 	provideCompletionItems(
@@ -153,18 +157,16 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 		token: CancellationToken
 	): Promise<languages.CompletionList | undefined> {
 		const resource = model.uri;
-
 		return this._worker(resource)
 			.then((worker) => {
 				return worker.doComplete(editor.getModel(resource)?.getValue() || '', position);
 			})
 			.then((suggestions) => {
-				if (!suggestions) {
-					return;
-				}
-				const offset = model.getOffsetAt(position);
-				const { syntax, keywords } = suggestions;
-
+				const completionService =
+					this._defaults.completionService ?? defaultCompletionService;
+				return completionService(model, position, context, suggestions);
+			})
+			.then((completions) => {
 				const wordInfo = model.getWordUntilPosition(position);
 				const wordRange = new Range(
 					position.lineNumber,
@@ -173,19 +175,45 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 					wordInfo.endColumn
 				);
 
-				const keywordsCompletionItems: languages.CompletionItem[] = keywords.map((kw) => ({
-					label: kw,
-					kind: languages.CompletionItemKind.Keyword,
-					insertText: kw,
-					range: wordRange,
-					insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-					offset,
-					detail: '关键字'
+				const completionItems: languages.CompletionItem[] = completions.map((item) => ({
+					...item,
+					insertText:
+						item.insertText ??
+						(typeof item.label === 'string' ? item.label : item.label.label),
+					range: item.range ?? wordRange,
+					insertTextRules:
+						item.insertTextRules ??
+						languages.CompletionItemInsertTextRule.InsertAsSnippet
 				}));
 
 				return {
-					suggestions: keywordsCompletionItems
+					suggestions: completionItems
 				};
 			});
 	}
 }
+
+/**
+ * A built-in completion service.
+ * It will invoke when there is no external completionService.
+ * It will only build completion items of keywords.
+ */
+const defaultCompletionService: CompletionService = function (
+	_model,
+	_position,
+	_context,
+	suggestions
+) {
+	if (!suggestions) {
+		return Promise.resolve([]);
+	}
+	const { keywords } = suggestions;
+
+	const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
+		label: kw,
+		kind: languages.CompletionItemKind.Keyword,
+		detail: '关键字'
+	}));
+
+	return Promise.resolve(keywordsCompletionItems);
+};

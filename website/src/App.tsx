@@ -24,7 +24,7 @@ function App(): React.ReactElement {
 		}
 	}, []);
 
-	return <>{MyWorkbench}</>;
+	return <div>{MyWorkbench}</div>;
 }
 
 export default App;

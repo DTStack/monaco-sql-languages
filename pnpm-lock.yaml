@@ -1,7 +1,8 @@
-lockfileVersion: 5.4
+lockfileVersion: 5.3
 
 specifiers:
   '@types/tape': ^4.13.0
+  dt-sql-parser: ^4.0.0-beta.3.2
   eslint: ^7.1.0
   eslint-config-google: ^0.14.0
   eslint-config-prettier: ^6.15.0
@@ -20,7 +21,7 @@ specifiers:
   typescript: ^5.0.4
 
 dependencies:
-  monaco-editor: 0.31.0
+  dt-sql-parser: 4.0.0-beta.3.2
 
 devDependencies:
   '@types/tape': 4.13.4
@@ -32,6 +33,7 @@ devDependencies:
   glob: 7.2.3
   husky: 4.3.8
   jsdom: 16.7.0
+  monaco-editor: 0.31.0
   monaco-plugin-helpers: 1.0.3
   prettier: 2.8.8
   pretty-quick: 3.1.3_prettier@2.8.8
@@ -190,6 +192,13 @@ packages:
       }
     engines: { node: '>= 6' }
     dev: true
+
+  /@types/antlr4/4.7.0:
+    resolution:
+      {
+        integrity: sha512-WdyHH4PHxBQkeWoRTbuC/dvf0QErJpJE4UpESQSRmKoMER15DCLFHAHQjkwevMKQie0kqawS/eTY563GGMbz/g==
+      }
+    dev: false
 
   /@types/minimatch/3.0.5:
     resolution:
@@ -356,6 +365,13 @@ packages:
     dependencies:
       color-convert: 2.0.1
     dev: true
+
+  /antlr4/4.7.2:
+    resolution:
+      {
+        integrity: sha512-vZA1xYufXLe3LX+ja9rIVxjRmILb1x3k7KYZHltRbfJtXjJ1DlFIqt+CbPYmghx0EuzY9DajiDw+MdyEt1qAsQ==
+      }
+    dev: false
 
   /argparse/1.0.10:
     resolution:
@@ -846,6 +862,16 @@ packages:
     dependencies:
       minimatch: 3.1.2
     dev: true
+
+  /dt-sql-parser/4.0.0-beta.3.2:
+    resolution:
+      {
+        integrity: sha512-QrgsWzpqqUy6vAGkK4Ep4WdZfhy0s2SNR7QuwQ3RsdDNQ4rMzH1jQTdEBK6oU+16o1xpStwjnzk3vuxMOhiisw==
+      }
+    dependencies:
+      '@types/antlr4': 4.7.0
+      antlr4: 4.7.2
+    dev: false
 
   /email-addresses/3.1.0:
     resolution:
@@ -2291,7 +2317,7 @@ packages:
       {
         integrity: sha512-H3QmysEwxxY8oxmFhIFcY9JkuwilUDa6txdAxb797cVr7XFZX27a3SDwcGJmTlV9iGPwdh132r3KKCS5aNL4Gg==
       }
-    dev: false
+    dev: true
 
   /monaco-plugin-helpers/1.0.3:
     resolution:

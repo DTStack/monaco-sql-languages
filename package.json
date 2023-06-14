@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "0.12.0-beta",
+	"version": "0.12.0-beta.1",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"compile": "mrmdir ./out && tsc -p ./src/tsconfig.json && tsc -p ./src/tsconfig.esm.json",

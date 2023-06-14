@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "0.11.0",
+	"version": "0.12.0-beta",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"compile": "mrmdir ./out && tsc -p ./src/tsconfig.json && tsc -p ./src/tsconfig.esm.json",
@@ -11,7 +11,8 @@
 		"prettier": "prettier --write .",
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",
-		"deploy": "npm run prod && gh-pages -d docs"
+		"deploy": "npm run prod && gh-pages -d docs",
+		"release": "standard-version --infile CHANGELOG.md"
 	},
 	"author": "DTStack Corporation",
 	"license": "MIT",
@@ -45,6 +46,7 @@
 		"prettier": "^2.2.1",
 		"pretty-quick": "^3.1.0",
 		"requirejs": "^2.3.6",
+		"standard-version": "^9.5.0",
 		"tape": "^5.1.1",
 		"terser": "^5.5.1",
 		"typescript": "^5.0.4"

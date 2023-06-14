@@ -1,6 +1,6 @@
 import { CompletionService, ICompletionItem } from 'monaco-sql-languages/out/esm/languageService';
 import { languages } from 'monaco-editor';
-import { SyntaxContextType } from 'monaco-sql-languages/out/esm/monaco.contribution';
+import { SyntaxContextType } from 'monaco-sql-languages/out/esm/main';
 
 export const flinkCompletionService: CompletionService = async function (
 	_model,

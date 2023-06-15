@@ -40,14 +40,11 @@ export default defineConfig({
 	},
 	build: {
 		commonjsOptions: {
-			transformMixedEsModules: true
+			transformMixedEsModules: true,
+			strictRequires: true // 注意：这里必须是 true，否则会报错
 		},
 		rollupOptions: {
-			plugins: [
-				// Enable rollup polyfills plugin
-				// used during production bundling
-				rollupNodePolyFill()
-			]
+			plugins: [rollupNodePolyFill()]
 		},
 		outDir: resolve(__dirname, '../docs')
 	},

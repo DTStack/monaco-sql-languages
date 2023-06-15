@@ -38,6 +38,7 @@ export default defineConfig({
 			]
 		}
 	},
+	base: '/monaco-sql-languages/',
 	build: {
 		commonjsOptions: {
 			transformMixedEsModules: true,

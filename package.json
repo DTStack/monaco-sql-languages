@@ -17,7 +17,7 @@
 	"author": "DTStack Corporation",
 	"license": "MIT",
 	"main": "out/esm/main.js",
-	"module": "out/esm/monaco.contribution.js",
+	"module": "out/esm/main.d.ts",
 	"types": "out/esm/main.d.ts",
 	"files": [
 		"out"

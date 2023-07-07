@@ -5,7 +5,7 @@
 
 import '../monaco.contribution';
 import { loadLanguage } from '../_.contribution';
-import * as test from 'tape';
+import * as assert from 'assert';
 import { editor } from '../fillers/monaco-editor-core';
 
 export interface IRelaxedToken {
@@ -18,6 +18,12 @@ export interface ITestItem {
 	tokens: IRelaxedToken[];
 }
 
+function timeout(ms: number) {
+	return new Promise((resolve, reject) => {
+		setTimeout(resolve, ms);
+	});
+}
+
 export function testTokenization(_language: string | string[], tests: ITestItem[][]): void {
 	let languages: string[];
 	if (typeof _language === 'string') {
@@ -27,24 +33,18 @@ export function testTokenization(_language: string | string[], tests: ITestItem[
 	}
 	let mainLanguage = languages[0];
 
-	test(mainLanguage + ' tokenization', (t: test.Test) => {
-		Promise.all(languages.map((l) => loadLanguage(l)))
-			.then(() => {
-				// clean stack
-				setTimeout(() => {
-					runTests(t, mainLanguage, tests);
-					t.end();
-				});
-			})
-			.then(null, () => t.end());
+	test(mainLanguage + ' tokenization', async () => {
+		await Promise.all(languages.map((l) => loadLanguage(l)));
+		await timeout(0);
+		runTests(mainLanguage, tests);
 	});
 }
 
-function runTests(t: test.Test, languageId: string, tests: ITestItem[][]): void {
-	tests.forEach((test) => runTest(t, languageId, test));
+function runTests(languageId: string, tests: ITestItem[][]): void {
+	tests.forEach((test) => runTest(languageId, test));
 }
 
-function runTest(t: test.Test, languageId: string, test: ITestItem[]): void {
+function runTest(languageId: string, test: ITestItem[]): void {
 	let text = test.map((t) => t.line).join('\n');
 	let actualTokens = editor.tokenize(text, languageId);
 	let actual = actualTokens.map((lineTokens, index) => {
@@ -59,5 +59,5 @@ function runTest(t: test.Test, languageId: string, test: ITestItem[]): void {
 		};
 	});
 
-	t.deepEqual(actual, test);
+	assert.deepStrictEqual(actual, test);
 }

@@ -15,13 +15,25 @@ requirejs.config({
 });
 
 const tmp = new jsdom.JSDOM('<!DOCTYPE html><html><body></body></html>');
+global.AMD = true;
 global.document = tmp.window.document;
 global.navigator = tmp.window.navigator;
 global.self = global;
 global.document.queryCommandSupported = function () {
 	return false;
 };
-global.window = { location: {}, navigator: tmp.window.navigator };
+global.UIEvent = tmp.window.UIEvent;
+
+global.window = {
+	location: {},
+	navigator: tmp.window.navigator,
+	matchMedia: function () {
+		return {
+			matches: false,
+			addEventListener: function () {}
+		};
+	}
+};
 
 requirejs(
 	['./test/setup'],
@@ -34,7 +46,7 @@ requirejs(
 			requirejs(
 				files.map((f) => f.replace(/\.js$/, '')),
 				function () {
-					// We can launch the tests!
+					run(); // We can launch the tests!
 				},
 				function (err) {
 					console.log(err);
@@ -44,5 +56,6 @@ requirejs(
 	},
 	function (err) {
 		console.log(err);
+		process.exit(1);
 	}
 );

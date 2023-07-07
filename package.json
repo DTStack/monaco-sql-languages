@@ -6,7 +6,7 @@
 		"compile": "mrmdir ./out && tsc -p ./src/tsconfig.json && tsc -p ./src/tsconfig.esm.json",
 		"watch": "tsc -p ./src --watch",
 		"watch-esm": "tsc -p ./src/tsconfig.esm.json --watch",
-		"test": "tape -r ./test/all.js",
+		"test": "mocha ./test/all.js",
 		"prepublishOnly": "mrmdir ./release && npm run compile && node ./scripts/release.js && node ./scripts/bundle",
 		"prettier": "prettier --write .",
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
@@ -33,7 +33,8 @@
 		"registry": "https://registry.npmjs.org/"
 	},
 	"devDependencies": {
-		"@types/tape": "^4.13.0",
+		"@types/mocha": "^9.1.0",
+		"@types/node": "^20.4.0",
 		"eslint": "^7.1.0",
 		"eslint-config-google": "^0.14.0",
 		"eslint-config-prettier": "^6.15.0",
@@ -42,13 +43,13 @@
 		"glob": "^7.1.6",
 		"husky": "^4.3.8",
 		"jsdom": "^16.4.0",
+		"mocha": "^9.2.0",
 		"monaco-editor": "0.31.0",
 		"monaco-plugin-helpers": "^1.0.3",
 		"prettier": "^2.2.1",
 		"pretty-quick": "^3.1.0",
 		"requirejs": "^2.3.6",
 		"standard-version": "^9.5.0",
-		"tape": "^5.1.1",
 		"terser": "^5.5.1",
 		"typescript": "^5.0.4"
 	},

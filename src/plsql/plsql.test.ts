@@ -5,7 +5,7 @@
 
 import { testTokenization } from '../test/testRunner';
 
-testTokenization('sql', [
+testTokenization('plsql', [
 	// Comments
 	[
 		{

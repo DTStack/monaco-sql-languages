@@ -6,7 +6,7 @@
 		"compile": "mrmdir ./out && tsc -p ./tsconfig.amd.json && tsc -p ./tsconfig.esm.json",
 		"watch-esm": "tsc -p ./tsconfig.esm.json --watch",
 		"test": "mocha ./test/all.js",
-		"prepublishOnly": "npm run compile && node ./scripts/release.js && node ./scripts/bundle",
+		"prepublishOnly": "npm run compile",
 		"prettier": "prettier --write .",
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",

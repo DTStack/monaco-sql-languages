@@ -130,9 +130,9 @@ function toDiagnostics(resource: Uri, diag: any): editor.IMarkerData {
 	return {
 		severity: toSeverity(diag.severity),
 		startLineNumber: diag.startLine,
-		startColumn: diag.startCol,
+		startColumn: diag.startCol + 1,
 		endLineNumber: diag.endLine,
-		endColumn: diag.endCol,
+		endColumn: diag.endCol + 1,
 		message: diag.message,
 		code: code,
 		source: diag.source

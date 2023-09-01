@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "0.12.0-beta.1",
+	"version": "0.12.0-beta.2",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"compile": "mrmdir ./out && tsc -p ./tsconfig.amd.json && tsc -p ./tsconfig.esm.json",
@@ -11,12 +11,12 @@
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",
 		"deploy": "npm run prod && gh-pages -d docs",
-		"release": "standard-version --infile CHANGELOG.md"
+		"release": "node ./scripts/bumpVersion.js"
 	},
 	"author": "DTStack Corporation",
 	"license": "MIT",
 	"main": "out/esm/main.js",
-	"module": "out/esm/main.d.ts",
+	"module": "out/esm/main.js",
 	"types": "out/esm/main.d.ts",
 	"files": [
 		"out"
@@ -41,6 +41,7 @@
 		"gh-pages": "^3.2.3",
 		"glob": "^7.1.6",
 		"husky": "^4.3.8",
+		"inquirer": "^8.2.2",
 		"jsdom": "^16.4.0",
 		"mocha": "^9.2.0",
 		"monaco-editor": "0.31.0",
@@ -54,11 +55,11 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "pretty-quick --staged"
+			"pre-commit": "pretty-quick --staged --pattern '**/*.*(js|jsx|ts|tsx|json)' --bail"
 		}
 	},
 	"dependencies": {
-		"dt-sql-parser": "^4.0.0-beta.4"
+		"dt-sql-parser": "4.0.0-beta.4.2"
 	},
 	"peerDependencies": {
 		"monaco-editor": "0.31.0"

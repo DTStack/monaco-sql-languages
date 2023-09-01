@@ -7,10 +7,6 @@ export * from './setupLanguageMode';
 export * from './workerManager';
 export * from './common/utils';
 
-export {
-	SyntaxContextType,
-	WordRange,
-	SyntaxSuggestion,
-	Suggestions,
-	TextSlice
-} from 'dt-sql-parser';
+export { SyntaxContextType } from 'dt-sql-parser';
+
+export type { WordRange, SyntaxSuggestion, Suggestions, TextSlice } from 'dt-sql-parser';

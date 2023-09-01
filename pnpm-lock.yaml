@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@types/mocha': ^9.1.0
   '@types/node': ^20.4.0
-  dt-sql-parser: ^4.0.0-beta.4
+  dt-sql-parser: 4.0.0-beta.4.2
   eslint: ^7.1.0
   eslint-config-google: ^0.14.0
   eslint-config-prettier: ^6.15.0
@@ -24,7 +24,7 @@ specifiers:
   typescript: ^5.0.4
 
 dependencies:
-  dt-sql-parser: 4.0.0-beta.4
+  dt-sql-parser: 4.0.0-beta.4.2
 
 devDependencies:
   '@types/mocha': 9.1.1
@@ -1410,10 +1410,10 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /dt-sql-parser/4.0.0-beta.4:
+  /dt-sql-parser/4.0.0-beta.4.2:
     resolution:
       {
-        integrity: sha512-hGtAmwghySbHjjohG+RhfZbX5tjEmrzUHLmg+gVaRvgfJCsSHgvk4qWhCitrrQPlkTqHFFkl8NLeiAAIQhfBZw==
+        integrity: sha512-z0IfATJoAjhCg+ZuPzoyM4FWUqY0LwhwL59TzFIB2qRAnWdo32ArVz3Cy8uHiRh6ZD56Wr+DoVSUhnlDOivA4Q==
       }
     dependencies:
       antlr4-c3: 3.0.1

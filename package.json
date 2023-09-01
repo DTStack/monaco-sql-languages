@@ -16,7 +16,7 @@
 	"author": "DTStack Corporation",
 	"license": "MIT",
 	"main": "out/esm/main.js",
-	"module": "out/esm/main.d.ts",
+	"module": "out/esm/main.js",
 	"types": "out/esm/main.d.ts",
 	"files": [
 		"out"

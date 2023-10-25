@@ -9,7 +9,7 @@ import {
 	CancellationToken
 } from './fillers/monaco-editor-core';
 import { debounce } from './common/utils';
-import type { Suggestions, ParserError } from 'dt-sql-parser';
+import type { Suggestions, ParseError } from 'dt-sql-parser';
 import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
 
 export interface WorkerAccessor<T> {
@@ -17,9 +17,9 @@ export interface WorkerAccessor<T> {
 }
 
 export interface IWorker extends ILanguageWorkerWithCompletions {
-	doValidation(uri: string): Promise<ParserError[]>;
-	valid(code: string): Promise<ParserError[]>;
-	parserTreeToString(code: string): Promise<ParserError[]>;
+	doValidation(uri: string): Promise<ParseError[]>;
+	valid(code: string): Promise<ParseError[]>;
+	parserTreeToString(code: string): Promise<ParseError[]>;
 }
 
 export interface ILanguageWorkerWithCompletions {
@@ -121,8 +121,8 @@ function toSeverity(lsSeverity: number): MarkerSeverity {
 }
 
 /**
- * TODO: diag is actually a type ParserError
- * @see {@link ParserError}
+ * TODO: diag is actually a type ParseError
+ * @see {@link ParseError}
  */
 function toDiagnostics(resource: Uri, diag: any): editor.IMarkerData {
 	let code = typeof diag.code === 'number' ? String(diag.code) : <string>diag.code;

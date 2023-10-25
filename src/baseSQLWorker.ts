@@ -1,6 +1,6 @@
 import BasicParser from 'dt-sql-parser/dist/parser/common/basicParser';
 import { worker } from './fillers/monaco-editor-core';
-import { Suggestions, ParserError } from 'dt-sql-parser';
+import { Suggestions, ParseError } from 'dt-sql-parser';
 import { Position } from './fillers/monaco-editor-core';
 
 export abstract class BaseSQLWorker {
@@ -8,7 +8,7 @@ export abstract class BaseSQLWorker {
 	protected abstract parser: BasicParser;
 	protected keywords: string[] = [];
 
-	async doValidation(code: string): Promise<ParserError[]> {
+	async doValidation(code: string): Promise<ParseError[]> {
 		code = code || this.getTextDocument();
 		if (code) {
 			const result = this.parser.validate(code);
@@ -17,7 +17,7 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([]);
 	}
 
-	async valid(code: string): Promise<ParserError[]> {
+	async valid(code: string): Promise<ParseError[]> {
 		if (code) {
 			const result = this.parser.validate(code);
 			return Promise.resolve(result);
@@ -27,7 +27,9 @@ export abstract class BaseSQLWorker {
 
 	async parserTreeToString(code: string): Promise<string> {
 		if (code) {
-			const result = this.parser.parserTreeToString(code);
+			const parser = this.parser.createParser(code);
+			const parseTree = parser.program();
+			const result = parseTree.toStringTree();
 			return Promise.resolve(result);
 		}
 		return Promise.resolve('');

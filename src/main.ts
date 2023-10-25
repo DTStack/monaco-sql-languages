@@ -1,6 +1,7 @@
 export { registerFlinkSQLLanguage } from './flinksql/flinksql.contribution';
 export { registerSparkSQLLanguage } from './sparksql/sparksql.contribution';
 export { registerHiveSQLLanguage } from './hivesql/hivesql.contribution';
+export { registerTrinoSQLLanguage } from './trinosql/trinosql.contribution';
 
 export * from './_.contribution';
 export * from './languageService';

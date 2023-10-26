@@ -7,6 +7,7 @@ import HiveSQLWorker from 'monaco-sql-languages/out/esm/hivesql/hivesql.worker?w
 import PGSQLWorker from 'monaco-sql-languages/out/esm/pgsql/pgsql.worker?worker';
 import MySQLWorker from 'monaco-sql-languages/out/esm/mysql/mysql.worker?worker';
 import PLSQLWorker from 'monaco-sql-languages/out/esm/plsql/plsql.worker?worker';
+import TrinoSQLWorker from 'monaco-sql-languages/out/esm/trinosql/trinosql.worker?worker';
 
 self.MonacoEnvironment = {
 	getWorker(_: any, label: string) {
@@ -27,6 +28,9 @@ self.MonacoEnvironment = {
 		}
 		if (label === 'mysql' || label === 'sql') {
 			return new MySQLWorker();
+		}
+		if (label === 'trinosql') {
+			return new TrinoSQLWorker();
 		}
 		return new EditorWorker();
 	}

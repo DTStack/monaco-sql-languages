@@ -11,18 +11,6 @@ import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages
 import { LanguageService } from 'monaco-sql-languages/out/esm/languageService';
 import { debounce } from 'monaco-sql-languages/out/esm/common/utils';
 
-import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
-import { registerFlinkSQLLanguage } from 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
-import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
-import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
-import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
-import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
-import 'monaco-sql-languages/out/esm/sql/sql.contribution';
-
-import { flinkCompletionService } from './helpers/flinkCompletionService';
-
-registerFlinkSQLLanguage(flinkCompletionService);
-
 export default class Sidebar extends React.Component {
 	private _language = defaultLanguage;
 	private languageService: LanguageService;
@@ -133,7 +121,14 @@ export default class Sidebar extends React.Component {
 				indent: 2,
 				offset: 2
 			});
-			molecule.panel.appendOutput(formatted);
+			const panel =
+				molecule.panel.getPanel(molecule.builtin.getConstants().PANEL_OUTPUT ?? '') ??
+				({} as any);
+			molecule.panel.update({
+				...panel,
+				data: formatted
+			});
+			molecule.panel.appendOutput('');
 		});
 	};
 

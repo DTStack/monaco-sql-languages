@@ -9,6 +9,7 @@ export * from './languageFeatures';
 export * from './setupLanguageMode';
 export * from './workerManager';
 export * from './common/utils';
+export * from './common/constants';
 
 export { SyntaxContextType } from 'dt-sql-parser';
 

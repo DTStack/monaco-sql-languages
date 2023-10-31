@@ -5,7 +5,7 @@
 	"scripts": {
 		"compile": "mrmdir ./out && tsc -p ./tsconfig.amd.json && tsc -p ./tsconfig.esm.json",
 		"watch-esm": "tsc -p ./tsconfig.esm.json --watch",
-		"test": "mocha ./test/all.js",
+		"test": "npm run compile && mocha ./test/all.js",
 		"prepublishOnly": "npm run compile",
 		"prettier": "prettier --write .",
 		"check-types": "tsc -p ./tsconfig.json",

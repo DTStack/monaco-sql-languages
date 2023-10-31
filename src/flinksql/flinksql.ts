@@ -807,7 +807,7 @@ export const language = <languages.IMonarchLanguage>{
 			],
 			[/[<>=!%&+\-*/|~^]/, tokenClassConsts.OPERATOR_SYMBOL]
 		],
-		whitespace: [[/[\s\t\r\n]+/, 'white']],
+		whitespace: [[/[\s\t\r\n]+/, tokenClassConsts.WHITE]],
 		comments: [
 			[/--+.*/, tokenClassConsts.COMMENT],
 			[/\/\*/, { token: tokenClassConsts.COMMENT_QUOTE, next: '@comment' }]

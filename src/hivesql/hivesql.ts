@@ -463,7 +463,8 @@ export const language = <languages.IMonarchLanguage>{
 		// Set
 		'EXCEPT',
 		'INTERSECT',
-		'UNION'
+		'UNION',
+		'MINUS'
 	],
 	builtinFunctions: [
 		// https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF#LanguageManualUDF-Built-inFunctions

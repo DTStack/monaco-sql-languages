@@ -1,4 +1,6 @@
 export const tokenClassConsts = {
+	BINARY: 'binary',
+	BINARY_ESCAPE: 'binary.escape',
 	COMMENT: 'comment',
 	COMMENT_QUOTE: 'comment.quote',
 	DELIMITER: 'delimiter',

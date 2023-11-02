@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import type { languages } from '../fillers/monaco-editor-core';
-import { tokenClassConsts } from '../common/constants';
+import { TokenClassConsts } from '../common/constants';
 
 export const conf: languages.LanguageConfiguration = {
 	comments: {
@@ -36,8 +36,8 @@ export const language = <languages.IMonarchLanguage>{
 	tokenPostfix: '.sql',
 	ignoreCase: true,
 	brackets: [
-		{ open: '[', close: ']', token: tokenClassConsts.DELIMITER_SQUARE },
-		{ open: '(', close: ')', token: tokenClassConsts.DELIMITER_PAREN }
+		{ open: '[', close: ']', token: TokenClassConsts.DELIMITER_SQUARE },
+		{ open: '(', close: ')', token: TokenClassConsts.DELIMITER_PAREN }
 	],
 	keywords: [
 		'ABORT',
@@ -702,76 +702,76 @@ export const language = <languages.IMonarchLanguage>{
 			{ include: '@complexIdentifiers' },
 			{ include: '@scopes' },
 			{ include: '@complexDataTypes' },
-			[/[;,.]/, tokenClassConsts.DELIMITER],
+			[/[;,.]/, TokenClassConsts.DELIMITER],
 			[/[\(\)\[\]]/, '@brackets'],
 			[
 				/[\w@#$]+/,
 				{
 					cases: {
-						'@operators': tokenClassConsts.OPERATOR_KEYWORD,
-						'@typeKeywords': tokenClassConsts.TYPE,
-						'@builtinVariables': tokenClassConsts.VARIABLE,
-						'@builtinFunctions': tokenClassConsts.PREDEFINED,
-						'@keywords': tokenClassConsts.KEYWORD,
-						'@default': tokenClassConsts.IDENTIFIER
+						'@operators': TokenClassConsts.OPERATOR_KEYWORD,
+						'@typeKeywords': TokenClassConsts.TYPE,
+						'@builtinVariables': TokenClassConsts.VARIABLE,
+						'@builtinFunctions': TokenClassConsts.PREDEFINED,
+						'@keywords': TokenClassConsts.KEYWORD,
+						'@default': TokenClassConsts.IDENTIFIER
 					}
 				}
 			],
-			[/[<>=!%&+\-*/|~^]/, tokenClassConsts.OPERATOR_SYMBOL]
+			[/[<>=!%&+\-*/|~^]/, TokenClassConsts.OPERATOR_SYMBOL]
 		],
-		whitespace: [[/[\s\t\r\n]+/, tokenClassConsts.WHITE]],
+		whitespace: [[/[\s\t\r\n]+/, TokenClassConsts.WHITE]],
 		comments: [
-			[/--+.*/, tokenClassConsts.COMMENT],
-			[/\/\*/, { token: tokenClassConsts.COMMENT_QUOTE, next: '@comment' }]
+			[/--+.*/, TokenClassConsts.COMMENT],
+			[/\/\*/, { token: TokenClassConsts.COMMENT_QUOTE, next: '@comment' }]
 		],
 		comment: [
-			[/[^*/]+/, tokenClassConsts.COMMENT],
+			[/[^*/]+/, TokenClassConsts.COMMENT],
 			// [/\/\*/, { token: 'comment.quote', next: '@push' }],    // nested comment not allowed :-(
-			[/\*\//, { token: tokenClassConsts.COMMENT_QUOTE, next: '@pop' }],
-			[/./, tokenClassConsts.COMMENT]
+			[/\*\//, { token: TokenClassConsts.COMMENT_QUOTE, next: '@pop' }],
+			[/./, TokenClassConsts.COMMENT]
 		],
 		pseudoColumns: [
 			[
 				/[$][A-Za-z_][\w@#$]*/,
 				{
 					cases: {
-						'@pseudoColumns': tokenClassConsts.PREDEFINED,
-						'@default': tokenClassConsts.IDENTIFIER
+						'@pseudoColumns': TokenClassConsts.PREDEFINED,
+						'@default': TokenClassConsts.IDENTIFIER
 					}
 				}
 			]
 		],
 		numbers: [
-			[/0[xX][0-9a-fA-F]*/, tokenClassConsts.NUMBER_HEX],
-			[/[$][+-]*\d*(\.\d*)?/, tokenClassConsts.NUMBER],
-			[/((\d+(\.\d*)?)|(\.\d+))([eE][\-+]?\d+)?/, tokenClassConsts.NUMBER]
+			[/0[xX][0-9a-fA-F]*/, TokenClassConsts.NUMBER_HEX],
+			[/[$][+-]*\d*(\.\d*)?/, TokenClassConsts.NUMBER],
+			[/((\d+(\.\d*)?)|(\.\d+))([eE][\-+]?\d+)?/, TokenClassConsts.NUMBER]
 		],
 		strings: [
 			// https://cwiki.apache.org/confluence/display/Hive/Literals
-			[/'/, { token: tokenClassConsts.STRING, next: '@string_single' }],
-			[/"/, { token: tokenClassConsts.STRING, next: '@string_double' }]
+			[/'/, { token: TokenClassConsts.STRING, next: '@string_single' }],
+			[/"/, { token: TokenClassConsts.STRING, next: '@string_double' }]
 		],
 		string_single: [
-			[/[^']+/, tokenClassConsts.STRING_ESCAPE],
-			[/''/, tokenClassConsts.STRING],
-			[/'/, { token: tokenClassConsts.STRING, next: '@pop' }]
+			[/[^']+/, TokenClassConsts.STRING_ESCAPE],
+			[/''/, TokenClassConsts.STRING],
+			[/'/, { token: TokenClassConsts.STRING, next: '@pop' }]
 		],
 		string_double: [
-			[/[^"]+/, tokenClassConsts.STRING_ESCAPE],
-			[/""/, tokenClassConsts.STRING],
-			[/"/, { token: tokenClassConsts.STRING, next: '@pop' }]
+			[/[^"]+/, TokenClassConsts.STRING_ESCAPE],
+			[/""/, TokenClassConsts.STRING],
+			[/"/, { token: TokenClassConsts.STRING, next: '@pop' }]
 		],
 		complexIdentifiers: [
-			[/`/, { token: tokenClassConsts.IDENTIFIER_QUOTE, next: '@quotedIdentifier' }]
+			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@quotedIdentifier' }]
 		],
 		quotedIdentifier: [
-			[/[^`]+/, tokenClassConsts.IDENTIFIER_QUOTE],
-			[/``/, tokenClassConsts.IDENTIFIER_QUOTE],
-			[/`/, { token: tokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
+			[/[^`]+/, TokenClassConsts.IDENTIFIER_QUOTE],
+			[/``/, TokenClassConsts.IDENTIFIER_QUOTE],
+			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [
 			// Not Support
 		],
-		complexDataTypes: [[/DOUBLE\s+PRECISION\b/i, { token: tokenClassConsts.TYPE }]]
+		complexDataTypes: [[/DOUBLE\s+PRECISION\b/i, { token: TokenClassConsts.TYPE }]]
 	}
 };

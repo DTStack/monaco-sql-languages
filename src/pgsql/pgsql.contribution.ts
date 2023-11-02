@@ -18,7 +18,7 @@ const languageId = 'pgsql';
 registerLanguage({
 	id: languageId,
 	extensions: [],
-	aliases: ['PgSQL', 'pgsql'],
+	aliases: ['PgSQL', 'postgresql', 'PostgreSQL'],
 	loader: () => import('./pgsql')
 });
 

@@ -1,4 +1,4 @@
-export const tokenClassConsts = {
+export const TokenClassConsts = {
 	BINARY: 'binary',
 	BINARY_ESCAPE: 'binary.escape',
 	COMMENT: 'comment',

@@ -5,7 +5,7 @@
 
 import { testTokenization } from '../test/testRunner';
 import { registerHiveSQLLanguage } from './hivesql.contribution';
-import { tokenClassConsts, postfixTokenClass } from '../common/constants';
+import { TokenClassConsts, postfixTokenClass } from '../common/constants';
 
 registerHiveSQLLanguage();
 
@@ -14,14 +14,14 @@ testTokenization('hivesql', [
 	[
 		{
 			line: '-- a comment',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.COMMENT) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT) }]
 		}
 	],
 
 	[
 		{
 			line: '---sticky -- comment',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.COMMENT) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT) }]
 		}
 	],
 
@@ -29,12 +29,12 @@ testTokenization('hivesql', [
 		{
 			line: '-almost a comment',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 1, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 7, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 8, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 9, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 10, type: postfixTokenClass(tokenClassConsts.KEYWORD) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.KEYWORD) }
 			]
 		}
 	],
@@ -43,9 +43,9 @@ testTokenization('hivesql', [
 		{
 			line: '/* a full line comment */',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 2, type: postfixTokenClass(tokenClassConsts.COMMENT) },
-				{ startIndex: 23, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 23, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) }
 			]
 		}
 	],
@@ -54,9 +54,9 @@ testTokenization('hivesql', [
 		{
 			line: '/* /// *** /// */',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 2, type: postfixTokenClass(tokenClassConsts.COMMENT) },
-				{ startIndex: 15, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 15, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) }
 			]
 		}
 	],
@@ -65,20 +65,20 @@ testTokenization('hivesql', [
 		{
 			line: 'declare @x int = /* a simple comment */ 1;',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 7, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 8, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 10, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 11, type: postfixTokenClass(tokenClassConsts.TYPE) },
-				{ startIndex: 14, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 15, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 16, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 17, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 19, type: postfixTokenClass(tokenClassConsts.COMMENT) },
-				{ startIndex: 37, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 39, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 40, type: postfixTokenClass(tokenClassConsts.NUMBER) },
-				{ startIndex: 41, type: postfixTokenClass(tokenClassConsts.DELIMITER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.TYPE) },
+				{ startIndex: 14, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 15, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 16, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 17, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 19, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 37, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 39, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 40, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 41, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -89,12 +89,12 @@ testTokenization('hivesql', [
 		{
 			line: '@x=/* a /* nested comment  1*/;',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 2, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 3, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 5, type: postfixTokenClass(tokenClassConsts.COMMENT) },
-				{ startIndex: 28, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 30, type: postfixTokenClass(tokenClassConsts.DELIMITER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 28, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 30, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -103,15 +103,15 @@ testTokenization('hivesql', [
 		{
 			line: '@x=/* another comment */ 1*/;',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 2, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 3, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 5, type: postfixTokenClass(tokenClassConsts.COMMENT) },
-				{ startIndex: 22, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 24, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 25, type: postfixTokenClass(tokenClassConsts.NUMBER) },
-				{ startIndex: 26, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 28, type: postfixTokenClass(tokenClassConsts.DELIMITER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 22, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 24, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 25, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 26, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 28, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -120,10 +120,10 @@ testTokenization('hivesql', [
 		{
 			line: '@x=/*/;',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 2, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 3, type: postfixTokenClass(tokenClassConsts.COMMENT_QUOTE) },
-				{ startIndex: 5, type: postfixTokenClass(tokenClassConsts.COMMENT) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.COMMENT) }
 			]
 		}
 	],
@@ -132,7 +132,7 @@ testTokenization('hivesql', [
 	[
 		{
 			line: '123',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
@@ -140,8 +140,8 @@ testTokenization('hivesql', [
 		{
 			line: '-123',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 1, type: postfixTokenClass(tokenClassConsts.NUMBER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.NUMBER) }
 			]
 		}
 	],
@@ -149,28 +149,28 @@ testTokenization('hivesql', [
 	[
 		{
 			line: '0xaBc123',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER_HEX) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) }]
 		}
 	],
 
 	[
 		{
 			line: '0XaBc123',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER_HEX) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) }]
 		}
 	],
 
 	[
 		{
 			line: '0x',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER_HEX) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) }]
 		}
 	],
 
 	[
 		{
 			line: '0x0',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER_HEX) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) }]
 		}
 	],
 
@@ -178,8 +178,8 @@ testTokenization('hivesql', [
 		{
 			line: '0xAB_CD',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER_HEX) },
-				{ startIndex: 4, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) },
+				{ startIndex: 4, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }
 			]
 		}
 	],
@@ -187,161 +187,161 @@ testTokenization('hivesql', [
 	[
 		{
 			line: '$',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$-123',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$-+-123',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$123.5678',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$0.99',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$.99',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$99.',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$0.',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$.0',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.DELIMITER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.DELIMITER) }]
 		}
 	],
 
 	[
 		{
 			line: '123',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '123.5678',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '0.99',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.99',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '99.',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '0.',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.0',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1E-2',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1E+2',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1E2',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '0.1E2',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1.E2',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.1E2',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.NUMBER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
@@ -349,52 +349,52 @@ testTokenization('hivesql', [
 	[
 		{
 			line: '_abc$01',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }]
 		}
 	],
 
 	[
 		{
 			line: '#abc$01',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }]
 		}
 	],
 
 	[
 		{
 			line: '##abc$01',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }]
 		}
 	],
 
 	[
 		{
 			line: '@abc$01',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }]
 		}
 	],
 
 	[
 		{
 			line: '@@abc$01',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }]
 		}
 	],
 
 	[
 		{
 			line: '$abc',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }]
 		}
 	],
 	[
 		{
 			line: 'declare `abc 321`;',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 7, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 8, type: postfixTokenClass(tokenClassConsts.IDENTIFIER_QUOTE) },
-				{ startIndex: 17, type: postfixTokenClass(tokenClassConsts.DELIMITER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) },
+				{ startIndex: 17, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -402,25 +402,25 @@ testTokenization('hivesql', [
 		{
 			line: '`abc` `321` `xyz`',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER_QUOTE) },
-				{ startIndex: 5, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 6, type: postfixTokenClass(tokenClassConsts.IDENTIFIER_QUOTE) },
-				{ startIndex: 11, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 12, type: postfixTokenClass(tokenClassConsts.IDENTIFIER_QUOTE) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) },
+				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 12, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) }
 			]
 		}
 	],
 	[
 		{
 			line: '`abc',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER_QUOTE) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) }]
 		}
 	],
 
 	[
 		{
 			line: 'int',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.TYPE) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.TYPE) }]
 		}
 	],
 
@@ -429,11 +429,11 @@ testTokenization('hivesql', [
 		{
 			line: "'a '' string with quotes'",
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.STRING) },
-				{ startIndex: 1, type: postfixTokenClass(tokenClassConsts.STRING_ESCAPE) },
-				{ startIndex: 3, type: postfixTokenClass(tokenClassConsts.STRING) },
-				{ startIndex: 5, type: postfixTokenClass(tokenClassConsts.STRING_ESCAPE) },
-				{ startIndex: 24, type: postfixTokenClass(tokenClassConsts.STRING) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 24, type: postfixTokenClass(TokenClassConsts.STRING) }
 			]
 		}
 	],
@@ -442,9 +442,9 @@ testTokenization('hivesql', [
 		{
 			line: "'a \" string with quotes'",
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.STRING) },
-				{ startIndex: 1, type: postfixTokenClass(tokenClassConsts.STRING_ESCAPE) },
-				{ startIndex: 23, type: postfixTokenClass(tokenClassConsts.STRING) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 23, type: postfixTokenClass(TokenClassConsts.STRING) }
 			]
 		}
 	],
@@ -453,9 +453,9 @@ testTokenization('hivesql', [
 		{
 			line: "'a -- string with comment'",
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.STRING) },
-				{ startIndex: 1, type: postfixTokenClass(tokenClassConsts.STRING_ESCAPE) },
-				{ startIndex: 25, type: postfixTokenClass(tokenClassConsts.STRING) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 25, type: postfixTokenClass(TokenClassConsts.STRING) }
 			]
 		}
 	],
@@ -464,8 +464,8 @@ testTokenization('hivesql', [
 		{
 			line: "'a endless string",
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.STRING) },
-				{ startIndex: 1, type: postfixTokenClass(tokenClassConsts.STRING_ESCAPE) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) }
 			]
 		}
 	],
@@ -475,13 +475,13 @@ testTokenization('hivesql', [
 		{
 			line: 'SET @x=@x+1',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.KEYWORD) },
-				{ startIndex: 3, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 4, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 6, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 7, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 9, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 10, type: postfixTokenClass(tokenClassConsts.NUMBER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 4, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.NUMBER) }
 			]
 		}
 	],
@@ -490,9 +490,9 @@ testTokenization('hivesql', [
 		{
 			line: '@x^=@x',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 2, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 4, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 4, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }
 			]
 		}
 	],
@@ -501,15 +501,15 @@ testTokenization('hivesql', [
 		{
 			line: 'WHERE x IS NOT NULL',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.KEYWORD) },
-				{ startIndex: 5, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 6, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 7, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 8, type: postfixTokenClass(tokenClassConsts.OPERATOR_KEYWORD) },
-				{ startIndex: 10, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 11, type: postfixTokenClass(tokenClassConsts.OPERATOR_KEYWORD) },
-				{ startIndex: 14, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 15, type: postfixTokenClass(tokenClassConsts.KEYWORD) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.OPERATOR_KEYWORD) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.OPERATOR_KEYWORD) },
+				{ startIndex: 14, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 15, type: postfixTokenClass(TokenClassConsts.KEYWORD) }
 			]
 		}
 	],
@@ -518,27 +518,27 @@ testTokenization('hivesql', [
 		{
 			line: 'SELECT * FROM dbo.MyTable WHERE MyColumn IN (1,2)',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(tokenClassConsts.KEYWORD) },
-				{ startIndex: 6, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 7, type: postfixTokenClass(tokenClassConsts.OPERATOR_SYMBOL) },
-				{ startIndex: 8, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 9, type: postfixTokenClass(tokenClassConsts.KEYWORD) },
-				{ startIndex: 13, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 14, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 17, type: postfixTokenClass(tokenClassConsts.DELIMITER) },
-				{ startIndex: 18, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 25, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 26, type: postfixTokenClass(tokenClassConsts.KEYWORD) },
-				{ startIndex: 31, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 32, type: postfixTokenClass(tokenClassConsts.IDENTIFIER) },
-				{ startIndex: 40, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 41, type: postfixTokenClass(tokenClassConsts.OPERATOR_KEYWORD) },
-				{ startIndex: 43, type: postfixTokenClass(tokenClassConsts.WHITE) },
-				{ startIndex: 44, type: postfixTokenClass(tokenClassConsts.DELIMITER_PAREN) },
-				{ startIndex: 45, type: postfixTokenClass(tokenClassConsts.NUMBER) },
-				{ startIndex: 46, type: postfixTokenClass(tokenClassConsts.DELIMITER) },
-				{ startIndex: 47, type: postfixTokenClass(tokenClassConsts.NUMBER) },
-				{ startIndex: 48, type: postfixTokenClass(tokenClassConsts.DELIMITER_PAREN) }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 13, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 14, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 17, type: postfixTokenClass(TokenClassConsts.DELIMITER) },
+				{ startIndex: 18, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 25, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 26, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 31, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 32, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 40, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 41, type: postfixTokenClass(TokenClassConsts.OPERATOR_KEYWORD) },
+				{ startIndex: 43, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 44, type: postfixTokenClass(TokenClassConsts.DELIMITER_PAREN) },
+				{ startIndex: 45, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 46, type: postfixTokenClass(TokenClassConsts.DELIMITER) },
+				{ startIndex: 47, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 48, type: postfixTokenClass(TokenClassConsts.DELIMITER_PAREN) }
 			]
 		}
 	]

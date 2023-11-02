@@ -20,7 +20,7 @@ export function registerHiveSQLLanguage(completionService?: CompletionService) {
 	registerLanguage({
 		id: languageId,
 		extensions: ['.hivesql'],
-		aliases: ['HiveSQL'],
+		aliases: ['HiveSQL', 'hive', 'Hive'],
 		loader: () => import('./hivesql')
 	});
 

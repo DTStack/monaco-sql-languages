@@ -15,7 +15,7 @@ export function registerTrinoSQLLanguage(completionService?: CompletionService) 
 	registerLanguage({
 		id: languageId,
 		extensions: [],
-		aliases: ['TrinoSQL', 'trinosql', 'trino', 'prestosql'],
+		aliases: ['TrinoSQL', 'trino', 'Trino', 'prestosql', 'PrestoSQL', 'presto', 'Presto'],
 		loader: () => import('./trinosql')
 	});
 

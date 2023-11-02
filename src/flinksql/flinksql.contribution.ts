@@ -20,7 +20,7 @@ export function registerFlinkSQLLanguage(completionService?: CompletionService) 
 	registerLanguage({
 		id: languageId,
 		extensions: ['.flinksql'],
-		aliases: ['FlinkSQL'],
+		aliases: ['FlinkSQL', 'flink', 'Flink'],
 		loader: () => import('./flinksql')
 	});
 

@@ -20,7 +20,7 @@ export function registerSparkSQLLanguage(completionService?: CompletionService) 
 	registerLanguage({
 		id: languageId,
 		extensions: ['.sparksql'],
-		aliases: ['SparkSQL'],
+		aliases: ['SparkSQL', 'spark', 'Spark'],
 		loader: () => import('./sparksql')
 	});
 

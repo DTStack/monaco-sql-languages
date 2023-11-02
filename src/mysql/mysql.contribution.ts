@@ -18,7 +18,7 @@ const languageId = 'mysql';
 registerLanguage({
 	id: languageId,
 	extensions: [],
-	aliases: ['MySQL', 'mysql'],
+	aliases: ['MySQL'],
 	loader: () => import('./mysql')
 });
 

@@ -11,8 +11,6 @@ import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'trinosql';
 
-registerTrinoSQLLanguage;
-
 export function registerTrinoSQLLanguage(completionService?: CompletionService) {
 	registerLanguage({
 		id: languageId,

@@ -740,6 +740,7 @@ export const language = <languages.IMonarchLanguage>{
 		// UUID
 		'UUID'
 	],
+	scopeKeywords: ['CASE', 'END', 'WHEN', 'THEN', 'ELSE'],
 	pseudoColumns: [
 		// Not support
 	],
@@ -759,6 +760,7 @@ export const language = <languages.IMonarchLanguage>{
 				/[\w@$-]+/, // https://trino.io/docs/current/language/reserved.html#language-identifiers
 				{
 					cases: {
+						'@scopeKeywords': TokenClassConsts.KEYWORD_SCOPE,
 						'@operators': TokenClassConsts.OPERATOR_KEYWORD,
 						'@typeKeywords': TokenClassConsts.TYPE,
 						'@builtinVariables': TokenClassConsts.VARIABLE,

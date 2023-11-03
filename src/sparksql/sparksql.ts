@@ -840,6 +840,7 @@ export const language = <languages.IMonarchLanguage>{
 		'STRUCT',
 		'MAP'
 	],
+	scopeKeywords: ['CASE', 'END', 'WHEN', 'THEN', 'ELSE'],
 	pseudoColumns: [
 		// Not support
 	],
@@ -860,6 +861,7 @@ export const language = <languages.IMonarchLanguage>{
 				/[\w@#$]+/,
 				{
 					cases: {
+						'@scopeKeywords': TokenClassConsts.KEYWORD_SCOPE,
 						'@operators': TokenClassConsts.OPERATOR_KEYWORD,
 						'@typeKeywords': TokenClassConsts.TYPE,
 						'@builtinVariables': TokenClassConsts.VARIABLE,

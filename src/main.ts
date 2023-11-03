@@ -10,6 +10,7 @@ export * from './setupLanguageMode';
 export * from './workerManager';
 export * from './common/utils';
 export * from './common/constants';
+export * from './theme';
 
 export { SyntaxContextType } from 'dt-sql-parser';
 

@@ -777,6 +777,7 @@ export const language = <languages.IMonarchLanguage>{
 		'NUMERIC',
 		'INTERVAL'
 	],
+	scopeKeywords: ['CASE', 'END', 'WHEN', 'THEN', 'ELSE'],
 	pseudoColumns: [
 		// Not support
 	],
@@ -796,6 +797,7 @@ export const language = <languages.IMonarchLanguage>{
 				/[\w@#$]+/,
 				{
 					cases: {
+						'@scopeKeywords': TokenClassConsts.KEYWORD_SCOPE,
 						'@operators': TokenClassConsts.OPERATOR_KEYWORD,
 						'@typeKeywords': TokenClassConsts.TYPE,
 						'@builtinVariables': TokenClassConsts.VARIABLE,
@@ -850,8 +852,7 @@ export const language = <languages.IMonarchLanguage>{
 		],
 		scopes: [
 			[/(EXECUTE\s+)?BEGIN\s+STATEMENT\s+SET/i, TokenClassConsts.KEYWORD_SCOPE],
-			[/(EXECUTE\s+)?STATEMENT\s+SET\s+BEGIN/i, TokenClassConsts.KEYWORD_SCOPE],
-			[/END\b/i, { token: TokenClassConsts.KEYWORD_SCOPE }]
+			[/(EXECUTE\s+)?STATEMENT\s+SET\s+BEGIN/i, TokenClassConsts.KEYWORD_SCOPE]
 		],
 		complexDataTypes: [
 			[/DOUBLE\s+PRECISION\b/i, { token: TokenClassConsts.TYPE }],

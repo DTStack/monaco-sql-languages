@@ -5,8 +5,11 @@
 [download-img]: https://img.shields.io/npm/dm/monaco-sql-languages.svg?style=flat
 [download-url]: https://www.npmjs.com/package/monaco-sql-languages
 
-This is a SQL Languages project for Monaco Editor forked it from [monaco-languages](https://github.com/microsoft/monaco-languages). The differences are we integrated with
-many kinds of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL, and so on. We provided the basic **SQL syntax** validation and **CodeCompletion** feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser).
+This project is based on the SQL language project of Monaco Editor, which was forked from the [monaco-languages](https://github.com/microsoft/monaco-languages).
+
+The difference is that Monaco SQL Languages has integrated with various SQL languages for the **Big Data field**, such as FLinkSQL, SparkSQL, HiveSQL, and others.
+
+In addition, Monaco SQL Languages provides **SQL syntax validation** and **CodeCompletion** feature for these languages via [dt-sql-parser](https://github.com/DTStack/dt-sql-parser).
 
 Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 
@@ -40,7 +43,7 @@ Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 npm install monaco-sql-languages
 ```
 
-> Tips: Your version of monaco-editor should be 0.31.0, monaco-sql-language is only guaranteed to work stably on `monaco-editor@0.31.0` for now.
+> Tips: Your version of Monaco Editor should be 0.31.0, Monaco SQL Languages is only guaranteed to work stably on `monaco-editor@0.31.0` for now.
 
 <br/>
 
@@ -51,13 +54,13 @@ npm install monaco-sql-languages
 
 ### Using the Monaco Editor WebPack Plugin
 
--   Install Monaco Editor WebPack Plugin
+-   Install Monaco Editor Webpack Plugin
 
     ```shell
     npm install monaco-editor-webpack-plugin
     ```
 
--   Apply Monaco Editor WebPack Plugin in webpack config
+-   Apply Monaco Editor Webpack Plugin in webpack config
 
     ```typescript
     const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
@@ -67,7 +70,7 @@ npm install monaco-sql-languages
     	features: [], // Include only a subset of the editor features
     	languages: [], // Include only a subset of the monaco built-in languages
     	customLanguages: [
-    		// Include languages that provides by monaco-sql-languages
+    		// Include languages that provides by Monaco SQL Languages
     		{
     			label: 'mysql',
     			entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
@@ -194,7 +197,7 @@ window.MonacoEnvironment = {
 
 ### Using Vite
 
-Vite example see https://github.com/DTStack/monaco-sql-languages/blob/main/website/src/languageWorker.ts.
+Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/website/src/languageWorker.ts>
 
 <br/>
 
@@ -276,7 +279,7 @@ Vite example see https://github.com/DTStack/monaco-sql-languages/blob/main/websi
     registerFlinkSQLLanguage(completionService);
     ```
 
-3. **create the `monaco-editor` instance and specify the language you need**
+3. **Create the Monaco Editor instance and specify the language you need**
 
     ```typescript
     monaco.editor.create(document.getElementById('container'), {

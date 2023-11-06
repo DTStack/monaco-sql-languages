@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0-beta.3](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.1...v0.12.0-beta.3) (2023-11-06)
+
+
+### Features
+
+* add vscode plus colorTheme ([#65](https://github.com/DTStack/monaco-sql-languages/issues/65)) ([f7a7ea8](https://github.com/DTStack/monaco-sql-languages/commit/f7a7ea811555d6d77a1c3669552d0c92675e21cc))
+* highlight keywords of condition expression ([#66](https://github.com/DTStack/monaco-sql-languages/issues/66)) ([a9f6578](https://github.com/DTStack/monaco-sql-languages/commit/a9f65782e6900c94db9fe42e32457965b37f5c16))
+* hive and spark support code completion ([#54](https://github.com/DTStack/monaco-sql-languages/issues/54)) ([6d0eabf](https://github.com/DTStack/monaco-sql-languages/commit/6d0eabfde35929e80ca659ff554ce4d872889f8b))
+* improve flinksql highlight ([#58](https://github.com/DTStack/monaco-sql-languages/issues/58)) ([c204a2c](https://github.com/DTStack/monaco-sql-languages/commit/c204a2c1d2be65b0c78df207bb3e778ff885b6c0))
+* improve highlighting of hive lanuguage ([#59](https://github.com/DTStack/monaco-sql-languages/issues/59)) ([43c14c8](https://github.com/DTStack/monaco-sql-languages/commit/43c14c8ba638e00ac791afda33ccb1864eee347c))
+* improve highlighting of spark language ([#61](https://github.com/DTStack/monaco-sql-languages/issues/61)) ([4de9815](https://github.com/DTStack/monaco-sql-languages/commit/4de9815402956d737077d085705044c5d9bae328))
+* improve highlighting of trinosql language ([#64](https://github.com/DTStack/monaco-sql-languages/issues/64)) ([f24e4ff](https://github.com/DTStack/monaco-sql-languages/commit/f24e4ffe72aa1ea88497fe000563ad4e37bf8e14))
+* support trinosql language ([#56](https://github.com/DTStack/monaco-sql-languages/issues/56)) ([adbd3df](https://github.com/DTStack/monaco-sql-languages/commit/adbd3df957d6cb3c3e7e9e7cb8a879a6b62699ad))
+
+
+### Bug Fixes
+
+* correct diag position ([#49](https://github.com/DTStack/monaco-sql-languages/issues/49)) ([560e05b](https://github.com/DTStack/monaco-sql-languages/commit/560e05b0a5b1f9d84f54e9f25b825441f193d33c))
+* correct main field in package.json ([0f70a6e](https://github.com/DTStack/monaco-sql-languages/commit/0f70a6ed2cc373994fbea9c7f369b08f9c1b5625))
+
 ## [0.12.0-beta.2](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.1...v0.12.0-beta.2) (2023-09-01)
 
 

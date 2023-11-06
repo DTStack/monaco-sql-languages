@@ -71,77 +71,77 @@ npm install monaco-sql-languages
     const path = require('path');
 
     const monacoWebpackPlugin = new MonacoWebpackPlugin({
-    	features: [], // 包含你所需要的 Monaco Editor 功能
-    	languages: [], // 包含你所需要的 Monaco Editor 内置语言功能
-    	customLanguages: [
-    		// 包含 Monaco SQL Languages 所提供的语言功能
-    		{
-    			label: 'mysql',
-    			entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
-    			worker: {
-    				id: 'monaco-sql-languages/out/esm/mysql/mySQLWorker',
-    				entry: 'monaco-sql-languages/out/esm/mysql/mysql.worker'
-    			}
-    		},
-    		{
-    			label: 'flinksql',
-    			entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution',
-    			worker: {
-    				id: 'monaco-sql-languages/out/esm/flinksql/flinkSQLWorker',
-    				entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.worker'
-    			}
-    		},
-    		{
-    			label: 'sparksql',
-    			entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution',
-    			worker: {
-    				id: 'monaco-sql-languages/out/esm/sparksql/sparkSQLWorker',
-    				entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.worker'
-    			}
-    		},
-    		{
-    			label: 'hivesql',
-    			entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution',
-    			worker: {
-    				id: 'monaco-sql-languages/out/esm/hivesql/hiveSQLWorker',
-    				entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.worker'
-    			}
-    		},
-    		{
-    			label: 'trinosql',
-    			entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution',
-    			worker: {
-    				id: 'monaco-sql-languages/out/esm/trinosql/TrinoSQLWorker',
-    				entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.worker'
-    			}
-    		},
-    		{
-    			label: 'pgsql',
-    			entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution',
-    			worker: {
-    				id: 'monaco-sql-languages/out/esm/pgsql/PgSQLWorker',
-    				entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.worker'
-    			}
-    		},
-    		{
-    			label: 'plsql',
-    			entry: 'monaco-sql-languages/out/esm/plsql/plsql.contribution',
-    			worker: {
-    				id: 'monaco-sql-languages/out/esm/plsql/plSQLWorker',
-    				entry: 'monaco-sql-languages/out/esm/plsql/plsql.worker'
-    			}
-    		}
-    	]
+        features: [], // 包含你所需要的 Monaco Editor 功能
+        languages: [], // 包含你所需要的 Monaco Editor 内置语言功能
+        customLanguages: [
+            // 包含 Monaco SQL Languages 所提供的语言功能
+            {
+                label: 'mysql',
+                entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
+                worker: {
+                    id: 'monaco-sql-languages/out/esm/mysql/mySQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/mysql/mysql.worker'
+                }
+            },
+            {
+                label: 'flinksql',
+                entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution',
+                worker: {
+                    id: 'monaco-sql-languages/out/esm/flinksql/flinkSQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.worker'
+                }
+            },
+            {
+                label: 'sparksql',
+                entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution',
+                worker: {
+                    id: 'monaco-sql-languages/out/esm/sparksql/sparkSQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.worker'
+                }
+            },
+            {
+                label: 'hivesql',
+                entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution',
+                worker: {
+                    id: 'monaco-sql-languages/out/esm/hivesql/hiveSQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.worker'
+                }
+            },
+            {
+                label: 'trinosql',
+                entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution',
+                worker: {
+                    id: 'monaco-sql-languages/out/esm/trinosql/TrinoSQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.worker'
+                }
+            },
+            {
+                label: 'pgsql',
+                entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution',
+                worker: {
+                    id: 'monaco-sql-languages/out/esm/pgsql/PgSQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.worker'
+                }
+            },
+            {
+                label: 'plsql',
+                entry: 'monaco-sql-languages/out/esm/plsql/plsql.contribution',
+                worker: {
+                    id: 'monaco-sql-languages/out/esm/plsql/plSQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/plsql/plsql.worker'
+                }
+            }
+        ]
     });
 
     module.exports = {
-    	entry: './index.js',
-    	output: {
-    		path: path.resolve(__dirname, 'dist'),
-    		filename: 'app.js'
-    	},
-    	module: {},
-    	plugins: [monacoEditorPlugin] // 应用 monacoEditorPlugin
+        entry: './index.js',
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'app.js'
+        },
+        module: {},
+        plugins: [monacoEditorPlugin] // 应用 monacoEditorPlugin
     };
     ```
 
@@ -153,14 +153,14 @@ npm install monaco-sql-languages
 
 ```typescript
 entry: {
-	'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
-	'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
-	'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
-	'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
-	'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
-	'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
-	'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.js',
-	'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+    'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
+    'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
+    'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
+    'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
+    'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
+    'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
+    'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.js',
+    'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
 },
 ```
 
@@ -168,34 +168,34 @@ entry: {
 
 ```typescript
 window.MonacoEnvironment = {
-	getWorkerUrl: function (moduleId, label) {
-		switch (label) {
-			case 'mysql': {
-				return './mysql.worker.js';
-			}
-			case 'sparksql': {
-				return './sparksql.worker.js';
-			}
-			case 'flinksql': {
-				return './flinksql.worker.js';
-			}
-			case 'hivesql': {
-				return './hivesql.worker.js';
-			}
-			case 'trinosql': {
-				return './trinosql.worker.js';
-			}
-			case 'pgsql': {
-				return './pgsql.worker.js';
-			}
-			case 'plsql': {
-				return './plsql.worker.js';
-			}
-			default: {
-				return './editor.worker.js';
-			}
-		}
-	}
+    getWorkerUrl: function (moduleId, label) {
+        switch (label) {
+            case 'mysql': {
+                return './mysql.worker.js';
+            }
+            case 'sparksql': {
+                return './sparksql.worker.js';
+            }
+            case 'flinksql': {
+                return './flinksql.worker.js';
+            }
+            case 'hivesql': {
+                return './hivesql.worker.js';
+            }
+            case 'trinosql': {
+                return './trinosql.worker.js';
+            }
+            case 'pgsql': {
+                return './pgsql.worker.js';
+            }
+            case 'plsql': {
+                return './plsql.worker.js';
+            }
+            default: {
+                return './editor.worker.js';
+            }
+        }
+    }
 };
 ```
 
@@ -218,10 +218,10 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
 
     // 支持自定补全功能的语言，先导入对应语言的注册方法
     import {
-    	registerHiveSQLLanguage,
-    	registerFlinkSQLLanguage,
-    	registerSparkSQLLanguage,
-    	registerTrinoSQLLanguage
+        registerHiveSQLLanguage,
+        registerFlinkSQLLanguage,
+        registerSparkSQLLanguage,
+        registerTrinoSQLLanguage
     } from 'monaco-sql-languages';
 
     // 注册语言， completionService 是非必要的。
@@ -246,38 +246,38 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
     import { CompletionService, ICompletionItem, SyntaxContextType } from 'monaco-sql-languages';
 
     const completionService: CompletionService = function (
-    	model,
-    	position,
-    	completionContext,
-    	suggestions
+        model,
+        position,
+        completionContext,
+        suggestions
     ) {
-    	return new Promise((resolve, reject) => {
-    		if (!suggestions) {
-    			return Promise.resolve([]);
-    		}
-    		const { keywords, syntax } = suggestions;
-    		const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
-    			label: kw,
-    			kind: languages.CompletionItemKind.Keyword,
-    			detail: 'keyword',
-    			sortText: '2' + kw
-    		}));
+        return new Promise((resolve, reject) => {
+            if (!suggestions) {
+                return Promise.resolve([]);
+            }
+            const { keywords, syntax } = suggestions;
+            const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
+                label: kw,
+                kind: languages.CompletionItemKind.Keyword,
+                detail: 'keyword',
+                sortText: '2' + kw
+            }));
 
-    		let syntaxCompletionItems: ICompletionItem[] = [];
+            let syntaxCompletionItems: ICompletionItem[] = [];
 
-    		syntax.forEach((item) => {
-    			if (item.syntaxContextType === SyntaxContextType.DATABASE) {
-    				const databaseCompletions: ICompletionItem[] = [...]; // 一些数据库名自动补全项
-    				syntaxCompletionItems = [...syntaxCompletionItems, ...databaseCompletions];
-    			}
-    			if (item.syntaxContextType === SyntaxContextType.TABLE) {
-    				const tableCompletions: ICompletionItem[] = []; // 一些表名自动补全项
-    				syntaxCompletionItems = [...syntaxCompletionItems, ...tableCompletions];
-    			}
-    		});
+            syntax.forEach((item) => {
+                if (item.syntaxContextType === SyntaxContextType.DATABASE) {
+                    const databaseCompletions: ICompletionItem[] = [...]; // 一些数据库名自动补全项
+                    syntaxCompletionItems = [...syntaxCompletionItems, ...databaseCompletions];
+                }
+                if (item.syntaxContextType === SyntaxContextType.TABLE) {
+                    const tableCompletions: ICompletionItem[] = []; // 一些表名自动补全项
+                    syntaxCompletionItems = [...syntaxCompletionItems, ...tableCompletions];
+                }
+            });
 
-    		return [...syntaxCompletionItems, ...keywordsCompletionItems];
-    	});
+            return [...syntaxCompletionItems, ...keywordsCompletionItems];
+        });
     };
 
     registerFlinkSQLLanguage(completionService);
@@ -287,8 +287,8 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
 
     ```typescript
     monaco.editor.create(document.getElementById('container'), {
-    	value: 'select * from tb_test',
-    	language: 'flinksql' // languageId
+        value: 'select * from tb_test',
+        language: 'flinksql' // languageId
     });
     ```
 
@@ -317,8 +317,8 @@ editor.defineTheme('sql-hc', vsPlusTheme.hcBlackThemeData);
 
 // 指定你已定义的主题
 editor.create(null as any, {
-	theme: 'sql-dark',
-	language: 'flinksql'
+    theme: 'sql-dark',
+    language: 'flinksql'
 });
 ```
 
@@ -329,17 +329,17 @@ import { TokenClassConsts, postfixTokenClass } from 'monaco-sql-languages';
 
 // 自定义不同 token 类型的样式
 const myThemeData: editor.IStandaloneThemeData = {
-	base: 'vs-dark',
-	inherit: true,
-	rules: [
-		{ token: postfixTokenClass(TokenClassConsts.COMMENT), foreground: '6a9955' },
-		{ token: postfixTokenClass(TokenClassConsts.IDENTIFIER), foreground: '9cdcfe' },
-		{ token: postfixTokenClass(TokenClassConsts.KEYWORD), foreground: '569cd6' },
-		{ token: postfixTokenClass(TokenClassConsts.NUMBER), foreground: 'b5cea8' },
-		{ token: postfixTokenClass(TokenClassConsts.STRING), foreground: 'ce9178' },
-		{ token: postfixTokenClass(TokenClassConsts.TYPE), foreground: '4ec9b0' }
-	],
-	colors: {}
+    base: 'vs-dark',
+    inherit: true,
+    rules: [
+        { token: postfixTokenClass(TokenClassConsts.COMMENT), foreground: '6a9955' },
+        { token: postfixTokenClass(TokenClassConsts.IDENTIFIER), foreground: '9cdcfe' },
+        { token: postfixTokenClass(TokenClassConsts.KEYWORD), foreground: '569cd6' },
+        { token: postfixTokenClass(TokenClassConsts.NUMBER), foreground: 'b5cea8' },
+        { token: postfixTokenClass(TokenClassConsts.STRING), foreground: 'ce9178' },
+        { token: postfixTokenClass(TokenClassConsts.TYPE), foreground: '4ec9b0' }
+    ],
+    colors: {}
 };
 
 // 定义 Monaco 主题

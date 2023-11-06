@@ -4,3 +4,4 @@
 /docs
 .history
 node_modules
+**/*.md

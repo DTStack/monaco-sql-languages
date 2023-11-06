@@ -1,4 +1,5 @@
 # Monaco SQL Languages
+
 [![NPM version][npm-image]][npm-url] [![NPM downloads][download-img]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/monaco-sql-languages.svg?style=flat-square
@@ -6,17 +7,15 @@
 [download-img]: https://img.shields.io/npm/dm/monaco-sql-languages.svg?style=flat
 [download-url]: https://www.npmjs.com/package/monaco-sql-languages
 
-English | [简体中文](./README-zh_CN.md)
+[English](./README.md) | 简体中文
 
-This project is based on the SQL language project of Monaco Editor, which was forked from the [monaco-languages](https://github.com/microsoft/monaco-languages).
+Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [monaco-languages](https://github.com/microsoft/monaco-languages) fork 而来。
 
-The difference is that Monaco SQL Languages has integrated with various SQL languages for the **Big Data field**, such as FLinkSQL, SparkSQL, HiveSQL, and others.
+不同的是，Monaco SQL Languages 集成了各种大数据领域的 SQL 语言功能，比如 FLinkSQL, SparkSQL, HiveSQL 等等。另外，Monaco SQL Languages 还通过集成 [dt-sql-parser](https://github.com/DTStack/dt-sql-parser) 提供了**SQL 语法校验** 和 **自动补全功能**。
 
-In addition, Monaco SQL Languages provides **SQL syntax validation** and **CodeCompletion** feature for these languages via [dt-sql-parser](https://github.com/DTStack/dt-sql-parser).
+在线预览: <https://dtstack.github.io/monaco-sql-languages/>
 
-Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
-
-## Supported SQL Languages
+## 已支持的 SQL 语言类型
 
 -   MySQL
 -   FLinkSQL
@@ -26,9 +25,9 @@ Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 -   PostgreSQL
 -   PL/SQL
 
-**Supported CodeCompletion SQL Languages**
+**自动补全功能支持**
 
-| SQL Type   | Language Id | Code-Completion |
+| SQL 类型    | 语言 ID     | 自动补全功能      |
 | ---------- | ----------- | --------------- |
 | MySQL      | mysql       | WIP             |
 | Flink SQL  | flinksql    | ✅              |
@@ -40,40 +39,40 @@ Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 
 <br/>
 
-## Installing
+## 安装
 
 ```shell
 npm install monaco-sql-languages
 ```
 
-> Tips: Your version of Monaco Editor should be 0.31.0, Monaco SQL Languages is only guaranteed to work stably on `monaco-editor@0.31.0` for now.
+> 提示: 您的 Monaco Editor 版本必须是 0.31.0, 目前 Monaco SQL Languages 仅保证在 `monaco-editor@0.31.0` 上稳定运行。
 
 <br/>
 
-## Integrating
+## 集成
 
--   [Integrating the ESM version](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-esm.md)
--   [Integrating the AMD version](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-amd.md#integrating-the-amd-version-of-the-monaco-editor)
+-   [集成 ESM 版本](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-esm.md)
+-   [集成 AMD 版本](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-amd.md#integrating-the-amd-version-of-the-monaco-editor)
 
-### Using the Monaco Editor Webpack Plugin
+### 使用 Monaco Editor WebPack Plugin
 
--   Install Monaco Editor Webpack Plugin
+-   安装 Monaco Editor Webpack Plugin
 
     ```shell
     npm install monaco-editor-webpack-plugin
     ```
 
--   Apply Monaco Editor Webpack Plugin in webpack config
+-   在 Webpack 配置中应用 Monaco Editor Webpack Plugin
 
     ```typescript
     const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
     const path = require('path');
 
     const monacoWebpackPlugin = new MonacoWebpackPlugin({
-    	features: [], // Include only a subset of the editor features
-    	languages: [], // Include only a subset of the monaco built-in languages
+    	features: [], // 包含您所需要的 Monaco Editor 功能
+    	languages: [], // 包含你所需要的 Monaco Editor 内置语言功能
     	customLanguages: [
-    		// Include languages that provides by Monaco SQL Languages
+    		// 包含 Monaco SQL Languages 所提供的语言功能
     		{
     			label: 'mysql',
     			entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
@@ -140,15 +139,15 @@ npm install monaco-sql-languages
     		filename: 'app.js'
     	},
     	module: {},
-    	plugins: [monacoEditorPlugin] // Apply monacoWebpackPlugin
+    	plugins: [monacoEditorPlugin] // 应用 monacoEditorPlugin
     };
     ```
 
-More options of Monaco Editor Webpack Plugin, see [here](https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options).
+更多 Monaco Editor Webpack Plugin 的选项, 看[这里](https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options).
 
-### Using Plain Webpack
+### 普通方式使用 Webpack
 
-Output worker files via webpack entries.
+以 webpack entry 的方式输出 worker 文件
 
 ```typescript
 entry: {
@@ -163,7 +162,7 @@ entry: {
 },
 ```
 
-Define the global variable `MonacoEnvironment` and specify the path of the worker file
+定义全局变量 `MonacoEnvironment` 并指定 worker 文件的路径
 
 ```typescript
 window.MonacoEnvironment = {
@@ -198,24 +197,24 @@ window.MonacoEnvironment = {
 };
 ```
 
-### Using Vite
+### 使用 Vite
 
-Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/website/src/languageWorker.ts>
+Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/website/src/languageWorker.ts>
 
 <br/>
 
-## Usage
+## 使用
 
-1. **Import language contributions**
+1. **导入 language contributions 文件**
 
     ```typescript
-    // Directly import contribution files for languages that don't support codeCompletion.
+    // 暂不支持自动补全功能的语言，直接导入对应的 contribution 文件
     import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
     import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
     import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
     import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 
-    // Import register method for languages that support codeCompletion.
+    // 支持自定补全功能的语言，先导入对应语言的注册方法
     import {
     	registerHiveSQLLanguage,
     	registerFlinkSQLLanguage,
@@ -223,19 +222,19 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
     	registerTrinoSQLLanguage
     } from 'monaco-sql-languages';
 
-    // Register language, completionService is not a must.
+    // 注册语言， completionService 是非必要的。
     registerFlinkSQLLanguage();
     registerHiveSQLLanguage();
     registerSparkSQLLanguage();
     registerTrinoSQLLanguage();
 
-    // Or you can import all language contributions at once.
+    // 或者你可以通过下面的方式一次性导入所有的语言功能
     // import 'monaco-sql-languages/out/esm/monaco.contribution';
     ```
 
-2. **Build a completionService**
+2. **创建 completionService（非必要）**
 
-    By default, only keywords are included in completionItems, and you can customize your completionItem list via `completionService`.
+    默认情况下，自动补全项中只包含关键字, 但是你可以通过 `completionService` 自定义自动补全项.
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
@@ -266,11 +265,11 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
 
     		syntax.forEach((item) => {
     			if (item.syntaxContextType === SyntaxContextType.DATABASE) {
-    				const databaseCompletions: ICompletionItem[] = []; // some completions about databaseName
+    				const databaseCompletions: ICompletionItem[] = [...]; // 一些数据库名自动补全项
     				syntaxCompletionItems = [...syntaxCompletionItems, ...databaseCompletions];
     			}
     			if (item.syntaxContextType === SyntaxContextType.TABLE) {
-    				const tableCompletions: ICompletionItem[] = []; // some completions about tableName
+    				const tableCompletions: ICompletionItem[] = []; // 一些表名自动补全项
     				syntaxCompletionItems = [...syntaxCompletionItems, ...tableCompletions];
     			}
     		});
@@ -282,26 +281,26 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
     registerFlinkSQLLanguage(completionService);
     ```
 
-3. **Create the Monaco Editor instance and specify the language you need**
+3. **创建 Monaco Editor 并指定语言**
 
     ```typescript
     monaco.editor.create(document.getElementById('container'), {
     	value: 'select * from tb_test',
-    	language: 'flinksql' // you need
+    	language: 'flinksql' // languageId
     });
     ```
 
 <br/>
 
-## Dev: cheat sheet
+## 开发者：本地开发
 
--   initial setup
+-   初始化设置
 
     ```shell
     pnpm install
     ```
 
--   open the dev web
+-   本地启动 web demo
 
     ```shell
     pnpm watch-esm
@@ -310,13 +309,13 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
     pnpm dev
     ```
 
--   compile
+-   打包
 
     ```shell
     pnpm compile
     ```
 
--   run test
+-   单元测试
     ```
     pnpm compile
     pnpm test
@@ -324,9 +323,9 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
 
 <br/>
 
-## Code of Conduct
+## 行为守则
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+本项目采用 [Microsoft 开源行为准则](https://opensource.microsoft.com/codeofconduct/)。有关更多信息，请参阅 [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)，或联系 [opencode@microsoft.com](mailto:opencode@microsoft.com) 提出任何其他问题或意见。
 
 ## License
 

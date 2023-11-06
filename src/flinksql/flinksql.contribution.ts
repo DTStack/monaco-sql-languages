@@ -4,36 +4,36 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	CompletionService,
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage
+    CompletionService,
+    diagnosticDefault,
+    LanguageServiceDefaults,
+    LanguageServiceDefaultsImpl,
+    loadLanguage,
+    modeConfigurationDefault,
+    registerLanguage,
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'flinksql';
 
 export function registerFlinkSQLLanguage(completionService?: CompletionService) {
-	registerLanguage({
-		id: languageId,
-		extensions: ['.flinksql'],
-		aliases: ['FlinkSQL', 'flink', 'Flink'],
-		loader: () => import('./flinksql')
-	});
+    registerLanguage({
+        id: languageId,
+        extensions: ['.flinksql'],
+        aliases: ['FlinkSQL', 'flink', 'Flink'],
+        loader: () => import('./flinksql'),
+    });
 
-	loadLanguage(languageId);
+    loadLanguage(languageId);
 
-	const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-		languageId,
-		diagnosticDefault,
-		modeConfigurationDefault,
-		completionService
-	);
+    const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
+        languageId,
+        diagnosticDefault,
+        modeConfigurationDefault,
+        completionService
+    );
 
-	languages.onLanguage(languageId, () => {
-		import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(flinkDefaults));
-	});
+    languages.onLanguage(languageId, () => {
+        import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(flinkDefaults));
+    });
 }

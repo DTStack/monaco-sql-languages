@@ -10,28 +10,28 @@ import PLSQLWorker from 'monaco-sql-languages/out/esm/plsql/plsql.worker?worker'
 import TrinoSQLWorker from 'monaco-sql-languages/out/esm/trinosql/trinosql.worker?worker';
 
 self.MonacoEnvironment = {
-	getWorker(_: any, label: string) {
-		if (label === 'flinksql') {
-			return new FlinkSQLWorker();
-		}
-		if (label === 'hivesql') {
-			return new HiveSQLWorker();
-		}
-		if (label === 'sparksql') {
-			return new SparkSQLWorker();
-		}
-		if (label === 'pgsql') {
-			return new PGSQLWorker();
-		}
-		if (label === 'plsql') {
-			return new PLSQLWorker();
-		}
-		if (label === 'mysql' || label === 'sql') {
-			return new MySQLWorker();
-		}
-		if (label === 'trinosql') {
-			return new TrinoSQLWorker();
-		}
-		return new EditorWorker();
-	}
+    getWorker(_: any, label: string) {
+        if (label === 'flinksql') {
+            return new FlinkSQLWorker();
+        }
+        if (label === 'hivesql') {
+            return new HiveSQLWorker();
+        }
+        if (label === 'sparksql') {
+            return new SparkSQLWorker();
+        }
+        if (label === 'pgsql') {
+            return new PGSQLWorker();
+        }
+        if (label === 'plsql') {
+            return new PLSQLWorker();
+        }
+        if (label === 'mysql' || label === 'sql') {
+            return new MySQLWorker();
+        }
+        if (label === 'trinosql') {
+            return new TrinoSQLWorker();
+        }
+        return new EditorWorker();
+    },
 };

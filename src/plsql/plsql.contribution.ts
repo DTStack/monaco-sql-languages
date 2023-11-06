@@ -4,32 +4,32 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage
+    diagnosticDefault,
+    LanguageServiceDefaults,
+    LanguageServiceDefaultsImpl,
+    loadLanguage,
+    modeConfigurationDefault,
+    registerLanguage,
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'plsql';
 
 registerLanguage({
-	id: languageId,
-	extensions: ['.sql'],
-	aliases: ['PLSQL'],
-	loader: () => import('./plsql')
+    id: languageId,
+    extensions: ['.sql'],
+    aliases: ['PLSQL'],
+    loader: () => import('./plsql'),
 });
 
 loadLanguage(languageId);
 
 const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-	languageId,
-	diagnosticDefault,
-	modeConfigurationDefault
+    languageId,
+    diagnosticDefault,
+    modeConfigurationDefault
 );
 
 languages.onLanguage(languageId, () => {
-	import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+    import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
 });

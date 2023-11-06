@@ -4,36 +4,36 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	CompletionService,
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage
+    CompletionService,
+    diagnosticDefault,
+    LanguageServiceDefaults,
+    LanguageServiceDefaultsImpl,
+    loadLanguage,
+    modeConfigurationDefault,
+    registerLanguage,
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'hivesql';
 
 export function registerHiveSQLLanguage(completionService?: CompletionService) {
-	registerLanguage({
-		id: languageId,
-		extensions: ['.hivesql'],
-		aliases: ['HiveSQL', 'hive', 'Hive'],
-		loader: () => import('./hivesql')
-	});
+    registerLanguage({
+        id: languageId,
+        extensions: ['.hivesql'],
+        aliases: ['HiveSQL', 'hive', 'Hive'],
+        loader: () => import('./hivesql'),
+    });
 
-	loadLanguage(languageId);
+    loadLanguage(languageId);
 
-	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-		languageId,
-		diagnosticDefault,
-		modeConfigurationDefault,
-		completionService
-	);
+    const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
+        languageId,
+        diagnosticDefault,
+        modeConfigurationDefault,
+        completionService
+    );
 
-	languages.onLanguage(languageId, () => {
-		import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
-	});
+    languages.onLanguage(languageId, () => {
+        import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+    });
 }

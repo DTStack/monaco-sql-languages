@@ -4,32 +4,32 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage
+    diagnosticDefault,
+    LanguageServiceDefaults,
+    LanguageServiceDefaultsImpl,
+    loadLanguage,
+    modeConfigurationDefault,
+    registerLanguage,
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'mysql';
 
 registerLanguage({
-	id: languageId,
-	extensions: [],
-	aliases: ['MySQL'],
-	loader: () => import('./mysql')
+    id: languageId,
+    extensions: [],
+    aliases: ['MySQL'],
+    loader: () => import('./mysql'),
 });
 
 loadLanguage(languageId);
 
 const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-	languageId,
-	diagnosticDefault,
-	modeConfigurationDefault
+    languageId,
+    diagnosticDefault,
+    modeConfigurationDefault
 );
 
 languages.onLanguage(languageId, () => {
-	import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+    import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
 });

@@ -4,36 +4,36 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	CompletionService,
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage
+    CompletionService,
+    diagnosticDefault,
+    LanguageServiceDefaults,
+    LanguageServiceDefaultsImpl,
+    loadLanguage,
+    modeConfigurationDefault,
+    registerLanguage,
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'sparksql';
 
 export function registerSparkSQLLanguage(completionService?: CompletionService) {
-	registerLanguage({
-		id: languageId,
-		extensions: ['.sparksql'],
-		aliases: ['SparkSQL', 'spark', 'Spark'],
-		loader: () => import('./sparksql')
-	});
+    registerLanguage({
+        id: languageId,
+        extensions: ['.sparksql'],
+        aliases: ['SparkSQL', 'spark', 'Spark'],
+        loader: () => import('./sparksql'),
+    });
 
-	loadLanguage(languageId);
+    loadLanguage(languageId);
 
-	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-		languageId,
-		diagnosticDefault,
-		modeConfigurationDefault,
-		completionService
-	);
+    const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
+        languageId,
+        diagnosticDefault,
+        modeConfigurationDefault,
+        completionService
+    );
 
-	languages.onLanguage(languageId, () => {
-		import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
-	});
+    languages.onLanguage(languageId, () => {
+        import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+    });
 }

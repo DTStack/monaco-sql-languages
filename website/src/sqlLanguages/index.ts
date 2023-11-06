@@ -1,8 +1,8 @@
 import {
-	registerHiveSQLLanguage,
-	registerFlinkSQLLanguage,
-	registerSparkSQLLanguage,
-	registerTrinoSQLLanguage
+    registerHiveSQLLanguage,
+    registerFlinkSQLLanguage,
+    registerSparkSQLLanguage,
+    registerTrinoSQLLanguage,
 } from 'monaco-sql-languages/out/esm/main';
 import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
 import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';

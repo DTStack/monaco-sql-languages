@@ -1,68 +1,68 @@
 {
-	"name": "monaco-sql-languages",
-	"version": "0.12.0-beta.2",
-	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
-	"scripts": {
-		"compile": "mrmdir ./out && tsc -p ./tsconfig.amd.json && tsc -p ./tsconfig.esm.json",
-		"watch-esm": "tsc -p ./tsconfig.esm.json --watch",
-		"test": "npm run compile && mocha ./test/all.js",
-		"prepublishOnly": "npm run compile",
-		"prettier": "prettier --write .",
-		"check-types": "tsc -p ./tsconfig.json",
-		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
-		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",
-		"deploy": "npm run prod && gh-pages -d docs",
-		"release": "node ./scripts/bumpVersion.js"
-	},
-	"author": "DTStack Corporation",
-	"license": "MIT",
-	"main": "out/esm/main.js",
-	"module": "out/esm/main.js",
-	"types": "out/esm/main.d.ts",
-	"files": [
-		"out"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/DTStack/monaco-sql-languages"
-	},
-	"bugs": {
-		"url": "https://github.com/DTStack/monaco-sql-languages/issues"
-	},
-	"publishConfig": {
-		"registry": "https://registry.npmjs.org/"
-	},
-	"devDependencies": {
-		"@types/mocha": "^9.1.0",
-		"@types/node": "^20.4.0",
-		"eslint": "^7.1.0",
-		"eslint-config-google": "^0.14.0",
-		"eslint-config-prettier": "^6.15.0",
-		"eslint-plugin-react": "^7.20.0",
-		"gh-pages": "^3.2.3",
-		"glob": "^7.1.6",
-		"husky": "^4.3.8",
-		"inquirer": "^8.2.2",
-		"jsdom": "^16.4.0",
-		"mocha": "^9.2.0",
-		"monaco-editor": "0.31.0",
-		"monaco-plugin-helpers": "^1.0.3",
-		"prettier": "^2.2.1",
-		"pretty-quick": "^3.1.0",
-		"requirejs": "^2.3.6",
-		"standard-version": "^9.5.0",
-		"terser": "^5.5.1",
-		"typescript": "^5.0.4"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "pretty-quick --staged --pattern '**/*.*(js|jsx|ts|tsx|json)' --bail"
-		}
-	},
-	"dependencies": {
-		"dt-sql-parser": "4.0.0-beta.4.4"
-	},
-	"peerDependencies": {
-		"monaco-editor": "0.31.0"
-	}
+    "name": "monaco-sql-languages",
+    "version": "0.12.0-beta.2",
+    "description": "SQL languages for the Monaco Editor, based on monaco-languages.",
+    "scripts": {
+        "compile": "mrmdir ./out && tsc -p ./tsconfig.amd.json && tsc -p ./tsconfig.esm.json",
+        "watch-esm": "tsc -p ./tsconfig.esm.json --watch",
+        "test": "npm run compile && mocha ./test/all.js",
+        "prepublishOnly": "npm run compile",
+        "prettier": "prettier --write .",
+        "check-types": "tsc -p ./tsconfig.json",
+        "dev": "node --max_old_space_size=4092 & cd website && npm run dev",
+        "prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",
+        "deploy": "npm run prod && gh-pages -d docs",
+        "release": "node ./scripts/bumpVersion.js"
+    },
+    "author": "DTStack Corporation",
+    "license": "MIT",
+    "main": "out/esm/main.js",
+    "module": "out/esm/main.js",
+    "types": "out/esm/main.d.ts",
+    "files": [
+        "out"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DTStack/monaco-sql-languages"
+    },
+    "bugs": {
+        "url": "https://github.com/DTStack/monaco-sql-languages/issues"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "devDependencies": {
+        "@types/mocha": "^9.1.0",
+        "@types/node": "^20.4.0",
+        "eslint": "^7.1.0",
+        "eslint-config-google": "^0.14.0",
+        "eslint-config-prettier": "^6.15.0",
+        "eslint-plugin-react": "^7.20.0",
+        "gh-pages": "^3.2.3",
+        "glob": "^7.1.6",
+        "husky": "^4.3.8",
+        "inquirer": "^8.2.2",
+        "jsdom": "^16.4.0",
+        "mocha": "^9.2.0",
+        "monaco-editor": "0.31.0",
+        "monaco-plugin-helpers": "^1.0.3",
+        "prettier": "^2.2.1",
+        "pretty-quick": "^3.1.0",
+        "requirejs": "^2.3.6",
+        "standard-version": "^9.5.0",
+        "terser": "^5.5.1",
+        "typescript": "^5.0.4"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged --pattern '**/*.*(js|jsx|ts|tsx|json)' --bail"
+        }
+    },
+    "dependencies": {
+        "dt-sql-parser": "4.0.0-beta.4.4"
+    },
+    "peerDependencies": {
+        "monaco-editor": "0.31.0"
+    }
 }

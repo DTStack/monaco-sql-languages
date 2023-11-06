@@ -4,7 +4,7 @@ import { ICreateData } from '../_.contribution';
 import { MySQLWorker } from './mySQLWorker';
 
 self.onmessage = (e: any) => {
-	EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
-		return new MySQLWorker(ctx, createData);
-	});
+    EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
+        return new MySQLWorker(ctx, createData);
+    });
 };

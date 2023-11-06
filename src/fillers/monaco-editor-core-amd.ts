@@ -8,5 +8,5 @@
 declare const define: any;
 
 define([], function () {
-	return (<any>self).monaco;
+    return (<any>self).monaco;
 });

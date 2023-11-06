@@ -7,151 +7,151 @@ import { languages, Emitter, IEvent, editor, Position } from './fillers/monaco-e
 import { Suggestions } from 'dt-sql-parser';
 
 interface ILang extends languages.ILanguageExtensionPoint {
-	loader: () => Promise<ILangImpl>;
+    loader: () => Promise<ILangImpl>;
 }
 
 interface ILangImpl {
-	conf: languages.LanguageConfiguration;
-	language: languages.IMonarchLanguage;
+    conf: languages.LanguageConfiguration;
+    language: languages.IMonarchLanguage;
 }
 
 const languageDefinitions: { [languageId: string]: ILang } = {};
 const lazyLanguageLoaders: { [languageId: string]: LazyLanguageLoader } = {};
 
 class LazyLanguageLoader {
-	public static getOrCreate(languageId: string): LazyLanguageLoader {
-		if (!lazyLanguageLoaders[languageId]) {
-			lazyLanguageLoaders[languageId] = new LazyLanguageLoader(languageId);
-		}
-		return lazyLanguageLoaders[languageId];
-	}
+    public static getOrCreate(languageId: string): LazyLanguageLoader {
+        if (!lazyLanguageLoaders[languageId]) {
+            lazyLanguageLoaders[languageId] = new LazyLanguageLoader(languageId);
+        }
+        return lazyLanguageLoaders[languageId];
+    }
 
-	private readonly _languageId: string;
-	private _loadingTriggered: boolean;
-	private _lazyLoadPromise: Promise<ILangImpl>;
-	private _lazyLoadPromiseResolve!: (value: ILangImpl) => void;
-	private _lazyLoadPromiseReject!: (err: any) => void;
+    private readonly _languageId: string;
+    private _loadingTriggered: boolean;
+    private _lazyLoadPromise: Promise<ILangImpl>;
+    private _lazyLoadPromiseResolve!: (value: ILangImpl) => void;
+    private _lazyLoadPromiseReject!: (err: any) => void;
 
-	constructor(languageId: string) {
-		this._languageId = languageId;
-		this._loadingTriggered = false;
-		this._lazyLoadPromise = new Promise((resolve, reject) => {
-			this._lazyLoadPromiseResolve = resolve;
-			this._lazyLoadPromiseReject = reject;
-		});
-	}
+    constructor(languageId: string) {
+        this._languageId = languageId;
+        this._loadingTriggered = false;
+        this._lazyLoadPromise = new Promise((resolve, reject) => {
+            this._lazyLoadPromiseResolve = resolve;
+            this._lazyLoadPromiseReject = reject;
+        });
+    }
 
-	public whenLoaded(): Promise<ILangImpl> {
-		return this._lazyLoadPromise;
-	}
+    public whenLoaded(): Promise<ILangImpl> {
+        return this._lazyLoadPromise;
+    }
 
-	public load(): Promise<ILangImpl> {
-		if (!this._loadingTriggered) {
-			this._loadingTriggered = true;
-			languageDefinitions[this._languageId].loader().then(
-				(mod) => this._lazyLoadPromiseResolve(mod),
-				(err) => this._lazyLoadPromiseReject(err)
-			);
-		}
-		return this._lazyLoadPromise;
-	}
+    public load(): Promise<ILangImpl> {
+        if (!this._loadingTriggered) {
+            this._loadingTriggered = true;
+            languageDefinitions[this._languageId].loader().then(
+                (mod) => this._lazyLoadPromiseResolve(mod),
+                (err) => this._lazyLoadPromiseReject(err)
+            );
+        }
+        return this._lazyLoadPromise;
+    }
 }
 
 export async function loadLanguage(languageId: string): Promise<void> {
-	await LazyLanguageLoader.getOrCreate(languageId).load();
+    await LazyLanguageLoader.getOrCreate(languageId).load();
 }
 
 export function registerLanguage(def: ILang): void {
-	const languageId = def.id;
+    const languageId = def.id;
 
-	languageDefinitions[languageId] = def;
-	languages.register(def);
+    languageDefinitions[languageId] = def;
+    languages.register(def);
 
-	const lazyLanguageLoader = LazyLanguageLoader.getOrCreate(languageId);
+    const lazyLanguageLoader = LazyLanguageLoader.getOrCreate(languageId);
 
-	languages.setMonarchTokensProvider(
-		languageId,
-		lazyLanguageLoader.whenLoaded().then((mod) => mod.language)
-	);
+    languages.setMonarchTokensProvider(
+        languageId,
+        lazyLanguageLoader.whenLoaded().then((mod) => mod.language)
+    );
 
-	languages.onLanguage(languageId, async () => {
-		const mod = await lazyLanguageLoader.load();
-		languages.setLanguageConfiguration(languageId, mod.conf);
-	});
+    languages.onLanguage(languageId, async () => {
+        const mod = await lazyLanguageLoader.load();
+        languages.setLanguageConfiguration(languageId, mod.conf);
+    });
 }
 
 export interface ICreateData {
-	languageId: string;
+    languageId: string;
 }
 
 export interface ModeConfiguration {
-	/**
-	 * Defines whether the built-in completionItemProvider is enabled.
-	 */
-	readonly completionItems?: boolean;
+    /**
+     * Defines whether the built-in completionItemProvider is enabled.
+     */
+    readonly completionItems?: boolean;
 
-	/**
-	 * Defines whether the built-in hoverProvider is enabled.
-	 */
-	readonly hovers?: boolean;
+    /**
+     * Defines whether the built-in hoverProvider is enabled.
+     */
+    readonly hovers?: boolean;
 
-	/**
-	 * Defines whether the built-in documentSymbolProvider is enabled.
-	 */
-	readonly documentSymbols?: boolean;
+    /**
+     * Defines whether the built-in documentSymbolProvider is enabled.
+     */
+    readonly documentSymbols?: boolean;
 
-	/**
-	 * Defines whether the built-in definitions provider is enabled.
-	 */
-	readonly definitions?: boolean;
+    /**
+     * Defines whether the built-in definitions provider is enabled.
+     */
+    readonly definitions?: boolean;
 
-	/**
-	 * Defines whether the built-in references provider is enabled.
-	 */
-	readonly references?: boolean;
+    /**
+     * Defines whether the built-in references provider is enabled.
+     */
+    readonly references?: boolean;
 
-	/**
-	 * Defines whether the built-in references provider is enabled.
-	 */
-	readonly documentHighlights?: boolean;
+    /**
+     * Defines whether the built-in references provider is enabled.
+     */
+    readonly documentHighlights?: boolean;
 
-	/**
-	 * Defines whether the built-in rename provider is enabled.
-	 */
-	readonly rename?: boolean;
+    /**
+     * Defines whether the built-in rename provider is enabled.
+     */
+    readonly rename?: boolean;
 
-	/**
-	 * Defines whether the built-in color provider is enabled.
-	 */
-	readonly colors?: boolean;
+    /**
+     * Defines whether the built-in color provider is enabled.
+     */
+    readonly colors?: boolean;
 
-	/**
-	 * Defines whether the built-in foldingRange provider is enabled.
-	 */
-	readonly foldingRanges?: boolean;
+    /**
+     * Defines whether the built-in foldingRange provider is enabled.
+     */
+    readonly foldingRanges?: boolean;
 
-	/**
-	 * Defines whether the built-in diagnostic provider is enabled.
-	 */
-	readonly diagnostics?: boolean;
+    /**
+     * Defines whether the built-in diagnostic provider is enabled.
+     */
+    readonly diagnostics?: boolean;
 
-	/**
-	 * Defines whether the built-in selection range provider is enabled.
-	 */
-	readonly selectionRanges?: boolean;
+    /**
+     * Defines whether the built-in selection range provider is enabled.
+     */
+    readonly selectionRanges?: boolean;
 }
 
 export interface DiagnosticsOptions {
-	readonly validate?: boolean;
+    readonly validate?: boolean;
 }
 
 /**
  * A completion item, it will be convert to monaco.languages.CompletionItem.
  */
 export interface ICompletionItem extends Partial<languages.CompletionItem> {
-	label: string | languages.CompletionItemLabel;
-	kind: languages.CompletionItemKind;
-	detail: string;
+    label: string | languages.CompletionItemLabel;
+    kind: languages.CompletionItemKind;
+    detail: string;
 }
 
 /**
@@ -162,86 +162,86 @@ export interface ICompletionItem extends Partial<languages.CompletionItem> {
  * @param suggestions suggestions for completion
  */
 export type CompletionService = (
-	model: editor.IReadOnlyModel,
-	position: Position,
-	completionContext: languages.CompletionContext,
-	suggestions: Suggestions | null
+    model: editor.IReadOnlyModel,
+    position: Position,
+    completionContext: languages.CompletionContext,
+    suggestions: Suggestions | null
 ) => Promise<ICompletionItem[]>;
 
 export interface LanguageServiceDefaults {
-	readonly languageId: string;
-	readonly onDidChange: IEvent<LanguageServiceDefaults>;
-	readonly diagnosticsOptions: DiagnosticsOptions;
-	readonly modeConfiguration: ModeConfiguration;
-	readonly completionService?: CompletionService;
-	setDiagnosticsOptions(options: DiagnosticsOptions): void;
-	setModeConfiguration(modeConfiguration: ModeConfiguration): void;
+    readonly languageId: string;
+    readonly onDidChange: IEvent<LanguageServiceDefaults>;
+    readonly diagnosticsOptions: DiagnosticsOptions;
+    readonly modeConfiguration: ModeConfiguration;
+    readonly completionService?: CompletionService;
+    setDiagnosticsOptions(options: DiagnosticsOptions): void;
+    setModeConfiguration(modeConfiguration: ModeConfiguration): void;
 }
 
 export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
-	private _onDidChange = new Emitter<LanguageServiceDefaults>();
-	private _diagnosticsOptions!: DiagnosticsOptions;
-	private _modeConfiguration!: ModeConfiguration;
-	private _languageId: string;
-	private _completionService?: CompletionService;
+    private _onDidChange = new Emitter<LanguageServiceDefaults>();
+    private _diagnosticsOptions!: DiagnosticsOptions;
+    private _modeConfiguration!: ModeConfiguration;
+    private _languageId: string;
+    private _completionService?: CompletionService;
 
-	constructor(
-		languageId: string,
-		diagnosticsOptions: DiagnosticsOptions,
-		modeConfiguration: ModeConfiguration,
-		completionService?: CompletionService
-	) {
-		this._languageId = languageId;
-		this.setDiagnosticsOptions(diagnosticsOptions);
-		this.setModeConfiguration(modeConfiguration);
-		this._completionService = completionService;
-	}
+    constructor(
+        languageId: string,
+        diagnosticsOptions: DiagnosticsOptions,
+        modeConfiguration: ModeConfiguration,
+        completionService?: CompletionService
+    ) {
+        this._languageId = languageId;
+        this.setDiagnosticsOptions(diagnosticsOptions);
+        this.setModeConfiguration(modeConfiguration);
+        this._completionService = completionService;
+    }
 
-	get onDidChange(): IEvent<LanguageServiceDefaults> {
-		return this._onDidChange.event;
-	}
+    get onDidChange(): IEvent<LanguageServiceDefaults> {
+        return this._onDidChange.event;
+    }
 
-	get languageId(): string {
-		return this._languageId;
-	}
+    get languageId(): string {
+        return this._languageId;
+    }
 
-	get modeConfiguration(): ModeConfiguration {
-		return this._modeConfiguration;
-	}
+    get modeConfiguration(): ModeConfiguration {
+        return this._modeConfiguration;
+    }
 
-	get diagnosticsOptions(): DiagnosticsOptions {
-		return this._diagnosticsOptions;
-	}
+    get diagnosticsOptions(): DiagnosticsOptions {
+        return this._diagnosticsOptions;
+    }
 
-	get completionService(): CompletionService | undefined {
-		return this._completionService;
-	}
+    get completionService(): CompletionService | undefined {
+        return this._completionService;
+    }
 
-	setDiagnosticsOptions(options: DiagnosticsOptions): void {
-		this._diagnosticsOptions = options || Object.create(null);
-		this._onDidChange.fire(this);
-	}
+    setDiagnosticsOptions(options: DiagnosticsOptions): void {
+        this._diagnosticsOptions = options || Object.create(null);
+        this._onDidChange.fire(this);
+    }
 
-	setModeConfiguration(modeConfiguration: ModeConfiguration): void {
-		this._modeConfiguration = modeConfiguration || Object.create(null);
-		this._onDidChange.fire(this);
-	}
+    setModeConfiguration(modeConfiguration: ModeConfiguration): void {
+        this._modeConfiguration = modeConfiguration || Object.create(null);
+        this._onDidChange.fire(this);
+    }
 }
 
 export const modeConfigurationDefault: Required<ModeConfiguration> = {
-	completionItems: true,
-	hovers: true,
-	documentSymbols: true,
-	definitions: true,
-	references: true,
-	documentHighlights: true,
-	rename: true,
-	colors: true,
-	foldingRanges: true,
-	diagnostics: true,
-	selectionRanges: true
+    completionItems: true,
+    hovers: true,
+    documentSymbols: true,
+    definitions: true,
+    references: true,
+    documentHighlights: true,
+    rename: true,
+    colors: true,
+    foldingRanges: true,
+    diagnostics: true,
+    selectionRanges: true,
 };
 
 export const diagnosticDefault: Required<DiagnosticsOptions> = {
-	validate: true
+    validate: true,
 };

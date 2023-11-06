@@ -4,7 +4,7 @@ import { ICreateData } from '../_.contribution';
 import { PgSQLWorker } from './PgSQLWorker';
 
 self.onmessage = (e: any) => {
-	EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
-		return new PgSQLWorker(ctx, createData);
-	});
+    EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
+        return new PgSQLWorker(ctx, createData);
+    });
 };

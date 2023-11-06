@@ -9,9 +9,9 @@ const helpers = require('monaco-plugin-helpers');
 const REPO_ROOT = path.join(__dirname, '../');
 
 helpers.packageESM({
-	repoRoot: REPO_ROOT,
-	esmSource: 'out/esm',
-	esmDestination: 'release/esm',
-	entryPoints: ['monaco.contribution.js'],
-	resolveSkip: ['monaco-editor']
+    repoRoot: REPO_ROOT,
+    esmSource: 'out/esm',
+    esmDestination: 'release/esm',
+    entryPoints: ['monaco.contribution.js'],
+    resolveSkip: ['monaco-editor'],
 });

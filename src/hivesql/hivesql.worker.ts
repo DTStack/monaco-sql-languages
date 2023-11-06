@@ -4,7 +4,7 @@ import { ICreateData } from '../_.contribution';
 import { HiveSQLWorker } from './hiveSQLWorker';
 
 self.onmessage = (e: any) => {
-	EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
-		return new HiveSQLWorker(ctx, createData);
-	});
+    EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
+        return new HiveSQLWorker(ctx, createData);
+    });
 };

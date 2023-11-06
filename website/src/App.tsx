@@ -9,22 +9,22 @@ import './App.css';
 import './languageWorker';
 
 function App(): React.ReactElement {
-	const refMoInstance = useRef<InstanceService>();
-	const [MyWorkbench, setMyWorkbench] = useState<React.ReactElement>();
+    const refMoInstance = useRef<InstanceService>();
+    const [MyWorkbench, setMyWorkbench] = useState<React.ReactElement>();
 
-	useEffect(() => {
-		if (!refMoInstance.current) {
-			refMoInstance.current = create({
-				extensions: [ExtendsWorkbench]
-			});
-			if (refMoInstance.current) {
-				const IDE = () => refMoInstance.current?.render(<Workbench />);
-				setMyWorkbench(IDE);
-			}
-		}
-	}, []);
+    useEffect(() => {
+        if (!refMoInstance.current) {
+            refMoInstance.current = create({
+                extensions: [ExtendsWorkbench],
+            });
+            if (refMoInstance.current) {
+                const IDE = () => refMoInstance.current?.render(<Workbench />);
+                setMyWorkbench(IDE);
+            }
+        }
+    }, []);
 
-	return <div>{MyWorkbench}</div>;
+    return <div>{MyWorkbench}</div>;
 }
 
 export default App;

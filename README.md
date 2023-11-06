@@ -1,4 +1,5 @@
 # Monaco SQL Languages
+
 [![NPM version][npm-image]][npm-url] [![NPM downloads][download-img]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/monaco-sql-languages.svg?style=flat-square
@@ -37,6 +38,8 @@ Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 | Trino SQL  | trinosql    | ✅              |
 | PostgreSQL | pgsql       | WIP             |
 | PL/SQL     | plsql       | WIP             |
+
+> Monaco SQL Languages plan to support more types of SQL Languages in the future. If you need some SQL Languages that are not currently supported, you can contact us at [github](https://github.com/DTStack/monaco-sql-languages).
 
 <br/>
 
@@ -290,6 +293,62 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
     	language: 'flinksql' // you need
     });
     ```
+
+<br/>
+
+## Monaco Theme
+
+> Monaco SQL Languages plan to support more themes in the future.
+
+Monaco SQL Languages provides built-in Monaco Theme that is named `vsPlusTheme`. `vsPlusTheme` inspired by vscode default plus colorTheme and it contains three styles of themes inside:
+
+-   `darkTheme`: inherited from Monaco built-in Theme `vs-dark`;
+-   `lightTheme`: inherited from Monaco built-in Theme `vs`;
+-   `hcBlackTheme`: inherited from Monaco built-in Theme `hc-black`;
+
+**Use Monaco SQL Languages built-in vsPlusTheme**
+
+```typescript
+import { vsPlusTheme } from 'monaco-sql-languages';
+import { editor } from 'monaco-editor';
+
+// import themeData and defineTheme, you can customize the theme name, e.g. sql-dark
+editor.defineTheme('sql-dark', vsPlusTheme.darkThemeData);
+editor.defineTheme('sql-light', vsPlusTheme.lightThemeData);
+editor.defineTheme('sql-hc', vsPlusTheme.hcBlackThemeData);
+
+// specify the theme you have defined
+editor.create(null as any, {
+	theme: 'sql-dark',
+	language: 'flinksql'
+});
+```
+
+**Customize your own Monaco theme**
+
+```typescript
+import { TokenClassConsts, postfixTokenClass } from 'monaco-sql-languages';
+
+// Customize the various tokens style
+const myThemeData: editor.IStandaloneThemeData = {
+	base: 'vs-dark',
+	inherit: true,
+	rules: [
+		{ token: postfixTokenClass(TokenClassConsts.COMMENT), foreground: '6a9955' },
+		{ token: postfixTokenClass(TokenClassConsts.IDENTIFIER), foreground: '9cdcfe' },
+		{ token: postfixTokenClass(TokenClassConsts.KEYWORD), foreground: '569cd6' },
+		{ token: postfixTokenClass(TokenClassConsts.NUMBER), foreground: 'b5cea8' },
+		{ token: postfixTokenClass(TokenClassConsts.STRING), foreground: 'ce9178' },
+		{ token: postfixTokenClass(TokenClassConsts.TYPE), foreground: '4ec9b0' }
+	],
+	colors: {}
+};
+
+// Define the monaco theme
+editor.defineTheme('my-theme', myThemeData);
+```
+
+> `postfixTokenClass` is not required in most cases, but since Monaco SQL Languages has `tokenPostfix: 'sql'` internally set for all SQL languages, in some cases your custom style may not work if you don't use `postfixTokenClassClass` to handle `TokenClassConsts.*`.
 
 <br/>
 

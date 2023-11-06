@@ -6,54 +6,166 @@
 [download-url]: https://www.npmjs.com/package/monaco-sql-languages
 
 This is a SQL Languages project for Monaco Editor forked it from [monaco-languages](https://github.com/microsoft/monaco-languages). The differences are we integrated with
-many kinds of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL, and so on. We provided the basic **SQL syntax** validation feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser), and we are going to provide **Autocomplete** feature in future.
+many kinds of SQL Languages for BigData domain, like FLinkSQL, SParkSQL, HiveSQL, and so on. We provided the basic **SQL syntax** validation and **CodeCompletion** feature by [dt-sql-parser](https://github.com/DTStack/dt-sql-parser).
 
 Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 
 ## Supported SQL Languages
 
--   Generic SQL (MySQL)
+-   MySQL
 -   FLinkSQL
 -   SparkSQL
 -   HiveSQL
--   PGSQL
--   PLSQL
+-   TrinoSQL (PrestoSQL)
+-   PostgreSQL
+-   PL/SQL
 
-## Installation
+**Supported CodeCompletion SQL Languages**
 
-```bash
+| SQL Type   | Language Id | Code-Completion |
+| ---------- | ----------- | --------------- |
+| MySQL      | mysql       | WIP             |
+| Flink SQL  | flinksql    | ✅              |
+| Spark SQL  | sparksql    | ✅              |
+| Hive SQL   | hivesql     | ✅              |
+| Trino SQL  | trinosql    | ✅              |
+| PostgreSQL | pgsql       | WIP             |
+| PL/SQL     | plsql       | WIP             |
+
+<br/>
+
+## Installing
+
+```shell
 npm install monaco-sql-languages
 ```
 
-or
+> Tips: Your version of monaco-editor should be 0.31.0, monaco-sql-language is only guaranteed to work stably on `monaco-editor@0.31.0` for now.
 
-```bash
+<br/>
 
-yarn add monaco-sql-languages
-```
+## Integrating
 
-## Usage
+-   [Integrating the ESM version](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-esm.md)
+-   [Integrating the AMD version](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-amd.md#integrating-the-amd-version-of-the-monaco-editor)
 
-Add language worker in the `Webpack` `entry` field:
+### Using the Monaco Editor WebPack Plugin
 
-```javascript
+-   Install Monaco Editor WebPack Plugin
+
+    ```shell
+    npm install monaco-editor-webpack-plugin
+    ```
+
+-   Apply Monaco Editor WebPack Plugin in webpack config
+
+    ```typescript
+    const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+    const path = require('path');
+
+    const monacoWebpackPlugin = new MonacoWebpackPlugin({
+    	features: [], // Include only a subset of the editor features
+    	languages: [], // Include only a subset of the monaco built-in languages
+    	customLanguages: [
+    		// Include languages that provides by monaco-sql-languages
+    		{
+    			label: 'mysql',
+    			entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
+    			worker: {
+    				id: 'monaco-sql-languages/out/esm/mysql/mySQLWorker',
+    				entry: 'monaco-sql-languages/out/esm/mysql/mysql.worker'
+    			}
+    		},
+    		{
+    			label: 'flinksql',
+    			entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution',
+    			worker: {
+    				id: 'monaco-sql-languages/out/esm/flinksql/flinkSQLWorker',
+    				entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.worker'
+    			}
+    		},
+    		{
+    			label: 'sparksql',
+    			entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution',
+    			worker: {
+    				id: 'monaco-sql-languages/out/esm/sparksql/sparkSQLWorker',
+    				entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.worker'
+    			}
+    		},
+    		{
+    			label: 'hivesql',
+    			entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution',
+    			worker: {
+    				id: 'monaco-sql-languages/out/esm/hivesql/hiveSQLWorker',
+    				entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.worker'
+    			}
+    		},
+    		{
+    			label: 'trinosql',
+    			entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution',
+    			worker: {
+    				id: 'monaco-sql-languages/out/esm/trinosql/TrinoSQLWorker',
+    				entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.worker'
+    			}
+    		},
+    		{
+    			label: 'pgsql',
+    			entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution',
+    			worker: {
+    				id: 'monaco-sql-languages/out/esm/pgsql/PgSQLWorker',
+    				entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.worker'
+    			}
+    		},
+    		{
+    			label: 'plsql',
+    			entry: 'monaco-sql-languages/out/esm/plsql/plsql.contribution',
+    			worker: {
+    				id: 'monaco-sql-languages/out/esm/plsql/plSQLWorker',
+    				entry: 'monaco-sql-languages/out/esm/plsql/plsql.worker'
+    			}
+    		}
+    	]
+    });
+
+    module.exports = {
+    	entry: './index.js',
+    	output: {
+    		path: path.resolve(__dirname, 'dist'),
+    		filename: 'app.js'
+    	},
+    	module: {},
+    	plugins: [monacoEditorPlugin] // Apply monacoWebpackPlugin
+    };
+    ```
+
+More options of Monaco Editor Webpack Plugin, see [here](https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options).
+
+### Using Plain Webpack
+
+Output worker files via webpack entries.
+
+```typescript
 entry: {
- 'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
- 'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js'),
- 'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js'),
- 'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js'),
- 'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js'),
- 'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.js'),
- 'sql.worker': 'monaco-sql-languages/out/esm/sql/sql.worker.js')
+	'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
+	'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
+	'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
+	'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
+	'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
+	'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
+	'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.js',
+	'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
 },
 ```
 
-Define the `MonacoEnvironment` for `worker` file:
+Define the global variable `MonacoEnvironment` and specify the path of the worker file
 
-```javascript
+```typescript
 window.MonacoEnvironment = {
 	getWorkerUrl: function (moduleId, label) {
 		switch (label) {
+			case 'mysql': {
+				return './mysql.worker.js';
+			}
 			case 'sparksql': {
 				return './sparksql.worker.js';
 			}
@@ -63,17 +175,14 @@ window.MonacoEnvironment = {
 			case 'hivesql': {
 				return './hivesql.worker.js';
 			}
-			case 'mysql': {
-				return './mysql.worker.js';
+			case 'trinosql': {
+				return './trinosql.worker.js';
 			}
 			case 'pgsql': {
 				return './pgsql.worker.js';
 			}
 			case 'plsql': {
 				return './plsql.worker.js';
-			}
-			case 'sql': {
-				return './sql.worker.js';
 			}
 			default: {
 				return './editor.worker.js';
@@ -83,52 +192,131 @@ window.MonacoEnvironment = {
 };
 ```
 
-Import the language contribution before creating the editor by `monaco-editor`:
+### Using Vite
 
-```javascript
-import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
-import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
-import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
-import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
-import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
-import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
-import 'monaco-sql-languages/out/esm/sql/sql.contribution';
-```
+Vite example see https://github.com/DTStack/monaco-sql-languages/blob/main/website/src/languageWorker.ts.
 
-Then, set the language value you need when creating the `moanco-editor` instance:
+<br/>
 
-```
-monaco.editor.create(document.getElementById("container"), {
- value: "select * from tb_test",
- language: "sql" // you need
-});
+## Usage
 
-```
+1. **Import language contributions**
 
-> Tips: you can change the editor model language by `monaco.editor.setModelLanguage(model, language)`
+    ```typescript
+    // Directly import contribution files for languages that don't support codeCompletion.
+    import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
+    import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
+    import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
+    import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 
-## Example
+    // Import register method for languages that support codeCompletion.
+    import {
+    	registerHiveSQLLanguage,
+    	registerFlinkSQLLanguage,
+    	registerSparkSQLLanguage,
+    	registerTrinoSQLLanguage
+    } from 'monaco-sql-languages';
 
-Reference from [here](https://github.com/DTStack/monaco-sql-languages/blob/main/web/extensions/workbench/index.tsx).
+    // Register language, completionService is not a must.
+    registerFlinkSQLLanguage();
+    registerHiveSQLLanguage();
+    registerSparkSQLLanguage();
+    registerTrinoSQLLanguage();
+
+    // Or you can import all language contributions at once.
+    // import 'monaco-sql-languages/out/esm/monaco.contribution';
+    ```
+
+2. **Build a completionService**
+
+    By default, only keywords are included in completionItems, and you can customize your completionItem list via `completionService`.
+
+    ```typescript
+    import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
+    import { CompletionService, ICompletionItem, SyntaxContextType } from 'monaco-sql-languages';
+
+    import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
+    import { CompletionService, ICompletionItem, SyntaxContextType } from 'monaco-sql-languages';
+
+    const completionService: CompletionService = function (
+    	model,
+    	position,
+    	completionContext,
+    	suggestions
+    ) {
+    	return new Promise((resolve, reject) => {
+    		if (!suggestions) {
+    			return Promise.resolve([]);
+    		}
+    		const { keywords, syntax } = suggestions;
+    		const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
+    			label: kw,
+    			kind: languages.CompletionItemKind.Keyword,
+    			detail: 'keyword',
+    			sortText: '2' + kw
+    		}));
+
+    		let syntaxCompletionItems: ICompletionItem[] = [];
+
+    		syntax.forEach((item) => {
+    			if (item.syntaxContextType === SyntaxContextType.DATABASE) {
+    				const databaseCompletions: ICompletionItem[] = []; // some completions about databaseName
+    				syntaxCompletionItems = [...syntaxCompletionItems, ...databaseCompletions];
+    			}
+    			if (item.syntaxContextType === SyntaxContextType.TABLE) {
+    				const tableCompletions: ICompletionItem[] = []; // some completions about tableName
+    				syntaxCompletionItems = [...syntaxCompletionItems, ...tableCompletions];
+    			}
+    		});
+
+    		return [...syntaxCompletionItems, ...keywordsCompletionItems];
+    	});
+    };
+
+    registerFlinkSQLLanguage(completionService);
+    ```
+
+3. **create the `monaco-editor` instance and specify the language you need**
+
+    ```typescript
+    monaco.editor.create(document.getElementById('container'), {
+    	value: 'select * from tb_test',
+    	language: 'flinksql' // you need
+    });
+    ```
+
+<br/>
 
 ## Dev: cheat sheet
 
--   initial setup with `npm install .`
--   open the dev web with `npm run dev`
--   compile with `npm run watch`
--   test with `npm run test`
--   bundle with `npm run prepublishOnly`
+-   initial setup
 
-## Dev: Adding a new language
+    ```shell
+    pnpm install
+    ```
 
--   create `$/src/myLang/myLang.contribution.ts`
--   create `$/src/myLang/myLang.ts`
--   create `$/src/myLang/myLang.test.ts`
--   edit `$/src/monaco.contribution.ts` and register your new language
+-   open the dev web
 
-```js
-import './myLang/myLang.contribution';
-```
+    ```shell
+    pnpm watch-esm
+    cd website
+    pnpm install
+    pnpm dev
+    ```
+
+-   compile
+
+    ```shell
+    pnpm compile
+    ```
+
+-   run test
+    ```
+    pnpm compile
+    pnpm test
+    ```
+
+<br/>
 
 ## Code of Conduct
 

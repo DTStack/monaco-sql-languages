@@ -276,7 +276,7 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
                 }
             });
 
-            return [...syntaxCompletionItems, ...keywordsCompletionItems];
+            resolve([...syntaxCompletionItems, ...keywordsCompletionItems]);
         });
     };
 

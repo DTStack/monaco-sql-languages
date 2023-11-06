@@ -27,15 +27,15 @@ Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [m
 
 **自动补全功能支持**
 
-| SQL 类型    | 语言 ID     | 自动补全功能      |
-| ---------- | ----------- | --------------- |
-| MySQL      | mysql       | WIP             |
-| Flink SQL  | flinksql    | ✅              |
-| Spark SQL  | sparksql    | ✅              |
-| Hive SQL   | hivesql     | ✅              |
-| Trino SQL  | trinosql    | ✅              |
-| PostgreSQL | pgsql       | WIP             |
-| PL/SQL     | plsql       | WIP             |
+| SQL 类型   | 语言 ID  | 自动补全功能 |
+| ---------- | -------- | ------------ |
+| MySQL      | mysql    | WIP          |
+| Flink SQL  | flinksql | ✅           |
+| Spark SQL  | sparksql | ✅           |
+| Hive SQL   | hivesql  | ✅           |
+| Trino SQL  | trinosql | ✅           |
+| PostgreSQL | pgsql    | WIP          |
+| PL/SQL     | plsql    | WIP          |
 
 > Monaco SQL Languages 计划在未来支持更多类型的的 SQL Languages。 如果你需要某些目前未支持的 SQL Languages，可以在 [github](https://github.com/DTStack/monaco-sql-languages) 上联系我们。
 
@@ -295,12 +295,14 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
 <br/>
 
 ## Monaco Theme
->Monaco SQL Languages 计划在未来支持更多的 Monaco Theme.
 
-Monaco SQL Languages 提供了名为 `vsPlusTheme` 的内置主题。  `vsPlusTheme` 灵感来源于 vscode default plus 颜色主题，内部包含三种风格的主题:
-+ `darkTheme`: 暗黑色主题，继承自 Monaco 内置主题 `vs-dark`;
-+ `lightTheme`: 亮色主题， 继承自 Monaco 内置主题 `vs`;
-+ `hcBlackTheme`: 黑色高对比度主题，继承自 Monaco 内置主题 `hc-black`;
+> Monaco SQL Languages 计划在未来支持更多的 Monaco Theme.
+
+Monaco SQL Languages 提供了名为 `vsPlusTheme` 的内置主题。 `vsPlusTheme` 灵感来源于 vscode default plus 颜色主题，内部包含三种风格的主题:
+
+-   `darkTheme`: 暗黑色主题，继承自 Monaco 内置主题 `vs-dark`;
+-   `lightTheme`: 亮色主题， 继承自 Monaco 内置主题 `vs`;
+-   `hcBlackTheme`: 黑色高对比度主题，继承自 Monaco 内置主题 `hc-black`;
 
 **使用 Monaco SQL Languages 内置主题 vsPlusTheme**
 
@@ -316,11 +318,12 @@ editor.defineTheme('sql-hc', vsPlusTheme.hcBlackThemeData);
 // 指定你已定义的主题
 editor.create(null as any, {
 	theme: 'sql-dark',
-  language: 'flinksql'
-})
+	language: 'flinksql'
+});
 ```
 
 **自定义主题**
+
 ```typescript
 import { TokenClassConsts, postfixTokenClass } from 'monaco-sql-languages';
 
@@ -334,7 +337,7 @@ const myThemeData: editor.IStandaloneThemeData = {
 		{ token: postfixTokenClass(TokenClassConsts.KEYWORD), foreground: '569cd6' },
 		{ token: postfixTokenClass(TokenClassConsts.NUMBER), foreground: 'b5cea8' },
 		{ token: postfixTokenClass(TokenClassConsts.STRING), foreground: 'ce9178' },
-		{ token: postfixTokenClass(TokenClassConsts.TYPE), foreground: '4ec9b0' },
+		{ token: postfixTokenClass(TokenClassConsts.TYPE), foreground: '4ec9b0' }
 	],
 	colors: {}
 };
@@ -342,8 +345,8 @@ const myThemeData: editor.IStandaloneThemeData = {
 // 定义 Monaco 主题
 editor.defineTheme('my-theme', myThemeData);
 ```
-> `postfixTokenClass` 在大多数情况下不是必须的，但是由于 Monaco SQL Languages 内部为所有的语言都设置了 `tokenPostfix: 'sql'`，所以在某些情况下，如果不使用 `postfixTokenClass` 处理 `TokenClassConsts.*`，你自定义的样式可能不生效。
 
+> `postfixTokenClass` 在大多数情况下不是必须的，但是由于 Monaco SQL Languages 内部为所有的语言都设置了 `tokenPostfix: 'sql'`，所以在某些情况下，如果不使用 `postfixTokenClass` 处理 `TokenClassConsts.*`，你自定义的样式可能不生效。
 
 <br/>
 

@@ -163,7 +163,9 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 			})
 			.then((suggestions) => {
 				const completionService =
-					this._defaults.completionService ?? defaultCompletionService;
+					typeof this._defaults.completionService === 'function'
+						? this._defaults.completionService
+						: defaultCompletionService;
 				return completionService(model, position, context, suggestions);
 			})
 			.then((completions) => {

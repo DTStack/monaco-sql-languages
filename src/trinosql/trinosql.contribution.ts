@@ -5,13 +5,17 @@ import {
 	LanguageServiceDefaultsImpl,
 	loadLanguage,
 	modeConfigurationDefault,
-	registerLanguage
+	registerLanguage,
+	SupportedModeConfiguration
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'trinosql';
 
-export function registerTrinoSQLLanguage(completionService?: CompletionService) {
+export function registerTrinoSQLLanguage(
+	completionService?: CompletionService,
+	options?: SupportedModeConfiguration
+) {
 	registerLanguage({
 		id: languageId,
 		extensions: [],
@@ -21,10 +25,12 @@ export function registerTrinoSQLLanguage(completionService?: CompletionService) 
 
 	loadLanguage(languageId);
 
+	const modeConfiguration = typeof options === 'object' ? options : {};
+
 	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 		languageId,
 		diagnosticDefault,
-		modeConfigurationDefault,
+		{ ...modeConfigurationDefault, ...modeConfiguration },
 		completionService
 	);
 

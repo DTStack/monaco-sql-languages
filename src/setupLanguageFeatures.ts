@@ -6,7 +6,7 @@ import {
 	modeConfigurationDefault
 } from './_.contribution';
 import { languages, IDisposable } from './fillers/monaco-editor-core';
-import { LanguageIdEnum } from './main';
+import { LanguageIdEnum } from './common/constants';
 
 type LanguageId = `${LanguageIdEnum}`;
 

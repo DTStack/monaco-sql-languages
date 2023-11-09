@@ -4,10 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { testTokenization } from '../test/testRunner';
-import { registerHiveSQLLanguage } from './hivesql.contribution';
 import { TokenClassConsts, postfixTokenClass } from '../common/constants';
-
-registerHiveSQLLanguage();
 
 testTokenization('hivesql', [
 	// Comments

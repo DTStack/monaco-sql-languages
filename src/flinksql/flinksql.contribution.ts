@@ -10,13 +10,17 @@ import {
 	LanguageServiceDefaultsImpl,
 	loadLanguage,
 	modeConfigurationDefault,
-	registerLanguage
+	registerLanguage,
+	SupportedModeConfiguration
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'flinksql';
 
-export function registerFlinkSQLLanguage(completionService?: CompletionService) {
+export function registerFlinkSQLLanguage(
+	completionService?: CompletionService,
+	options?: SupportedModeConfiguration
+) {
 	registerLanguage({
 		id: languageId,
 		extensions: ['.flinksql'],
@@ -26,10 +30,12 @@ export function registerFlinkSQLLanguage(completionService?: CompletionService) 
 
 	loadLanguage(languageId);
 
+	const modeConfiguration = typeof options === 'object' ? options : {};
+
 	const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 		languageId,
 		diagnosticDefault,
-		modeConfigurationDefault,
+		{ ...modeConfigurationDefault, ...modeConfiguration },
 		completionService
 	);
 

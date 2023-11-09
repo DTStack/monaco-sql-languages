@@ -10,13 +10,17 @@ import {
 	LanguageServiceDefaultsImpl,
 	loadLanguage,
 	modeConfigurationDefault,
-	registerLanguage
+	registerLanguage,
+	SupportedModeConfiguration
 } from '../_.contribution';
 import { languages } from '../fillers/monaco-editor-core';
 
 const languageId = 'hivesql';
 
-export function registerHiveSQLLanguage(completionService?: CompletionService) {
+export function registerHiveSQLLanguage(
+	completionService?: CompletionService,
+	options?: SupportedModeConfiguration
+) {
 	registerLanguage({
 		id: languageId,
 		extensions: ['.hivesql'],
@@ -26,10 +30,12 @@ export function registerHiveSQLLanguage(completionService?: CompletionService) {
 
 	loadLanguage(languageId);
 
+	const modeConfiguration = typeof options === 'object' ? options : {};
+
 	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 		languageId,
 		diagnosticDefault,
-		modeConfigurationDefault,
+		{ ...modeConfigurationDefault, ...modeConfiguration },
 		completionService
 	);
 

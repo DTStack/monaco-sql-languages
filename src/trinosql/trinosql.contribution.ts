@@ -1,47 +1,18 @@
-import {
-	CompletionService,
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage,
-	SupportedModeConfiguration
-} from '../_.contribution';
-import { languages, IDisposable } from '../fillers/monaco-editor-core';
+import { loadLanguage, registerLanguage } from '../_.contribution';
+import { setupLanguageFeatures } from '../setupLanguageFeatures';
+import { LanguageIdEnum } from '../common/constants';
 
-const languageId = 'trinosql';
-let disposables: IDisposable = {
-	dispose() {}
-};
+registerLanguage({
+	id: LanguageIdEnum.TRINO,
+	extensions: [],
+	aliases: ['TrinoSQL', 'trino', 'Trino', 'prestosql', 'PrestoSQL', 'presto', 'Presto'],
+	loader: () => import('./trinosql')
+});
 
-export function registerTrinoSQLLanguage(
-	completionService?: CompletionService,
-	options?: SupportedModeConfiguration
-) {
-	registerLanguage({
-		id: languageId,
-		extensions: [],
-		aliases: ['TrinoSQL', 'trino', 'Trino', 'prestosql', 'PrestoSQL', 'presto', 'Presto'],
-		loader: () => import('./trinosql')
-	});
+loadLanguage(LanguageIdEnum.TRINO);
 
-	loadLanguage(languageId);
-
-	const modeConfiguration = typeof options === 'object' ? options : {};
-
-	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-		languageId,
-		diagnosticDefault,
-		{ ...modeConfigurationDefault, ...modeConfiguration },
-		completionService
-	);
-
-	languages.onLanguage(languageId, () => {
-		import('../setupLanguageMode').then((mode) => {
-			disposables.dispose();
-			disposables = mode.setupLanguageMode(defaults);
-			return disposables;
-		});
-	});
-}
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.TRINO,
+	completionItems: true,
+	diagnostics: true
+});

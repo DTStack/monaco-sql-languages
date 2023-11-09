@@ -2,33 +2,22 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import {
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage
-} from '../_.contribution';
-import { languages } from '../fillers/monaco-editor-core';
 
-const languageId = 'sql';
+import { loadLanguage, registerLanguage } from '../_.contribution';
+import { setupLanguageFeatures } from '../setupLanguageFeatures';
+import { LanguageIdEnum } from '../common/constants';
 
 registerLanguage({
-	id: languageId,
+	id: LanguageIdEnum.SQL,
 	extensions: ['.sql'],
 	aliases: ['SQL'],
 	loader: () => import('./sql')
 });
 
-loadLanguage(languageId);
+loadLanguage(LanguageIdEnum.SQL);
 
-const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-	languageId,
-	diagnosticDefault,
-	modeConfigurationDefault
-);
-
-languages.onLanguage(languageId, () => {
-	import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.SQL,
+	completionItems: false,
+	diagnostics: true
 });

@@ -3,50 +3,21 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	CompletionService,
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage,
-	SupportedModeConfiguration
-} from '../_.contribution';
-import { languages, IDisposable } from '../fillers/monaco-editor-core';
+import { loadLanguage, registerLanguage } from '../_.contribution';
+import { setupLanguageFeatures } from '../setupLanguageFeatures';
+import { LanguageIdEnum } from '../common/constants';
 
-const languageId = 'sparksql';
-let disposables: IDisposable = {
-	dispose() {}
-};
+registerLanguage({
+	id: LanguageIdEnum.SPARK,
+	extensions: ['.sparksql'],
+	aliases: ['SparkSQL', 'spark', 'Spark'],
+	loader: () => import('./sparksql')
+});
 
-export function registerSparkSQLLanguage(
-	completionService?: CompletionService,
-	options?: SupportedModeConfiguration
-) {
-	registerLanguage({
-		id: languageId,
-		extensions: ['.sparksql'],
-		aliases: ['SparkSQL', 'spark', 'Spark'],
-		loader: () => import('./sparksql')
-	});
+loadLanguage(LanguageIdEnum.SPARK);
 
-	loadLanguage(languageId);
-
-	const modeConfiguration = typeof options === 'object' ? options : {};
-
-	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-		languageId,
-		diagnosticDefault,
-		{ ...modeConfigurationDefault, ...modeConfiguration },
-		completionService
-	);
-
-	languages.onLanguage(languageId, () => {
-		import('../setupLanguageMode').then((mode) => {
-			disposables.dispose();
-			disposables = mode.setupLanguageMode(defaults);
-			return disposables;
-		});
-	});
-}
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.SPARK,
+	completionItems: true,
+	diagnostics: true
+});

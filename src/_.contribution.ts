@@ -141,24 +141,6 @@ export interface ModeConfiguration {
 	readonly selectionRanges?: boolean;
 }
 
-/**
- * Currently, only diagnostics and completionItems are supported.
- * All features will be supported in the future,
- * and following interface will be removed and replaced with ModeConfiguration.
- */
-export type SupportedModeConfiguration = {
-	/**
-	 * Defines whether the built-in completionItemProvider is enabled.
-	 * Defaults to true
-	 */
-	readonly completionItems?: boolean;
-	/**
-	 * Defines whether the built-in diagnostic provider is enabled.
-	 * Defaults to true
-	 */
-	readonly diagnostics?: boolean;
-};
-
 export interface DiagnosticsOptions {
 	readonly validate?: boolean;
 }

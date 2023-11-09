@@ -29,13 +29,13 @@ export const TokenClassConsts = {
 
 export const postfixTokenClass = (token: string) => token + '.sql';
 
-export const LanguageIdConsts = {
-	FLINK: 'flinksql',
-	HIVE: 'hivesql',
-	MySQL: 'mysql',
-	PG: 'pgsql',
-	PL: 'plsql',
-	SPARK: 'sparksql',
-	SQL: 'sql',
-	TRINO: 'trinosql'
-};
+export enum LanguageIdEnum {
+	FLINK = 'flinksql',
+	HIVE = 'hivesql',
+	MYSQL = 'mysql',
+	PG = 'pgsql',
+	PL = 'plsql',
+	SPARK = 'sparksql',
+	SQL = 'sql',
+	TRINO = 'trinosql'
+}

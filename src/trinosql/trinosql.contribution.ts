@@ -8,9 +8,12 @@ import {
 	registerLanguage,
 	SupportedModeConfiguration
 } from '../_.contribution';
-import { languages } from '../fillers/monaco-editor-core';
+import { languages, IDisposable } from '../fillers/monaco-editor-core';
 
 const languageId = 'trinosql';
+let disposables: IDisposable = {
+	dispose() {}
+};
 
 export function registerTrinoSQLLanguage(
 	completionService?: CompletionService,
@@ -35,6 +38,10 @@ export function registerTrinoSQLLanguage(
 	);
 
 	languages.onLanguage(languageId, () => {
-		import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+		import('../setupLanguageMode').then((mode) => {
+			disposables.dispose();
+			disposables = mode.setupLanguageMode(defaults);
+			return disposables;
+		});
 	});
 }

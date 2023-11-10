@@ -11,7 +11,7 @@
 		"check-types": "tsc -p ./tsconfig.json",
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",
-		"deploy": "npm run prod && gh-pages -d docs",
+		"deploy": "npm run prod && gh-pages -d docs -r git@github.com:DTStack/monaco-sql-languages.git",
 		"release": "node ./scripts/bumpVersion.js"
 	},
 	"author": "DTStack Corporation",

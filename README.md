@@ -11,7 +11,7 @@ English | [简体中文](./README-zh_CN.md)
 
 This project is based on the SQL language project of Monaco Editor, which was forked from the [monaco-languages](https://github.com/microsoft/monaco-languages).
 
-The difference is that Monaco SQL Languages has integrated with various SQL languages for the **Big Data field**, such as FLinkSQL, SparkSQL, HiveSQL, and others.
+The difference is that Monaco SQL Languages has integrated with various SQL languages for the **Big Data field**, such as FlinkSQL, SparkSQL, HiveSQL, and others.
 
 In addition, Monaco SQL Languages provides **SQL syntax validation** and **CodeCompletion** feature for these languages via [dt-sql-parser](https://github.com/DTStack/dt-sql-parser).
 
@@ -20,7 +20,7 @@ Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 ## Supported SQL Languages
 
 -   MySQL
--   FLinkSQL
+-   FlinkSQL
 -   SparkSQL
 -   HiveSQL
 -   TrinoSQL (PrestoSQL)
@@ -210,42 +210,48 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
 ## Usage
 
 1. **Import language contributions**
+	> Tips: If integrated via MonacoEditorWebpackPlugin, it will help us to import contribution files automatically. Otherwise, you need to import the contribution files manually.
 
     ```typescript
-    // Directly import contribution files for languages that don't support codeCompletion.
     import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
+	import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
+	import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
+	import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
+	import 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution';
     import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
     import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
     import 'monaco-sql-languages/out/esm/sql/sql.contribution';
-
-    // Import register method for languages that support codeCompletion.
-    import {
-        registerHiveSQLLanguage,
-        registerFlinkSQLLanguage,
-        registerSparkSQLLanguage,
-        registerTrinoSQLLanguage
-    } from 'monaco-sql-languages';
-
-    // Register language, completionService is not a must.
-    registerFlinkSQLLanguage();
-    registerHiveSQLLanguage();
-    registerSparkSQLLanguage();
-    registerTrinoSQLLanguage();
 
     // Or you can import all language contributions at once.
     // import 'monaco-sql-languages/out/esm/monaco.contribution';
     ```
 
-2. **Build a completionService**
+2. **Setup language features**
 
-    By default, only keywords are included in completionItems, and you can customize your completionItem list via `completionService`.
+	You can setup language features via `setupLanguageFeatures`. For example, disable code completion feature of flinkSQL language.
+	```typescript
+	import {
+		setupLanguageFeatures,
+		LanguageIdEnum,
+	} from 'monaco-sql-languages';
+
+	setupLanguageFeatures({
+		languageId: LanguageIdEnum.FLINK,
+		completionItems: false
+	})
+	```
+
+    By default, MonacoSQLLanguages only provides keyword autocompletion, and you can customize your completionItem list via `completionService`.
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-    import { CompletionService, ICompletionItem, SyntaxContextType } from 'monaco-sql-languages';
-
-    import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-    import { CompletionService, ICompletionItem, SyntaxContextType } from 'monaco-sql-languages';
+    import {
+		setupLanguageFeatures,
+		LanguageIdEnum,
+		CompletionService,
+		ICompletionItem,
+		SyntaxContextType
+	 } from 'monaco-sql-languages';
 
     const completionService: CompletionService = function (
         model,
@@ -282,7 +288,10 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
         });
     };
 
-    registerFlinkSQLLanguage(completionService);
+    setupLanguageFeatures({
+		languageId: LanguageIdEnum.FLINK,
+		completionService: completionService,
+	})
     ```
 
 3. **Create the Monaco Editor instance and specify the language you need**

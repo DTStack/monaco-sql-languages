@@ -18,7 +18,7 @@ Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [m
 ## 已支持的 SQL 语言类型
 
 -   MySQL
--   FLinkSQL
+-   FlinkSQL
 -   SparkSQL
 -   HiveSQL
 -   TrinoSQL (PrestoSQL)
@@ -47,7 +47,7 @@ Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [m
 npm install monaco-sql-languages
 ```
 
-> 提示: 你安装的 Monaco Editor 版本必须是 0.31.0, 目前 Monaco SQL Languages 仅保证在 `monaco-editor@0.31.0` 上稳定运行。
+> Tips: 你安装的 Monaco Editor 版本最好是 0.31.0, 目前 Monaco SQL Languages 仅保证在 `monaco-editor@0.31.0` 上稳定运行。
 
 <br/>
 
@@ -207,43 +207,50 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
 
 ## 使用
 
-1. **导入 language contributions 文件**
+1. **导入语言的 contributions 文件**
+
+	> Tips: 如果通过 MonacoEditorWebpackPlugin 来集成，插件会帮助我们自动引入相应的 contribution 文件。如果使用其他方式集成，则需要手动引入相应的 contribution 文件。
 
     ```typescript
-    // 暂不支持自动补全功能的语言，直接导入对应的 contribution 文件
     import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
+	import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
+	import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
+	import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
+	import 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution';
     import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
     import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
     import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 
-    // 支持自定补全功能的语言，先导入对应语言的注册方法
-    import {
-        registerHiveSQLLanguage,
-        registerFlinkSQLLanguage,
-        registerSparkSQLLanguage,
-        registerTrinoSQLLanguage
-    } from 'monaco-sql-languages';
-
-    // 注册语言， completionService 是非必要的。
-    registerFlinkSQLLanguage();
-    registerHiveSQLLanguage();
-    registerSparkSQLLanguage();
-    registerTrinoSQLLanguage();
-
-    // 或者你可以通过下面的方式一次性导入所有的语言功能
+	// 或者你可以通过下面的方式一次性导入所有的语言功能
     // import 'monaco-sql-languages/out/esm/monaco.contribution';
     ```
 
-2. **创建 completionService（非必要）**
+2. **设置语言功能**
 
-    默认情况下，自动补全项中只包含关键字, 但是你可以通过 `completionService` 自定义自动补全项.
+	你可以通过 `setupLanguageFeatures` 设置语言功能，比如禁用 FlinkSQL 语言的自动补全功能。
+	```typescript
+	import {
+		setupLanguageFeatures,
+		LanguageIdEnum,
+	} from 'monaco-sql-languages';
+
+	setupLanguageFeatures({
+		languageId: LanguageIdEnum.FLINK,
+		completionItems: false
+	})
+	```
+
+	默认情况下，自动补全功能只提供关键字自动补全, 但你可以通过设置 `completionService` 自定义自动补全项。
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-    import { CompletionService, ICompletionItem, SyntaxContextType } from 'monaco-sql-languages';
-
-    import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-    import { CompletionService, ICompletionItem, SyntaxContextType } from 'monaco-sql-languages';
+    import {
+		setupLanguageFeatures,
+		LanguageIdEnum,
+		CompletionService,
+		ICompletionItem,
+		SyntaxContextType
+	 } from 'monaco-sql-languages';
 
     const completionService: CompletionService = function (
         model,
@@ -267,11 +274,11 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
 
             syntax.forEach((item) => {
                 if (item.syntaxContextType === SyntaxContextType.DATABASE) {
-                    const databaseCompletions: ICompletionItem[] = [...]; // 一些数据库名自动补全项
+                    const databaseCompletions: ICompletionItem[] = []; // some completions about databaseName
                     syntaxCompletionItems = [...syntaxCompletionItems, ...databaseCompletions];
                 }
                 if (item.syntaxContextType === SyntaxContextType.TABLE) {
-                    const tableCompletions: ICompletionItem[] = []; // 一些表名自动补全项
+                    const tableCompletions: ICompletionItem[] = []; // some completions about tableName
                     syntaxCompletionItems = [...syntaxCompletionItems, ...tableCompletions];
                 }
             });
@@ -280,7 +287,10 @@ Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/
         });
     };
 
-    registerFlinkSQLLanguage(completionService);
+    setupLanguageFeatures({
+		languageId: LanguageIdEnum.FLINK,
+		completionService: completionService,
+	})
     ```
 
 3. **创建 Monaco Editor 并指定语言**

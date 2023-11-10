@@ -3,43 +3,21 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	CompletionService,
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage,
-	SupportedModeConfiguration
-} from '../_.contribution';
-import { languages } from '../fillers/monaco-editor-core';
+import { loadLanguage, registerLanguage } from '../_.contribution';
+import { setupLanguageFeatures } from '../setupLanguageFeatures';
+import { LanguageIdEnum } from '../common/constants';
 
-const languageId = 'flinksql';
+registerLanguage({
+	id: LanguageIdEnum.FLINK,
+	extensions: ['.flinksql'],
+	aliases: ['FlinkSQL', 'flink', 'Flink'],
+	loader: () => import('./flinksql')
+});
 
-export function registerFlinkSQLLanguage(
-	completionService?: CompletionService,
-	options?: SupportedModeConfiguration
-) {
-	registerLanguage({
-		id: languageId,
-		extensions: ['.flinksql'],
-		aliases: ['FlinkSQL', 'flink', 'Flink'],
-		loader: () => import('./flinksql')
-	});
+loadLanguage(LanguageIdEnum.FLINK);
 
-	loadLanguage(languageId);
-
-	const modeConfiguration = typeof options === 'object' ? options : {};
-
-	const flinkDefaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-		languageId,
-		diagnosticDefault,
-		{ ...modeConfigurationDefault, ...modeConfiguration },
-		completionService
-	);
-
-	languages.onLanguage(languageId, () => {
-		import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(flinkDefaults));
-	});
-}
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.FLINK,
+	completionItems: true,
+	diagnostics: true
+});

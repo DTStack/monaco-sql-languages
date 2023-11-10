@@ -3,33 +3,21 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	diagnosticDefault,
-	LanguageServiceDefaults,
-	LanguageServiceDefaultsImpl,
-	loadLanguage,
-	modeConfigurationDefault,
-	registerLanguage
-} from '../_.contribution';
-import { languages } from '../fillers/monaco-editor-core';
-
-const languageId = 'pgsql';
+import { loadLanguage, registerLanguage } from '../_.contribution';
+import { setupLanguageFeatures } from '../setupLanguageFeatures';
+import { LanguageIdEnum } from '../common/constants';
 
 registerLanguage({
-	id: languageId,
+	id: LanguageIdEnum.PG,
 	extensions: [],
 	aliases: ['PgSQL', 'postgresql', 'PostgreSQL'],
 	loader: () => import('./pgsql')
 });
 
-loadLanguage(languageId);
+loadLanguage(LanguageIdEnum.PG);
 
-const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
-	languageId,
-	diagnosticDefault,
-	modeConfigurationDefault
-);
-
-languages.onLanguage(languageId, () => {
-	import('../setupLanguageMode').then((mode) => mode.setupLanguageMode(defaults));
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.PG,
+	completionItems: false,
+	diagnostics: true
 });

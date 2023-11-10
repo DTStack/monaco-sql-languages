@@ -155,7 +155,7 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 		position: Position,
 		context: languages.CompletionContext,
 		token: CancellationToken
-	): Promise<languages.CompletionList | undefined> {
+	): Promise<languages.CompletionList> {
 		const resource = model.uri;
 		return this._worker(resource)
 			.then((worker) => {
@@ -214,7 +214,7 @@ const defaultCompletionService: CompletionService = function (
 	const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
 		label: kw,
 		kind: languages.CompletionItemKind.Keyword,
-		detail: '关键字'
+		detail: 'keyword'
 	}));
 
 	return Promise.resolve(keywordsCompletionItems);

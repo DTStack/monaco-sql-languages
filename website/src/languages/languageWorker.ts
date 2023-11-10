@@ -1,5 +1,5 @@
 // @ts-nocheck
-import EditorWorker from '../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
+import EditorWorker from '../../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
 
 import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
 import SparkSQLWorker from 'monaco-sql-languages/out/esm/sparksql/sparksql.worker?worker';

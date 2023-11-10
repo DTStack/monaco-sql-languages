@@ -4,9 +4,10 @@ import { create, Workbench } from '@dtinsight/molecule';
 import InstanceService from '@dtinsight/molecule/esm/services/instanceService';
 import { ExtendsWorkbench } from './extensions/workbench';
 
+import './languages';
+
 import '@dtinsight/molecule/esm/style/mo.css';
 import './App.css';
-import './languageWorker';
 
 function App(): React.ReactElement {
 	const refMoInstance = useRef<InstanceService>();

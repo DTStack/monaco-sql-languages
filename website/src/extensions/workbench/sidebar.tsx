@@ -21,6 +21,8 @@ export default class Sidebar extends React.Component {
 
 	componentDidMount() {
 		molecule.editor.onUpdateTab(this.analyseProblems);
+
+		monaco.editor.setTheme('sql-dark');
 	}
 
 	private get language(): string {

@@ -263,14 +263,14 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antlr4-c3@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmmirror.com/antlr4-c3/-/antlr4-c3-3.0.1.tgz#e9b6ba7b796e7afc35630ffa6fac4d915f152c99"
-  integrity sha512-Vbizas0WK4Id6l1f48ANYHFZgfzmj82LZx4OuB/a87vCpyoUwofrlJ+sCiL1qT/D2SWf8HEcBPCsgskdx8NnzQ==
+antlr4-c3@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npmmirror.com/antlr4-c3/-/antlr4-c3-3.1.1.tgz#f3d579e17c925d9e3cc984ed0ecb5095fce1611f"
+  integrity sha512-S7DixV12kxWexTkQYGvooCgHYU5AjF74oYio+ZNgm0XN3EzxDY3J6Si9GprQ4KksvgWwK//EgZnL/26WB+bOpw==
   dependencies:
     antlr4ts "0.5.0-alpha.4"
 
-antlr4ts@0.5.0-alpha.4, antlr4ts@^0.5.0-alpha.4:
+antlr4ts@0.5.0-alpha.4:
   version "0.5.0-alpha.4"
   resolved "https://registry.npmmirror.com/antlr4ts/-/antlr4ts-0.5.0-alpha.4.tgz#71702865a87478ed0b40c0709f422cf14d51652a"
   integrity sha512-WPQDt1B74OfPv/IMS2ekXAKkTZIHl88uMetg6q3OTqgFxZ/dxDXI0EWLyZid/1Pe6hTftyg5N7gel5wNAGxXyQ==
@@ -985,13 +985,13 @@ dotgitignore@^2.1.0:
     find-up "^3.0.0"
     minimatch "^3.0.4"
 
-dt-sql-parser@4.0.0-beta.4.5:
-  version "4.0.0-beta.4.5"
-  resolved "https://registry.npmmirror.com/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.4.5.tgz#ad9696eb83b1a74ab5f491ae5b5ba2e901a425de"
-  integrity sha512-zp7L4h6i5bU5U38ZLi66iL8BZ7LfBvLqqI9laQks4f18X19K/CMdXqWzmk90cNIeH7Jh8MhNBYyeWMUyjXcjRQ==
+dt-sql-parser@4.0.0-beta.4.6:
+  version "4.0.0-beta.4.6"
+  resolved "https://registry.npmmirror.com/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.4.6.tgz#5dbe258ec4520cc7baca509fef07ee5c5eb5fe0d"
+  integrity sha512-pABthq0LfcM7iXt8DlZ6Z3EdeoYqPoz8GbPw3wvTwvdPXFfTdeyBU7TZvudgPamlFQJNz7nErE4trgwMfKXaVg==
   dependencies:
-    antlr4-c3 "^3.0.1"
-    antlr4ts "^0.5.0-alpha.4"
+    antlr4-c3 "3.1.1"
+    antlr4ts "0.5.0-alpha.4"
 
 email-addresses@^3.0.1:
   version "3.1.0"

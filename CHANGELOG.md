@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0-beta.7](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.6...v0.12.0-beta.7) (2023-11-24)
+
+
+### Features
+
+* upgrade dt-sql-parser to v4.0.0-beta.4.7 ([a1caa33](https://github.com/DTStack/monaco-sql-languages/commit/a1caa33b8e5a05a4307e44c9fc805086fee388b4))
+
 ## [0.12.0-beta.6](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.5...v0.12.0-beta.6) (2023-11-20)
 
 

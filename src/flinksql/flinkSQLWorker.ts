@@ -1,10 +1,8 @@
 import { worker } from '../fillers/monaco-editor-core';
 import FlinkSQL from 'dt-sql-parser/dist/parser/flinksql';
 import { BaseSQLWorker } from '../baseSQLWorker';
+import { ICreateData } from '../_.contribution';
 
-export interface ICreateData {
-	languageId: string;
-}
 export class FLinkSQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;
 	protected parser: FlinkSQL;

@@ -1,5 +1,5 @@
 import { worker } from '../fillers/monaco-editor-core';
-import MySQL from 'dt-sql-parser/dist/parser/generic';
+import MySQL from 'dt-sql-parser/dist/parser/mysql';
 import { ICreateData } from '../_.contribution';
 import { BaseSQLWorker } from '../baseSQLWorker';
 

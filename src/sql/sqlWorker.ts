@@ -1,15 +1,15 @@
 import { worker } from '../fillers/monaco-editor-core';
-import MySQL from 'dt-sql-parser/dist/parser/generic';
+import GenericSQL from 'dt-sql-parser/dist/parser/mysql';
 import { ICreateData } from '../_.contribution';
 import { BaseSQLWorker } from '../baseSQLWorker';
 
 export class SQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;
-	protected parser: MySQL;
+	protected parser: GenericSQL;
 	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
 		super();
 		this._ctx = ctx;
-		this.parser = new MySQL();
+		this.parser = new GenericSQL();
 	}
 }
 

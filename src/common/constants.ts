@@ -37,5 +37,6 @@ export enum LanguageIdEnum {
 	PL = 'plsql',
 	SPARK = 'sparksql',
 	SQL = 'sql',
-	TRINO = 'trinosql'
+	TRINO = 'trinosql',
+	IMPALA = 'impalasql'
 }

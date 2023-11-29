@@ -985,10 +985,10 @@ dotgitignore@^2.1.0:
     find-up "^3.0.0"
     minimatch "^3.0.4"
 
-dt-sql-parser@4.0.0-beta.4.7:
-  version "4.0.0-beta.4.7"
-  resolved "https://registry.npmmirror.com/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.4.7.tgz#6dea13b49529d882bc01df7f9d13c6457cee5e87"
-  integrity sha512-blXFMBtCqbyWdIsC1pJJuig6w8HQnjjzJE0KMv2DueLZWXLY5QkTP94F8U9E9mYB4S9yiNP8gv1191XwwwPYGQ==
+dt-sql-parser@4.0.0-beta.4.8:
+  version "4.0.0-beta.4.8"
+  resolved "https://registry.npmmirror.com/dt-sql-parser/-/dt-sql-parser-4.0.0-beta.4.8.tgz#46fafdfb6fa8f841e232dcb899db8fb8064541b5"
+  integrity sha512-Y4sHNysax7UuB7ZhZObm6hmmJyy3WG4YQVjAMvsFiSRjRQ5aXnS1H4EdJ4OpLveEbmM1s6J20hGodvKQq20bcA==
   dependencies:
     antlr4-c3 "3.1.1"
     antlr4ts "0.5.0-alpha.4"

@@ -28,13 +28,7 @@ export const conf: languages.LanguageConfiguration = {
 		{ open: '"', close: '"' },
 		{ open: "'", close: "'" },
 		{ open: '`', close: '`' }
-	],
-	folding: {
-		markers: {
-			start: /((EXECUTE\s+)?BEGIN\s+STATEMENT\s+SET\b)|((EXECUTE\s+)?STATEMENT\s+SET\s+BEGIN\b)/i,
-			end: /END\b/i
-		}
-	}
+	]
 };
 
 export const language = <languages.IMonarchLanguage>{
@@ -572,6 +566,7 @@ export const language = <languages.IMonarchLanguage>{
 			{ include: '@complexIdentifiers' },
 			{ include: '@scopes' },
 			{ include: '@complexDataTypes' },
+			{ include: '@complexOperators' },
 			[/[;,.]/, TokenClassConsts.DELIMITER],
 			[/[\(\)\[\]\{\}]/, '@brackets'],
 			[
@@ -615,6 +610,11 @@ export const language = <languages.IMonarchLanguage>{
 			[/''/, TokenClassConsts.STRING],
 			[/'/, { token: TokenClassConsts.STRING, next: '@pop' }]
 		],
+		string_double: [
+			[/[^"]+/, TokenClassConsts.STRING_ESCAPE],
+			[/""/, TokenClassConsts.STRING],
+			[/"/, { token: TokenClassConsts.STRING, next: '@pop' }]
+		],
 		complexIdentifiers: [
 			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@quotedIdentifier' }]
 		],
@@ -623,10 +623,14 @@ export const language = <languages.IMonarchLanguage>{
 			[/``/, TokenClassConsts.IDENTIFIER_QUOTE],
 			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
-		scopes: [
-			[/(EXECUTE\s+)?BEGIN\s+STATEMENT\s+SET/i, TokenClassConsts.KEYWORD_SCOPE],
-			[/(EXECUTE\s+)?STATEMENT\s+SET\s+BEGIN/i, TokenClassConsts.KEYWORD_SCOPE]
-		],
-		complexDataTypes: []
+		scopes: [],
+		complexDataTypes: [],
+		complexOperators: [
+			[
+				/IS\s+(NOT\s+)?(TRUE|FALSE|NULL|UNKNOWN|DISTINCT FROM)\b/i,
+				{ token: TokenClassConsts.OPERATOR_KEYWORD }
+			],
+			[/NOT\s+(EXISTS|ILIKE|IN|LIKE)\b/i, { token: TokenClassConsts.OPERATOR_KEYWORD }]
+		]
 	}
 };

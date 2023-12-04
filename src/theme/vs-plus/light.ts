@@ -25,7 +25,7 @@ export const lightThemeData: editor.IStandaloneThemeData = {
 		{ token: postfixTokenClass(TokenClassConsts.NUMBER_BINARY), foreground: '098658' },
 		{ token: postfixTokenClass(TokenClassConsts.NUMBER_OCTAL), foreground: '098658' },
 		{ token: postfixTokenClass(TokenClassConsts.NUMBER_HEX), foreground: '098658' },
-		{ token: postfixTokenClass(TokenClassConsts.OPERATOR), foreground: '000000' },
+		{ token: postfixTokenClass(TokenClassConsts.OPERATORS), foreground: '000000' },
 		{ token: postfixTokenClass(TokenClassConsts.OPERATOR_KEYWORD), foreground: '0000ff' },
 		{ token: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL), foreground: '000000' },
 		{ token: postfixTokenClass(TokenClassConsts.PREDEFINED), foreground: '795e26' },

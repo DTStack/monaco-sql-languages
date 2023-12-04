@@ -22,6 +22,7 @@ export const TokenClassConsts = {
 	OPERATOR_SYMBOL: 'operators.symbol',
 	PREDEFINED: 'predefined',
 	STRING: 'string',
+	STRING_DOUBLE: 'string.double',
 	STRING_ESCAPE: 'string.escape',
 	TYPE: 'type',
 	VARIABLE: 'variable',

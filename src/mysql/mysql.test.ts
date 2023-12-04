@@ -558,11 +558,7 @@ testTokenization('mysql', [
 				{ startIndex: 5, type: 'white.sql' },
 				{ startIndex: 6, type: 'identifier.sql' },
 				{ startIndex: 13, type: 'white.sql' },
-				{ startIndex: 14, type: 'operator.sql' },
-				{ startIndex: 16, type: 'white.sql' },
-				{ startIndex: 17, type: 'operator.sql' },
-				{ startIndex: 20, type: 'white.sql' },
-				{ startIndex: 21, type: 'operator.sql' }
+				{ startIndex: 14, type: 'operators.keyword.sql' }
 			]
 		}
 	],
@@ -583,13 +579,13 @@ testTokenization('mysql', [
 				{ startIndex: 23, type: 'white.sql' },
 				{ startIndex: 24, type: 'identifier.sql' },
 				{ startIndex: 32, type: 'white.sql' },
-				{ startIndex: 33, type: 'operator.sql' },
+				{ startIndex: 33, type: 'keyword.sql' },
 				{ startIndex: 35, type: 'white.sql' },
-				{ startIndex: 36, type: 'delimiter.parenthesis.sql' },
+				{ startIndex: 36, type: 'delimiter.paren.sql' },
 				{ startIndex: 37, type: 'number.sql' },
 				{ startIndex: 38, type: 'delimiter.sql' },
 				{ startIndex: 39, type: 'number.sql' },
-				{ startIndex: 40, type: 'delimiter.parenthesis.sql' }
+				{ startIndex: 40, type: 'delimiter.paren.sql' }
 			]
 		}
 	]

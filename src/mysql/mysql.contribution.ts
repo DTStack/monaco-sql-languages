@@ -9,8 +9,8 @@ import { LanguageIdEnum } from '../common/constants';
 
 registerLanguage({
 	id: LanguageIdEnum.MYSQL,
-	extensions: [],
-	aliases: ['MySQL'],
+	extensions: ['mysql'],
+	aliases: ['MySQL', 'mysql'],
 	loader: () => import('./mysql')
 });
 
@@ -18,6 +18,6 @@ loadLanguage(LanguageIdEnum.MYSQL);
 
 setupLanguageFeatures({
 	languageId: LanguageIdEnum.MYSQL,
-	completionItems: false,
+	completionItems: true,
 	diagnostics: true
 });

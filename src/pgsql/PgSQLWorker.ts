@@ -1,8 +1,9 @@
 import { worker } from '../fillers/monaco-editor-core';
 import PgSQL from 'dt-sql-parser/dist/parser/pgsql';
-import { ICreateData } from '../_.contribution';
 import { BaseSQLWorker } from '../baseSQLWorker';
-
+export interface ICreateData {
+	languageId: string;
+}
 export class PgSQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;
 	protected parser: PgSQL;

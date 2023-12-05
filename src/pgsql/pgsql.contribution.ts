@@ -9,7 +9,7 @@ import { LanguageIdEnum } from '../common/constants';
 
 registerLanguage({
 	id: LanguageIdEnum.PG,
-	extensions: [],
+	extensions: ['.pgsql'],
 	aliases: ['PgSQL', 'postgresql', 'PostgreSQL'],
 	loader: () => import('./pgsql')
 });
@@ -18,6 +18,6 @@ loadLanguage(LanguageIdEnum.PG);
 
 setupLanguageFeatures({
 	languageId: LanguageIdEnum.PG,
-	completionItems: false,
+	completionItems: true,
 	diagnostics: true
 });

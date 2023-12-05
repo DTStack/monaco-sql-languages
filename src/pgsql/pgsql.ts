@@ -14,6 +14,7 @@ export const conf: languages.LanguageConfiguration = {
 	brackets: [
 		['{', '}'],
 		['[', ']'],
+
 		['(', ')']
 	],
 	autoClosingPairs: [
@@ -32,8 +33,8 @@ export const conf: languages.LanguageConfiguration = {
 	],
 	folding: {
 		markers: {
-			start: /(BEGIN\b)/i,
-			end: /(END\b) | (COMMIT\b)/i
+			start: /(BEGIN\b) | (START TRANSACTION\b)/i,
+			end: /(ROLLBACK\b) | (COMMIT\b) | (END\b)/i
 		}
 	}
 };
@@ -1324,68 +1325,75 @@ export const language = <languages.IMonarchLanguage>{
 		'INTERNAL',
 		'UNKNOWN'
 	],
+	scopeKeywords: ['COMMIT', 'END', 'ROLLBACK', 'THEN', 'ELSE'],
+	pseudoColumns: [
+		// Not support
+	],
 	tokenizer: {
 		root: [
 			{ include: '@comments' },
 			{ include: '@whitespace' },
+			// { include: '@pseudoColumns' },
 			{ include: '@numbers' },
 			{ include: '@strings' },
 			{ include: '@complexIdentifiers' },
 			{ include: '@scopes' },
-			[/[,,.]/, 'delimiter'],
-			[/[()]/, '@brackets'],
+			[/[;,.]/, TokenClassConsts.DELIMITER],
+			[/[\(\)\[\]]/, '@brackets'],
 			[
 				/[\w@]+/,
 				{
 					cases: {
-						'@keywords': 'keyword',
-						'@operators': 'operator',
-						'@builtinVariables': 'predefined',
-						'@builtinFunctions': 'predefined',
-						'@default': 'identifier'
+						'@scopeKeywords': TokenClassConsts.KEYWORD_SCOPE,
+						'@operators': TokenClassConsts.OPERATOR_KEYWORD,
+						'@typeKeywords': TokenClassConsts.TYPE,
+						'@builtinVariables': TokenClassConsts.VARIABLE,
+						'@builtinFunctions': TokenClassConsts.PREDEFINED,
+						'@keywords': TokenClassConsts.KEYWORD,
+						'@default': TokenClassConsts.IDENTIFIER
 					}
 				}
 			],
-			[/[<>=!%&+\-*/|~^]/, 'operator']
+			[/[<>=!%&+\-*/|~^]/, TokenClassConsts.OPERATOR_SYMBOL]
 		],
-		whitespace: [[/\s+/, 'white']],
+		whitespace: [[/\s+/, TokenClassConsts.WHITE]],
 		comments: [
-			[/--+.*/, 'comment'],
-			[/#+.*/, 'comment'],
-			[/\/\*/, { token: 'comment.quote', next: '@comment' }]
+			[/--+.*/, TokenClassConsts.COMMENT],
+			[/\/\*/, { token: TokenClassConsts.COMMENT_QUOTE, next: '@comment' }]
 		],
 		comment: [
-			[/[^*/]+/, 'comment'],
+			[/[^*/]+/, TokenClassConsts.COMMENT],
 			// Not supporting nested comments, as nested comments seem to not be standard?
-			// i.e. http://stackoverflow.com/questions/728172/are-there-multiline-comment-delimiters-in-sql-that-are-vendor-agnostic
 			// [/\/\*/, { token: 'comment.quote', next: '@push' }],    // nested comment not allowed :-(
-			[/\*\//, { token: 'comment.quote', next: '@pop' }],
-			[/./, 'comment']
+			[/\*\//, { token: TokenClassConsts.COMMENT_QUOTE, next: '@pop' }],
+			[/./, TokenClassConsts.COMMENT]
 		],
 		numbers: [
-			[/0[xX][0-9a-fA-F]*/, 'number'],
-			[/[$][+-]*\d*(\.\d*)?/, 'number'],
-			[/((\d+(\.\d*)?)|(\.\d+))([eE][\-+]?\d+)?/, 'number']
+			[/0[xX][0-9a-fA-F]*/, TokenClassConsts.NUMBER_HEX],
+			[/[$][+-]*\d*(\.\d*)?/, TokenClassConsts.NUMBER],
+			[/((\d+(\.\d*)?)|(\.\d+))([eE][\-+]?\d+)?/, TokenClassConsts.NUMBER]
 		],
 		strings: [
-			[/'/, { token: 'string', next: '@string' }],
-			[/"/, { token: 'string.double', next: '@stringDouble' }]
+			[/'/, { token: TokenClassConsts.STRING, next: '@string' }],
+			[/"/, { token: TokenClassConsts.STRING, next: '@stringDouble' }]
 		],
 		string: [
-			[/[^']+/, 'string'],
-			[/''/, 'string'],
-			[/'/, { token: 'string', next: '@pop' }]
+			[/[^']+/, TokenClassConsts.STRING_ESCAPE],
+			[/''/, TokenClassConsts.STRING],
+			[/'/, { token: TokenClassConsts.STRING, next: '@pop' }]
 		],
 		stringDouble: [
-			[/[^"]+/, 'string.double'],
-			[/""/, 'string.double'],
-			[/"/, { token: 'string.double', next: '@pop' }]
+			[/[^"]+/, TokenClassConsts.STRING_ESCAPE],
+			[/""/, TokenClassConsts.STRING],
+			[/"/, { token: TokenClassConsts.STRING, next: '@pop' }]
 		],
-		complexIdentifiers: [[/`/, { token: 'identifier.quote', next: '@quotedIdentifier' }]],
+		complexIdentifiers: [
+			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@quotedIdentifier' }]
+		],
 		quotedIdentifier: [
-			[/[^`]+/, 'identifier'],
-			[/``/, 'identifier'],
-			[/`/, { token: 'identifier.quote', next: '@pop' }]
+			[/[^`]+/, TokenClassConsts.IDENTIFIER_QUOTE],
+			[/``/, TokenClassConsts.IDENTIFIER_QUOTE],
+			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [
 			// NOT SUPPORTED

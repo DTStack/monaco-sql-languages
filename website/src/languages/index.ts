@@ -24,3 +24,8 @@ setupLanguageFeatures({
 	languageId: LanguageIdEnum.TRINO,
 	completionService
 });
+
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.PG,
+	completionService
+});

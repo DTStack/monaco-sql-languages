@@ -919,6 +919,9 @@ export const language = <languages.IMonarchLanguage>{
 		'IN',
 		'LIKE',
 		'NOT',
+		'REGEXP',
+		'EXISTS',
+		'OF',
 		'OR',
 		'IS',
 		'NULL',
@@ -928,7 +931,9 @@ export const language = <languages.IMonarchLanguage>{
 		'JOIN',
 		'LEFT',
 		'OUTER',
-		'RIGHT'
+		'RIGHT',
+		'FULL',
+		'CROSS'
 	],
 	// https://dev.mysql.com/doc/refman/8.0/en/built-in-function-reference.html
 	builtinFunctions: [
@@ -938,7 +943,6 @@ export const language = <languages.IMonarchLanguage>{
 		'ADDTIME',
 		'AES_DECRYPT',
 		'AES_ENCRYPT',
-		'AND',
 		'ANY_VALUE',
 		'Area',
 		'AsBinary',
@@ -950,7 +954,6 @@ export const language = <languages.IMonarchLanguage>{
 		'AVG',
 		'BENCHMARK',
 		'BIN',
-		'BINARY',
 		'BIT_AND',
 		'BIT_COUNT',
 		'BIT_LENGTH',
@@ -962,7 +965,6 @@ export const language = <languages.IMonarchLanguage>{
 		'CEIL',
 		'CEILING',
 		'Centroid',
-		'CHAR',
 		'CHAR_LENGTH',
 		'CHARACTER_LENGTH',
 		'CHARSET',
@@ -990,7 +992,6 @@ export const language = <languages.IMonarchLanguage>{
 		'CURRENT_USER',
 		'CURTIME',
 		'DATABASE',
-		'DATE',
 		'DATE_ADD',
 		'DATE_FORMAT',
 		'DATE_SUB',
@@ -1046,7 +1047,6 @@ export const language = <languages.IMonarchLanguage>{
 		'HOUR',
 		'IF',
 		'IFNULL',
-		'IN',
 		'INET_ATON',
 		'INET_NTOA',
 		'INET6_ATON',
@@ -1056,7 +1056,6 @@ export const language = <languages.IMonarchLanguage>{
 		'InteriorRingN',
 		'Intersects',
 		'INTERVAL',
-		'IS',
 		'IS_FREE_LOCK',
 		'IS_IPV4',
 		'IS_IPV4_COMPAT',
@@ -1101,9 +1100,7 @@ export const language = <languages.IMonarchLanguage>{
 		'LAST_INSERT_ID',
 		'LCASE',
 		'LEAST',
-		'LEFT',
 		'LENGTH',
-		'LIKE',
 		'LineFromText',
 		'LineFromWKB',
 		'LineString',
@@ -1153,7 +1150,6 @@ export const language = <languages.IMonarchLanguage>{
 		'MultiPoint',
 		'MultiPolygon',
 		'NAME_CONST',
-		'NOT',
 		// 'NOT IN',
 		// 'NOT LIKE',
 		// 'NOT REGEXP',
@@ -1164,8 +1160,6 @@ export const language = <languages.IMonarchLanguage>{
 		'NumPoints',
 		'OCT',
 		'OCTET_LENGTH',
-		'OF',
-		'OR',
 		'ORD',
 		'Overlaps',
 		'PASSWORD',
@@ -1188,13 +1182,11 @@ export const language = <languages.IMonarchLanguage>{
 		'RADIANS',
 		'RAND',
 		'RANDOM_BYTES',
-		'REGEXP',
 		'RELEASE_ALL_LOCKS',
 		'RELEASE_LOCK',
 		'REPEAT',
 		'REPLACE',
 		'REVERSE',
-		'RIGHT',
 		'RLIKE',
 		'ROUND',
 		'ROW_COUNT',
@@ -1296,11 +1288,9 @@ export const language = <languages.IMonarchLanguage>{
 		'SYSDATE',
 		'SYSTEM_USER',
 		'TAN',
-		'TIME',
 		'TIME_FORMAT',
 		'TIME_TO_SEC',
 		'TIMEDIFF',
-		'TIMESTAMP',
 		'TIMESTAMPADD',
 		'TIMESTAMPDIFF',
 		'TO_BASE64',
@@ -1338,7 +1328,6 @@ export const language = <languages.IMonarchLanguage>{
 		'X',
 		'XOR',
 		'Y',
-		'YEAR',
 		'YEARWEEK',
 		// The following function names are the new additions in v8.0
 		'asynchronous_connection_failover_add_managed',
@@ -1435,10 +1424,81 @@ export const language = <languages.IMonarchLanguage>{
 	builtinVariables: [
 		// NOT SUPPORTED
 	],
+	// https://dev.mysql.com/doc/refman/8.0/en/storage-requirements.html
+	typeKeywords: [
+		// Numeric Types
+		'TINYINT',
+		'SMALLINT',
+		'MEDIUMINT',
+		'INT',
+		'INTEGER',
+		'BIGINT',
+		'FLOAT',
+		'DOUBLE',
+		'REAL',
+		'DECIMAL',
+		'NUMERIC',
+		'BIT',
+		// Date and Time Types
+		'YEAR',
+		'DATE',
+		'TIME',
+		'DATETIME',
+		'TIMESTAMP',
+		// String Types
+		'CHAR',
+		'BINARY',
+		'VARCHAR',
+		'VARBINARY',
+		'TINYBLOB',
+		'TINYTEXT',
+		'BLOB',
+		'TEXT',
+		'MEDIUMBLOB',
+		'MEDIUMTEXT',
+		'LONGBLOB',
+		'LONGTEXT',
+		'ENUM',
+		'SET',
+		// Spatial Types
+		'GEOMETRY',
+		'POINT',
+		'LINESTRING',
+		'POLYGON',
+		'MULTIPOINT',
+		'MULTILINESTRING',
+		'MULTIPOLYGON',
+		'GEOMETRYCOLLECTION',
+		// JSON Types
+		'JSON',
+		'JSON_STORAGE_SIZE',
+		'JSON_SET',
+		'JSON_INSERT',
+		'JSON_REPLACE',
+		'JSON_REMOVE',
+		'JSON_STORAGE_FREE',
+		'JSON_TYPE',
+		'JSON_ARRAY',
+		'JSON_OBJECT',
+		'JSON_MERGE_PRESERVE',
+		'JSON_MERGE_PATCH',
+		'JSON_CONTAINS_PATH',
+		'JSON_MERGE',
+		'JSON_VALID',
+		'JSON_UNQUOTE',
+		'JSON_EXTRACT',
+		// Misc Types
+		'BOOLEAN'
+	],
+	scopeKeywords: ['BEGIN', 'CASE', 'END', 'WHEN', 'THEN', 'ELSE'],
+	pseudoColumns: [
+		// Not support
+	],
 	tokenizer: {
 		root: [
-			{ include: '@whitespace' },
 			{ include: '@comments' },
+			{ include: '@whitespace' },
+			{ include: '@pseudoColumns' },
 			{ include: '@numbers' },
 			{ include: '@strings' },
 			{ include: '@complexIdentifiers' },
@@ -1450,22 +1510,24 @@ export const language = <languages.IMonarchLanguage>{
 				/[\w@]+/,
 				{
 					cases: {
-						'@keywords': TokenClassConsts.KEYWORD,
-						'@operators': TokenClassConsts.OPERATORS,
-						'@builtinVariables': TokenClassConsts.PREDEFINED,
+						'@scopeKeywords': TokenClassConsts.KEYWORD_SCOPE,
+						'@operators': TokenClassConsts.OPERATOR_KEYWORD,
+						'@typeKeywords': TokenClassConsts.TYPE,
+						'@builtinVariables': TokenClassConsts.VARIABLE,
 						'@builtinFunctions': TokenClassConsts.PREDEFINED,
+						'@keywords': TokenClassConsts.KEYWORD,
 						'@default': TokenClassConsts.IDENTIFIER
 					}
 				}
 			],
-			[/[<>=!%&+\-*/|~^]/, TokenClassConsts.OPERATOR]
+			[/[<>=!%&+\-*/|~^]/, TokenClassConsts.OPERATOR_SYMBOL]
 		],
-		whitespace: [[/\s+/, TokenClassConsts.WHITE]],
 		comments: [
 			[/--+.*/, TokenClassConsts.COMMENT],
 			[/#+.*/, TokenClassConsts.COMMENT],
 			[/\/\*/, { token: TokenClassConsts.COMMENT_QUOTE, next: '@comment' }]
 		],
+		whitespace: [[/\s+/, TokenClassConsts.WHITE]],
 		comment: [
 			[/[^*/]+/, TokenClassConsts.COMMENT],
 			// Not supporting nested comments, as nested comments seem to not be standard?
@@ -1474,31 +1536,42 @@ export const language = <languages.IMonarchLanguage>{
 			[/\*\//, { token: TokenClassConsts.COMMENT_QUOTE, next: '@pop' }],
 			[/./, TokenClassConsts.COMMENT]
 		],
+		pseudoColumns: [
+			[
+				/[$][A-Za-z_][\w@#$]*/,
+				{
+					cases: {
+						'@pseudoColumns': TokenClassConsts.PREDEFINED,
+						'@default': TokenClassConsts.IDENTIFIER
+					}
+				}
+			]
+		],
 		numbers: [
-			[/0[xX][0-9a-fA-F]*/, TokenClassConsts.NUMBER],
+			[/0[xX][0-9a-fA-F]*/, TokenClassConsts.NUMBER_HEX],
 			[/[$][+-]*\d*(\.\d*)?/, TokenClassConsts.NUMBER],
 			[/((\d+(\.\d*)?)|(\.\d+))([eE][\-+]?\d+)?/, TokenClassConsts.NUMBER]
 		],
 		strings: [
-			[/'/, { token: TokenClassConsts.STRING, next: '@string' }],
-			[/"/, { token: TokenClassConsts.STRING_DOUBLE, next: '@stringDouble' }]
+			[/'/, { token: TokenClassConsts.STRING, next: '@stringSingle' }],
+			[/"/, { token: TokenClassConsts.STRING, next: '@stringDouble' }]
 		],
-		string: [
-			[/[^']+/, TokenClassConsts.STRING],
+		stringSingle: [
+			[/[^']+/, TokenClassConsts.STRING_ESCAPE],
 			[/''/, TokenClassConsts.STRING],
 			[/'/, { token: TokenClassConsts.STRING, next: '@pop' }]
 		],
 		stringDouble: [
-			[/[^"]+/, TokenClassConsts.STRING_DOUBLE],
-			[/""/, TokenClassConsts.STRING_DOUBLE],
-			[/"/, { token: TokenClassConsts.STRING_DOUBLE, next: '@pop' }]
+			[/[^"]+/, TokenClassConsts.STRING_ESCAPE],
+			[/""/, TokenClassConsts.STRING],
+			[/"/, { token: TokenClassConsts.STRING, next: '@pop' }]
 		],
 		complexIdentifiers: [
 			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@quotedIdentifier' }]
 		],
 		quotedIdentifier: [
-			[/[^`]+/, TokenClassConsts.IDENTIFIER],
-			[/``/, TokenClassConsts.IDENTIFIER],
+			[/[^`]+/, TokenClassConsts.IDENTIFIER_QUOTE],
+			[/``/, TokenClassConsts.IDENTIFIER_QUOTE],
 			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [

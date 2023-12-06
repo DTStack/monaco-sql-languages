@@ -25,7 +25,7 @@ export const hcBlackThemeData: editor.IStandaloneThemeData = {
 		{ token: postfixTokenClass(TokenClassConsts.NUMBER_BINARY), foreground: 'b5cea8' },
 		{ token: postfixTokenClass(TokenClassConsts.NUMBER_OCTAL), foreground: 'b5cea8' },
 		{ token: postfixTokenClass(TokenClassConsts.NUMBER_HEX), foreground: 'b5cea8' },
-		{ token: postfixTokenClass(TokenClassConsts.OPERATORS), foreground: 'ffffff' },
+		{ token: postfixTokenClass(TokenClassConsts.OPERATOR), foreground: 'ffffff' },
 		{ token: postfixTokenClass(TokenClassConsts.OPERATOR_KEYWORD), foreground: '569cd6' },
 		{ token: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL), foreground: 'ffffff' },
 		{ token: postfixTokenClass(TokenClassConsts.PREDEFINED), foreground: 'dcdcaa' },

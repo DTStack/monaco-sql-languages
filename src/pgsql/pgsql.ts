@@ -30,13 +30,7 @@ export const conf: languages.LanguageConfiguration = {
 		{ open: '(', close: ')' },
 		{ open: '"', close: '"' },
 		{ open: "'", close: "'" }
-	],
-	folding: {
-		markers: {
-			start: /((EXECUTE\s+)?BEGIN\s+STATEMENT\b)|((EXECUTE\s+)?STATEMENT\s+BEGIN\b)/i,
-			end: /(ROLLBACK\b)|(COMMIT\b)|(DEALLOCATE\b)|(END\b)/i
-		}
-	}
+	]
 };
 
 export const language = <languages.IMonarchLanguage>{
@@ -575,7 +569,6 @@ export const language = <languages.IMonarchLanguage>{
 		'NOT',
 		// Comparison Predicates： https://www.postgresql.org/docs/16/functions-comparison.html
 		'BETWEEN',
-		'NOT',
 		'IS',
 		'ISNULL',
 		'NOTNULL',
@@ -593,7 +586,6 @@ export const language = <languages.IMonarchLanguage>{
 		// Subquery Expressions: https://www.postgresql.org/docs/16/functions-subquery.html
 		'EXISTS',
 		'IN',
-		'ANY',
 		'SOME',
 		'ALL',
 		'DISTINCT'
@@ -1325,7 +1317,7 @@ export const language = <languages.IMonarchLanguage>{
 		'INTERNAL',
 		'UNKNOWN'
 	],
-	scopeKeywords: ['COMMIT', 'END', 'ROLLBACK', 'THEN', 'ELSE'],
+	scopeKeywords: ['PREPARE', 'END', 'DECLARE', 'CASE', 'WHEN', 'THEN', 'ELSE'],
 	pseudoColumns: [
 		// Not support
 	],
@@ -1400,8 +1392,7 @@ export const language = <languages.IMonarchLanguage>{
 			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [
-			[/(EXECUTE\s+)?BEGIN\s+STATEMENT/i, TokenClassConsts.KEYWORD_SCOPE],
-			[/(EXECUTE\s+)?STATEMENT\s+BEGIN/i, TokenClassConsts.KEYWORD_SCOPE]
+			// Not support
 		],
 		complexDataTypes: [
 			[/DOUBLE\s+PRECISION\b/i, { token: TokenClassConsts.TYPE }],

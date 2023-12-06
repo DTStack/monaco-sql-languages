@@ -33,8 +33,8 @@ export const conf: languages.LanguageConfiguration = {
 	],
 	folding: {
 		markers: {
-			start: /(BEGIN\b) | (START TRANSACTION\b)/i,
-			end: /(ROLLBACK\b) | (COMMIT\b) | (END\b)/i
+			start: /((EXECUTE\s+)?BEGIN\s+STATEMENT\b)|((EXECUTE\s+)?STATEMENT\s+BEGIN\b)/i,
+			end: /(ROLLBACK\b)|(COMMIT\b)|(DEALLOCATE\b)|(END\b)/i
 		}
 	}
 };
@@ -1333,15 +1333,16 @@ export const language = <languages.IMonarchLanguage>{
 		root: [
 			{ include: '@comments' },
 			{ include: '@whitespace' },
-			// { include: '@pseudoColumns' },
+			{ include: '@pseudoColumns' },
 			{ include: '@numbers' },
 			{ include: '@strings' },
 			{ include: '@complexIdentifiers' },
 			{ include: '@scopes' },
+			{ include: '@complexDataTypes' },
 			[/[;,.]/, TokenClassConsts.DELIMITER],
 			[/[\(\)\[\]]/, '@brackets'],
 			[
-				/[\w@]+/,
+				/[\w@#$]+/,
 				{
 					cases: {
 						'@scopeKeywords': TokenClassConsts.KEYWORD_SCOPE,
@@ -1367,6 +1368,9 @@ export const language = <languages.IMonarchLanguage>{
 			// [/\/\*/, { token: 'comment.quote', next: '@push' }],    // nested comment not allowed :-(
 			[/\*\//, { token: TokenClassConsts.COMMENT_QUOTE, next: '@pop' }],
 			[/./, TokenClassConsts.COMMENT]
+		],
+		pseudoColumns: [
+			// Not support
 		],
 		numbers: [
 			[/0[xX][0-9a-fA-F]*/, TokenClassConsts.NUMBER_HEX],
@@ -1396,7 +1400,12 @@ export const language = <languages.IMonarchLanguage>{
 			[/`/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [
-			// NOT SUPPORTED
+			[/(EXECUTE\s+)?BEGIN\s+STATEMENT/i, TokenClassConsts.KEYWORD_SCOPE],
+			[/(EXECUTE\s+)?STATEMENT\s+BEGIN/i, TokenClassConsts.KEYWORD_SCOPE]
+		],
+		complexDataTypes: [
+			[/DOUBLE\s+PRECISION\b/i, { token: TokenClassConsts.TYPE }],
+			[/REFERENCES\b/i, { token: TokenClassConsts.TYPE }]
 		]
 	}
 };

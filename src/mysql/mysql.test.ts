@@ -31,7 +31,7 @@ testTokenization('mysql', [
 				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
 				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
 				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.WHITE) },
-				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.KEYWORD) }
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }
 			]
 		}
 	],

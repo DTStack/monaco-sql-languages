@@ -31,7 +31,7 @@ testTokenization('pgsql', [
 				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
 				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
 				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.WHITE) },
-				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.KEYWORD) }
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }
 			]
 		}
 	],
@@ -66,7 +66,7 @@ testTokenization('pgsql', [
 				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
 				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
 				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.WHITE) },
-				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
 				{ startIndex: 14, type: postfixTokenClass(TokenClassConsts.WHITE) },
 				{ startIndex: 15, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
 				{ startIndex: 16, type: postfixTokenClass(TokenClassConsts.WHITE) },
@@ -399,7 +399,7 @@ testTokenization('pgsql', [
 	[
 		{
 			line: 'int',
-			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }]
 		}
 	],
 
@@ -538,7 +538,7 @@ testTokenization('pgsql', [
 		{
 			line: 'SET @x=@x+1',
 			tokens: [
-				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
 				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.WHITE) },
 				{ startIndex: 4, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
 				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },

@@ -1,7 +1,7 @@
 import { worker } from '../fillers/monaco-editor-core';
 import ImpalaSQL from 'dt-sql-parser/dist/parser/impala';
 import { BaseSQLWorker } from '../baseSQLWorker';
-import { ICreateData } from 'src/_.contribution';
+import { ICreateData } from '../_.contribution';
 
 export class ImpalaSQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;

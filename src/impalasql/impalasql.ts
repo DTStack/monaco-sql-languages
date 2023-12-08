@@ -37,8 +37,7 @@ export const language = <languages.IMonarchLanguage>{
 	ignoreCase: true,
 	brackets: [
 		{ open: '[', close: ']', token: TokenClassConsts.DELIMITER_SQUARE },
-		{ open: '(', close: ')', token: TokenClassConsts.DELIMITER_PAREN },
-		{ open: '{', close: '}', token: TokenClassConsts.DELIMITER_CURLY }
+		{ open: '(', close: ')', token: TokenClassConsts.DELIMITER_PAREN }
 	],
 	keywords: [
 		'ADD',

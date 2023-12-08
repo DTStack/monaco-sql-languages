@@ -31,6 +31,12 @@ setupLanguageFeatures({
 });
 
 setupLanguageFeatures({
+	languageId: LanguageIdEnum.PG,
+	completionService
+});
+
+setupLanguageFeatures({
 	languageId: LanguageIdEnum.IMPALA,
 	completionService
 });
+

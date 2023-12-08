@@ -29,3 +29,8 @@ setupLanguageFeatures({
 	languageId: LanguageIdEnum.TRINO,
 	completionService
 });
+
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.IMPALA,
+	completionService
+});

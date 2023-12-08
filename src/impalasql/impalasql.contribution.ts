@@ -8,16 +8,16 @@ import { setupLanguageFeatures } from '../setupLanguageFeatures';
 import { LanguageIdEnum } from '../common/constants';
 
 registerLanguage({
-	id: LanguageIdEnum.MYSQL,
-	extensions: ['mysql'],
-	aliases: ['MySQL', 'mysql'],
-	loader: () => import('./mysql')
+	id: LanguageIdEnum.IMPALA,
+	extensions: ['.impalasql'],
+	aliases: ['impalaSQL', 'impala', 'Impala'],
+	loader: () => import('./impalasql')
 });
 
-loadLanguage(LanguageIdEnum.MYSQL);
+loadLanguage(LanguageIdEnum.IMPALA);
 
 setupLanguageFeatures({
-	languageId: LanguageIdEnum.MYSQL,
+	languageId: LanguageIdEnum.IMPALA,
 	completionItems: true,
 	diagnostics: true
 });

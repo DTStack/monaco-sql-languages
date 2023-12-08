@@ -21,6 +21,11 @@ setupLanguageFeatures({
 });
 
 setupLanguageFeatures({
+	languageId: LanguageIdEnum.MYSQL,
+	completionService
+});
+
+setupLanguageFeatures({
 	languageId: LanguageIdEnum.TRINO,
 	completionService
 });
@@ -29,3 +34,9 @@ setupLanguageFeatures({
 	languageId: LanguageIdEnum.PG,
 	completionService
 });
+
+setupLanguageFeatures({
+	languageId: LanguageIdEnum.IMPALA,
+	completionService
+});
+

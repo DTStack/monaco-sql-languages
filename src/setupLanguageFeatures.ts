@@ -80,7 +80,7 @@ function processConfiguration(configuration: FeatureConfiguration) {
 
 	if (
 		// The following languages are not support codeCompletion now.
-		[LanguageIdEnum.MYSQL, LanguageIdEnum.PG, LanguageIdEnum.PL, LanguageIdEnum.SQL].includes(
+		[LanguageIdEnum.PG, LanguageIdEnum.PL, LanguageIdEnum.SQL].includes(
 			languageId as LanguageIdEnum
 		)
 	) {

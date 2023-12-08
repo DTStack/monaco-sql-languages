@@ -4,20 +4,21 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { testTokenization } from '../test/testRunner';
+import { TokenClassConsts, postfixTokenClass } from '../common/constants';
 
 testTokenization('mysql', [
 	// Comments
 	[
 		{
 			line: '-- a comment',
-			tokens: [{ startIndex: 0, type: 'comment.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT) }]
 		}
 	],
 
 	[
 		{
 			line: '---sticky -- comment',
-			tokens: [{ startIndex: 0, type: 'comment.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT) }]
 		}
 	],
 
@@ -25,12 +26,12 @@ testTokenization('mysql', [
 		{
 			line: '-almost a comment',
 			tokens: [
-				{ startIndex: 0, type: 'operator.sql' },
-				{ startIndex: 1, type: 'identifier.sql' },
-				{ startIndex: 7, type: 'white.sql' },
-				{ startIndex: 8, type: 'identifier.sql' },
-				{ startIndex: 9, type: 'white.sql' },
-				{ startIndex: 10, type: 'keyword.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }
 			]
 		}
 	],
@@ -39,9 +40,9 @@ testTokenization('mysql', [
 		{
 			line: '/* a full line comment */',
 			tokens: [
-				{ startIndex: 0, type: 'comment.quote.sql' },
-				{ startIndex: 2, type: 'comment.sql' },
-				{ startIndex: 23, type: 'comment.quote.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 23, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) }
 			]
 		}
 	],
@@ -50,9 +51,9 @@ testTokenization('mysql', [
 		{
 			line: '/* /// *** /// */',
 			tokens: [
-				{ startIndex: 0, type: 'comment.quote.sql' },
-				{ startIndex: 2, type: 'comment.sql' },
-				{ startIndex: 15, type: 'comment.quote.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 15, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) }
 			]
 		}
 	],
@@ -60,7 +61,7 @@ testTokenization('mysql', [
 	[
 		{
 			line: '# comment',
-			tokens: [{ startIndex: 0, type: 'comment.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.COMMENT) }]
 		}
 	],
 
@@ -68,20 +69,20 @@ testTokenization('mysql', [
 		{
 			line: 'declare @x int = /* a simple comment */ 1;',
 			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 7, type: 'white.sql' },
-				{ startIndex: 8, type: 'identifier.sql' },
-				{ startIndex: 10, type: 'white.sql' },
-				{ startIndex: 11, type: 'keyword.sql' },
-				{ startIndex: 14, type: 'white.sql' },
-				{ startIndex: 15, type: 'operator.sql' },
-				{ startIndex: 16, type: 'white.sql' },
-				{ startIndex: 17, type: 'comment.quote.sql' },
-				{ startIndex: 19, type: 'comment.sql' },
-				{ startIndex: 37, type: 'comment.quote.sql' },
-				{ startIndex: 39, type: 'white.sql' },
-				{ startIndex: 40, type: 'number.sql' },
-				{ startIndex: 41, type: 'delimiter.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.TYPE) },
+				{ startIndex: 14, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 15, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 16, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 17, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 19, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 37, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 39, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 40, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 41, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -92,12 +93,12 @@ testTokenization('mysql', [
 		{
 			line: '@x=/* a /* nested comment  1*/;',
 			tokens: [
-				{ startIndex: 0, type: 'identifier.sql' },
-				{ startIndex: 2, type: 'operator.sql' },
-				{ startIndex: 3, type: 'comment.quote.sql' },
-				{ startIndex: 5, type: 'comment.sql' },
-				{ startIndex: 28, type: 'comment.quote.sql' },
-				{ startIndex: 30, type: 'delimiter.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 28, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 30, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -106,15 +107,15 @@ testTokenization('mysql', [
 		{
 			line: '@x=/* another comment */ 1*/;',
 			tokens: [
-				{ startIndex: 0, type: 'identifier.sql' },
-				{ startIndex: 2, type: 'operator.sql' },
-				{ startIndex: 3, type: 'comment.quote.sql' },
-				{ startIndex: 5, type: 'comment.sql' },
-				{ startIndex: 22, type: 'comment.quote.sql' },
-				{ startIndex: 24, type: 'white.sql' },
-				{ startIndex: 25, type: 'number.sql' },
-				{ startIndex: 26, type: 'operator.sql' },
-				{ startIndex: 28, type: 'delimiter.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.COMMENT) },
+				{ startIndex: 22, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 24, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 25, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 26, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 28, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -123,10 +124,10 @@ testTokenization('mysql', [
 		{
 			line: '@x=/*/;',
 			tokens: [
-				{ startIndex: 0, type: 'identifier.sql' },
-				{ startIndex: 2, type: 'operator.sql' },
-				{ startIndex: 3, type: 'comment.quote.sql' },
-				{ startIndex: 5, type: 'comment.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.COMMENT_QUOTE) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.COMMENT) }
 			]
 		}
 	],
@@ -135,7 +136,7 @@ testTokenization('mysql', [
 	[
 		{
 			line: '123',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
@@ -143,8 +144,8 @@ testTokenization('mysql', [
 		{
 			line: '-123',
 			tokens: [
-				{ startIndex: 0, type: 'operator.sql' },
-				{ startIndex: 1, type: 'number.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.NUMBER) }
 			]
 		}
 	],
@@ -152,28 +153,21 @@ testTokenization('mysql', [
 	[
 		{
 			line: '0xaBc123',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
-		}
-	],
-
-	[
-		{
-			line: '0XaBc123',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) }]
 		}
 	],
 
 	[
 		{
 			line: '0x',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) }]
 		}
 	],
 
 	[
 		{
 			line: '0x0',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) }]
 		}
 	],
 
@@ -181,8 +175,8 @@ testTokenization('mysql', [
 		{
 			line: '0xAB_CD',
 			tokens: [
-				{ startIndex: 0, type: 'number.sql' },
-				{ startIndex: 4, type: 'identifier.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER_HEX) },
+				{ startIndex: 4, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }
 			]
 		}
 	],
@@ -190,161 +184,161 @@ testTokenization('mysql', [
 	[
 		{
 			line: '$',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$-123',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$-+-123',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$123.5678',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$0.99',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$.99',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$99.',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$0.',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '$.0',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.',
-			tokens: [{ startIndex: 0, type: 'delimiter.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.DELIMITER) }]
 		}
 	],
 
 	[
 		{
 			line: '123',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '123.5678',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '0.99',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.99',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '99.',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '0.',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.0',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1E-2',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1E+2',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1E2',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '0.1E2',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '1.E2',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
 	[
 		{
 			line: '.1E2',
-			tokens: [{ startIndex: 0, type: 'number.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.NUMBER) }]
 		}
 	],
 
@@ -354,12 +348,10 @@ testTokenization('mysql', [
 		{
 			line: 'declare `abc 321`;',
 			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 7, type: 'white.sql' },
-				{ startIndex: 8, type: 'identifier.quote.sql' },
-				{ startIndex: 9, type: 'identifier.sql' },
-				{ startIndex: 16, type: 'identifier.quote.sql' },
-				{ startIndex: 17, type: 'delimiter.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) },
+				{ startIndex: 17, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -367,74 +359,28 @@ testTokenization('mysql', [
 	[
 		{
 			line: '`abc`` 321 `` xyz`',
-			tokens: [
-				{ startIndex: 0, type: 'identifier.quote.sql' },
-				{ startIndex: 1, type: 'identifier.sql' },
-				{ startIndex: 17, type: 'identifier.quote.sql' }
-			]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) }]
 		}
 	],
 
 	[
 		{
 			line: '`abc',
-			tokens: [
-				{ startIndex: 0, type: 'identifier.quote.sql' },
-				{ startIndex: 1, type: 'identifier.sql' }
-			]
-		}
-	],
-
-	[
-		{
-			line: 'declare `abc 321`;',
-			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 7, type: 'white.sql' },
-				{ startIndex: 8, type: 'identifier.quote.sql' },
-				{ startIndex: 9, type: 'identifier.sql' },
-				{ startIndex: 16, type: 'identifier.quote.sql' },
-				{ startIndex: 17, type: 'delimiter.sql' }
-			]
-		}
-	],
-
-	[
-		{
-			line: '`abc`` 321 `` xyz`',
-			tokens: [
-				{ startIndex: 0, type: 'identifier.quote.sql' },
-				{ startIndex: 1, type: 'identifier.sql' },
-				{ startIndex: 17, type: 'identifier.quote.sql' }
-			]
-		}
-	],
-
-	[
-		{
-			line: '`abc',
-			tokens: [
-				{ startIndex: 0, type: 'identifier.quote.sql' },
-				{ startIndex: 1, type: 'identifier.sql' }
-			]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) }]
 		}
 	],
 
 	[
 		{
 			line: 'int',
-			tokens: [{ startIndex: 0, type: 'keyword.sql' }]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.TYPE) }]
 		}
 	],
 
 	[
 		{
 			line: '`int`',
-			tokens: [
-				{ startIndex: 0, type: 'identifier.quote.sql' },
-				{ startIndex: 1, type: 'identifier.sql' },
-				{ startIndex: 4, type: 'identifier.quote.sql' }
-			]
+			tokens: [{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER_QUOTE) }]
 		}
 	],
 
@@ -443,12 +389,14 @@ testTokenization('mysql', [
 		{
 			line: "declare @x='a string';",
 			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 7, type: 'white.sql' },
-				{ startIndex: 8, type: 'identifier.sql' },
-				{ startIndex: 10, type: 'operator.sql' },
-				{ startIndex: 11, type: 'string.sql' },
-				{ startIndex: 21, type: 'delimiter.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 12, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 20, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 21, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -457,12 +405,14 @@ testTokenization('mysql', [
 		{
 			line: 'declare @x="a string";',
 			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 7, type: 'white.sql' },
-				{ startIndex: 8, type: 'identifier.sql' },
-				{ startIndex: 10, type: 'operator.sql' },
-				{ startIndex: 11, type: 'string.double.sql' },
-				{ startIndex: 21, type: 'delimiter.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 11, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 12, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 20, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 21, type: postfixTokenClass(TokenClassConsts.DELIMITER) }
 			]
 		}
 	],
@@ -470,56 +420,90 @@ testTokenization('mysql', [
 	[
 		{
 			line: "'a '' string with quotes'",
-			tokens: [{ startIndex: 0, type: 'string.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 24, type: postfixTokenClass(TokenClassConsts.STRING) }
+			]
 		}
 	],
 
 	[
 		{
 			line: '"a "" string with quotes"',
-			tokens: [{ startIndex: 0, type: 'string.double.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 24, type: postfixTokenClass(TokenClassConsts.STRING) }
+			]
 		}
 	],
 
 	[
 		{
 			line: "'a \" string with quotes'",
-			tokens: [{ startIndex: 0, type: 'string.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 23, type: postfixTokenClass(TokenClassConsts.STRING) }
+			]
 		}
 	],
 
 	[
 		{
 			line: '"a ` string with quotes"',
-			tokens: [{ startIndex: 0, type: 'string.double.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 23, type: postfixTokenClass(TokenClassConsts.STRING) }
+			]
 		}
 	],
 
 	[
 		{
 			line: "'a -- string with comment'",
-			tokens: [{ startIndex: 0, type: 'string.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 25, type: postfixTokenClass(TokenClassConsts.STRING) }
+			]
 		}
 	],
 
 	[
 		{
 			line: '"a -- string with comment"',
-			tokens: [{ startIndex: 0, type: 'string.double.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) },
+				{ startIndex: 25, type: postfixTokenClass(TokenClassConsts.STRING) }
+			]
 		}
 	],
 
 	[
 		{
 			line: "'a endless string",
-			tokens: [{ startIndex: 0, type: 'string.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) }
+			]
 		}
 	],
 
 	[
 		{
 			line: '"a endless string',
-			tokens: [{ startIndex: 0, type: 'string.double.sql' }]
+			tokens: [
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.STRING) },
+				{ startIndex: 1, type: postfixTokenClass(TokenClassConsts.STRING_ESCAPE) }
+			]
 		}
 	],
 
@@ -528,13 +512,13 @@ testTokenization('mysql', [
 		{
 			line: 'SET @x=@x+1',
 			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 3, type: 'white.sql' },
-				{ startIndex: 4, type: 'identifier.sql' },
-				{ startIndex: 6, type: 'operator.sql' },
-				{ startIndex: 7, type: 'identifier.sql' },
-				{ startIndex: 9, type: 'operator.sql' },
-				{ startIndex: 10, type: 'number.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.TYPE) },
+				{ startIndex: 3, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 4, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 10, type: postfixTokenClass(TokenClassConsts.NUMBER) }
 			]
 		}
 	],
@@ -543,9 +527,9 @@ testTokenization('mysql', [
 		{
 			line: '@x^=@x',
 			tokens: [
-				{ startIndex: 0, type: 'identifier.sql' },
-				{ startIndex: 2, type: 'operator.sql' },
-				{ startIndex: 4, type: 'identifier.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 2, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 4, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) }
 			]
 		}
 	],
@@ -554,15 +538,11 @@ testTokenization('mysql', [
 		{
 			line: 'WHERE myfield IS NOT NULL',
 			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 5, type: 'white.sql' },
-				{ startIndex: 6, type: 'identifier.sql' },
-				{ startIndex: 13, type: 'white.sql' },
-				{ startIndex: 14, type: 'operator.sql' },
-				{ startIndex: 16, type: 'white.sql' },
-				{ startIndex: 17, type: 'operator.sql' },
-				{ startIndex: 20, type: 'white.sql' },
-				{ startIndex: 21, type: 'operator.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 5, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 13, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 14, type: postfixTokenClass(TokenClassConsts.OPERATOR_KEYWORD) }
 			]
 		}
 	],
@@ -571,25 +551,25 @@ testTokenization('mysql', [
 		{
 			line: 'SELECT * FROM tbl WHERE MyColumn IN (1,2)',
 			tokens: [
-				{ startIndex: 0, type: 'keyword.sql' },
-				{ startIndex: 6, type: 'white.sql' },
-				{ startIndex: 7, type: 'operator.sql' },
-				{ startIndex: 8, type: 'white.sql' },
-				{ startIndex: 9, type: 'keyword.sql' },
-				{ startIndex: 13, type: 'white.sql' },
-				{ startIndex: 14, type: 'identifier.sql' },
-				{ startIndex: 17, type: 'white.sql' },
-				{ startIndex: 18, type: 'keyword.sql' },
-				{ startIndex: 23, type: 'white.sql' },
-				{ startIndex: 24, type: 'identifier.sql' },
-				{ startIndex: 32, type: 'white.sql' },
-				{ startIndex: 33, type: 'operator.sql' },
-				{ startIndex: 35, type: 'white.sql' },
-				{ startIndex: 36, type: 'delimiter.parenthesis.sql' },
-				{ startIndex: 37, type: 'number.sql' },
-				{ startIndex: 38, type: 'delimiter.sql' },
-				{ startIndex: 39, type: 'number.sql' },
-				{ startIndex: 40, type: 'delimiter.parenthesis.sql' }
+				{ startIndex: 0, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 6, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 7, type: postfixTokenClass(TokenClassConsts.OPERATOR_SYMBOL) },
+				{ startIndex: 8, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 9, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 13, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 14, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 17, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 18, type: postfixTokenClass(TokenClassConsts.KEYWORD) },
+				{ startIndex: 23, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 24, type: postfixTokenClass(TokenClassConsts.IDENTIFIER) },
+				{ startIndex: 32, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 33, type: postfixTokenClass(TokenClassConsts.OPERATOR_KEYWORD) },
+				{ startIndex: 35, type: postfixTokenClass(TokenClassConsts.WHITE) },
+				{ startIndex: 36, type: postfixTokenClass(TokenClassConsts.DELIMITER_PAREN) },
+				{ startIndex: 37, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 38, type: postfixTokenClass(TokenClassConsts.DELIMITER) },
+				{ startIndex: 39, type: postfixTokenClass(TokenClassConsts.NUMBER) },
+				{ startIndex: 40, type: postfixTokenClass(TokenClassConsts.DELIMITER_PAREN) }
 			]
 		}
 	]

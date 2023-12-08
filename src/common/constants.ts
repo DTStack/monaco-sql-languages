@@ -16,11 +16,12 @@ export const TokenClassConsts = {
 	NUMBER_BINARY: 'number.binary',
 	NUMBER_OCTAL: 'number.octal',
 	NUMBER_HEX: 'number.hex',
-	OPERATOR: 'operators',
-	OPERATOR_KEYWORD: 'operators.keyword',
-	OPERATOR_SYMBOL: 'operators.symbol',
+	OPERATOR: 'operator',
+	OPERATOR_KEYWORD: 'operator.keyword',
+	OPERATOR_SYMBOL: 'operator.symbol',
 	PREDEFINED: 'predefined',
 	STRING: 'string',
+	STRING_DOUBLE: 'string.double',
 	STRING_ESCAPE: 'string.escape',
 	TYPE: 'type',
 	VARIABLE: 'variable',
@@ -37,5 +38,6 @@ export enum LanguageIdEnum {
 	PL = 'plsql',
 	SPARK = 'sparksql',
 	SQL = 'sql',
-	TRINO = 'trinosql'
+	TRINO = 'trinosql',
+	IMPALA = 'impalasql'
 }

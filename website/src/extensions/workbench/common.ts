@@ -15,4 +15,13 @@ export const defaultLanguageStatusItem = {
 	sortIndex: 3
 };
 
-export const languages = ['FlinkSQL', 'SparkSQL', 'HiveSQL', 'MySQL', 'PgSQL', 'SQL', 'TrinoSQL'];
+export const languages = [
+	'FlinkSQL',
+	'SparkSQL',
+	'HiveSQL',
+	'MySQL',
+	'PgSQL',
+	'SQL',
+	'TrinoSQL',
+	'ImpalaSQL'
+];

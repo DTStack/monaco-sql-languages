@@ -21,6 +21,11 @@ setupLanguageFeatures({
 });
 
 setupLanguageFeatures({
+	languageId: LanguageIdEnum.MYSQL,
+	completionService
+});
+
+setupLanguageFeatures({
 	languageId: LanguageIdEnum.TRINO,
 	completionService
 });

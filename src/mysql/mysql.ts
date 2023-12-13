@@ -307,9 +307,7 @@ export const language = <languages.IMonarchLanguage>{
 		'ZEROFILL',
 
 		// part of non-reserved keywords which is common
-		'COLUMNS',
 		'COMMENT',
-		'GRANTS',
 		'PARTITIONS',
 		'PREPARE',
 		'REMOVE',

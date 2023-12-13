@@ -304,7 +304,18 @@ export const language = <languages.IMonarchLanguage>{
 		'WRITE',
 		'XOR',
 		'YEAR_MONTH',
-		'ZEROFILL'
+		'ZEROFILL',
+
+		// part of non-reserved keywords which is common
+		'COMMENT',
+		'PARTITIONS',
+		'PREPARE',
+		'REMOVE',
+		'REPAIR',
+		'RESET',
+		'ROLE',
+		'STOP',
+		'VIEW'
 	],
 	// https://dev.mysql.com/doc/refman/8.0/en/non-typed-operators.html
 	operators: [

@@ -15,7 +15,14 @@ The difference is that Monaco SQL Languages has integrated with various SQL lang
 
 In addition, Monaco SQL Languages provides **SQL syntax validation** and **CodeCompletion** feature for these languages via [dt-sql-parser](https://github.com/DTStack/dt-sql-parser).
 
-Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
+<br/>
+
+## Online Preview
+Powered By [molecule](https://github.com/DTStack/molecule).
+
+<https://dtstack.github.io/monaco-sql-languages/>
+
+<br/>
 
 ## Supported SQL Languages
 
@@ -25,19 +32,19 @@ Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 -   HiveSQL
 -   TrinoSQL (PrestoSQL)
 -   PostgreSQL
--   PL/SQL
+-   Impala SQL
 
 **Supported CodeCompletion SQL Languages**
 
 | SQL Type   | Language Id | Code-Completion |
 | ---------- | ----------- | --------------- |
-| MySQL      | mysql       | WIP             |
+| MySQL      | mysql       | ✅              |
 | Flink SQL  | flinksql    | ✅              |
 | Spark SQL  | sparksql    | ✅              |
 | Hive SQL   | hivesql     | ✅              |
 | Trino SQL  | trinosql    | ✅              |
-| PostgreSQL | pgsql       | WIP             |
-| PL/SQL     | plsql       | WIP             |
+| PostgreSQL | pgsql       | ✅              |
+| Impala SQL | impalasql   | ✅              |
 
 > Monaco SQL Languages plan to support more types of SQL Languages in the future. If you need some SQL Languages that are not currently supported, you can contact us at [github](https://github.com/DTStack/monaco-sql-languages).
 
@@ -49,7 +56,7 @@ Online Preview: <https://dtstack.github.io/monaco-sql-languages/>
 npm install monaco-sql-languages
 ```
 
-> Tips: Your version of Monaco Editor should be 0.31.0, Monaco SQL Languages is only guaranteed to work stably on `monaco-editor@0.31.0` for now.
+> Tips: Monaco SQL Languages is only guaranteed to work stably on `monaco-editor@0.31.0` for now.
 
 <br/>
 
@@ -126,11 +133,11 @@ npm install monaco-sql-languages
                 }
             },
             {
-                label: 'plsql',
-                entry: 'monaco-sql-languages/out/esm/plsql/plsql.contribution',
+                label: 'impalasql',
+                entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/plsql/plSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/plsql/plsql.worker'
+                    id: 'monaco-sql-languages/out/esm/impalasql/impalaSQLWorker',
+                    entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.worker'
                 }
             }
         ]
@@ -161,7 +168,7 @@ entry: {
     'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
     'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
     'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
-    'plsql.worker': 'monaco-sql-languages/out/esm/plsql/plsql.worker.js',
+	'impalasql.worker': 'monaco-sql-languages/out/esm/impalasql/impalasql.worker.js',
     'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
 },
 ```
@@ -190,9 +197,9 @@ window.MonacoEnvironment = {
             case 'pgsql': {
                 return './pgsql.worker.js';
             }
-            case 'plsql': {
-                return './plsql.worker.js';
-            }
+			case 'impalasql': {
+				return './impalasql.worker.js'
+			}
             default: {
                 return './editor.worker.js';
             }
@@ -218,9 +225,8 @@ Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/webs
 	import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
 	import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
 	import 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution';
-    import 'monaco-sql-languages/out/esm/plsql/plsql.contribution';
+	import 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution';
     import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
-    import 'monaco-sql-languages/out/esm/sql/sql.contribution';
 
     // Or you can import all language contributions at once.
     // import 'monaco-sql-languages/out/esm/monaco.contribution';

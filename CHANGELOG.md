@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0-beta.9](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.8...v0.12.0-beta.9) (2023-12-15)
+
+
+### Features
+
+* allow the monaco version to be greater than 0.31.0 ([708f38c](https://github.com/DTStack/monaco-sql-languages/commit/708f38c2ff1e6cf7f5814c252db3fc15d2aa4930))
+* update lock file ([8f6ae1c](https://github.com/DTStack/monaco-sql-languages/commit/8f6ae1c20db2caaa4d570c680e7d939784ed48ad))
+
 ## [0.12.0-beta.8](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.7...v0.12.0-beta.8) (2023-12-15)
 
 

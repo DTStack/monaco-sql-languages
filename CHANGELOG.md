@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0-beta.8](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.7...v0.12.0-beta.8) (2023-12-15)
+
+
+### Features
+
+* support impala ([#83](https://github.com/DTStack/monaco-sql-languages/issues/83)) ([16934be](https://github.com/DTStack/monaco-sql-languages/commit/16934bec568bfd902a9cc3f06b336fb56b557561))
+* support mysql ([#85](https://github.com/DTStack/monaco-sql-languages/issues/85)) ([4e7d9d4](https://github.com/DTStack/monaco-sql-languages/commit/4e7d9d462d45480e4a819c1894c2685c42e99248))
+* update sql parser ([#82](https://github.com/DTStack/monaco-sql-languages/issues/82)) ([2cad6b3](https://github.com/DTStack/monaco-sql-languages/commit/2cad6b30ab447cba2ee6c98ffe94e706356d8aa1))
+* upgrade dt-sql-parser to v4.0.0-beta.4.9 ([#90](https://github.com/DTStack/monaco-sql-languages/issues/90)) ([c354c52](https://github.com/DTStack/monaco-sql-languages/commit/c354c523d029ad482615dbaae270b3d88faf7696))
+
+
+### Bug Fixes
+
+* trino/hive keywords exclude nonReserved ([#88](https://github.com/DTStack/monaco-sql-languages/issues/88)) ([d9a7447](https://github.com/DTStack/monaco-sql-languages/commit/d9a74470fd7893da18d2844fd371cf0058b19533))
+
 ## [0.12.0-beta.7](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.6...v0.12.0-beta.7) (2023-11-24)
 
 

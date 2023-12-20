@@ -124,6 +124,8 @@ This is the easiest way to integrate Monaco SQL Languages
 
 More options of Monaco Editor Webpack Plugin, refer to [here](https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options).
 
+<br/>
+
 ## Use Plain Webpack
 
 1. Output worker files in the way of webpack entry

@@ -125,7 +125,7 @@ npm install assert util --save-dev
 
 <br/>
 
-## Use Plain Webpack
+## 普通方式使用 Webpack
 
 1. 以 webpack entry 的方式输出 worker 文件
 

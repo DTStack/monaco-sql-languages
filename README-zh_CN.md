@@ -50,7 +50,7 @@ Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [m
 
 ## 安装
 
-```shell
+```bash
 npm install monaco-sql-languages
 ```
 
@@ -60,155 +60,8 @@ npm install monaco-sql-languages
 
 ## 集成
 
--   [集成 ESM 版本](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-esm.md)
--   [集成 AMD 版本](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-amd.md#integrating-the-amd-version-of-the-monaco-editor)
-
-### 使用 Monaco Editor WebPack Plugin
-
--   安装 Monaco Editor Webpack Plugin
-
-    ```shell
-    npm install monaco-editor-webpack-plugin
-    ```
-
--   在 Webpack 配置中应用 Monaco Editor Webpack Plugin
-
-    ```typescript
-    const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-    const path = require('path');
-
-    const monacoWebpackPlugin = new MonacoWebpackPlugin({
-        features: [], // 包含你所需要的 Monaco Editor 功能
-        languages: [], // 包含你所需要的 Monaco Editor 内置语言功能
-        customLanguages: [
-            // 包含 Monaco SQL Languages 所提供的语言功能
-            {
-                label: 'mysql',
-                entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/mysql/mySQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/mysql/mysql.worker'
-                }
-            },
-            {
-                label: 'flinksql',
-                entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/flinksql/flinkSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.worker'
-                }
-            },
-            {
-                label: 'sparksql',
-                entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/sparksql/sparkSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.worker'
-                }
-            },
-            {
-                label: 'hivesql',
-                entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/hivesql/hiveSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.worker'
-                }
-            },
-            {
-                label: 'trinosql',
-                entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/trinosql/TrinoSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.worker'
-                }
-            },
-            {
-                label: 'pgsql',
-                entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/pgsql/PgSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.worker'
-                }
-            },
-            {
-                label: 'impalasql',
-                entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/impalasql/impalaSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.worker'
-                }
-            }
-        ]
-    });
-
-    module.exports = {
-        entry: './index.js',
-        output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: 'app.js'
-        },
-        module: {},
-        plugins: [monacoEditorPlugin] // 应用 monacoEditorPlugin
-    };
-    ```
-
-更多 Monaco Editor Webpack Plugin 的选项, 看[这里](https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options).
-
-### 普通方式使用 Webpack
-
-以 webpack entry 的方式输出 worker 文件
-
-```typescript
-entry: {
-    'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
-    'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
-    'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
-    'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
-    'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
-    'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
-	'impalasql.worker': 'monaco-sql-languages/out/esm/impalasql/impalasql.worker.js',
-    'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
-},
-```
-
-定义全局变量 `MonacoEnvironment` 并指定 worker 文件的路径
-
-```typescript
-window.MonacoEnvironment = {
-    getWorkerUrl: function (moduleId, label) {
-        switch (label) {
-            case 'mysql': {
-                return './mysql.worker.js';
-            }
-            case 'sparksql': {
-                return './sparksql.worker.js';
-            }
-            case 'flinksql': {
-                return './flinksql.worker.js';
-            }
-            case 'hivesql': {
-                return './hivesql.worker.js';
-            }
-            case 'trinosql': {
-                return './trinosql.worker.js';
-            }
-            case 'pgsql': {
-                return './pgsql.worker.js';
-            }
-			case 'impalasql': {
-				return './impalasql.worker.js'
-			}
-            default: {
-                return './editor.worker.js';
-            }
-        }
-    }
-};
-```
-
-### 使用 Vite
-
-Vite 使用示例看 <https://github.com/DTStack/monaco-sql-languages/blob/main/website/src/languageWorker.ts>
+- [集成 Monaco SQL Languages 的 ESM 版本](./documents/intgrate-esm.zh-CN.md)
+- [Monaco SQL Languages 集成问题修复](./documents/problem-solving.zh-CN.md)
 
 <br/>
 
@@ -370,13 +223,13 @@ editor.defineTheme('my-theme', myThemeData);
 
 -   初始化设置
 
-    ```shell
+    ```bash
     pnpm install
     ```
 
 -   本地启动 web demo
 
-    ```shell
+    ```bash
     pnpm watch-esm
     cd website
     pnpm install
@@ -385,7 +238,7 @@ editor.defineTheme('my-theme', myThemeData);
 
 -   打包
 
-    ```shell
+    ```bash
     pnpm compile
     ```
 
@@ -400,6 +253,8 @@ editor.defineTheme('my-theme', myThemeData);
 ## 行为守则
 
 本项目采用 [Microsoft 开源行为准则](https://opensource.microsoft.com/codeofconduct/)。有关更多信息，请参阅 [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)，或联系 [opencode@microsoft.com](mailto:opencode@microsoft.com) 提出任何其他问题或意见。
+
+<br/>
 
 ## License
 

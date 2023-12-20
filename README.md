@@ -52,7 +52,7 @@ Powered By [molecule](https://github.com/DTStack/molecule).
 
 ## Installing
 
-```shell
+```bash
 npm install monaco-sql-languages
 ```
 
@@ -62,155 +62,8 @@ npm install monaco-sql-languages
 
 ## Integrating
 
--   [Integrating the ESM version](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-esm.md)
--   [Integrating the AMD version](https://github.com/microsoft/monaco-editor/blob/main/docs/integrate-amd.md#integrating-the-amd-version-of-the-monaco-editor)
-
-### Using the Monaco Editor Webpack Plugin
-
--   Install Monaco Editor Webpack Plugin
-
-    ```shell
-    npm install monaco-editor-webpack-plugin
-    ```
-
--   Apply Monaco Editor Webpack Plugin in webpack config
-
-    ```typescript
-    const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-    const path = require('path');
-
-    const monacoWebpackPlugin = new MonacoWebpackPlugin({
-        features: [], // Include only a subset of the editor features
-        languages: [], // Include only a subset of the monaco built-in languages
-        customLanguages: [
-            // Include languages that provides by Monaco SQL Languages
-            {
-                label: 'mysql',
-                entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/mysql/mySQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/mysql/mysql.worker'
-                }
-            },
-            {
-                label: 'flinksql',
-                entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/flinksql/flinkSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.worker'
-                }
-            },
-            {
-                label: 'sparksql',
-                entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/sparksql/sparkSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.worker'
-                }
-            },
-            {
-                label: 'hivesql',
-                entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/hivesql/hiveSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.worker'
-                }
-            },
-            {
-                label: 'trinosql',
-                entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/trinosql/TrinoSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.worker'
-                }
-            },
-            {
-                label: 'pgsql',
-                entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/pgsql/PgSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.worker'
-                }
-            },
-            {
-                label: 'impalasql',
-                entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution',
-                worker: {
-                    id: 'monaco-sql-languages/out/esm/impalasql/impalaSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.worker'
-                }
-            }
-        ]
-    });
-
-    module.exports = {
-        entry: './index.js',
-        output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: 'app.js'
-        },
-        module: {},
-        plugins: [monacoEditorPlugin] // Apply monacoWebpackPlugin
-    };
-    ```
-
-More options of Monaco Editor Webpack Plugin, see [here](https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options).
-
-### Using Plain Webpack
-
-Output worker files via webpack entries.
-
-```typescript
-entry: {
-    'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
-    'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
-    'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
-    'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
-    'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
-    'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
-	'impalasql.worker': 'monaco-sql-languages/out/esm/impalasql/impalasql.worker.js',
-    'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
-},
-```
-
-Define the global variable `MonacoEnvironment` and specify the path of the worker file
-
-```typescript
-window.MonacoEnvironment = {
-    getWorkerUrl: function (moduleId, label) {
-        switch (label) {
-            case 'mysql': {
-                return './mysql.worker.js';
-            }
-            case 'sparksql': {
-                return './sparksql.worker.js';
-            }
-            case 'flinksql': {
-                return './flinksql.worker.js';
-            }
-            case 'hivesql': {
-                return './hivesql.worker.js';
-            }
-            case 'trinosql': {
-                return './trinosql.worker.js';
-            }
-            case 'pgsql': {
-                return './pgsql.worker.js';
-            }
-			case 'impalasql': {
-				return './impalasql.worker.js'
-			}
-            default: {
-                return './editor.worker.js';
-            }
-        }
-    }
-};
-```
-
-### Using Vite
-
-Vite example see <https://github.com/DTStack/monaco-sql-languages/blob/main/website/src/languageWorker.ts>
+-  [Integrating the ESM version of Monaco SQL Languages](./documents/integrate-esm.md)
+-  [Solving the problem of integrating](./documents/problem-solving.md)
 
 <br/>
 
@@ -371,13 +224,13 @@ editor.defineTheme('my-theme', myThemeData);
 
 -   initial setup
 
-    ```shell
+    ```bash
     pnpm install
     ```
 
 -   open the dev web
 
-    ```shell
+    ```bash
     pnpm watch-esm
     cd website
     pnpm install
@@ -386,7 +239,7 @@ editor.defineTheme('my-theme', myThemeData);
 
 -   compile
 
-    ```shell
+    ```bash
     pnpm compile
     ```
 
@@ -401,6 +254,8 @@ editor.defineTheme('my-theme', myThemeData);
 ## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+<br/>
 
 ## License
 

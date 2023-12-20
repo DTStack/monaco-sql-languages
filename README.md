@@ -100,7 +100,7 @@ npm install monaco-sql-languages
     })
     ```
 
-    By default, MonacoSQLLanguages only provides keyword autocompletion, and you can customize your completionItem list via `completionService`.
+    By default, Monaco SQL Languages only provides keyword autocompletion, and you can customize your completionItem list via `completionService`.
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';

@@ -69,47 +69,47 @@ npm install monaco-sql-languages
 
 1. **导入语言的 contributions 文件**
 
-	> Tips: 如果通过 MonacoEditorWebpackPlugin 来集成，插件会帮助我们自动引入相应的 contribution 文件。如果使用其他方式集成，则需要手动引入相应的 contribution 文件。
+    > Tips: 如果通过 MonacoEditorWebpackPlugin 来集成，插件会帮助我们自动引入相应的 contribution 文件。如果使用其他方式集成，则需要手动引入相应的 contribution 文件。
 
     ```typescript
     import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
-	import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
-	import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
-	import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
-	import 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution';
-	import 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution';
+    import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
+    import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
+    import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
+    import 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution';
+    import 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution';
     import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
 
-	// 或者你可以通过下面的方式一次性导入所有的语言功能
+    // 或者你可以通过下面的方式一次性导入所有的语言功能
     // import 'monaco-sql-languages/out/esm/monaco.contribution';
     ```
 
 2. **设置语言功能**
 
-	你可以通过 `setupLanguageFeatures` 设置语言功能，比如禁用 FlinkSQL 语言的自动补全功能。
-	```typescript
-	import {
-		setupLanguageFeatures,
-		LanguageIdEnum,
-	} from 'monaco-sql-languages';
+    你可以通过 `setupLanguageFeatures` 设置语言功能，比如禁用 FlinkSQL 语言的自动补全功能。
+    ```typescript
+    import {
+        setupLanguageFeatures,
+        LanguageIdEnum,
+    } from 'monaco-sql-languages';
 
-	setupLanguageFeatures({
-		languageId: LanguageIdEnum.FLINK,
-		completionItems: false
-	})
-	```
+    setupLanguageFeatures({
+        languageId: LanguageIdEnum.FLINK,
+        completionItems: false
+    })
+    ```
 
-	默认情况下，自动补全功能只提供关键字自动补全, 但你可以通过设置 `completionService` 自定义自动补全项。
+    默认情况下，自动补全功能只提供关键字自动补全, 但你可以通过设置 `completionService` 自定义自动补全项。
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
     import {
-		setupLanguageFeatures,
-		LanguageIdEnum,
-		CompletionService,
-		ICompletionItem,
-		SyntaxContextType
-	 } from 'monaco-sql-languages';
+        setupLanguageFeatures,
+        LanguageIdEnum,
+        CompletionService,
+        ICompletionItem,
+        SyntaxContextType
+     } from 'monaco-sql-languages';
 
     const completionService: CompletionService = function (
         model,
@@ -147,9 +147,9 @@ npm install monaco-sql-languages
     };
 
     setupLanguageFeatures({
-		languageId: LanguageIdEnum.FLINK,
-		completionService: completionService,
-	})
+        languageId: LanguageIdEnum.FLINK,
+        completionService: completionService,
+    })
     ```
 
 3. **创建 Monaco Editor 并指定语言**

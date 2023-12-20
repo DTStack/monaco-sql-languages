@@ -44,7 +44,7 @@ This is the easiest way to integrate Monaco SQL Languages
 -   Apply Monaco Editor Webpack Plugin in Webpack configuration
 
     ```typescript
-	const webpack = require('webpack');
+    const webpack = require('webpack');
     const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
     const monacoWebpackPlugin = new MonacoWebpackPlugin({
@@ -112,13 +112,13 @@ This is the easiest way to integrate Monaco SQL Languages
     });
 
     module.exports = {
-		// ...
+        // ...
         plugins: [
-			new webpack.DefinePlugin({
-				'process.env.NODE_DEBUG': process.env.NODE_DEBUG,
-			}),
-			monacoEditorPlugin // Apply monacoEditorPlugin
-		]
+            new webpack.DefinePlugin({
+                'process.env.NODE_DEBUG': process.env.NODE_DEBUG,
+            }),
+            monacoEditorPlugin // Apply monacoEditorPlugin
+        ]
     };
     ```
 
@@ -130,63 +130,63 @@ More options of Monaco Editor Webpack Plugin, refer to [here](https://github.com
 
 1. Output worker files in the way of webpack entry
 
-	```typescript
-	const webpack = require('webpack');
+    ```typescript
+    const webpack = require('webpack');
 
-	module.exports = {
-		// ...
-		entry: {
-			'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
-			'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
-			'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
-			'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
-			'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
-			'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
-			'impalasql.worker': 'monaco-sql-languages/out/esm/impalasql/impalasql.worker.js',
-			'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
-		},
-		plugins: [
-			new webpack.DefinePlugin({
-				'process.env.NODE_DEBUG': process.env.NODE_DEBUG, // define process.env.NODE_DEBUG
-			}),
-		]
-	};
-	```
+    module.exports = {
+        // ...
+        entry: {
+            'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
+            'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
+            'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
+            'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
+            'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
+            'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
+            'impalasql.worker': 'monaco-sql-languages/out/esm/impalasql/impalasql.worker.js',
+            'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+        },
+        plugins: [
+            new webpack.DefinePlugin({
+                'process.env.NODE_DEBUG': process.env.NODE_DEBUG, // define process.env.NODE_DEBUG
+            }),
+        ]
+    };
+    ```
 
 2. Define `MonacoEnvironment` and declare `getWorkerUrl`
 
-	```typescript
-	window.MonacoEnvironment = {
-		getWorkerUrl: function (moduleId, label) {
-			switch (label) {
-				case 'mysql': {
-					return './mysql.worker.js';
-				}
-				case 'sparksql': {
-					return './sparksql.worker.js';
-				}
-				case 'flinksql': {
-					return './flinksql.worker.js';
-				}
-				case 'hivesql': {
-					return './hivesql.worker.js';
-				}
-				case 'trinosql': {
-					return './trinosql.worker.js';
-				}
-				case 'pgsql': {
-					return './pgsql.worker.js';
-				}
-				case 'impalasql': {
-					return './impalasql.worker.js'
-				}
-				default: {
-					return './editor.worker.js';
-				}
-			}
-		}
-	};
-	```
+    ```typescript
+    window.MonacoEnvironment = {
+        getWorkerUrl: function (moduleId, label) {
+            switch (label) {
+                case 'mysql': {
+                    return './mysql.worker.js';
+                }
+                case 'sparksql': {
+                    return './sparksql.worker.js';
+                }
+                case 'flinksql': {
+                    return './flinksql.worker.js';
+                }
+                case 'hivesql': {
+                    return './hivesql.worker.js';
+                }
+                case 'trinosql': {
+                    return './trinosql.worker.js';
+                }
+                case 'pgsql': {
+                    return './pgsql.worker.js';
+                }
+                case 'impalasql': {
+                    return './impalasql.worker.js'
+                }
+                default: {
+                    return './editor.worker.js';
+                }
+            }
+        }
+    };
+    ```
 
 <br/>
 
@@ -194,51 +194,51 @@ More options of Monaco Editor Webpack Plugin, refer to [here](https://github.com
 Currently, there might be a problem that worker files cannot be loaded when integrating with vite, for details please refer to [issue#87](https://github.com/DTStack/monaco-sql-languages/issues/87)
 
 1. define `process.env` in `vite.config.ts`
-	```typescript
-	export default defineConfig({
-		// ...
-		define: {
-			'process.env': process.env
-		}
-	});
-	```
+    ```typescript
+    export default defineConfig({
+        // ...
+        define: {
+            'process.env': process.env
+        }
+    });
+    ```
 
 2. Define `MonacoEnvironment` and declare `getWorker`
-	```typescript
-	import EditorWorker from '../../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
+    ```typescript
+    import EditorWorker from '../../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
 
-	import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
-	import SparkSQLWorker from 'monaco-sql-languages/out/esm/sparksql/sparksql.worker?worker';
-	import HiveSQLWorker from 'monaco-sql-languages/out/esm/hivesql/hivesql.worker?worker';
-	import PGSQLWorker from 'monaco-sql-languages/out/esm/pgsql/pgsql.worker?worker';
-	import MySQLWorker from 'monaco-sql-languages/out/esm/mysql/mysql.worker?worker';
-	import TrinoSQLWorker from 'monaco-sql-languages/out/esm/trinosql/trinosql.worker?worker';
-	import ImpalaSQLWorker from 'monaco-sql-languages/out/esm/impalasql/impalasql.worker?worker';
+    import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
+    import SparkSQLWorker from 'monaco-sql-languages/out/esm/sparksql/sparksql.worker?worker';
+    import HiveSQLWorker from 'monaco-sql-languages/out/esm/hivesql/hivesql.worker?worker';
+    import PGSQLWorker from 'monaco-sql-languages/out/esm/pgsql/pgsql.worker?worker';
+    import MySQLWorker from 'monaco-sql-languages/out/esm/mysql/mysql.worker?worker';
+    import TrinoSQLWorker from 'monaco-sql-languages/out/esm/trinosql/trinosql.worker?worker';
+    import ImpalaSQLWorker from 'monaco-sql-languages/out/esm/impalasql/impalasql.worker?worker';
 
-	self.MonacoEnvironment = {
-		getWorker(_, label) {
-			if (label === 'flinksql') {
-				return new FlinkSQLWorker();
-			}
-			if (label === 'hivesql') {
-				return new HiveSQLWorker();
-			}
-			if (label === 'sparksql') {
-				return new SparkSQLWorker();
-			}
-			if (label === 'pgsql') {
-				return new PGSQLWorker();
-			}
-			if (label === 'mysql') {
-				return new MySQLWorker();
-			}
-			if (label === 'trinosql') {
-				return new TrinoSQLWorker();
-			}
-			if (label === 'impalasql') {
-				return new ImpalaSQLWorker();
-			}
-			return new EditorWorker();
-		}
-	};
-	```
+    self.MonacoEnvironment = {
+        getWorker(_, label) {
+            if (label === 'flinksql') {
+                return new FlinkSQLWorker();
+            }
+            if (label === 'hivesql') {
+                return new HiveSQLWorker();
+            }
+            if (label === 'sparksql') {
+                return new SparkSQLWorker();
+            }
+            if (label === 'pgsql') {
+                return new PGSQLWorker();
+            }
+            if (label === 'mysql') {
+                return new MySQLWorker();
+            }
+            if (label === 'trinosql') {
+                return new TrinoSQLWorker();
+            }
+            if (label === 'impalasql') {
+                return new ImpalaSQLWorker();
+            }
+            return new EditorWorker();
+        }
+    };
+    ```

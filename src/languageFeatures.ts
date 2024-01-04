@@ -113,29 +113,23 @@ export class DiagnosticsAdapter<T extends IWorker> {
 	}
 }
 
-function toSeverity(lsSeverity: number): MarkerSeverity {
+function toSeverity(lsSeverity?: number): MarkerSeverity {
 	switch (lsSeverity) {
 		default:
 			return MarkerSeverity.Error;
 	}
 }
 
-/**
- * TODO: diag is actually a type ParseError
- * @see {@link ParseError}
- */
-function toDiagnostics(resource: Uri, diag: any): editor.IMarkerData {
-	let code = typeof diag.code === 'number' ? String(diag.code) : <string>diag.code;
-
+function toDiagnostics(resource: Uri, diag: ParseError): editor.IMarkerData {
 	return {
-		severity: toSeverity(diag.severity),
+		severity: toSeverity(),
 		startLineNumber: diag.startLine,
-		startColumn: diag.startCol + 1,
+		startColumn: diag.startColumn,
 		endLineNumber: diag.endLine,
-		endColumn: diag.endCol + 1,
+		endColumn: diag.endColumn,
 		message: diag.message,
-		code: code,
-		source: diag.source
+		code: undefined, // TODO: set error type
+		source: 'dt-sql-parser'
 	};
 }
 

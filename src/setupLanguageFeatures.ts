@@ -80,9 +80,16 @@ function processConfiguration(configuration: FeatureConfiguration) {
 
 	if (
 		// The following languages are not support codeCompletion now.
-		[LanguageIdEnum.PL, LanguageIdEnum.SQL].includes(languageId as LanguageIdEnum)
+		[LanguageIdEnum.PL].includes(languageId as LanguageIdEnum)
 	) {
 		finalConfiguration.completionItems = false;
+	}
+
+	if (
+		// The following languages are not support diagnostics now.
+		[LanguageIdEnum.SQL].includes(languageId as LanguageIdEnum)
+	) {
+		finalConfiguration.diagnostics = false;
 	}
 
 	// save current configurationMap

@@ -1,0 +1,626 @@
+{
+	"fonts": [
+		{
+			"id": "icons-carbon",
+			"src": [
+				{
+					"path": "./icons-carbon.woff",
+					"format": "woff"
+				}
+			],
+			"weight": "normal",
+			"style": "normal"
+		}
+	],
+	"iconDefinitions": {
+		"account": {
+			"fontCharacter": "\\e000"
+		},
+		"alert": {
+			"fontCharacter": "\\e001"
+		},
+		"archive": {
+			"fontCharacter": "\\e002"
+		},
+		"arrow-both": {
+			"fontCharacter": "\\e003"
+		},
+		"arrow-down": {
+			"fontCharacter": "\\e004"
+		},
+		"arrow-left": {
+			"fontCharacter": "\\e005"
+		},
+		"arrow-right": {
+			"fontCharacter": "\\e006"
+		},
+		"arrow-swap": {
+			"fontCharacter": "\\e007"
+		},
+		"arrow-up": {
+			"fontCharacter": "\\e008"
+		},
+		"beaker": {
+			"fontCharacter": "\\e009"
+		},
+		"bell": {
+			"fontCharacter": "\\e00a"
+		},
+		"bell-dot": {
+			"fontCharacter": "\\e00b"
+		},
+		"bold": {
+			"fontCharacter": "\\e00c"
+		},
+		"book": {
+			"fontCharacter": "\\e00d"
+		},
+		"bookmark": {
+			"fontCharacter": "\\e00e"
+		},
+		"briefcase": {
+			"fontCharacter": "\\e00f"
+		},
+		"broadcast": {
+			"fontCharacter": "\\e010"
+		},
+		"browser": {
+			"fontCharacter": "\\e011"
+		},
+		"bug": {
+			"fontCharacter": "\\e012"
+		},
+		"calendar": {
+			"fontCharacter": "\\e013"
+		},
+		"call-incoming": {
+			"fontCharacter": "\\e014"
+		},
+		"call-outgoing": {
+			"fontCharacter": "\\e015"
+		},
+		"checklist": {
+			"fontCharacter": "\\e016"
+		},
+		"chevron-down": {
+			"fontCharacter": "\\e017"
+		},
+		"chevron-left": {
+			"fontCharacter": "\\e018"
+		},
+		"chevron-right": {
+			"fontCharacter": "\\e019"
+		},
+		"chevron-up": {
+			"fontCharacter": "\\e01a"
+		},
+		"circle-slash": {
+			"fontCharacter": "\\e01b"
+		},
+		"circuit-board": {
+			"fontCharacter": "\\e01c"
+		},
+		"clear-all": {
+			"fontCharacter": "\\e01d"
+		},
+		"clock": {
+			"fontCharacter": "\\e01e"
+		},
+		"cloud": {
+			"fontCharacter": "\\e01f"
+		},
+		"cloud-download": {
+			"fontCharacter": "\\e020"
+		},
+		"cloud-upload": {
+			"fontCharacter": "\\e021"
+		},
+		"code": {
+			"fontCharacter": "\\e022"
+		},
+		"color-mode": {
+			"fontCharacter": "\\e023"
+		},
+		"comment": {
+			"fontCharacter": "\\e024"
+		},
+		"comment-add": {
+			"fontCharacter": "\\e025"
+		},
+		"comment-discussion": {
+			"fontCharacter": "\\e026"
+		},
+		"compare-changes": {
+			"fontCharacter": "\\e027"
+		},
+		"console": {
+			"fontCharacter": "\\e028"
+		},
+		"copy": {
+			"fontCharacter": "\\e029"
+		},
+		"credit-card": {
+			"fontCharacter": "\\e02a"
+		},
+		"dashboard": {
+			"fontCharacter": "\\e02b"
+		},
+		"debug": {
+			"fontCharacter": "\\e02c"
+		},
+		"debug-alt": {
+			"fontCharacter": "\\e02d"
+		},
+		"device-camera": {
+			"fontCharacter": "\\e02e"
+		},
+		"device-camera-video": {
+			"fontCharacter": "\\e02f"
+		},
+		"device-desktop": {
+			"fontCharacter": "\\e030"
+		},
+		"device-mobile": {
+			"fontCharacter": "\\e031"
+		},
+		"discard": {
+			"fontCharacter": "\\e032"
+		},
+		"edit": {
+			"fontCharacter": "\\e033"
+		},
+		"export": {
+			"fontCharacter": "\\e034"
+		},
+		"extensions": {
+			"fontCharacter": "\\e035"
+		},
+		"feedback": {
+			"fontCharacter": "\\e036"
+		},
+		"files": {
+			"fontCharacter": "\\e037"
+		},
+		"filter": {
+			"fontCharacter": "\\e038"
+		},
+		"filter-filled": {
+			"fontCharacter": "\\e039"
+		},
+		"flame": {
+			"fontCharacter": "\\e03a"
+		},
+		"gear": {
+			"fontCharacter": "\\e03b"
+		},
+		"gift": {
+			"fontCharacter": "\\e03c"
+		},
+		"gist": {
+			"fontCharacter": "\\e03d"
+		},
+		"gist-private": {
+			"fontCharacter": "\\e03e"
+		},
+		"git-branch": {
+			"fontCharacter": "\\e03f"
+		},
+		"git-branch-create": {
+			"fontCharacter": "\\e040"
+		},
+		"git-branch-delete": {
+			"fontCharacter": "\\e041"
+		},
+		"git-commit": {
+			"fontCharacter": "\\e042"
+		},
+		"git-compare": {
+			"fontCharacter": "\\e043"
+		},
+		"git-fork-private": {
+			"fontCharacter": "\\e044"
+		},
+		"globe": {
+			"fontCharacter": "\\e045"
+		},
+		"heart": {
+			"fontCharacter": "\\e046"
+		},
+		"history": {
+			"fontCharacter": "\\e047"
+		},
+		"home": {
+			"fontCharacter": "\\e048"
+		},
+		"hubot": {
+			"fontCharacter": "\\e049"
+		},
+		"italic": {
+			"fontCharacter": "\\e04a"
+		},
+		"json": {
+			"fontCharacter": "\\e04b"
+		},
+		"key": {
+			"fontCharacter": "\\e04c"
+		},
+		"keyboard": {
+			"fontCharacter": "\\e04d"
+		},
+		"law": {
+			"fontCharacter": "\\e04e"
+		},
+		"light-bulb": {
+			"fontCharacter": "\\e04f"
+		},
+		"lightbulb": {
+			"fontCharacter": "\\e050"
+		},
+		"lightbulb-autofix": {
+			"fontCharacter": "\\e051"
+		},
+		"link": {
+			"fontCharacter": "\\e052"
+		},
+		"link-external": {
+			"fontCharacter": "\\e053"
+		},
+		"list-flat": {
+			"fontCharacter": "\\e054"
+		},
+		"list-ordered": {
+			"fontCharacter": "\\e055"
+		},
+		"list-tree": {
+			"fontCharacter": "\\e056"
+		},
+		"list-unordered": {
+			"fontCharacter": "\\e057"
+		},
+		"location": {
+			"fontCharacter": "\\e058"
+		},
+		"lock": {
+			"fontCharacter": "\\e059"
+		},
+		"log-in": {
+			"fontCharacter": "\\e05a"
+		},
+		"log-out": {
+			"fontCharacter": "\\e05b"
+		},
+		"mail-reply": {
+			"fontCharacter": "\\e05c"
+		},
+		"megaphone": {
+			"fontCharacter": "\\e05d"
+		},
+		"mention": {
+			"fontCharacter": "\\e05e"
+		},
+		"menu": {
+			"fontCharacter": "\\e05f"
+		},
+		"merge": {
+			"fontCharacter": "\\e060"
+		},
+		"microscope": {
+			"fontCharacter": "\\e061"
+		},
+		"milestone": {
+			"fontCharacter": "\\e062"
+		},
+		"mirror-private": {
+			"fontCharacter": "\\e063"
+		},
+		"move": {
+			"fontCharacter": "\\e064"
+		},
+		"mute": {
+			"fontCharacter": "\\e065"
+		},
+		"organization": {
+			"fontCharacter": "\\e066"
+		},
+		"organization-filled": {
+			"fontCharacter": "\\e067"
+		},
+		"organization-outline": {
+			"fontCharacter": "\\e068"
+		},
+		"pass": {
+			"fontCharacter": "\\e069"
+		},
+		"pass-filled": {
+			"fontCharacter": "\\e06a"
+		},
+		"pencil": {
+			"fontCharacter": "\\e06b"
+		},
+		"person": {
+			"fontCharacter": "\\e06c"
+		},
+		"person-add": {
+			"fontCharacter": "\\e06d"
+		},
+		"person-filled": {
+			"fontCharacter": "\\e06e"
+		},
+		"person-follow": {
+			"fontCharacter": "\\e06f"
+		},
+		"person-outline": {
+			"fontCharacter": "\\e070"
+		},
+		"play": {
+			"fontCharacter": "\\e071"
+		},
+		"play-circle": {
+			"fontCharacter": "\\e072"
+		},
+		"plug": {
+			"fontCharacter": "\\e073"
+		},
+		"pulse": {
+			"fontCharacter": "\\e074"
+		},
+		"question": {
+			"fontCharacter": "\\e075"
+		},
+		"quote": {
+			"fontCharacter": "\\e076"
+		},
+		"reactions": {
+			"fontCharacter": "\\e077"
+		},
+		"record-keys": {
+			"fontCharacter": "\\e078"
+		},
+		"redo": {
+			"fontCharacter": "\\e079"
+		},
+		"repl": {
+			"fontCharacter": "\\e07a"
+		},
+		"reply": {
+			"fontCharacter": "\\e07b"
+		},
+		"rocket": {
+			"fontCharacter": "\\e07c"
+		},
+		"rss": {
+			"fontCharacter": "\\e07d"
+		},
+		"save": {
+			"fontCharacter": "\\e07e"
+		},
+		"save-all": {
+			"fontCharacter": "\\e07f"
+		},
+		"save-as": {
+			"fontCharacter": "\\e080"
+		},
+		"search": {
+			"fontCharacter": "\\e081"
+		},
+		"search-save": {
+			"fontCharacter": "\\e082"
+		},
+		"server": {
+			"fontCharacter": "\\e083"
+		},
+		"settings": {
+			"fontCharacter": "\\e084"
+		},
+		"settings-gear": {
+			"fontCharacter": "\\e085"
+		},
+		"shield": {
+			"fontCharacter": "\\e086"
+		},
+		"sign-in": {
+			"fontCharacter": "\\e087"
+		},
+		"sign-out": {
+			"fontCharacter": "\\e088"
+		},
+		"smiley": {
+			"fontCharacter": "\\e089"
+		},
+		"source-control": {
+			"fontCharacter": "\\e08a"
+		},
+		"star": {
+			"fontCharacter": "\\e08b"
+		},
+		"star-add": {
+			"fontCharacter": "\\e08c"
+		},
+		"star-delete": {
+			"fontCharacter": "\\e08d"
+		},
+		"star-empty": {
+			"fontCharacter": "\\e08e"
+		},
+		"star-full": {
+			"fontCharacter": "\\e08f"
+		},
+		"star-half": {
+			"fontCharacter": "\\e090"
+		},
+		"symbol-boolean": {
+			"fontCharacter": "\\e091"
+		},
+		"symbol-class": {
+			"fontCharacter": "\\e092"
+		},
+		"symbol-color": {
+			"fontCharacter": "\\e093"
+		},
+		"symbol-event": {
+			"fontCharacter": "\\e094"
+		},
+		"symbol-file": {
+			"fontCharacter": "\\e095"
+		},
+		"symbol-folder": {
+			"fontCharacter": "\\e096"
+		},
+		"symbol-function": {
+			"fontCharacter": "\\e097"
+		},
+		"symbol-interface": {
+			"fontCharacter": "\\e098"
+		},
+		"symbol-key": {
+			"fontCharacter": "\\e099"
+		},
+		"symbol-method": {
+			"fontCharacter": "\\e09a"
+		},
+		"symbol-misc": {
+			"fontCharacter": "\\e09b"
+		},
+		"symbol-namespace": {
+			"fontCharacter": "\\e09c"
+		},
+		"symbol-null": {
+			"fontCharacter": "\\e09d"
+		},
+		"symbol-number": {
+			"fontCharacter": "\\e09e"
+		},
+		"symbol-numeric": {
+			"fontCharacter": "\\e09f"
+		},
+		"symbol-operator": {
+			"fontCharacter": "\\e0a0"
+		},
+		"symbol-package": {
+			"fontCharacter": "\\e0a1"
+		},
+		"symbol-parameter": {
+			"fontCharacter": "\\e0a2"
+		},
+		"symbol-property": {
+			"fontCharacter": "\\e0a3"
+		},
+		"symbol-reference": {
+			"fontCharacter": "\\e0a4"
+		},
+		"symbol-ruler": {
+			"fontCharacter": "\\e0a5"
+		},
+		"symbol-snippet": {
+			"fontCharacter": "\\e0a6"
+		},
+		"symbol-string": {
+			"fontCharacter": "\\e0a7"
+		},
+		"symbol-struct": {
+			"fontCharacter": "\\e0a8"
+		},
+		"symbol-structure": {
+			"fontCharacter": "\\e0a9"
+		},
+		"symbol-text": {
+			"fontCharacter": "\\e0aa"
+		},
+		"symbol-type-parameter": {
+			"fontCharacter": "\\e0ab"
+		},
+		"symbol-unit": {
+			"fontCharacter": "\\e0ac"
+		},
+		"symbol-variable": {
+			"fontCharacter": "\\e0ad"
+		},
+		"tag": {
+			"fontCharacter": "\\e0ae"
+		},
+		"tag-add": {
+			"fontCharacter": "\\e0af"
+		},
+		"tag-remove": {
+			"fontCharacter": "\\e0b0"
+		},
+		"tasklist": {
+			"fontCharacter": "\\e0b1"
+		},
+		"terminal": {
+			"fontCharacter": "\\e0b2"
+		},
+		"text-size": {
+			"fontCharacter": "\\e0b3"
+		},
+		"thumbsdown": {
+			"fontCharacter": "\\e0b4"
+		},
+		"thumbsup": {
+			"fontCharacter": "\\e0b5"
+		},
+		"tools": {
+			"fontCharacter": "\\e0b6"
+		},
+		"trash": {
+			"fontCharacter": "\\e0b7"
+		},
+		"trashcan": {
+			"fontCharacter": "\\e0b8"
+		},
+		"triangle-down": {
+			"fontCharacter": "\\e0b9"
+		},
+		"triangle-left": {
+			"fontCharacter": "\\e0ba"
+		},
+		"triangle-right": {
+			"fontCharacter": "\\e0bb"
+		},
+		"triangle-up": {
+			"fontCharacter": "\\e0bc"
+		},
+		"twitter": {
+			"fontCharacter": "\\e0bd"
+		},
+		"unlock": {
+			"fontCharacter": "\\e0be"
+		},
+		"unmute": {
+			"fontCharacter": "\\e0bf"
+		},
+		"variable": {
+			"fontCharacter": "\\e0c0"
+		},
+		"versions": {
+			"fontCharacter": "\\e0c1"
+		},
+		"wand": {
+			"fontCharacter": "\\e0c2"
+		},
+		"warning": {
+			"fontCharacter": "\\e0c3"
+		},
+		"watch": {
+			"fontCharacter": "\\e0c4"
+		},
+		"whitespace": {
+			"fontCharacter": "\\e0c5"
+		},
+		"wrench": {
+			"fontCharacter": "\\e0c6"
+		},
+		"wrench-subaction": {
+			"fontCharacter": "\\e0c7"
+		},
+		"zap": {
+			"fontCharacter": "\\e0c8"
+		},
+		"zoom-in": {
+			"fontCharacter": "\\e0c9"
+		},
+		"zoom-out": {
+			"fontCharacter": "\\e0ca"
+		}
+	}
+}

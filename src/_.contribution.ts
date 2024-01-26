@@ -166,7 +166,7 @@ export type CompletionService = (
 	position: Position,
 	completionContext: languages.CompletionContext,
 	suggestions: Suggestions | null
-) => Promise<ICompletionItem[]>;
+) => Promise<ICompletionItem[] | { completionItems: ICompletionItem[], incomplete: boolean }>;
 
 export interface LanguageServiceDefaults {
 	readonly languageId: string;

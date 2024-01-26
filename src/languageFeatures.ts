@@ -170,20 +170,25 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 					position.lineNumber,
 					wordInfo.endColumn
 				);
-				const unwrappedCompletions = Array.isArray(completions) ? completions : completions.completionItems
-				const completionItems: languages.CompletionItem[] = unwrappedCompletions.map((item) => ({
-					...item,
-					insertText:
-						item.insertText ??
-						(typeof item.label === 'string' ? item.label : item.label.label),
-					range: item.range ?? wordRange,
-					insertTextRules:
-						item.insertTextRules ??
-						languages.CompletionItemInsertTextRule.InsertAsSnippet
-				}));
+				const unwrappedCompletions = Array.isArray(completions)
+					? completions
+					: completions.suggestions;
+				const completionItems: languages.CompletionItem[] = unwrappedCompletions.map(
+					(item) => ({
+						...item,
+						insertText:
+							item.insertText ??
+							(typeof item.label === 'string' ? item.label : item.label.label),
+						range: item.range ?? wordRange,
+						insertTextRules:
+							item.insertTextRules ??
+							languages.CompletionItemInsertTextRule.InsertAsSnippet
+					})
+				);
 
 				return {
 					suggestions: completionItems,
+					dispose: Array.isArray(completions) ? undefined : completions.dispose,
 					incomplete: Array.isArray(completions) ? undefined : completions.incomplete
 				};
 			});

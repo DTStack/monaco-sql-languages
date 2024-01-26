@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { languages, Emitter, IEvent, editor, Position } from './fillers/monaco-editor-core';
+import { languages, Emitter, IEvent, editor, Position, IRange } from './fillers/monaco-editor-core';
 import { Suggestions } from 'dt-sql-parser';
 
 interface ILang extends languages.ILanguageExtensionPoint {
@@ -146,12 +146,21 @@ export interface DiagnosticsOptions {
 }
 
 /**
- * A completion item, it will be convert to monaco.languages.CompletionItem.
+ * A completion item.
+ * ICompletionItem is pretty much the same as {@link languages.CompletionItem},
+ * with the only difference being that the range and insertText is optional.
  */
-export interface ICompletionItem extends Partial<languages.CompletionItem> {
-	label: string | languages.CompletionItemLabel;
-	kind: languages.CompletionItemKind;
-	detail: string;
+export interface ICompletionItem extends Omit<languages.CompletionItem, 'range' | 'insertText'> {
+	range?: IRange | languages.CompletionItemRanges;
+	insertText?: string;
+}
+
+/**
+ * ICompletionList is pretty much the same as {@link languages.CompletionList},
+ * with the only difference being that the type of suggestion is {@link ICompletionItem}
+ */
+export interface ICompletionList extends Omit<languages.CompletionList, 'suggestions'> {
+	suggestions: ICompletionItem[];
 }
 
 /**
@@ -166,7 +175,7 @@ export type CompletionService = (
 	position: Position,
 	completionContext: languages.CompletionContext,
 	suggestions: Suggestions | null
-) => Promise<ICompletionItem[] | { completionItems: ICompletionItem[], incomplete: boolean }>;
+) => Promise<ICompletionItem[] | ICompletionList>;
 
 export interface LanguageServiceDefaults {
 	readonly languageId: string;

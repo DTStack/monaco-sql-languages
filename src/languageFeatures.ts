@@ -170,8 +170,8 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 					position.lineNumber,
 					wordInfo.endColumn
 				);
-
-				const completionItems: languages.CompletionItem[] = completions.map((item) => ({
+				const unwrappedCompletions = Array.isArray(completions) ? completions : completions.completionItems
+				const completionItems: languages.CompletionItem[] = unwrappedCompletions.map((item) => ({
 					...item,
 					insertText:
 						item.insertText ??
@@ -183,7 +183,8 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 				}));
 
 				return {
-					suggestions: completionItems
+					suggestions: completionItems,
+					incomplete: Array.isArray(completions) ? undefined : completions.incomplete
 				};
 			});
 	}

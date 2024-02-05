@@ -10,7 +10,12 @@ import {
 } from './fillers/monaco-editor-core';
 import { debounce } from './common/utils';
 import type { Suggestions, ParseError } from 'dt-sql-parser';
-import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
+import type {
+	LanguageServiceDefaults,
+	CompletionService,
+	PreprocessCode,
+	ICompletionItem
+} from './_.contribution';
 
 export interface WorkerAccessor<T> {
 	(first: Uri, ...more: Uri[]): Promise<T>;
@@ -28,6 +33,7 @@ export interface ILanguageWorkerWithCompletions {
 
 export class DiagnosticsAdapter<T extends IWorker> {
 	private _disposables: IDisposable[] = [];
+	private _preprocessCode?: PreprocessCode;
 	private _listener: { [uri: string]: IDisposable } = Object.create(null);
 
 	constructor(
@@ -35,6 +41,7 @@ export class DiagnosticsAdapter<T extends IWorker> {
 		private _worker: WorkerAccessor<T>,
 		defaults: LanguageServiceDefaults
 	) {
+		this._preprocessCode = defaults.preprocessCode;
 		const onModelAdd = (model: editor.IModel): void => {
 			let modeId = model.getLanguageId();
 			if (modeId !== this._languageId) {
@@ -98,7 +105,12 @@ export class DiagnosticsAdapter<T extends IWorker> {
 	private _doValidate(resource: Uri, languageId: string): void {
 		this._worker(resource)
 			.then((worker) => {
-				return worker.doValidation(editor.getModel(resource)?.getValue() || '');
+				let code = editor.getModel(resource)?.getValue() || '';
+				if (typeof this._preprocessCode === 'function') {
+					code = this._preprocessCode(code);
+				}
+
+				return worker.doValidation(code);
 			})
 			.then((diagnostics) => {
 				const markers = diagnostics.map((d) => toDiagnostics(resource, d));
@@ -136,9 +148,11 @@ function toDiagnostics(resource: Uri, diag: ParseError): editor.IMarkerData {
 export class CompletionAdapter<T extends IWorker> implements languages.CompletionItemProvider {
 	constructor(private readonly _worker: WorkerAccessor<T>, defaults: LanguageServiceDefaults) {
 		this._defaults = defaults;
+		this._preprocessCode = defaults.preprocessCode;
 	}
 
 	private _defaults: LanguageServiceDefaults;
+	private _preprocessCode?: PreprocessCode;
 
 	public get triggerCharacters(): string[] {
 		return ['.', ' '];
@@ -153,7 +167,12 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 		const resource = model.uri;
 		return this._worker(resource)
 			.then((worker) => {
-				return worker.doComplete(editor.getModel(resource)?.getValue() || '', position);
+				let code = editor.getModel(resource)?.getValue() || '';
+				if (typeof this._preprocessCode === 'function') {
+					code = this._preprocessCode(code);
+				}
+
+				return worker.doComplete(code, position);
 			})
 			.then((suggestions) => {
 				const completionService =

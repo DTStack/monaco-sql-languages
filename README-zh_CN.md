@@ -60,7 +60,7 @@ npm install monaco-sql-languages
 
 ## 集成
 
-- [集成 Monaco SQL Languages 的 ESM 版本](./documents/intgrate-esm.zh-CN.md)
+- [集成 Monaco SQL Languages 的 ESM 版本](./documents/integrate-esm.zh-CN.md)
 - [Monaco SQL Languages 集成问题修复](./documents/problem-solving.zh-CN.md)
 
 <br/>

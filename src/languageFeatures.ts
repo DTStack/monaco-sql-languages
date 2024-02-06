@@ -33,7 +33,7 @@ export interface ILanguageWorkerWithCompletions {
 
 export class DiagnosticsAdapter<T extends IWorker> {
 	private _disposables: IDisposable[] = [];
-	private _preprocessCode?: PreprocessCode;
+	private _defaults: LanguageServiceDefaults;
 	private _listener: { [uri: string]: IDisposable } = Object.create(null);
 
 	constructor(
@@ -41,7 +41,7 @@ export class DiagnosticsAdapter<T extends IWorker> {
 		private _worker: WorkerAccessor<T>,
 		defaults: LanguageServiceDefaults
 	) {
-		this._preprocessCode = defaults.preprocessCode;
+		this._defaults = defaults;
 		const onModelAdd = (model: editor.IModel): void => {
 			let modeId = model.getLanguageId();
 			if (modeId !== this._languageId) {
@@ -77,7 +77,7 @@ export class DiagnosticsAdapter<T extends IWorker> {
 			})
 		);
 
-		defaults.onDidChange((_) => {
+		this._defaults.onDidChange((_) => {
 			editor.getModels().forEach((model) => {
 				if (model.getLanguageId() === this._languageId) {
 					onModelRemoved(model);
@@ -106,8 +106,8 @@ export class DiagnosticsAdapter<T extends IWorker> {
 		this._worker(resource)
 			.then((worker) => {
 				let code = editor.getModel(resource)?.getValue() || '';
-				if (typeof this._preprocessCode === 'function') {
-					code = this._preprocessCode(code);
+				if (typeof this._defaults.preprocessCode === 'function') {
+					code = this._defaults.preprocessCode(code);
 				}
 
 				return worker.doValidation(code);
@@ -148,11 +148,9 @@ function toDiagnostics(resource: Uri, diag: ParseError): editor.IMarkerData {
 export class CompletionAdapter<T extends IWorker> implements languages.CompletionItemProvider {
 	constructor(private readonly _worker: WorkerAccessor<T>, defaults: LanguageServiceDefaults) {
 		this._defaults = defaults;
-		this._preprocessCode = defaults.preprocessCode;
 	}
 
 	private _defaults: LanguageServiceDefaults;
-	private _preprocessCode?: PreprocessCode;
 
 	public get triggerCharacters(): string[] {
 		return ['.', ' '];
@@ -168,8 +166,8 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 		return this._worker(resource)
 			.then((worker) => {
 				let code = editor.getModel(resource)?.getValue() || '';
-				if (typeof this._preprocessCode === 'function') {
-					code = this._preprocessCode(code);
+				if (typeof this._defaults.preprocessCode === 'function') {
+					code = this._defaults.preprocessCode(code);
 				}
 
 				return worker.doComplete(code, position);

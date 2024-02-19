@@ -29,7 +29,7 @@ export abstract class BaseSQLWorker {
 		if (code) {
 			const parser = this.parser.createParser(code);
 			const parseTree = parser.program();
-			const result = parseTree.toStringTree();
+			const result = parseTree.toStringTree(parser);
 			return Promise.resolve(result);
 		}
 		return Promise.resolve('');

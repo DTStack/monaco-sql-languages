@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@types/mocha': ^9.1.0
   '@types/node': ^20.4.0
-  dt-sql-parser: 4.0.0-beta.4.11
+  dt-sql-parser: 4.0.0-ng.1
   eslint: ^7.1.0
   eslint-config-google: ^0.14.0
   eslint-config-prettier: ^6.15.0
@@ -24,7 +24,7 @@ specifiers:
   typescript: ^5.0.4
 
 dependencies:
-  dt-sql-parser: 4.0.0-beta.4.11
+  dt-sql-parser: 4.0.0-ng.1
 
 devDependencies:
   '@types/mocha': 9.1.1
@@ -299,14 +299,18 @@ packages:
       color-convert: 2.0.1
     dev: true
 
-  /antlr4-c3/3.1.1:
-    resolution: {integrity: sha512-S7DixV12kxWexTkQYGvooCgHYU5AjF74oYio+ZNgm0XN3EzxDY3J6Si9GprQ4KksvgWwK//EgZnL/26WB+bOpw==}
+  /antlr4-c3/3.3.6:
+    resolution: {integrity: sha512-gheQXG0acgFWKEqfHUxT1bC0tA/wxuy+F6452yhAkPEwkAAYZJWan3VNpvzAe1Fpg3IRiZn1vCRVur+O8MBHCQ==}
     dependencies:
-      antlr4ts: 0.5.0-alpha.4
+      antlr4ng: 2.0.10
+    transitivePeerDependencies:
+      - antlr4ng-cli
     dev: false
 
-  /antlr4ts/0.5.0-alpha.4:
-    resolution: {integrity: sha512-WPQDt1B74OfPv/IMS2ekXAKkTZIHl88uMetg6q3OTqgFxZ/dxDXI0EWLyZid/1Pe6hTftyg5N7gel5wNAGxXyQ==}
+  /antlr4ng/2.0.10:
+    resolution: {integrity: sha512-cDXmkjum5TSgtgKyKtNN3Zk8ebXeZXOHS7e5pIAnyuKdAQB1r/EzJl+1Vro5JdJCWfgtZ2IqJ3KNvRNuCMjgmQ==}
+    peerDependencies:
+      antlr4ng-cli: 1.0.7
     dev: false
 
   /anymatch/3.1.3:
@@ -988,11 +992,13 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /dt-sql-parser/4.0.0-beta.4.11:
-    resolution: {integrity: sha512-bgMJAMImikNwE0OPZApI+R+PjpI8xoJAksQIUJdtS4+piZII1LHzbmlp8T7iRJ4Fo56EwY5ILmv9VcZ/PwKV1A==}
+  /dt-sql-parser/4.0.0-ng.1:
+    resolution: {integrity: sha512-C4KqSNwNIGUR02YMFfQh8CwpPB/K4QjSlUkrv4swzQy6/ofrno6EWwOZ/OTo2wPRdk152fQJAQhYtbmmmW2MtQ==}
     dependencies:
-      antlr4-c3: 3.1.1
-      antlr4ts: 0.5.0-alpha.4
+      antlr4-c3: 3.3.6
+      antlr4ng: 2.0.10
+    transitivePeerDependencies:
+      - antlr4ng-cli
     dev: false
 
   /email-addresses/3.1.0:

@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@types/mocha': ^9.1.0
   '@types/node': ^20.4.0
-  dt-sql-parser: 4.0.0-ng.1
+  dt-sql-parser: 4.0.0-ng.2
   eslint: ^7.1.0
   eslint-config-google: ^0.14.0
   eslint-config-prettier: ^6.15.0
@@ -24,7 +24,7 @@ specifiers:
   typescript: ^5.0.4
 
 dependencies:
-  dt-sql-parser: 4.0.0-ng.1
+  dt-sql-parser: 4.0.0-ng.2
 
 devDependencies:
   '@types/mocha': 9.1.1
@@ -299,16 +299,16 @@ packages:
       color-convert: 2.0.1
     dev: true
 
-  /antlr4-c3/3.3.6:
-    resolution: {integrity: sha512-gheQXG0acgFWKEqfHUxT1bC0tA/wxuy+F6452yhAkPEwkAAYZJWan3VNpvzAe1Fpg3IRiZn1vCRVur+O8MBHCQ==}
+  /antlr4-c3/3.3.7:
+    resolution: {integrity: sha512-F3ndE38wwA6z6AjUbL3heSdEGl4TxulGDPf9xB0/IY4dbRHWBh6XNaqFwur8vHKQk9FS5yNABHeg2wqlqIYO0w==}
     dependencies:
-      antlr4ng: 2.0.10
+      antlr4ng: 2.0.11
     transitivePeerDependencies:
       - antlr4ng-cli
     dev: false
 
-  /antlr4ng/2.0.10:
-    resolution: {integrity: sha512-cDXmkjum5TSgtgKyKtNN3Zk8ebXeZXOHS7e5pIAnyuKdAQB1r/EzJl+1Vro5JdJCWfgtZ2IqJ3KNvRNuCMjgmQ==}
+  /antlr4ng/2.0.11:
+    resolution: {integrity: sha512-9jM91VVtHSqHkAHQsXHaoaiewFETMvUTI1/tXvwTiFw4f7zke3IGlwEyoKN9NS0FqIwDKFvUNW2e1cKPniTkVQ==}
     peerDependencies:
       antlr4ng-cli: 1.0.7
     dev: false
@@ -992,11 +992,11 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /dt-sql-parser/4.0.0-ng.1:
-    resolution: {integrity: sha512-C4KqSNwNIGUR02YMFfQh8CwpPB/K4QjSlUkrv4swzQy6/ofrno6EWwOZ/OTo2wPRdk152fQJAQhYtbmmmW2MtQ==}
+  /dt-sql-parser/4.0.0-ng.2:
+    resolution: {integrity: sha512-n1mBKhDXKaFW7LU/QgPA80a/DXEBm0QzYQshvNmKsA5ZuIqy+bDNvs9Y4Ly8gfx2PFhMz7+6GcFyw6a51QE2gg==}
     dependencies:
-      antlr4-c3: 3.3.6
-      antlr4ng: 2.0.10
+      antlr4-c3: 3.3.7
+      antlr4ng: 2.0.11
     transitivePeerDependencies:
       - antlr4ng-cli
     dev: false

@@ -13,6 +13,7 @@ interface ITabProps
 		'onMount' | 'onModelMount' | 'onToolbarClick'
 	> {
 	data: IEditorTab<any>;
+	instance?: editor.IStandaloneCodeEditor;
 	groupId: UniqueId;
 	options: editor.IEditorOptions;
 	toolbar: IMenuItemProps[];
@@ -22,6 +23,7 @@ export default function Tab({
 	data,
 	groupId,
 	toolbar,
+	instance,
 	options,
 	onModelMount,
 	onMount,
@@ -93,10 +95,10 @@ export default function Tab({
 		<Container>
 			<Header>
 				<Title>
-					<components.icon.default type={icon} />
+					<components.Icon type={icon} />
 					<Name ref={ref}>
 						{edit.editing ? (
-							<components.input.Input
+							<components.Input
 								autoFocus
 								value={edit.data}
 								onChange={edit.dispatch}
@@ -109,21 +111,22 @@ export default function Tab({
 							</Text>
 						)}
 					</Name>
-					{data.modified && <components.icon.default type="primitive-dot" />}
+					{data.modified && <components.Icon type="primitive-dot" />}
 				</Title>
 				<Actions>
-					<components.actionBar.default
+					<components.ActionBar
 						data={toolbar}
 						onClick={(item) => onToolbarClick?.(item, groupId)}
 					/>
 				</Actions>
 			</Header>
 			<EditorWrapper>
-				<components.monaco.default
+				<components.MonacoEditor
 					options={{
 						...options,
 						automaticLayout: true
 					}}
+					instance={instance}
 					model={data?.model}
 					value={data?.value}
 					language={data?.language}

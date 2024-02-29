@@ -8,7 +8,7 @@ import { TreeNode } from '../../types';
 interface ITreeProps {
 	id: string;
 	molecule: IMoleculeContext;
-	onSelect: components.tree.ITreeProps['onSelect'];
+	onSelect: components.ITreeProps['onSelect'];
 	onCreate: () => void;
 	onContextMenu: (pos: IPosition, treeNode: TreeNode) => void;
 }
@@ -26,16 +26,16 @@ export default function Tree({ id, onSelect, onCreate, onContextMenu }: ITreePro
 	);
 
 	return (
-		<components.scrollBar.ScrollBar
+		<components.ScrollBar
 			scrollIntoViewDeps={{
 				dep: activeKey,
 				activeClassName: 'mo-tree__treenode--active'
 			}}
 		>
-			<components.prevent.default>
+			<components.Prevent>
 				{data.length ? (
 					<TreeContainer>
-						<components.tree.default
+						<components.Tree
 							draggable={false}
 							activeKey={activeKey}
 							data={data}
@@ -46,12 +46,12 @@ export default function Tree({ id, onSelect, onCreate, onContextMenu }: ITreePro
 				) : (
 					<Empty>
 						暂无数据
-						<components.button.Button block onClick={onCreate}>
+						<components.Button block onClick={onCreate}>
 							点击新建 SQL 文件
-						</components.button.Button>
+						</components.Button>
 					</Empty>
 				)}
-			</components.prevent.default>
-		</components.scrollBar.ScrollBar>
+			</components.Prevent>
+		</components.ScrollBar>
 	);
 }

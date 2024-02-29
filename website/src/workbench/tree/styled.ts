@@ -15,7 +15,5 @@ export const TreeContainer = styled.div`
 		height: 30px;
 		font-size: 14px;
 		gap: 6px;
-
-		// FIXME: treenode text-overflow
 	}
 `;

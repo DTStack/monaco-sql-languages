@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@dtinsight/molecule': 2.0.0-alpha.0
+  '@dtinsight/molecule': 2.0.0-alpha.1
   '@esbuild-plugins/node-globals-polyfill': ^0.2.3
   '@esbuild-plugins/node-modules-polyfill': ^0.2.2
   '@jcubic/lips': ^0.20.3
@@ -29,7 +29,7 @@ specifiers:
   vite-plugin-commonjs: ^0.7.1
 
 dependencies:
-  '@dtinsight/molecule': 2.0.0-alpha.0_f00573bd3726c9f289cfe34c027997e4
+  '@dtinsight/molecule': 2.0.0-alpha.1_f00573bd3726c9f289cfe34c027997e4
   '@esbuild-plugins/node-globals-polyfill': 0.2.3
   '@esbuild-plugins/node-modules-polyfill': 0.2.2
   '@jcubic/lips': 0.20.3
@@ -300,8 +300,8 @@ packages:
       standard-version: 9.5.0
     dev: false
 
-  /@dtinsight/molecule/2.0.0-alpha.0_f00573bd3726c9f289cfe34c027997e4:
-    resolution: {integrity: sha512-a43k5SOgtxGMFY3KcMCp+VZ18844CalIAWACSb8Sh31ORpXCx95O25JzrAiZBmrck+KZyz+UqG86uykhHf31XQ==}
+  /@dtinsight/molecule/2.0.0-alpha.1_f00573bd3726c9f289cfe34c027997e4:
+    resolution: {integrity: sha512-UnoZC5S855WSGVYUpkGl/y89czoGcD5ozm6kwxQ1+4PB9ZUG3vU8Mn/qtufMMyhMVP0i+lJSs+kVeGozZwdw2g==}
     peerDependencies:
       react: '>=16.13.1'
       react-dom: '>=16.13.1'
@@ -320,6 +320,7 @@ packages:
       react-dom: 18.2.0_react@18.2.0
       react-use: 17.4.2_react-dom@18.2.0+react@18.2.0
       reflect-metadata: 0.1.13
+      sonner: 1.4.2_react-dom@18.2.0+react@18.2.0
       tapable: 2.2.1
       tsyringe: 4.8.0
       use-sync-external-store: 1.2.0_react@18.2.0
@@ -2956,6 +2957,16 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
+
+  /sonner/1.4.2_react-dom@18.2.0+react@18.2.0:
+    resolution: {integrity: sha512-x3Kfzfhb56V/ErvUnH5dZcsu6QkZpyIlRAogO4vAbN+AkBsA/8CFqOV+5djqbE5pQCpejtO4JBWL1zRj2sO/Vg==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

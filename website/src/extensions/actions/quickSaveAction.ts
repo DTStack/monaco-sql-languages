@@ -1,10 +1,8 @@
-// FIXME: 直接从根目录导出
-import { IMoleculeContext, KeybindingWeight } from '@dtinsight/molecule';
-import { BaseAction } from '@dtinsight/molecule/esm/glue';
+import { IMoleculeContext, KeybindingWeight, glue } from '@dtinsight/molecule';
 import { KeyChord, KeyCode, KeyMod } from '@dtinsight/molecule/esm/monaco';
 import * as content from '../../storage/content';
 
-export default class QuickSaveAction extends BaseAction {
+export default class QuickSaveAction extends glue.BaseAction {
 	static readonly ID = 'workbench.action.quickSave';
 
 	constructor(private molecule: IMoleculeContext) {

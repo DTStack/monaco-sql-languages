@@ -10,7 +10,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@dtinsight/molecule": "2.0.0-alpha.0",
+		"@dtinsight/molecule": "2.0.0-alpha.1",
 		"@esbuild-plugins/node-globals-polyfill": "^0.2.3",
 		"@esbuild-plugins/node-modules-polyfill": "^0.2.2",
 		"@jcubic/lips": "^0.20.3",

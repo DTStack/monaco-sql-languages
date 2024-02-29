@@ -1,11 +1,10 @@
-import { IMoleculeContext, KeybindingWeight } from '@dtinsight/molecule';
-// FIXME: 直接从根目录导出
-import { BaseAction } from '@dtinsight/molecule/esm/glue';
+import { IMoleculeContext, KeybindingWeight, glue } from '@dtinsight/molecule';
 import { KeyChord, KeyCode, KeyMod } from '@dtinsight/molecule/esm/monaco';
 import lips from '@jcubic/lips';
 import { RUN_SQL_ID } from '../../const';
+import type { TreeNode } from '../../types';
 
-export default class QuickExecuteAction extends BaseAction {
+export default class QuickExecuteAction extends glue.BaseAction {
 	static readonly ID = 'workbench.action.quickExecute';
 
 	constructor(private molecule: IMoleculeContext) {
@@ -25,10 +24,8 @@ export default class QuickExecuteAction extends BaseAction {
 
 	run() {
 		const molecule = this.molecule;
-		// TODO
 		const group = molecule.editor.getCurrentGroup();
-		// FIXME: 这个函数应该支持范型
-		const tab = molecule.editor.getCurrentTab();
+		const tab = molecule.editor.getCurrentTab<TreeNode>();
 		if (!group?.editorInstance || !tab) return;
 		const instance = group.editorInstance;
 		// 获取全部文本
@@ -40,7 +37,7 @@ export default class QuickExecuteAction extends BaseAction {
 		import('monaco-sql-languages/out/esm/languageService')
 			.then(({ LanguageService }) => {
 				const languageService = new LanguageService();
-				return languageService.parserTreeToString(tab.language!, text);
+				return languageService.parserTreeToString(tab.language || 'sql', text);
 			})
 			.then((res) => {
 				const pre = res?.replace(/(\(|\))/g, '$1\n');

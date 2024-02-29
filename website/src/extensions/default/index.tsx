@@ -26,9 +26,8 @@ export const defaultExt: IExtension = {
 	name: 'defaultExt',
 	contributes: {
 		[IContributeType.Modules]: {
-			// FIXME: Molecule 应该支持传 null 表示不渲染某组件
-			menuBar: import('../Null'),
-			activityBar: import('../Null'),
+			menuBar: null,
+			activityBar: null,
 			sidebar: import('../../workbench/sidebar'),
 			editor: import('../../workbench/editor')
 		}
@@ -40,7 +39,7 @@ export const defaultExt: IExtension = {
 		// 默认不展示 Panel
 		molecule.layout.setPanel(false);
 		// 设置 sidebar 的默认值
-		molecule.layout.setPaneSize(['280px', 'auto']);
+		// molecule.layout.setPaneSize([280, 'auto']);
 		// 重置 toolbar
 		molecule.editor.dispatch((draft) => {
 			draft.toolbar = [

@@ -26,7 +26,7 @@ export default function PoweredBy() {
 	return (
 		<>
 			<Container onClick={handleOpen}>
-				<components.icon.default type="code" />
+				<components.Icon type="code" />
 			</Container>
 			{createPortal(
 				<Dialog open={open} onClick={(e) => e.target === e.currentTarget && setOpen(false)}>
@@ -52,13 +52,13 @@ export default function PoweredBy() {
 							</Text>
 						</Row>
 						<ButtonRow>
-							<components.button.Button
+							<components.Button
 								autoFocus
 								onClick={() => setOpen(false)}
 								size="large"
 							>
 								确认
-							</components.button.Button>
+							</components.Button>
 						</ButtonRow>
 					</Boxen>
 				</Dialog>,

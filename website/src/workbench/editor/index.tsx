@@ -19,11 +19,12 @@ export default function Editor({ onMount, onModelMount, onToolbarClick }: IEdito
 	const tab = group?.data.find(utils.searchById(group.activeTab));
 	return (
 		<Container>
-			<components.progress.default active={editor.loading} />
+			<components.Progress active={editor.loading} />
 			{tab ? (
 				<Tab
 					data={tab}
 					groupId={group!.id}
+					instance={group?.editorInstance}
 					toolbar={editor.toolbar}
 					options={options}
 					onMount={onMount}
@@ -31,7 +32,7 @@ export default function Editor({ onMount, onModelMount, onToolbarClick }: IEdito
 					onToolbarClick={onToolbarClick}
 				/>
 			) : (
-				editor.entry || <components.welcome.default />
+				editor.entry || <components.Welcome />
 			)}
 		</Container>
 	);

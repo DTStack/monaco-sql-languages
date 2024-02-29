@@ -3,8 +3,6 @@ import { Actions, Container, EditorWrapper, Header, Name, Text, Title } from './
 import { editor } from 'monaco-editor';
 import { createElement, useEffect, useMemo, useRef } from 'react';
 import useEdit from '../../hooks/useEdit';
-import { emit } from '../../storage/tmp';
-import { EVENTS } from '../../const';
 import { helper } from '../../components/icon/helper';
 
 interface ITabProps
@@ -17,6 +15,7 @@ interface ITabProps
 	groupId: UniqueId;
 	options: editor.IEditorOptions;
 	toolbar: IMenuItemProps[];
+	onSubmit?: (taskName: string) => void;
 }
 
 export default function Tab({
@@ -27,7 +26,8 @@ export default function Tab({
 	options,
 	onModelMount,
 	onMount,
-	onToolbarClick
+	onToolbarClick,
+	onSubmit
 }: ITabProps) {
 	const edit = useEdit();
 	const ref = useRef<HTMLDivElement>(null);
@@ -63,12 +63,11 @@ export default function Tab({
 	};
 
 	const handleSubmit = () => {
-		// FIXME: Molecule 应该支持把事件抛出去
 		edit.stop();
 		if (ref.current) {
 			ref.current.style.removeProperty('width');
 		}
-		emit(EVENTS.UPDATE_NAME, edit.data);
+		onSubmit?.(edit.data);
 	};
 
 	const handleEdit = () => {

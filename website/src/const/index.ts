@@ -23,5 +23,5 @@ export const POWERED_BY = 'powered.by';
 export const DELETE_TASK_ID = 'delete.task.id';
 
 export const EVENTS = {
-	UPDATE_NAME: 'update.name'
+	EDITOR_UPDATE_NAME: 'editor.update.name'
 } as const;

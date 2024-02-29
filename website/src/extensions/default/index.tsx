@@ -1,4 +1,11 @@
-import { IContributeType, IEditorTab, IExtension, UniqueId, utils } from '@dtinsight/molecule';
+import {
+	IContributeType,
+	IEditorTab,
+	IExtension,
+	UniqueId,
+	utils,
+	components
+} from '@dtinsight/molecule';
 import {
 	CREATE_TASK_ID,
 	DELETE_TASK_ID,
@@ -20,6 +27,7 @@ import { subscribe } from '../../storage/tmp';
 import { LanguageIdEnum } from 'monaco-sql-languages/out/esm/main.js';
 import PoweredBy from '../../workbench/powerBy';
 import QuickExecuteAction from '../actions/quickExecuteAction';
+import Space from '../../components/space';
 
 export const defaultExt: IExtension = {
 	id: 'defaultExt',
@@ -75,7 +83,13 @@ export const defaultExt: IExtension = {
 			(key) =>
 				({
 					id: key,
-					name: key,
+					// FIXME: Should Support ReactNode
+					name: (
+						<Space>
+							<components.Icon type="repo" />
+							{key}
+						</Space>
+					) as any,
 					toolbar: [
 						{
 							id: CREATE_TASK_ID,
@@ -133,6 +147,12 @@ export const defaultExt: IExtension = {
 			}
 		});
 
+		molecule.editor.onClose((tabs) => {
+			tabs.forEach((tab) => {
+				content.set(tab.id as string, tab.value || '');
+			});
+		});
+
 		molecule.contextMenu.onClick((item) => {
 			const scope = molecule.contextMenu.getScope<{ id: LanguageIdEnum; treeId: UniqueId }>();
 			switch (item.id) {
@@ -163,8 +183,7 @@ export const defaultExt: IExtension = {
 			}
 		});
 
-		// FIXME：MOLECULE 应该支持自定义事件
-		subscribe(EVENTS.UPDATE_NAME, (value: string) => {
+		molecule.editor.subscribe(EVENTS.EDITOR_UPDATE_NAME, (value: string) => {
 			const tab = molecule.editor.getCurrentTab();
 			const groupId = molecule.editor.getCurrent();
 			if (tab && groupId) {
@@ -178,11 +197,6 @@ export const defaultExt: IExtension = {
 				});
 			}
 		});
-
-		// FIXME: Molecule 应该支持 closeTab 的事件
-		function onCloseTab(tab: IEditorTab<any>) {
-			content.set(tab.id as string, tab.value || '');
-		}
 
 		async function create(key: LanguageIdEnum) {
 			const id = new Date().valueOf().toString();
@@ -222,7 +236,6 @@ export const defaultExt: IExtension = {
 		function closeCurrentTab() {
 			const tab = molecule.editor.getCurrentTab();
 			if (tab) {
-				onCloseTab(tab);
 				molecule.editor.closeTab(tab.id, molecule.editor.getCurrentGroup()!.id);
 			}
 		}

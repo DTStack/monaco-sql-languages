@@ -38,8 +38,6 @@ export const defaultExt: IExtension = {
 		});
 		// 默认不展示 Panel
 		molecule.layout.setPanel(false);
-		// 设置 sidebar 的默认值
-		// molecule.layout.setPaneSize([280, 'auto']);
 		// 重置 toolbar
 		molecule.editor.dispatch((draft) => {
 			draft.toolbar = [

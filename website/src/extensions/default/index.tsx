@@ -1,11 +1,4 @@
-import {
-	IContributeType,
-	IEditorTab,
-	IExtension,
-	UniqueId,
-	utils,
-	components
-} from '@dtinsight/molecule';
+import { IContributeType, IExtension, UniqueId, utils, components } from '@dtinsight/molecule';
 import {
 	CREATE_TASK_ID,
 	DELETE_TASK_ID,
@@ -23,7 +16,6 @@ import * as task from '../../storage/task';
 import { TreeNodeModel } from '@dtinsight/molecule/esm/utils/tree';
 import Language from '../../workbench/language';
 import Path from '../../workbench/path';
-import { subscribe } from '../../storage/tmp';
 import { LanguageIdEnum } from 'monaco-sql-languages/out/esm/main.js';
 import PoweredBy from '../../workbench/powerBy';
 import QuickExecuteAction from '../actions/quickExecuteAction';

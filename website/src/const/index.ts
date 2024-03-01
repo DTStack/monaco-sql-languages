@@ -20,6 +20,8 @@ export const TASK_PATH = 'task.path';
 
 export const POWERED_BY = 'powered.by';
 
+export const QUICK_GITHUB = 'quick.github';
+
 export const DELETE_TASK_ID = 'delete.task.id';
 
 export const EVENTS = {

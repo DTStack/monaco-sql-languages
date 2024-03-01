@@ -1,10 +1,14 @@
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 import { Container } from './styled';
 
-interface ISpaceProps {
+interface ISpaceProps extends HTMLAttributes<HTMLDivElement> {
 	size?: number;
 }
 
-export default function Space({ children, size = 8 }: PropsWithChildren<ISpaceProps>) {
-	return <Container gap={size}>{children}</Container>;
+export default function Space({ children, size = 8, ...rest }: PropsWithChildren<ISpaceProps>) {
+	return (
+		<Container gap={size} {...rest}>
+			{children}
+		</Container>
+	);
 }

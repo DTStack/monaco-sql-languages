@@ -1,23 +1,11 @@
 import { IContributeType, IExtension, UniqueId, utils, components } from '@dtinsight/molecule';
-import {
-	CREATE_TASK_ID,
-	DELETE_TASK_ID,
-	EVENTS,
-	POWERED_BY,
-	RUN_SQL_ID,
-	SUPPORT_LANGUAGES,
-	TASK_PATH,
-	TASK_TYPE
-} from '../../const';
+import { CREATE_TASK_ID, DELETE_TASK_ID, EVENTS, RUN_SQL_ID, SUPPORT_LANGUAGES } from '../../const';
 import type { IExplorerPanelItem } from '@dtinsight/molecule/esm/models/explorer';
 import Tree from '../../workbench/tree';
 import * as content from '../../storage/content';
 import * as task from '../../storage/task';
 import { TreeNodeModel } from '@dtinsight/molecule/esm/utils/tree';
-import Language from '../../workbench/language';
-import Path from '../../workbench/path';
 import { LanguageIdEnum } from 'monaco-sql-languages/out/esm/main.js';
-import PoweredBy from '../../workbench/powerBy';
 import QuickExecuteAction from '../actions/quickExecuteAction';
 import Space from '../../components/space';
 
@@ -48,28 +36,6 @@ export const defaultExt: IExtension = {
 				}
 			];
 		});
-		molecule.statusBar.add({
-			id: TASK_TYPE,
-			name: '编辑器语言',
-			alignment: 'right',
-			sortIndex: 12,
-			render: () => <Language />
-		});
-		// FIXME: 空状态不应该有宽度
-		molecule.statusBar.add({
-			id: TASK_PATH,
-			name: '路径',
-			alignment: 'left',
-			sortIndex: 2,
-			render: () => <Path />
-		});
-		molecule.statusBar.add({
-			id: POWERED_BY,
-			name: '关于',
-			alignment: 'left',
-			sortIndex: 1,
-			render: () => <PoweredBy />
-		});
 
 		const items = SUPPORT_LANGUAGES.map(
 			(key) =>
@@ -82,6 +48,7 @@ export const defaultExt: IExtension = {
 							{key}
 						</Space>
 					) as any,
+					title: key,
 					toolbar: [
 						{
 							id: CREATE_TASK_ID,

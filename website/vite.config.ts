@@ -9,7 +9,12 @@ import commonjs from 'vite-plugin-commonjs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [commonjs(), react()],
+	plugins: [
+		commonjs(),
+		react({
+			jsxRuntime: 'automatic'
+		})
+	],
 	define: {
 		'process.env': process.env
 	},

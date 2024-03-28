@@ -1,14 +1,14 @@
 import { worker } from '../fillers/monaco-editor-core';
-import PgSQL from 'dt-sql-parser/dist/parser/pgsql';
+import { PostgreSQL } from 'dt-sql-parser/dist/parser/postgresql';
 import { ICreateData } from '../_.contribution';
 import { BaseSQLWorker } from '../baseSQLWorker';
 export class PgSQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;
-	protected parser: PgSQL;
+	protected parser: PostgreSQL;
 	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
 		super();
 		this._ctx = ctx;
-		this.parser = new PgSQL();
+		this.parser = new PostgreSQL();
 	}
 }
 

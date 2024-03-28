@@ -4,10 +4,11 @@ import {
 	diagnosticDefault,
 	modeConfigurationDefault
 } from './_.contribution';
-import { IWorker, WorkerAccessor } from './languageFeatures';
+import { WorkerAccessor } from './languageFeatures';
 import { WorkerManager } from './workerManager';
+import { BaseSQLWorker } from './baseSQLWorker';
 
-type ClientWorker = (...uris: any) => Promise<IWorker>;
+type ClientWorker = (...uris: any) => Promise<BaseSQLWorker>;
 
 export class LanguageService {
 	private worker: Map<string, WorkerAccessor<any>> = new Map();

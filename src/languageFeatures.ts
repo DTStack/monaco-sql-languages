@@ -9,24 +9,15 @@ import {
 	CancellationToken
 } from './fillers/monaco-editor-core';
 import { debounce } from './common/utils';
-import type { Suggestions, ParseError } from 'dt-sql-parser';
+import type { ParseError } from 'dt-sql-parser';
 import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
+import { BaseSQLWorker } from './baseSQLWorker';
 
-export interface WorkerAccessor<T> {
+export interface WorkerAccessor<T extends BaseSQLWorker> {
 	(first: Uri, ...more: Uri[]): Promise<T>;
 }
 
-export interface IWorker extends ILanguageWorkerWithCompletions {
-	doValidation(uri: string): Promise<ParseError[]>;
-	valid(code: string): Promise<ParseError[]>;
-	parserTreeToString(code: string): Promise<ParseError[]>;
-}
-
-export interface ILanguageWorkerWithCompletions {
-	doComplete(uri: string, position: Position): Promise<Suggestions | null>;
-}
-
-export class DiagnosticsAdapter<T extends IWorker> {
+export class DiagnosticsAdapter<T extends BaseSQLWorker> {
 	private _disposables: IDisposable[] = [];
 	private _listener: { [uri: string]: IDisposable } = Object.create(null);
 
@@ -133,7 +124,9 @@ function toDiagnostics(resource: Uri, diag: ParseError): editor.IMarkerData {
 	};
 }
 
-export class CompletionAdapter<T extends IWorker> implements languages.CompletionItemProvider {
+export class CompletionAdapter<T extends BaseSQLWorker>
+	implements languages.CompletionItemProvider
+{
 	constructor(private readonly _worker: WorkerAccessor<T>, defaults: LanguageServiceDefaults) {
 		this._defaults = defaults;
 	}
@@ -153,14 +146,17 @@ export class CompletionAdapter<T extends IWorker> implements languages.Completio
 		const resource = model.uri;
 		return this._worker(resource)
 			.then((worker) => {
-				return worker.doComplete(editor.getModel(resource)?.getValue() || '', position);
+				return worker.doCompletionWithEntities(
+					editor.getModel(resource)?.getValue() || '',
+					position
+				);
 			})
-			.then((suggestions) => {
+			.then(([suggestions, allEntities]) => {
 				const completionService =
 					typeof this._defaults.completionService === 'function'
 						? this._defaults.completionService
 						: defaultCompletionService;
-				return completionService(model, position, context, suggestions);
+				return completionService(model, position, context, suggestions, allEntities);
 			})
 			.then((completions) => {
 				const wordInfo = model.getWordUntilPosition(position);

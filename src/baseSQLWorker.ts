@@ -1,11 +1,11 @@
-import BasicParser from 'dt-sql-parser/dist/parser/common/basicParser';
+import { BasicSQL } from 'dt-sql-parser/dist/parser/common/basicSQL';
 import { worker } from './fillers/monaco-editor-core';
-import { Suggestions, ParseError } from 'dt-sql-parser';
+import { Suggestions, ParseError, EntityContext } from 'dt-sql-parser';
 import { Position } from './fillers/monaco-editor-core';
 
 export abstract class BaseSQLWorker {
 	protected abstract _ctx: worker.IWorkerContext;
-	protected abstract parser: BasicParser;
+	protected abstract parser: BasicSQL;
 	protected keywords: string[] = [];
 
 	async doValidation(code: string): Promise<ParseError[]> {
@@ -35,11 +35,36 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve('');
 	}
 
-	async doComplete(code: string, position: Position): Promise<Suggestions | null> {
+	async doCompletion(code: string, position: Position): Promise<Suggestions | null> {
 		code = code || this.getTextDocument();
 		if (code) {
 			const suggestions = this.parser.getSuggestionAtCaretPosition(code, position);
 			return Promise.resolve(suggestions);
+		}
+		return Promise.resolve(null);
+	}
+
+	async doCompletionWithEntities(
+		code: string,
+		position: Position
+	): Promise<[Suggestions | null, EntityContext[] | null]> {
+		code = code || this.getTextDocument();
+		if (code) {
+			const suggestions = this.parser.getSuggestionAtCaretPosition(code, position);
+			let allEntities = null;
+			if (suggestions?.syntax?.length) {
+				allEntities = this.parser.getAllEntities(code, position);
+			}
+			return Promise.resolve([suggestions, allEntities]);
+		}
+		return Promise.resolve([null, null]);
+	}
+
+	async getAllEntities(code: string, position: Position): Promise<EntityContext[] | null> {
+		code = code || this.getTextDocument();
+		if (code) {
+			const allEntities = this.parser.getAllEntities(code, position);
+			return Promise.resolve(allEntities);
 		}
 		return Promise.resolve(null);
 	}

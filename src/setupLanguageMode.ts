@@ -2,8 +2,9 @@ import { WorkerManager } from './workerManager';
 import { LanguageServiceDefaults } from './_.contribution';
 import * as languageFeatures from './languageFeatures';
 import { Uri, IDisposable, languages } from './fillers/monaco-editor-core';
+import type { BaseSQLWorker } from './baseSQLWorker';
 
-export function setupLanguageMode<T extends languageFeatures.IWorker>(
+export function setupLanguageMode<T extends BaseSQLWorker>(
 	defaults: LanguageServiceDefaults
 ): IDisposable {
 	const disposables: IDisposable[] = [];

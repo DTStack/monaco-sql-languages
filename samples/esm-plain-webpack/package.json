@@ -16,7 +16,6 @@
 		"html-webpack-plugin": "^5.5.4",
 		"mini-cup": "^1.1.3",
 		"style-loader": "^3.3.3",
-		"terser-webpack-plugin": "^5.3.9",
 		"ts-loader": "^9.5.1",
 		"typescript": "^5.2.2",
 		"webpack": "^5.89.0",
@@ -24,9 +23,7 @@
 		"webpack-dev-server": "^4.15.1"
 	},
 	"dependencies": {
-		"assert": "^2.1.0",
 		"monaco-editor": "0.31.0",
-		"monaco-sql-languages": "0.12.0-beta.9",
-		"util": "^0.12.5"
+		"monaco-sql-languages": "0.12.0-beta.ng.1"
 	}
 }

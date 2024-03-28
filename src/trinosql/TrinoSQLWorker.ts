@@ -1,5 +1,5 @@
 import { worker } from '../fillers/monaco-editor-core';
-import TrinoSQL from 'dt-sql-parser/dist/parser/trinosql';
+import { TrinoSQL } from 'dt-sql-parser/dist/parser/trino';
 import { ICreateData } from '../_.contribution';
 import { BaseSQLWorker } from '../baseSQLWorker';
 

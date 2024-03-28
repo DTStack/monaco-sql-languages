@@ -1,5 +1,5 @@
 import { worker } from '../fillers/monaco-editor-core';
-import PLSQL from 'dt-sql-parser/dist/parser/plsql';
+import { PLSQL } from 'dt-sql-parser/dist/parser/plsql';
 import { ICreateData } from '../_.contribution';
 import { BaseSQLWorker } from '../baseSQLWorker';
 

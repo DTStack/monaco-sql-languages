@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { languages, Emitter, IEvent, editor, Position, IRange } from './fillers/monaco-editor-core';
-import { Suggestions } from 'dt-sql-parser';
+import { EntityContext, Suggestions } from 'dt-sql-parser';
 
 interface ILang extends languages.ILanguageExtensionPoint {
 	loader: () => Promise<ILangImpl>;
@@ -174,7 +174,8 @@ export type CompletionService = (
 	model: editor.IReadOnlyModel,
 	position: Position,
 	completionContext: languages.CompletionContext,
-	suggestions: Suggestions | null
+	suggestions: Suggestions | null,
+	entities: EntityContext[] | null
 ) => Promise<ICompletionItem[] | ICompletionList>;
 
 export interface LanguageServiceDefaults {

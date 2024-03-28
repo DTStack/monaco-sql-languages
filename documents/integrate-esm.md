@@ -5,32 +5,6 @@ English | [简体中文](./integrate-esm.zh-CN.md)
 ## Integration Samples
 There are some integration samples in `samples/` folder, here is the [development doc](../samples/README.md) of these samples.
 
-Integration problem solving refer to [problem-soling](./problem-solving.md).
-
-
-## Prerequisites
-Since `dt-sql-parser` depends on `antlr4ts` which imports some Node.js core modules internally, including:
-
-+ `assert`
-+ `util`
-+ `fs`
-
-Before starting the integration, you need to install the polyfills of these modules to make sure Monaco SQL Languages can run properly, the following polyfill packages are recommended:
-```bash
-npm install assert util --save-dev
-```
-
-If the treeShaking of the bundler used in the project works well (which is the case in most situations), the polyfill of `fs` module is not necessary.
-
-More about polyfill of Node.js core modules, refer to [webpack doc#resolvefallback](https://webpack.js.org/configuration/resolve/#resolvefallback)。
-
-Besides, you also need to define the environment variable `process.env.NODE_DEBUG`, different building tools have different ways to define it, refer to the samples in the following context.
-
-<br/>
-
-> The prerequisites seem to be a bit cumbersome, which brings a lot of unnecessary troubles to the integration of Monaco SQL Languages. We are trying to solve this problem, such as replacing the runtime of ANTLR4 in `dt-sql-parser`.
-
-<br/>
 
 ## Use Monaco Editor WebPack Plugin
 This is the easiest way to integrate Monaco SQL Languages
@@ -114,10 +88,7 @@ This is the easiest way to integrate Monaco SQL Languages
     module.exports = {
         // ...
         plugins: [
-            new webpack.DefinePlugin({
-                'process.env.NODE_DEBUG': process.env.NODE_DEBUG,
-            }),
-            monacoEditorPlugin // Apply monacoEditorPlugin
+			         monacoEditorPlugin // Apply  monacoEditorPlugin
         ]
     };
     ```
@@ -144,12 +115,7 @@ More options of Monaco Editor Webpack Plugin, refer to [here](https://github.com
             'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
             'impalasql.worker': 'monaco-sql-languages/out/esm/impalasql/impalasql.worker.js',
             'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
-        },
-        plugins: [
-            new webpack.DefinePlugin({
-                'process.env.NODE_DEBUG': process.env.NODE_DEBUG, // define process.env.NODE_DEBUG
-            }),
-        ]
+        }
     };
     ```
 
@@ -193,19 +159,10 @@ More options of Monaco Editor Webpack Plugin, refer to [here](https://github.com
 ## Use Vite
 Currently, there might be a problem that worker files cannot be loaded when integrating with vite, for details please refer to [issue#87](https://github.com/DTStack/monaco-sql-languages/issues/87)
 
-1. define `process.env` in `vite.config.ts`
-    ```typescript
-    export default defineConfig({
-        // ...
-        define: {
-            'process.env': process.env
-        }
-    });
-    ```
 
-2. Define `MonacoEnvironment` and declare `getWorker`
+1. Define `MonacoEnvironment` and declare `getWorker`
     ```typescript
-    import EditorWorker from '../../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
+    import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 
     import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
     import SparkSQLWorker from 'monaco-sql-languages/out/esm/sparksql/sparksql.worker?worker';

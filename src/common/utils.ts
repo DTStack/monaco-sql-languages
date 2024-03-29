@@ -1,15 +1,19 @@
-export function debounce(func: Function, timeout: number, immediate?: boolean) {
-	let timer: any = null;
-	return (...args: any) => {
+export function debounce<T extends (...args: unknown[]) => unknown>(
+	func: T,
+	timeout: number,
+	immediate?: boolean
+): (...args: Parameters<T>) => unknown {
+	let timer: NodeJS.Timeout | null = null;
+	return (...args) => {
 		if (timer) {
 			clearTimeout(timer);
 		}
 		if (immediate && !timer) {
-			func?.(...args);
+			return func?.(...args);
 		}
 
 		timer = setTimeout(() => {
-			clearTimeout(timer);
+			timer && clearTimeout(timer);
 			timer = null;
 			func?.(...args);
 		}, timeout);

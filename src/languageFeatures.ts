@@ -9,9 +9,9 @@ import {
 	CancellationToken
 } from './fillers/monaco-editor-core';
 import { debounce } from './common/utils';
+import { BaseSQLWorker } from './baseSQLWorker';
 import type { ParseError } from 'dt-sql-parser';
 import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
-import { BaseSQLWorker } from './baseSQLWorker';
 
 export interface WorkerAccessor<T extends BaseSQLWorker> {
 	(first: Uri, ...more: Uri[]): Promise<T>;
@@ -24,7 +24,7 @@ export class DiagnosticsAdapter<T extends BaseSQLWorker> {
 	constructor(
 		private _languageId: string,
 		private _worker: WorkerAccessor<T>,
-		defaults: LanguageServiceDefaults
+		private _defaults: LanguageServiceDefaults
 	) {
 		const onModelAdd = (model: editor.IModel): void => {
 			let modeId = model.getLanguageId();
@@ -61,7 +61,7 @@ export class DiagnosticsAdapter<T extends BaseSQLWorker> {
 			})
 		);
 
-		defaults.onDidChange((_) => {
+		this._defaults.onDidChange((_) => {
 			editor.getModels().forEach((model) => {
 				if (model.getLanguageId() === this._languageId) {
 					onModelRemoved(model);
@@ -89,7 +89,11 @@ export class DiagnosticsAdapter<T extends BaseSQLWorker> {
 	private _doValidate(resource: Uri, languageId: string): void {
 		this._worker(resource)
 			.then((worker) => {
-				return worker.doValidation(editor.getModel(resource)?.getValue() || '');
+				let code = editor.getModel(resource)?.getValue() || '';
+				if (typeof this._defaults.preprocessCode === 'function') {
+					code = this._defaults.preprocessCode(code);
+				}
+				return worker.doValidation(code);
 			})
 			.then((diagnostics) => {
 				const markers = diagnostics.map((d) => toDiagnostics(resource, d));
@@ -146,10 +150,11 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 		const resource = model.uri;
 		return this._worker(resource)
 			.then((worker) => {
-				return worker.doCompletionWithEntities(
-					editor.getModel(resource)?.getValue() || '',
-					position
-				);
+				let code = editor.getModel(resource)?.getValue() || '';
+				if (typeof this._defaults.preprocessCode === 'function') {
+					code = this._defaults.preprocessCode(code);
+				}
+				return worker.doCompletionWithEntities(code, position);
 			})
 			.then(([suggestions, allEntities]) => {
 				const completionService =

@@ -178,12 +178,19 @@ export type CompletionService = (
 	entities: EntityContext[] | null
 ) => Promise<ICompletionItem[] | ICompletionList>;
 
+/**
+ * A function to preprocess code.
+ * @param code editor value
+ */
+export type PreprocessCode = (code: string) => string;
+
 export interface LanguageServiceDefaults {
 	readonly languageId: string;
 	readonly onDidChange: IEvent<LanguageServiceDefaults>;
 	readonly diagnosticsOptions: DiagnosticsOptions;
 	readonly modeConfiguration: ModeConfiguration;
 	readonly completionService?: CompletionService;
+	readonly preprocessCode?: PreprocessCode;
 	setDiagnosticsOptions(options: DiagnosticsOptions): void;
 	setModeConfiguration(modeConfiguration: ModeConfiguration): void;
 }
@@ -194,17 +201,20 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 	private _modeConfiguration!: ModeConfiguration;
 	private _languageId: string;
 	private _completionService?: CompletionService;
+	private _preprocessCode?: PreprocessCode;
 
 	constructor(
 		languageId: string,
 		diagnosticsOptions: DiagnosticsOptions,
 		modeConfiguration: ModeConfiguration,
-		completionService?: CompletionService
+		completionService?: CompletionService,
+		preprocessCode?: PreprocessCode
 	) {
 		this._languageId = languageId;
 		this.setDiagnosticsOptions(diagnosticsOptions);
 		this.setModeConfiguration(modeConfiguration);
 		this._completionService = completionService;
+		this._preprocessCode = preprocessCode;
 	}
 
 	get onDidChange(): IEvent<LanguageServiceDefaults> {
@@ -225,6 +235,10 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 
 	get completionService(): CompletionService | undefined {
 		return this._completionService;
+	}
+
+	get preprocessCode(): PreprocessCode | undefined {
+		return this._preprocessCode;
 	}
 
 	setDiagnosticsOptions(options: DiagnosticsOptions): void {

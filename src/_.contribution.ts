@@ -80,10 +80,6 @@ export function registerLanguage(def: ILang): void {
 	});
 }
 
-export interface ICreateData {
-	languageId: string;
-}
-
 export interface ModeConfiguration {
 	/**
 	 * Defines whether the built-in completionItemProvider is enabled.

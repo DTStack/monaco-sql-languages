@@ -17,14 +17,6 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([]);
 	}
 
-	async valid(code: string): Promise<ParseError[]> {
-		if (code) {
-			const result = this.parser.validate(code);
-			return Promise.resolve(result);
-		}
-		return Promise.resolve([]);
-	}
-
 	async parserTreeToString(code: string): Promise<string> {
 		if (code) {
 			const parser = this.parser.createParser(code);
@@ -60,7 +52,7 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([null, null]);
 	}
 
-	async getAllEntities(code: string, position: Position): Promise<EntityContext[] | null> {
+	async getAllEntities(code: string, position?: Position): Promise<EntityContext[] | null> {
 		code = code || this.getTextDocument();
 		if (code) {
 			const allEntities = this.parser.getAllEntities(code, position);

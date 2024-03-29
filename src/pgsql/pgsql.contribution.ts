@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { loadLanguage, registerLanguage } from '../_.contribution';
+import { registerLanguage } from '../_.contribution';
 import { setupLanguageFeatures } from '../setupLanguageFeatures';
 import { LanguageIdEnum } from '../common/constants';
 
@@ -13,8 +13,6 @@ registerLanguage({
 	aliases: ['PgSQL', 'postgresql', 'PostgreSQL'],
 	loader: () => import('./pgsql')
 });
-
-loadLanguage(LanguageIdEnum.PG);
 
 setupLanguageFeatures({
 	languageId: LanguageIdEnum.PG,

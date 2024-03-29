@@ -6,7 +6,8 @@ import { ICreateData } from '../_.contribution';
 export class FLinkSQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;
 	protected parser: FlinkSQL;
-	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
+	constructor(ctx: worker.IWorkerContext, _createData: ICreateData) {
+		// CreatedData is not required now.
 		super();
 		this._ctx = ctx;
 		this.parser = new FlinkSQL();

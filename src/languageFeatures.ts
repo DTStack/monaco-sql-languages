@@ -14,7 +14,7 @@ import type { ParseError } from 'dt-sql-parser';
 import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
 
 export interface WorkerAccessor<T extends BaseSQLWorker> {
-	(first: Uri, ...more: Uri[]): Promise<T>;
+	(...uris: Uri[]): Promise<T>;
 }
 
 export class DiagnosticsAdapter<T extends BaseSQLWorker> {
@@ -24,7 +24,7 @@ export class DiagnosticsAdapter<T extends BaseSQLWorker> {
 	constructor(
 		private _languageId: string,
 		private _worker: WorkerAccessor<T>,
-		private _defaults: LanguageServiceDefaults
+		private readonly _defaults: LanguageServiceDefaults
 	) {
 		const onModelAdd = (model: editor.IModel): void => {
 			let modeId = model.getLanguageId();
@@ -35,7 +35,7 @@ export class DiagnosticsAdapter<T extends BaseSQLWorker> {
 			this._listener[model.uri.toString()] = model.onDidChangeContent(
 				debounce(() => {
 					this._doValidate(model.uri, modeId);
-				}, 600)
+				}, 500)
 			);
 
 			this._doValidate(model.uri, modeId);
@@ -61,14 +61,16 @@ export class DiagnosticsAdapter<T extends BaseSQLWorker> {
 			})
 		);
 
-		this._defaults.onDidChange((_) => {
-			editor.getModels().forEach((model) => {
-				if (model.getLanguageId() === this._languageId) {
-					onModelRemoved(model);
-					onModelAdd(model);
-				}
-			});
-		});
+		this._disposables.push(
+			this._defaults.onDidChange((_) => {
+				editor.getModels().forEach((model) => {
+					if (model.getLanguageId() === this._languageId) {
+						onModelRemoved(model);
+						onModelAdd(model);
+					}
+				});
+			})
+		);
 
 		this._disposables.push({
 			dispose: () => {
@@ -115,7 +117,7 @@ function toSeverity(lsSeverity?: number): MarkerSeverity {
 	}
 }
 
-function toDiagnostics(resource: Uri, diag: ParseError): editor.IMarkerData {
+function toDiagnostics(_resource: Uri, diag: ParseError): editor.IMarkerData {
 	return {
 		severity: toSeverity(),
 		startLineNumber: diag.startLine,
@@ -131,11 +133,10 @@ function toDiagnostics(resource: Uri, diag: ParseError): editor.IMarkerData {
 export class CompletionAdapter<T extends BaseSQLWorker>
 	implements languages.CompletionItemProvider
 {
-	constructor(private readonly _worker: WorkerAccessor<T>, defaults: LanguageServiceDefaults) {
-		this._defaults = defaults;
-	}
-
-	private _defaults: LanguageServiceDefaults;
+	constructor(
+		private readonly _worker: WorkerAccessor<T>,
+		private readonly _defaults: LanguageServiceDefaults
+	) {}
 
 	public get triggerCharacters(): string[] {
 		return ['.', ' '];
@@ -145,7 +146,7 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 		model: editor.IReadOnlyModel,
 		position: Position,
 		context: languages.CompletionContext,
-		token: CancellationToken
+		_token: CancellationToken
 	): Promise<languages.CompletionList> {
 		const resource = model.uri;
 		return this._worker(resource)

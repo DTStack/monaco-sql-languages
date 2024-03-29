@@ -1,6 +1,6 @@
 import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
 import { CompletionService, ICompletionItem } from 'monaco-sql-languages/out/esm/languageService';
-import { SyntaxContextType } from 'monaco-sql-languages/out/esm/main';
+import { EntityContextType } from 'monaco-sql-languages/out/esm/main';
 
 import { getCatalogs, getDataBases, getSchemas, getTables, getViews } from './dbMetaProvider';
 
@@ -59,8 +59,8 @@ export const completionService: CompletionService = async function (
 		const wordCount = words.length;
 
 		if (
-			syntaxContextType === SyntaxContextType.CATALOG ||
-			syntaxContextType === SyntaxContextType.DATABASE_CREATE
+			syntaxContextType === EntityContextType.CATALOG ||
+			syntaxContextType === EntityContextType.DATABASE_CREATE
 		) {
 			if (!existCatalogCompletions && wordCount <= 1) {
 				syntaxCompletionItems = syntaxCompletionItems.concat(await getCatalogs(languageId));
@@ -69,9 +69,9 @@ export const completionService: CompletionService = async function (
 		}
 
 		if (
-			syntaxContextType === SyntaxContextType.DATABASE ||
-			syntaxContextType === SyntaxContextType.TABLE_CREATE ||
-			syntaxContextType === SyntaxContextType.VIEW_CREATE
+			syntaxContextType === EntityContextType.DATABASE ||
+			syntaxContextType === EntityContextType.TABLE_CREATE ||
+			syntaxContextType === EntityContextType.VIEW_CREATE
 		) {
 			if (!existCatalogCompletions && haveCatalog && wordCount <= 1) {
 				syntaxCompletionItems = syntaxCompletionItems.concat(await getCatalogs(languageId));
@@ -92,7 +92,7 @@ export const completionService: CompletionService = async function (
 			}
 		}
 
-		if (syntaxContextType === SyntaxContextType.TABLE) {
+		if (syntaxContextType === EntityContextType.TABLE) {
 			if (wordCount <= 1) {
 				if (!existCatalogCompletions && haveCatalog) {
 					const ctas = await getCatalogs(languageId);
@@ -137,7 +137,7 @@ export const completionService: CompletionService = async function (
 			}
 		}
 
-		if (syntaxContextType === SyntaxContextType.VIEW) {
+		if (syntaxContextType === EntityContextType.VIEW) {
 			if (wordCount <= 1) {
 				if (!existCatalogCompletions && haveCatalog) {
 					syntaxCompletionItems = syntaxCompletionItems.concat(

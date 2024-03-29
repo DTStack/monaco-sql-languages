@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { loadLanguage, registerLanguage } from '../_.contribution';
+import { registerLanguage } from '../_.contribution';
 import { setupLanguageFeatures } from '../setupLanguageFeatures';
 import { LanguageIdEnum } from '../common/constants';
 
@@ -13,8 +13,6 @@ registerLanguage({
 	aliases: ['HiveSQL', 'hive', 'Hive'],
 	loader: () => import('./hivesql')
 });
-
-loadLanguage(LanguageIdEnum.HIVE);
 
 setupLanguageFeatures({
 	languageId: LanguageIdEnum.HIVE,

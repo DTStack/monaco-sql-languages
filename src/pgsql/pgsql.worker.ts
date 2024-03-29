@@ -3,7 +3,8 @@ import * as EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker.js';
 import { ICreateData } from '../_.contribution';
 import { PgSQLWorker } from './PgSQLWorker';
 
-self.onmessage = (e: any) => {
+self.onmessage = () => {
+	// ignore the first message
 	EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
 		return new PgSQLWorker(ctx, createData);
 	});

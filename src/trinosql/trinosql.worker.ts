@@ -3,7 +3,8 @@ import * as EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker.js';
 import { ICreateData } from '../_.contribution';
 import { TrinoSQLWorker } from './TrinoSQLWorker';
 
-self.onmessage = (e: any) => {
+self.onmessage = () => {
+	// ignore the first message
 	EditorWorker.initialize((ctx: worker.IWorkerContext, createData: ICreateData) => {
 		return new TrinoSQLWorker(ctx, createData);
 	});

@@ -4,40 +4,73 @@ import {
 	diagnosticDefault,
 	modeConfigurationDefault
 } from './_.contribution';
-import { WorkerAccessor } from './languageFeatures';
 import { WorkerManager } from './workerManager';
 import { BaseSQLWorker } from './baseSQLWorker';
+import { Position, Uri, editor } from './fillers/monaco-editor-core';
 
-type ClientWorker = (...uris: any) => Promise<BaseSQLWorker>;
+export class LanguageService<T extends BaseSQLWorker = BaseSQLWorker> {
+	private workerClients: Map<string, WorkerManager<T>> = new Map();
 
-export class LanguageService {
-	private worker: Map<string, WorkerAccessor<any>> = new Map();
+	public valid(language: string, model: editor.IReadOnlyModel | string) {
+		const text = typeof model === 'string' ? model : model.getValue();
+		const uri = typeof model === 'string' ? void 0 : model.uri;
 
-	public valid(language: string, sqlContent: string): Promise<any> {
-		const clientWorker = this.getClientWorker(language);
-		return clientWorker(sqlContent).then((worker) => {
-			return worker.valid(sqlContent);
+		const clientWorker = this.getClientWorker(language, uri as Uri);
+		return clientWorker.then((worker) => {
+			return worker.doValidation(text);
 		});
 	}
 
-	public parserTreeToString(language: string, sqlContent: string): Promise<any> {
-		const clientWorker = this.getClientWorker(language);
-		return clientWorker(sqlContent).then((worker) => {
-			return worker.parserTreeToString(sqlContent);
+	public parserTreeToString(language: string, model: editor.IReadOnlyModel | string) {
+		const text = typeof model === 'string' ? model : model.getValue();
+		const uri = typeof model === 'string' ? void 0 : model.uri;
+
+		const clientWorker = this.getClientWorker(language, uri as Uri);
+		return clientWorker.then((worker) => {
+			return worker.parserTreeToString(text);
 		});
 	}
 
-	private getClientWorker(language: string): ClientWorker {
-		let existWorker = this.worker.get(language);
-		if (!existWorker) {
-			const client = new WorkerManager(this.getLanguageServiceDefault(language));
-			const worker: WorkerAccessor<any> = (...uris): Promise<any> => {
-				return client.getLanguageServiceWorker(...uris);
-			};
-			this.worker.set(language, worker);
-			return worker;
+	public getAllEntities(
+		language: string,
+		model: editor.IReadOnlyModel | string,
+		position?: Position
+	) {
+		const text = typeof model === 'string' ? model : model.getValue();
+		const uri = typeof model === 'string' ? void 0 : model.uri;
+
+		const clientWorker = this.getClientWorker(language, uri as Uri);
+		return clientWorker.then((worker) => {
+			return worker.getAllEntities(text, position);
+		});
+	}
+
+	/**
+	 * Dispose a language service.
+	 * If the language is null, dispose all language services.
+	 */
+	public dispose(language?: string): void {
+		if (language) {
+			if (this.workerClients.has(language)) {
+				this.workerClients.get(language)?.dispose();
+				this.workerClients.delete(language);
+			}
+		} else {
+			this.workerClients.forEach((client) => {
+				client.dispose();
+			});
+			this.workerClients.clear();
 		}
-		return existWorker;
+	}
+
+	private getClientWorker(language: string, ...uri: Uri[]): Promise<T> {
+		let existClient = this.workerClients.get(language);
+		if (!existClient) {
+			const client = new WorkerManager<T>(this.getLanguageServiceDefault(language));
+			this.workerClients.set(language, client);
+			return client.getLanguageServiceWorker(...uri);
+		}
+		return existClient.getLanguageServiceWorker(...uri);
 	}
 
 	private getLanguageServiceDefault(languageId: string): LanguageServiceDefaults {

@@ -8,7 +8,7 @@ import { Select, Option } from '@dtinsight/molecule/esm/components/select';
 import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/esm/model';
 
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
-import { LanguageService } from 'monaco-sql-languages/out/esm/languageService';
+import { LanguageService, ParseError } from 'monaco-sql-languages/out/esm/languageService';
 import { debounce } from 'monaco-sql-languages/out/esm/common/utils';
 
 export default class Sidebar extends React.Component {
@@ -49,7 +49,11 @@ export default class Sidebar extends React.Component {
 		});
 	}, 200);
 
-	convertMsgToProblemItem = (tab: IEditorTab, code: string, msgs = []): IProblemsItem => {
+	convertMsgToProblemItem = (
+		tab: IEditorTab,
+		code: string,
+		msgs: ParseError[] = []
+	): IProblemsItem => {
 		const rootId = tab.id;
 		const rootName = `${tab.name || ''}`;
 		const languageProblems: IProblemsItem = {

@@ -10,10 +10,10 @@ export function setupLanguageMode<T extends BaseSQLWorker>(
 	const disposables: IDisposable[] = [];
 	const providers: IDisposable[] = [];
 
-	const client = new WorkerManager(defaults);
+	const client = new WorkerManager<T>(defaults);
 	disposables.push(client);
 
-	const worker: languageFeatures.WorkerAccessor<T> = (...uris: Uri[]): Promise<any> => {
+	const worker: languageFeatures.WorkerAccessor<T> = (...uris: Uri[]) => {
 		return client.getLanguageServiceWorker(...uris);
 	};
 

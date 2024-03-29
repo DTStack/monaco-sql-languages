@@ -14,7 +14,7 @@ import type { ParseError } from 'dt-sql-parser';
 import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
 
 export interface WorkerAccessor<T extends BaseSQLWorker> {
-	(first: Uri, ...more: Uri[]): Promise<T>;
+	(...uris: Uri[]): Promise<T>;
 }
 
 export class DiagnosticsAdapter<T extends BaseSQLWorker> {

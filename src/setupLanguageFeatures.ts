@@ -1,6 +1,7 @@
 import {
 	CompletionService,
 	diagnosticDefault,
+	PreprocessCode,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
 	modeConfigurationDefault
@@ -27,6 +28,11 @@ export interface FeatureConfiguration {
 	 * By default, only keyword autocomplete items are included.
 	 */
 	completionService?: CompletionService;
+	/**
+	 * Define a function to preprocess code.
+	 * By default, do not something.
+	 */
+	preprocessCode?: PreprocessCode;
 }
 
 const disposableMap = new Map<LanguageId, IDisposable>();
@@ -38,13 +44,15 @@ export function setupLanguageFeatures(configuration: FeatureConfiguration) {
 		return;
 	}
 
-	const { languageId, completionService, ...rest } = processConfiguration(configuration);
+	const { languageId, completionService, preprocessCode, ...rest } =
+		processConfiguration(configuration);
 
 	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 		languageId,
 		diagnosticDefault,
 		Object.assign({}, modeConfigurationDefault, rest),
-		completionService
+		completionService,
+		preprocessCode
 	);
 
 	function setup() {

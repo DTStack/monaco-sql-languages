@@ -9,12 +9,10 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"assert": "^2.1.0",
 		"monaco-editor": "0.31.0",
-		"monaco-sql-languages": "0.12.0-beta.9",
+		"monaco-sql-languages": "0.12.0-beta.ng.1",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"util": "^0.12.5"
+		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.10.4",

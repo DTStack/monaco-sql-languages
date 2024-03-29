@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "0.12.0-beta.10",
+	"version": "0.12.0-beta.ng.2",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"compile": "mrmdir ./out && tsc -p ./tsconfig.amd.json && tsc -p ./tsconfig.esm.json",
@@ -60,7 +60,7 @@
 		}
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.0.0-beta.4.11"
+		"dt-sql-parser": "4.0.0-beta.4.12"
 	},
 	"peerDependencies": {
 		"monaco-editor": ">=0.31.0"

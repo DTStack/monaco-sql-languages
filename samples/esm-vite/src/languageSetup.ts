@@ -3,7 +3,7 @@ import { LanguageIdEnum } from 'monaco-sql-languages';
 import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 /** import transformed worker file */
-import FlinkSQLWorker from './workerTransform/flinksql.worker?worker';
+import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
 
 /** define MonacoEnvironment.getWorker  */
 (self as any).MonacoEnvironment = {

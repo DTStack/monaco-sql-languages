@@ -115,7 +115,7 @@ function toSeverity(lsSeverity?: number): MarkerSeverity {
 	}
 }
 
-function toDiagnostics(resource: Uri, diag: ParseError): editor.IMarkerData {
+function toDiagnostics(_resource: Uri, diag: ParseError): editor.IMarkerData {
 	return {
 		severity: toSeverity(),
 		startLineNumber: diag.startLine,
@@ -145,7 +145,7 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 		model: editor.IReadOnlyModel,
 		position: Position,
 		context: languages.CompletionContext,
-		token: CancellationToken
+		_token: CancellationToken
 	): Promise<languages.CompletionList> {
 		const resource = model.uri;
 		return this._worker(resource)

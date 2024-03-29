@@ -5,7 +5,8 @@ import { BaseSQLWorker } from '../baseSQLWorker';
 export class PgSQLWorker extends BaseSQLWorker {
 	protected _ctx: worker.IWorkerContext;
 	protected parser: PostgreSQL;
-	constructor(ctx: worker.IWorkerContext, createData: ICreateData) {
+	constructor(ctx: worker.IWorkerContext, _createData: ICreateData) {
+		// CreatedData is not required now.
 		super();
 		this._ctx = ctx;
 		this.parser = new PostgreSQL();

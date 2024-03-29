@@ -19,7 +19,7 @@ export interface ITestItem {
 }
 
 function timeout(ms: number) {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		setTimeout(resolve, ms);
 	});
 }

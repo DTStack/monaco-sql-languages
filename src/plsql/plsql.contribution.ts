@@ -3,18 +3,16 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { loadLanguage, registerLanguage } from '../_.contribution';
+import { registerLanguage } from '../_.contribution';
 import { setupLanguageFeatures } from '../setupLanguageFeatures';
 import { LanguageIdEnum } from '../common/constants';
 
 registerLanguage({
 	id: LanguageIdEnum.PL,
-	extensions: [],
+	extensions: ['.plsql'],
 	aliases: ['PLSQL'],
 	loader: () => import('./plsql')
 });
-
-loadLanguage(LanguageIdEnum.PL);
 
 setupLanguageFeatures({
 	languageId: LanguageIdEnum.PL,

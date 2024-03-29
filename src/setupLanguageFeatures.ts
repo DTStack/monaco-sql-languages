@@ -1,6 +1,5 @@
 import {
 	CompletionService,
-	diagnosticDefault,
 	PreprocessCode,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
@@ -49,7 +48,6 @@ export function setupLanguageFeatures(configuration: FeatureConfiguration) {
 
 	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 		languageId,
-		diagnosticDefault,
 		Object.assign({}, modeConfigurationDefault, rest),
 		completionService,
 		preprocessCode

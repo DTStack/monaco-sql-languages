@@ -141,10 +141,6 @@ export interface ModeConfiguration {
 	readonly selectionRanges?: boolean;
 }
 
-export interface DiagnosticsOptions {
-	readonly validate?: boolean;
-}
-
 /**
  * A completion item.
  * ICompletionItem is pretty much the same as {@link languages.CompletionItem},
@@ -187,17 +183,14 @@ export type PreprocessCode = (code: string) => string;
 export interface LanguageServiceDefaults {
 	readonly languageId: string;
 	readonly onDidChange: IEvent<LanguageServiceDefaults>;
-	readonly diagnosticsOptions: DiagnosticsOptions;
 	readonly modeConfiguration: ModeConfiguration;
 	readonly completionService?: CompletionService;
 	readonly preprocessCode?: PreprocessCode;
-	setDiagnosticsOptions(options: DiagnosticsOptions): void;
 	setModeConfiguration(modeConfiguration: ModeConfiguration): void;
 }
 
 export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 	private _onDidChange = new Emitter<LanguageServiceDefaults>();
-	private _diagnosticsOptions!: DiagnosticsOptions;
 	private _modeConfiguration!: ModeConfiguration;
 	private _languageId: string;
 	private _completionService?: CompletionService;
@@ -205,13 +198,11 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 
 	constructor(
 		languageId: string,
-		diagnosticsOptions: DiagnosticsOptions,
 		modeConfiguration: ModeConfiguration,
 		completionService?: CompletionService,
 		preprocessCode?: PreprocessCode
 	) {
 		this._languageId = languageId;
-		this.setDiagnosticsOptions(diagnosticsOptions);
 		this.setModeConfiguration(modeConfiguration);
 		this._completionService = completionService;
 		this._preprocessCode = preprocessCode;
@@ -229,21 +220,12 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 		return this._modeConfiguration;
 	}
 
-	get diagnosticsOptions(): DiagnosticsOptions {
-		return this._diagnosticsOptions;
-	}
-
 	get completionService(): CompletionService | undefined {
 		return this._completionService;
 	}
 
 	get preprocessCode(): PreprocessCode | undefined {
 		return this._preprocessCode;
-	}
-
-	setDiagnosticsOptions(options: DiagnosticsOptions): void {
-		this._diagnosticsOptions = options || Object.create(null);
-		this._onDidChange.fire(this);
 	}
 
 	setModeConfiguration(modeConfiguration: ModeConfiguration): void {
@@ -264,8 +246,4 @@ export const modeConfigurationDefault: Required<ModeConfiguration> = {
 	foldingRanges: true,
 	diagnostics: true,
 	selectionRanges: true
-};
-
-export const diagnosticDefault: Required<DiagnosticsOptions> = {
-	validate: true
 };

@@ -57,7 +57,6 @@ export class WorkerManager<T extends BaseSQLWorker> {
 
 				// passed in to the create() method
 				createData: {
-					languageSettings: this._defaults.diagnosticsOptions,
 					languageId: this._defaults.languageId
 				}
 			});

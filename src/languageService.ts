@@ -1,7 +1,6 @@
 import {
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
-	diagnosticDefault,
 	modeConfigurationDefault
 } from './_.contribution';
 import { WorkerManager } from './workerManager';
@@ -74,10 +73,6 @@ export class LanguageService<T extends BaseSQLWorker = BaseSQLWorker> {
 	}
 
 	private getLanguageServiceDefault(languageId: string): LanguageServiceDefaults {
-		return new LanguageServiceDefaultsImpl(
-			languageId,
-			diagnosticDefault,
-			modeConfigurationDefault
-		);
+		return new LanguageServiceDefaultsImpl(languageId, modeConfigurationDefault);
 	}
 }

@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./impalasql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.IMPALA,
+setupLanguageFeatures(LanguageIdEnum.IMPALA, {
 	completionItems: true,
 	diagnostics: true
 });

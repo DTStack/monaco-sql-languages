@@ -11,7 +11,6 @@ import { LanguageIdEnum } from './common/constants';
 type LanguageId = `${LanguageIdEnum}`;
 
 export interface FeatureConfiguration {
-	languageId: LanguageId;
 	/**
 	 * Defines whether the built-in completionItemProvider is enabled.
 	 * Defaults to true.
@@ -38,13 +37,18 @@ const disposableMap = new Map<LanguageId, IDisposable>();
 const featureLoadedMap = new Map<LanguageId, boolean>();
 const configurationMap = new Map<LanguageId, FeatureConfiguration>();
 
-export function setupLanguageFeatures(configuration: FeatureConfiguration) {
+export function setupLanguageFeatures(
+	languageId: LanguageIdEnum,
+	configuration: FeatureConfiguration
+) {
 	if (typeof configuration !== 'object') {
 		return;
 	}
 
-	const { languageId, completionService, preprocessCode, ...rest } =
-		processConfiguration(configuration);
+	const { completionService, preprocessCode, ...rest } = processConfiguration(
+		languageId,
+		configuration
+	);
 
 	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 		languageId,
@@ -74,10 +78,9 @@ export function setupLanguageFeatures(configuration: FeatureConfiguration) {
 	}
 }
 
-function processConfiguration(configuration: FeatureConfiguration) {
+function processConfiguration(languageId: LanguageIdEnum, configuration: FeatureConfiguration) {
 	let finalConfiguration = Object.assign({}, configuration);
 
-	const languageId = configuration.languageId;
 	const currentConfiguration = configurationMap.get(languageId);
 
 	if (currentConfiguration) {

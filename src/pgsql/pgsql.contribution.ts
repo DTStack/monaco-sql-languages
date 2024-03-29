@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./pgsql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.PG,
+setupLanguageFeatures(LanguageIdEnum.PG, {
 	completionItems: true,
 	diagnostics: true
 });

@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./hivesql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.HIVE,
+setupLanguageFeatures(LanguageIdEnum.HIVE, {
 	completionItems: true,
 	diagnostics: true
 });

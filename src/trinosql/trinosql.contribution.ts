@@ -9,8 +9,7 @@ registerLanguage({
 	loader: () => import('./trinosql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.TRINO,
+setupLanguageFeatures(LanguageIdEnum.TRINO, {
 	completionItems: true,
 	diagnostics: true
 });

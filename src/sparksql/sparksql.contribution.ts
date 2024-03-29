@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./sparksql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.SPARK,
+setupLanguageFeatures(LanguageIdEnum.SPARK, {
 	completionItems: true,
 	diagnostics: true
 });

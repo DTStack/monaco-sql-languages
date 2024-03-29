@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./plsql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.PL,
+setupLanguageFeatures(LanguageIdEnum.PL, {
 	completionItems: false,
 	diagnostics: true
 });

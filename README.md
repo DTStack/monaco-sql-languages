@@ -9,44 +9,35 @@
 
 English | [简体中文](./README-zh_CN.md)
 
-This project is based on the SQL language project of Monaco Editor, which was forked from the [monaco-languages](https://github.com/microsoft/monaco-languages).
+This project is based on the SQL language project of Monaco Editor, which was forked from the [monaco-languages](https://github.com/microsoft/monaco-languages).The difference is that Monaco SQL Languages supports various SQL languages and the corresponding advanced features for the **Big Data field**.
 
-The difference is that Monaco SQL Languages has integrated with various SQL languages for the **Big Data field**, such as FlinkSQL, SparkSQL, HiveSQL, and others.
+<br/>
 
-In addition, Monaco SQL Languages provides **SQL syntax validation** and **CodeCompletion** feature for these languages via [dt-sql-parser](https://github.com/DTStack/dt-sql-parser).
+## Feature highlights
+- Code Highlighting
+- Syntax Validation
+- Code Completion
+
+> Powered By [dt-sql-parser](https://github.com/DTStack/dt-sql-parser)
 
 <br/>
 
 ## Online Preview
-Powered By [molecule](https://github.com/DTStack/molecule).
-
 <https://dtstack.github.io/monaco-sql-languages/>
+
+> Powered By [molecule](https://github.com/DTStack/molecule).
 
 <br/>
 
 ## Supported SQL Languages
 
 -   MySQL
--   FlinkSQL
--   SparkSQL
--   HiveSQL
--   TrinoSQL (PrestoSQL)
+-   Flink
+-   Spark
+-   Hive
+-   Trino (Presto)
 -   PostgreSQL
--   Impala SQL
-
-**Supported CodeCompletion SQL Languages**
-
-| SQL Type   | Language Id | Code-Completion |
-| ---------- | ----------- | --------------- |
-| MySQL      | mysql       | ✅              |
-| Flink SQL  | flinksql    | ✅              |
-| Spark SQL  | sparksql    | ✅              |
-| Hive SQL   | hivesql     | ✅              |
-| Trino SQL  | trinosql    | ✅              |
-| PostgreSQL | pgsql       | ✅              |
-| Impala SQL | impalasql   | ✅              |
-
-> Monaco SQL Languages plan to support more types of SQL Languages in the future. If you need some SQL Languages that are not currently supported, you can contact us at [github](https://github.com/DTStack/monaco-sql-languages).
+-   Impala
 
 <br/>
 
@@ -63,7 +54,6 @@ npm install monaco-sql-languages
 ## Integrating
 
 -  [Integrating the ESM version of Monaco SQL Languages](./documents/integrate-esm.md)
--  [Solving the problem of integrating](./documents/problem-solving.md)
 
 <br/>
 
@@ -73,31 +63,32 @@ npm install monaco-sql-languages
     > Tips: If integrated via MonacoEditorWebpackPlugin, it will help us to import contribution files automatically. Otherwise, you need to import the contribution files manually.
 
     ```typescript
-    import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
-    import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
-    import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
-    import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
-    import 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution';
-    import 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution';
-    import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
+	import 'monaco-sql-languages/esm/languages/mysql/mysql.contribution';
+	import 'monaco-sql-languages/esm/languages/flink/flink.contribution';
+	import 'monaco-sql-languages/esm/languages/spark/spark.contribution';
+	import 'monaco-sql-languages/esm/languages/hive/hive.contribution';
+	import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
+	import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
+	import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
 
     // Or you can import all language contributions at once.
-    // import 'monaco-sql-languages/out/esm/monaco.contribution';
+    // import 'monaco-sql-languages/esm/all.contributions';
     ```
 
 2. **Setup language features**
 
-    You can setup language features via `setupLanguageFeatures`. For example, disable code completion feature of flinkSQL language.
-    ```typescript
-    import {
-        setupLanguageFeatures,
-        LanguageIdEnum,
-    } from 'monaco-sql-languages';
+    You can setup language features via `setupLanguageFeatures`. For example, setup code completion feature of flinkSQL language.
 
-    setupLanguageFeatures({
-        languageId: LanguageIdEnum.FLINK,
-        completionItems: false
-    })
+    ```typescript
+    import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages';
+
+    setupLanguageFeatures(LanguageIdEnum.FLINK, {
+		completionItems: {
+			enable: true,
+			triggerCharacters: [' ', '.'],
+			completionService: //... ,
+		}
+	});
     ```
 
     By default, Monaco SQL Languages only provides keyword autocompletion, and you can customize your completionItem list via `completionService`.
@@ -116,7 +107,8 @@ npm install monaco-sql-languages
         model,
         position,
         completionContext,
-        suggestions
+        suggestions, // syntax context info at caretPosition
+		entities // tables, columns in the syntax context of the editor text
     ) {
         return new Promise((resolve, reject) => {
             if (!suggestions) {
@@ -147,18 +139,22 @@ npm install monaco-sql-languages
         });
     };
 
-    setupLanguageFeatures({
-        languageId: LanguageIdEnum.FLINK,
-        completionService: completionService,
-    })
+    setupLanguageFeatures(LanguageIdEnum.FLINK, {
+		completionItems: {
+			enable: true,
+			completionService: //... ,
+		}
+	});
     ```
 
 3. **Create the Monaco Editor instance and specify the language you need**
 
     ```typescript
+	import { LanguageIdEnum } from 'monaco-sql-languages';
+
     monaco.editor.create(document.getElementById('container'), {
         value: 'select * from tb_test',
-        language: 'flinksql' // you need
+        language: LanguageIdEnum.FLINK // languageId
     });
     ```
 
@@ -170,9 +166,9 @@ npm install monaco-sql-languages
 
 Monaco SQL Languages provides built-in Monaco Theme that is named `vsPlusTheme`. `vsPlusTheme` inspired by vscode default plus colorTheme and it contains three styles of themes inside:
 
--   `darkTheme`: inherited from Monaco built-in Theme `vs-dark`;
--   `lightTheme`: inherited from Monaco built-in Theme `vs`;
--   `hcBlackTheme`: inherited from Monaco built-in Theme `hc-black`;
+-   `darkTheme`: Inherited from monaco built-in theme `vs-dark`;
+-   `lightTheme`: Inherited from monaco built-in theme `vs`;
+-   `hcBlackTheme`: Inherited from monaco built-in theme `hc-black`;
 
 **Use Monaco SQL Languages built-in vsPlusTheme**
 
@@ -237,15 +233,14 @@ editor.defineTheme('my-theme', myThemeData);
     pnpm dev
     ```
 
--   compile
+-   build
 
     ```bash
-    pnpm compile
+    pnpm build
     ```
 
 -   run test
     ```
-    pnpm compile
     pnpm test
     ```
 

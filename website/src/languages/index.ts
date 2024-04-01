@@ -1,4 +1,4 @@
-import 'monaco-sql-languages/out/esm/monaco.contribution.js';
+import 'monaco-sql-languages/out/esm/all.contributions.js';
 import './languageWorker';
 import './theme';
 import { setupLanguageFeatures, LanguageIdEnum } from 'monaco-sql-languages/out/esm/main.js';
@@ -61,44 +61,58 @@ const preprocessCodeHive = (code: string, mark?: string): string => {
 	return result;
 };
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.FLINK,
-	completionService,
+setupLanguageFeatures(LanguageIdEnum.FLINK, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
 	preprocessCode
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.SPARK,
-	completionService,
+setupLanguageFeatures(LanguageIdEnum.SPARK, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
 	preprocessCode
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.HIVE,
-	completionService,
+setupLanguageFeatures(LanguageIdEnum.HIVE, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
 	preprocessCode: (code: string) => preprocessCodeHive(code, '`')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.MYSQL,
-	completionService,
+setupLanguageFeatures(LanguageIdEnum.MYSQL, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
 	preprocessCode
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.TRINO,
-	completionService,
+setupLanguageFeatures(LanguageIdEnum.TRINO, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
 	preprocessCode
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.PG,
-	completionService,
+setupLanguageFeatures(LanguageIdEnum.PG, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
 	preprocessCode
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.IMPALA,
-	completionService,
+setupLanguageFeatures(LanguageIdEnum.IMPALA, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
 	preprocessCode
 });

@@ -1,5 +1,5 @@
 import { WorkerManager } from './workerManager';
-import { LanguageServiceDefaults } from './_.contribution';
+import { LanguageServiceDefaults } from './monaco.contribution';
 import * as languageFeatures from './languageFeatures';
 import { Uri, IDisposable, languages } from './fillers/monaco-editor-core';
 import type { BaseSQLWorker } from './baseSQLWorker';

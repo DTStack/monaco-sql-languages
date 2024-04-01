@@ -11,7 +11,11 @@ import {
 import { debounce } from './common/utils';
 import { BaseSQLWorker } from './baseSQLWorker';
 import type { ParseError } from 'dt-sql-parser';
-import type { LanguageServiceDefaults, CompletionService, ICompletionItem } from './_.contribution';
+import type {
+	LanguageServiceDefaults,
+	CompletionService,
+	ICompletionItem
+} from './monaco.contribution';
 
 export interface WorkerAccessor<T extends BaseSQLWorker> {
 	(...uris: Uri[]): Promise<T>;

@@ -2,7 +2,7 @@ import {
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
 	modeConfigurationDefault
-} from './_.contribution';
+} from './monaco.contribution';
 import { WorkerManager } from './workerManager';
 import { BaseSQLWorker } from './baseSQLWorker';
 import { Position, Uri, editor } from './fillers/monaco-editor-core';

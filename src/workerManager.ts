@@ -1,4 +1,4 @@
-import { LanguageServiceDefaults } from './_.contribution';
+import { LanguageServiceDefaults } from './monaco.contribution';
 import { BaseSQLWorker, ICreateData } from './baseSQLWorker';
 import { editor, IDisposable, Uri } from './fillers/monaco-editor-core';
 

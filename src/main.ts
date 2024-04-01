@@ -1,4 +1,5 @@
 export * from './_.contribution';
+export * from './monaco.contribution';
 export * from './languageService';
 export * from './setupLanguageFeatures';
 export * from './common/constants';

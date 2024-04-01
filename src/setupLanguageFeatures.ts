@@ -4,7 +4,7 @@ import {
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
 	modeConfigurationDefault
-} from './_.contribution';
+} from './monaco.contribution';
 import { languages, IDisposable } from './fillers/monaco-editor-core';
 import { LanguageIdEnum } from './common/constants';
 

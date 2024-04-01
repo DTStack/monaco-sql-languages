@@ -7,7 +7,7 @@
 		"watch-esm": "tsc -p ./tsconfig.esm.json --watch",
 		"test": "npm run compile && mocha ./test/all.js",
 		"prepublishOnly": "npm run compile",
-		"prettier": "prettier --write .",
+		"prettier": "prettier --write ./src",
 		"check-types": "tsc -p ./tsconfig.json",
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",

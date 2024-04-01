@@ -7,8 +7,14 @@ module.exports = {
 	entry: {
 		index: path.resolve(__dirname, './src/index.ts'),
 		// output worker file as entries
-		'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
-		'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js'
+		'mysql.worker': 'monaco-sql-languages/esm/languages/mysql/mysql.worker.js',
+		'flink.worker': 'monaco-sql-languages/esm/languages/flink/flink.worker.js',
+		'spark.worker': 'monaco-sql-languages/esm/languages/spark/spark.worker.js',
+		'hive.worker': 'monaco-sql-languages/esm/languages/hive/hive.worker.js',
+		'trino.worker': 'monaco-sql-languages/esm/languages/trino/trino.worker.js',
+		'pgsql.worker': 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker.js',
+		'impala.worker': 'monaco-sql-languages/esm/languages/impala/impala.worker.js',
+		'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js'
 	},
 	output: {
 		path: path.resolve(__dirname, './dist')

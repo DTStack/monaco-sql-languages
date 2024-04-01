@@ -24,6 +24,6 @@
 	},
 	"dependencies": {
 		"monaco-editor": "0.31.0",
-		"monaco-sql-languages": "0.12.0-beta.ng.1"
+		"monaco-sql-languages": "0.12.0-beta.11"
 	}
 }

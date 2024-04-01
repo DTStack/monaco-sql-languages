@@ -1,14 +1,13 @@
 // @ts-nocheck
 import EditorWorker from '../../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
 
-import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
-import SparkSQLWorker from 'monaco-sql-languages/out/esm/sparksql/sparksql.worker?worker';
-import HiveSQLWorker from 'monaco-sql-languages/out/esm/hivesql/hivesql.worker?worker';
-import PGSQLWorker from 'monaco-sql-languages/out/esm/pgsql/pgsql.worker?worker';
-import MySQLWorker from 'monaco-sql-languages/out/esm/mysql/mysql.worker?worker';
-import PLSQLWorker from 'monaco-sql-languages/out/esm/plsql/plsql.worker?worker';
-import TrinoSQLWorker from 'monaco-sql-languages/out/esm/trinosql/trinosql.worker?worker';
-import ImpalaSQLWorker from 'monaco-sql-languages/out/esm/impalasql/impalasql.worker?worker';
+import FlinkSQLWorker from 'monaco-sql-languages/esm/languages/flink/flink.worker?worker';
+import SparkSQLWorker from 'monaco-sql-languages/esm/languages/spark/spark.worker?worker';
+import HiveSQLWorker from 'monaco-sql-languages/esm/languages/hive/hive.worker?worker';
+import PGSQLWorker from 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker?worker';
+import MySQLWorker from 'monaco-sql-languages/esm/languages/mysql/mysql.worker?worker';
+import TrinoSQLWorker from 'monaco-sql-languages/esm/languages/trino/trino.worker?worker';
+import ImpalaSQLWorker from 'monaco-sql-languages/esm/languages/impala/impala.worker?worker';
 
 self.MonacoEnvironment = {
 	getWorker(_: any, label: string) {

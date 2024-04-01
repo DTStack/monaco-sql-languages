@@ -3,10 +3,16 @@ import { worker } from './fillers/monaco-editor-core';
 import { Suggestions, ParseError, EntityContext } from 'dt-sql-parser';
 import { Position } from './fillers/monaco-editor-core';
 
+export interface ICreateData {
+	languageId: string;
+}
+
 export abstract class BaseSQLWorker {
 	protected abstract _ctx: worker.IWorkerContext;
 	protected abstract parser: BasicSQL;
 	protected keywords: string[] = [];
+
+	constructor(_ctx: worker.IWorkerContext, _createData: ICreateData) {}
 
 	async doValidation(code: string): Promise<ParseError[]> {
 		code = code || this.getTextDocument();

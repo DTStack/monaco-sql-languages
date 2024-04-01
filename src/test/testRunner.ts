@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import '../monaco.contribution';
+import '../all.contributions';
 import { loadLanguage } from '../_.contribution';
 import * as assert from 'assert';
 import { editor } from '../fillers/monaco-editor-core';

@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./flinksql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.FLINK,
+setupLanguageFeatures(LanguageIdEnum.FLINK, {
 	completionItems: true,
 	diagnostics: true
 });

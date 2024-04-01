@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./mysql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.MYSQL,
+setupLanguageFeatures(LanguageIdEnum.MYSQL, {
 	completionItems: true,
 	diagnostics: true
 });

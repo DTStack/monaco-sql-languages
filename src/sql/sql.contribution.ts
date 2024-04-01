@@ -14,8 +14,7 @@ registerLanguage({
 	loader: () => import('./sql')
 });
 
-setupLanguageFeatures({
-	languageId: LanguageIdEnum.SQL,
+setupLanguageFeatures(LanguageIdEnum.SQL, {
 	completionItems: false,
 	diagnostics: true
 });

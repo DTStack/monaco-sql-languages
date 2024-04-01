@@ -1,5 +1,5 @@
-import { LanguageServiceDefaults } from './_.contribution';
-import { BaseSQLWorker } from './baseSQLWorker';
+import { LanguageServiceDefaults } from './monaco.contribution';
+import { BaseSQLWorker, ICreateData } from './baseSQLWorker';
 import { editor, IDisposable, Uri } from './fillers/monaco-editor-core';
 
 const STOP_WHEN_IDLE_FOR = 2 * 60 * 1000; // 2min
@@ -57,9 +57,8 @@ export class WorkerManager<T extends BaseSQLWorker> {
 
 				// passed in to the create() method
 				createData: {
-					languageSettings: this._defaults.diagnosticsOptions,
 					languageId: this._defaults.languageId
-				}
+				} as ICreateData
 			});
 
 			this._client = this._worker.getProxy();

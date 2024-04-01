@@ -1,9 +1,8 @@
 import {
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
-	diagnosticDefault,
 	modeConfigurationDefault
-} from './_.contribution';
+} from './monaco.contribution';
 import { WorkerManager } from './workerManager';
 import { BaseSQLWorker } from './baseSQLWorker';
 import { Position, Uri, editor } from './fillers/monaco-editor-core';
@@ -74,10 +73,6 @@ export class LanguageService<T extends BaseSQLWorker = BaseSQLWorker> {
 	}
 
 	private getLanguageServiceDefault(languageId: string): LanguageServiceDefaults {
-		return new LanguageServiceDefaultsImpl(
-			languageId,
-			diagnosticDefault,
-			modeConfigurationDefault
-		);
+		return new LanguageServiceDefaultsImpl(languageId, modeConfigurationDefault);
 	}
 }

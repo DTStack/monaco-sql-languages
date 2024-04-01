@@ -1,7 +1,7 @@
 import { worker } from '../fillers/monaco-editor-core';
 import * as EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker.js';
 import { FLinkSQLWorker } from './flinkSQLWorker';
-import { ICreateData } from '../_.contribution';
+import { ICreateData } from '../baseSQLWorker';
 
 self.onmessage = () => {
 	// ignore the first message

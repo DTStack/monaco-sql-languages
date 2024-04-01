@@ -1,6 +1,6 @@
 import { worker } from '../fillers/monaco-editor-core';
 import * as EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker.js';
-import { ICreateData } from '../_.contribution';
+import { ICreateData } from '../baseSQLWorker';
 import { HiveSQLWorker } from './hiveSQLWorker';
 
 self.onmessage = () => {

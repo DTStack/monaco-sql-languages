@@ -1,107 +1,122 @@
 import {
-	CompletionService,
-	diagnosticDefault,
 	PreprocessCode,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
-	modeConfigurationDefault
-} from './_.contribution';
+	modeConfigurationDefault,
+	ModeConfiguration,
+	CompletionOptions
+} from './monaco.contribution';
 import { languages, IDisposable } from './fillers/monaco-editor-core';
 import { LanguageIdEnum } from './common/constants';
 
-type LanguageId = `${LanguageIdEnum}`;
-
 export interface FeatureConfiguration {
-	languageId: LanguageId;
 	/**
-	 * Defines whether the built-in completionItemProvider is enabled.
+	 * Whether the built-in completionItemProvider is enabled.
 	 * Defaults to true.
 	 */
-	completionItems?: boolean;
+	completionItems?: boolean | Partial<CompletionOptions>;
 	/**
-	 * Defines whether the built-in diagnostic provider is enabled.
+	 * Whether the built-in diagnostic provider is .
 	 * Defaults to true.
 	 */
 	diagnostics?: boolean;
 	/**
-	 * Define a service to customize  completionItems.
-	 * By default, only keyword autocomplete items are included.
-	 */
-	completionService?: CompletionService;
-	/**
 	 * Define a function to preprocess code.
 	 * By default, do not something.
 	 */
-	preprocessCode?: PreprocessCode;
+	preprocessCode?: PreprocessCode | null;
 }
 
-const disposableMap = new Map<LanguageId, IDisposable>();
-const featureLoadedMap = new Map<LanguageId, boolean>();
-const configurationMap = new Map<LanguageId, FeatureConfiguration>();
+const featureLoadedMap = new Map<string, boolean>();
+const languageModesMap = new Map<string, IDisposable>();
+const registerListenerMap = new Map<string, IDisposable>();
+const languageDefaultsMap = new Map<string, LanguageServiceDefaults>();
 
-export function setupLanguageFeatures(configuration: FeatureConfiguration) {
+function setupMode(defaults: LanguageServiceDefaults) {
+	const languageId = defaults.languageId;
+
+	import('./setupLanguageMode').then((mode) => {
+		if (languageModesMap.has(languageId)) {
+			languageModesMap.get(languageId)?.dispose();
+		}
+		languageModesMap.set(languageId, mode.setupLanguageMode(defaults));
+	});
+}
+
+export function setupLanguageFeatures(
+	languageId: LanguageIdEnum,
+	configuration: FeatureConfiguration
+) {
 	if (typeof configuration !== 'object') {
 		return;
 	}
 
-	const { languageId, completionService, preprocessCode, ...rest } =
-		processConfiguration(configuration);
+	const { preprocessCode, ...rest } = configuration;
+	const modeConf = processConfiguration(languageId, rest);
 
+	// Set up before language load
 	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(
 		languageId,
-		diagnosticDefault,
-		Object.assign({}, modeConfigurationDefault, rest),
-		completionService,
+		modeConf,
 		preprocessCode
 	);
 
-	function setup() {
-		import('./setupLanguageMode').then((mode) => {
-			if (disposableMap.has(languageId)) {
-				disposableMap.get(languageId)?.dispose();
-			}
-			const disposable = mode.setupLanguageMode(defaults);
-			disposableMap.set(languageId, disposable);
-			return disposable;
-		});
-	}
+	languageDefaultsMap.set(languageId, defaults);
 
 	if (featureLoadedMap.get(languageId)) {
-		setup();
+		setupMode(defaults);
 	} else {
-		languages.onLanguage(languageId, () => {
-			setup();
-			featureLoadedMap.set(languageId, true);
-		});
+		// Avoid calling setup multiple times when language loaded
+		if (registerListenerMap.has(languageId)) {
+			registerListenerMap.get(languageId)?.dispose();
+		}
+		registerListenerMap.set(
+			languageId,
+			languages.onLanguage(languageId, () => {
+				setupMode(defaults);
+				featureLoadedMap.set(languageId, true);
+			})
+		);
 	}
 }
 
-function processConfiguration(configuration: FeatureConfiguration) {
-	let finalConfiguration = Object.assign({}, configuration);
+function processConfiguration(
+	languageId: LanguageIdEnum,
+	configuration: FeatureConfiguration
+): ModeConfiguration {
+	const defaults = languageDefaultsMap.get(languageId);
 
-	const languageId = configuration.languageId;
-	const currentConfiguration = configurationMap.get(languageId);
+	const diagnostics =
+		typeof configuration.diagnostics === 'boolean'
+			? configuration.diagnostics
+			: defaults?.modeConfiguration.diagnostics ?? modeConfigurationDefault.diagnostics;
 
-	if (currentConfiguration) {
-		finalConfiguration = Object.assign({}, currentConfiguration, finalConfiguration);
-	}
+	const completionEnable =
+		typeof configuration.completionItems === 'boolean'
+			? configuration.completionItems
+			: defaults?.modeConfiguration.completionItems.enable ??
+			  modeConfigurationDefault.completionItems.enable;
 
-	if (
-		// The following languages are not support codeCompletion now.
-		[LanguageIdEnum.PL].includes(languageId as LanguageIdEnum)
-	) {
-		finalConfiguration.completionItems = false;
-	}
+	const completionService =
+		typeof configuration.completionItems !== 'boolean' &&
+		typeof configuration.completionItems?.completionService === 'function'
+			? configuration.completionItems?.completionService
+			: defaults?.modeConfiguration.completionItems.completionService ??
+			  modeConfigurationDefault.completionItems.completionService;
 
-	if (
-		// The following languages are not support diagnostics now.
-		[LanguageIdEnum.SQL].includes(languageId as LanguageIdEnum)
-	) {
-		finalConfiguration.diagnostics = false;
-	}
+	const triggerCharacters =
+		typeof configuration.completionItems !== 'boolean' &&
+		Array.isArray(configuration.completionItems?.triggerCharacters)
+			? configuration.completionItems!.triggerCharacters
+			: defaults?.modeConfiguration.completionItems.triggerCharacters ??
+			  modeConfigurationDefault.completionItems.triggerCharacters;
 
-	// save current configurationMap
-	configurationMap.set(languageId, finalConfiguration);
-
-	return finalConfiguration;
+	return {
+		diagnostics,
+		completionItems: {
+			enable: completionEnable,
+			completionService,
+			triggerCharacters
+		}
+	};
 }

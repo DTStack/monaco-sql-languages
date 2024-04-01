@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0-beta.11](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.10...v0.12.0-beta.11) (2024-04-01)
+
+
+### Features
+
+* build languages ([#114](https://github.com/DTStack/monaco-sql-languages/issues/114)) ([f6b34e5](https://github.com/DTStack/monaco-sql-languages/commit/f6b34e5cde3540ea7af70693542e7b495ece3cb6))
+* export "incomplete" settings in completionService ([#101](https://github.com/DTStack/monaco-sql-languages/issues/101)) ([7567b5b](https://github.com/DTStack/monaco-sql-languages/commit/7567b5be98eefb093639fb56fc234ac8434e1660))
+* improve setup language features ([#113](https://github.com/DTStack/monaco-sql-languages/issues/113)) ([206b0fd](https://github.com/DTStack/monaco-sql-languages/commit/206b0fd87e77809962c1aa0a92e01c4a8b92331c))
+* improve ts and export ([#112](https://github.com/DTStack/monaco-sql-languages/issues/112)) ([7fceed2](https://github.com/DTStack/monaco-sql-languages/commit/7fceed221764556e0b55b84d595109d0b585b90e))
+* migrate ng ([#111](https://github.com/DTStack/monaco-sql-languages/issues/111)) ([7a10a6a](https://github.com/DTStack/monaco-sql-languages/commit/7a10a6ad62c367fc022c62e88e4bc119df65c3cc))
+* optimize ICompletionItem type and add ICompletionList type ([#102](https://github.com/DTStack/monaco-sql-languages/issues/102)) ([00c7c6b](https://github.com/DTStack/monaco-sql-languages/commit/00c7c6ba181e85e889cb0da20fd48880676785d8))
+* support  preprocess code ([#103](https://github.com/DTStack/monaco-sql-languages/issues/103)) ([51777c6](https://github.com/DTStack/monaco-sql-languages/commit/51777c6cc33594673f540d5b695a2928c994c70c))
+
 ## [0.12.0-beta.10](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.9...v0.12.0-beta.10) (2024-01-04)
 
 

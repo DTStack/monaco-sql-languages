@@ -63,13 +63,13 @@ npm install monaco-sql-languages
     > Tips: If integrated via MonacoEditorWebpackPlugin, it will help us to import contribution files automatically. Otherwise, you need to import the contribution files manually.
 
     ```typescript
-	import 'monaco-sql-languages/esm/languages/mysql/mysql.contribution';
-	import 'monaco-sql-languages/esm/languages/flink/flink.contribution';
-	import 'monaco-sql-languages/esm/languages/spark/spark.contribution';
-	import 'monaco-sql-languages/esm/languages/hive/hive.contribution';
-	import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
-	import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
-	import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
+    import 'monaco-sql-languages/esm/languages/mysql/mysql.contribution';
+    import 'monaco-sql-languages/esm/languages/flink/flink.contribution';
+    import 'monaco-sql-languages/esm/languages/spark/spark.contribution';
+    import 'monaco-sql-languages/esm/languages/hive/hive.contribution';
+    import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
+    import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
+    import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
 
     // Or you can import all language contributions at once.
     // import 'monaco-sql-languages/esm/all.contributions';
@@ -83,12 +83,12 @@ npm install monaco-sql-languages
     import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages';
 
     setupLanguageFeatures(LanguageIdEnum.FLINK, {
-		completionItems: {
-			enable: true,
-			triggerCharacters: [' ', '.'],
-			completionService: //... ,
-		}
-	});
+        completionItems: {
+            enable: true,
+            triggerCharacters: [' ', '.'],
+            completionService: //... ,
+        }
+    });
     ```
 
     By default, Monaco SQL Languages only provides keyword autocompletion, and you can customize your completionItem list via `completionService`.
@@ -108,7 +108,7 @@ npm install monaco-sql-languages
         position,
         completionContext,
         suggestions, // syntax context info at caretPosition
-		entities // tables, columns in the syntax context of the editor text
+        entities // tables, columns in the syntax context of the editor text
     ) {
         return new Promise((resolve, reject) => {
             if (!suggestions) {
@@ -140,17 +140,17 @@ npm install monaco-sql-languages
     };
 
     setupLanguageFeatures(LanguageIdEnum.FLINK, {
-		completionItems: {
-			enable: true,
-			completionService: //... ,
-		}
-	});
+        completionItems: {
+            enable: true,
+            completionService: //... ,
+        }
+    });
     ```
 
 3. **Create the Monaco Editor instance and specify the language you need**
 
     ```typescript
-	import { LanguageIdEnum } from 'monaco-sql-languages';
+    import { LanguageIdEnum } from 'monaco-sql-languages';
 
     monaco.editor.create(document.getElementById('container'), {
         value: 'select * from tb_test',

@@ -106,13 +106,13 @@
     module.exports = {
         entry: {
             'mysql.worker': 'monaco-sql-languages/esm/languages/mysql/mysql.worker.js',
-			'flink.worker': 'monaco-sql-languages/esm/languages/flink/flink.worker.js',
-			'spark.worker': 'monaco-sql-languages/esm/languages/spark/spark.worker.js',
-			'hive.worker': 'monaco-sql-languages/esm/languages/hive/hive.worker.js',
-			'trino.worker': 'monaco-sql-languages/esm/languages/trino/trino.worker.js',
-			'pgsql.worker': 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker.js',
-			'impala.worker': 'monaco-sql-languages/esm/languages/impala/impala.worker.js',
-			'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+            'flink.worker': 'monaco-sql-languages/esm/languages/flink/flink.worker.js',
+            'spark.worker': 'monaco-sql-languages/esm/languages/spark/spark.worker.js',
+            'hive.worker': 'monaco-sql-languages/esm/languages/hive/hive.worker.js',
+            'trino.worker': 'monaco-sql-languages/esm/languages/trino/trino.worker.js',
+            'pgsql.worker': 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker.js',
+            'impala.worker': 'monaco-sql-languages/esm/languages/impala/impala.worker.js',
+            'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
         }
     };
     ```
@@ -120,39 +120,39 @@
 2. 定义全局变量 `MonacoEnvironment`, 并声明 `getWorkerUrl`
 
     ```typescript
-	import { LanguageIdEnum } from 'monaco-sql-languages';
+    import { LanguageIdEnum } from 'monaco-sql-languages';
 
-	/** define MonacoEnvironment.getWorkerUrl  */
-	(globalThis as any).MonacoEnvironment = {
-		getWorkerUrl: function (_moduleId: string, label: string) {
-			switch (label) {
-				case LanguageIdEnum.MYSQL: {
-					return './mysql.worker.js';
-				}
-				case LanguageIdEnum.SPARK: {
-					return './spark.worker.js';
-				}
-				case LanguageIdEnum.FLINK: {
-					return './flink.worker.js';
-				}
-				case LanguageIdEnum.HIVE: {
-					return './hive.worker.js';
-				}
-				case LanguageIdEnum.TRINO: {
-					return './trino.worker.js';
-				}
-				case LanguageIdEnum.PG: {
-					return './pgsql.worker.js';
-				}
-				case LanguageIdEnum.IMPALA: {
-					return './impala.worker.js'
-				}
-				default: {
-					return './editor.worker.js';
-				}
-			}
-		}
-	};
+    /** define MonacoEnvironment.getWorkerUrl  */
+    (globalThis as any).MonacoEnvironment = {
+        getWorkerUrl: function (_moduleId: string, label: string) {
+            switch (label) {
+                case LanguageIdEnum.MYSQL: {
+                    return './mysql.worker.js';
+                }
+                case LanguageIdEnum.SPARK: {
+                    return './spark.worker.js';
+                }
+                case LanguageIdEnum.FLINK: {
+                    return './flink.worker.js';
+                }
+                case LanguageIdEnum.HIVE: {
+                    return './hive.worker.js';
+                }
+                case LanguageIdEnum.TRINO: {
+                    return './trino.worker.js';
+                }
+                case LanguageIdEnum.PG: {
+                    return './pgsql.worker.js';
+                }
+                case LanguageIdEnum.IMPALA: {
+                    return './impala.worker.js'
+                }
+                default: {
+                    return './editor.worker.js';
+                }
+            }
+        }
+    };
     ```
 
 <br/>
@@ -174,29 +174,29 @@ import TrinoSQLWorker from 'monaco-sql-languages/esm/languages/trino/trino.worke
 import ImpalaSQLWorker from 'monaco-sql-languages/esm/languages/impala/impala.worker?worker';
 
 (globalThis as any).MonacoEnvironment = {
-	getWorker(_: any, label: string) {
-		if (label === LanguageIdEnum.FLINK) {
-			return new FlinkSQLWorker();
-		}
-		if (label === LanguageIdEnum.HIVE) {
-			return new HiveSQLWorker();
-		}
-		if (label === LanguageIdEnum.SPARK) {
-			return new SparkSQLWorker();
-		}
-		if (label === LanguageIdEnum.PG) {
-			return new PGSQLWorker();
-		}
-		if (label === LanguageIdEnum.MYSQL) {
-			return new MySQLWorker();
-		}
-		if (label === LanguageIdEnum.TRINO) {
-			return new TrinoSQLWorker();
-		}
-		if (label === LanguageIdEnum.IMPALA) {
-			return new ImpalaSQLWorker();
-		}
-		return new EditorWorker();
-	}
+    getWorker(_: any, label: string) {
+        if (label === LanguageIdEnum.FLINK) {
+            return new FlinkSQLWorker();
+        }
+        if (label === LanguageIdEnum.HIVE) {
+            return new HiveSQLWorker();
+        }
+        if (label === LanguageIdEnum.SPARK) {
+            return new SparkSQLWorker();
+        }
+        if (label === LanguageIdEnum.PG) {
+            return new PGSQLWorker();
+        }
+        if (label === LanguageIdEnum.MYSQL) {
+            return new MySQLWorker();
+        }
+        if (label === LanguageIdEnum.TRINO) {
+            return new TrinoSQLWorker();
+        }
+        if (label === LanguageIdEnum.IMPALA) {
+            return new ImpalaSQLWorker();
+        }
+        return new EditorWorker();
+    }
 };
 ```

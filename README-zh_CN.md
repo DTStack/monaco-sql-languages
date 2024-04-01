@@ -64,13 +64,13 @@ npm install monaco-sql-languages
     > Tips: 如果通过 MonacoEditorWebpackPlugin 来集成，插件会帮助我们自动引入相应的 contribution 文件。如果使用其他方式集成，则需要手动引入相应的 contribution 文件。
 
     ```typescript
-	import 'monaco-sql-languages/esm/languages/mysql/mysql.contribution';
-	import 'monaco-sql-languages/esm/languages/flink/flink.contribution';
-	import 'monaco-sql-languages/esm/languages/spark/spark.contribution';
-	import 'monaco-sql-languages/esm/languages/hive/hive.contribution';
-	import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
-	import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
-	import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
+    import 'monaco-sql-languages/esm/languages/mysql/mysql.contribution';
+    import 'monaco-sql-languages/esm/languages/flink/flink.contribution';
+    import 'monaco-sql-languages/esm/languages/spark/spark.contribution';
+    import 'monaco-sql-languages/esm/languages/hive/hive.contribution';
+    import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
+    import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
+    import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
 
     // 或者你可以通过下面的方式一次性导入所有的语言功能
     // import 'monaco-sql-languages/esm/all.contributions';
@@ -83,12 +83,12 @@ npm install monaco-sql-languages
     import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages';
 
     setupLanguageFeatures(LanguageIdEnum.FLINK, {
-		completionItems: {
-			enable: true,
-			triggerCharacters: [' ', '.'],
-			completionService: //... ,
-		}
-	});
+        completionItems: {
+            enable: true,
+            triggerCharacters: [' ', '.'],
+            completionService: //... ,
+        }
+    });
     ```
 
     默认情况下，自动补全功能只提供关键字自动补全, 但你可以通过设置 `completionService` 自定义自动补全项。
@@ -108,7 +108,7 @@ npm install monaco-sql-languages
         position,
         completionContext,
         suggestions, // 语法推荐信息
-		entities // 当前编辑器文本的语法上下文中出现的表名、字段名等
+        entities // 当前编辑器文本的语法上下文中出现的表名、字段名等
     ) {
         return new Promise((resolve, reject) => {
             if (!suggestions) {
@@ -140,17 +140,17 @@ npm install monaco-sql-languages
     };
 
     setupLanguageFeatures(LanguageIdEnum.FLINK, {
-		completionItems: {
-			enable: true,
-			completionService,
-		}
-	});
+        completionItems: {
+            enable: true,
+            completionService,
+        }
+    });
     ```
 
 3. **创建 Monaco Editor 并指定语言**
 
     ```typescript
-	import { LanguageIdEnum } from 'monaco-sql-languages';
+    import { LanguageIdEnum } from 'monaco-sql-languages';
 
     monaco.editor.create(document.getElementById('container'), {
         value: 'select * from tb_test',

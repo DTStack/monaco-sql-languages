@@ -34,12 +34,61 @@ module.exports = {
 			features: [],
 			languages: [],
 			customLanguages: [
+				// 包含 Monaco SQL Languages 所提供的语言功能
+				{
+					label: 'mysql',
+					entry: 'monaco-sql-languages/esm/languages/mysql/mysql.contribution',
+					worker: {
+						id: '/esm/languages/mysql/',
+						entry: 'monaco-sql-languages/esm/languages/mysql/mysql.worker'
+					}
+				},
 				{
 					label: 'flinksql',
-					entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution',
+					entry: 'monaco-sql-languages/esm/languages/flink/flink.contribution',
 					worker: {
-						id: 'monaco-sql-languages/out/esm/flinksql/flinkSQLWorker',
-						entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.worker'
+						id: '/esm/languages/flink/',
+						entry: 'monaco-sql-languages/esm/languages/flink/flink.worker'
+					}
+				},
+				{
+					label: 'sparksql',
+					entry: 'monaco-sql-languages/esm/languages/spark/spark.contribution',
+					worker: {
+						id: '/esm/languages/spark/',
+						entry: 'monaco-sql-languages/esm/languages/spark/spark.worker'
+					}
+				},
+				{
+					label: 'hivesql',
+					entry: 'monaco-sql-languages/esm/languages/hive/hive.contribution',
+					worker: {
+						id: '/esm/languages/hive/',
+						entry: 'monaco-sql-languages/esm/languages/hive/hive.worker'
+					}
+				},
+				{
+					label: 'trinosql',
+					entry: 'monaco-sql-languages/esm/languages/trino/trino.contribution',
+					worker: {
+						id: '/esm/languages/trino/',
+						entry: 'monaco-sql-languages/esm/languages/trino/trino.worker'
+					}
+				},
+				{
+					label: 'pgsql',
+					entry: 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution',
+					worker: {
+						id: '/esm/languages/pgsql/',
+						entry: 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker'
+					}
+				},
+				{
+					label: 'impalasql',
+					entry: 'monaco-sql-languages/esm/languages/impala/impala.contribution',
+					worker: {
+						id: '/esm/languages/impala/',
+						entry: 'monaco-sql-languages/esm/languages/impala/impala.worker'
 					}
 				}
 			]

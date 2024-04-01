@@ -1,63 +1,6 @@
 import { languages, Emitter, IEvent, editor, Position, IRange } from './fillers/monaco-editor-core';
 import { EntityContext, Suggestions } from 'dt-sql-parser';
 
-export interface ModeConfiguration {
-	/**
-	 * Defines whether the built-in completionItemProvider is enabled.
-	 */
-	readonly completionItems?: boolean;
-
-	/**
-	 * Defines whether the built-in hoverProvider is enabled.
-	 */
-	readonly hovers?: boolean;
-
-	/**
-	 * Defines whether the built-in documentSymbolProvider is enabled.
-	 */
-	readonly documentSymbols?: boolean;
-
-	/**
-	 * Defines whether the built-in definitions provider is enabled.
-	 */
-	readonly definitions?: boolean;
-
-	/**
-	 * Defines whether the built-in references provider is enabled.
-	 */
-	readonly references?: boolean;
-
-	/**
-	 * Defines whether the built-in references provider is enabled.
-	 */
-	readonly documentHighlights?: boolean;
-
-	/**
-	 * Defines whether the built-in rename provider is enabled.
-	 */
-	readonly rename?: boolean;
-
-	/**
-	 * Defines whether the built-in color provider is enabled.
-	 */
-	readonly colors?: boolean;
-
-	/**
-	 * Defines whether the built-in foldingRange provider is enabled.
-	 */
-	readonly foldingRanges?: boolean;
-
-	/**
-	 * Defines whether the built-in diagnostic provider is enabled.
-	 */
-	readonly diagnostics?: boolean;
-
-	/**
-	 * Defines whether the built-in selection range provider is enabled.
-	 */
-	readonly selectionRanges?: boolean;
-}
-
 /**
  * A completion item.
  * ICompletionItem is pretty much the same as {@link languages.CompletionItem},
@@ -91,6 +34,50 @@ export type CompletionService = (
 	entities: EntityContext[] | null
 ) => Promise<ICompletionItem[] | ICompletionList>;
 
+export interface CompletionOptions {
+	enable: boolean;
+	/**
+	 * Define a service to customize  completionItems.
+	 * By default, only keyword autocomplete items are included.
+	 */
+	completionService: CompletionService;
+	triggerCharacters: string[];
+}
+
+export interface ModeConfiguration {
+	/**
+	 * Defines whether the built-in completionItemProvider is enabled.
+	 * Defaults to true.
+	 */
+	readonly completionItems: CompletionOptions;
+
+	/**
+	 * Defines whether the built-in diagnostic provider is enabled.
+	 */
+	readonly diagnostics: boolean;
+
+	// TODO: Implement the following features
+	/**
+	 * Defines whether the built-in hoverProvider is enabled.
+	 */
+	// readonly hovers?: boolean;
+
+	/**
+	 * Defines whether the built-in definitions provider is enabled.
+	 */
+	// readonly definitions?: boolean;
+
+	/**
+	 * Defines whether the built-in rename provider is enabled.
+	 */
+	// readonly rename?: boolean;
+
+	/**
+	 * Defines whether the built-in references provider is enabled.
+	 */
+	// readonly references?: boolean;
+}
+
 /**
  * A function to preprocess code.
  * @param code editor value
@@ -101,8 +88,9 @@ export interface LanguageServiceDefaults {
 	readonly languageId: string;
 	readonly onDidChange: IEvent<LanguageServiceDefaults>;
 	readonly modeConfiguration: ModeConfiguration;
-	readonly completionService?: CompletionService;
-	readonly preprocessCode?: PreprocessCode;
+	preprocessCode: PreprocessCode | null;
+	completionService: CompletionService;
+	triggerCharacters: string[];
 	setModeConfiguration(modeConfiguration: ModeConfiguration): void;
 }
 
@@ -110,19 +98,16 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 	private _onDidChange = new Emitter<LanguageServiceDefaults>();
 	private _modeConfiguration!: ModeConfiguration;
 	private _languageId: string;
-	private _completionService?: CompletionService;
-	private _preprocessCode?: PreprocessCode;
+	private _preprocessCode: PreprocessCode | null;
 
 	constructor(
 		languageId: string,
 		modeConfiguration: ModeConfiguration,
-		completionService?: CompletionService,
-		preprocessCode?: PreprocessCode
+		preprocessCode?: PreprocessCode | null
 	) {
 		this._languageId = languageId;
 		this.setModeConfiguration(modeConfiguration);
-		this._completionService = completionService;
-		this._preprocessCode = preprocessCode;
+		this._preprocessCode = preprocessCode ?? null;
 	}
 
 	get onDidChange(): IEvent<LanguageServiceDefaults> {
@@ -137,11 +122,15 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 		return this._modeConfiguration;
 	}
 
-	get completionService(): CompletionService | undefined {
-		return this._completionService;
+	get completionService(): CompletionService {
+		return this._modeConfiguration.completionItems.completionService;
 	}
 
-	get preprocessCode(): PreprocessCode | undefined {
+	get triggerCharacters(): string[] {
+		return this._modeConfiguration.completionItems.triggerCharacters;
+	}
+
+	get preprocessCode(): PreprocessCode | null {
 		return this._preprocessCode;
 	}
 
@@ -151,16 +140,36 @@ export class LanguageServiceDefaultsImpl implements LanguageServiceDefaults {
 	}
 }
 
+/**
+ * A built-in completion service.
+ * It will invoke when there is no external completionService.
+ * It will only build completion items of keywords.
+ */
+export const defaultCompletionService: CompletionService = function (
+	_model,
+	_position,
+	_context,
+	suggestions
+) {
+	if (!suggestions) {
+		return Promise.resolve([]);
+	}
+	const { keywords } = suggestions;
+
+	const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
+		label: kw,
+		kind: languages.CompletionItemKind.Keyword,
+		detail: 'keyword'
+	}));
+
+	return Promise.resolve(keywordsCompletionItems);
+};
+
 export const modeConfigurationDefault: Required<ModeConfiguration> = {
-	completionItems: true,
-	hovers: true,
-	documentSymbols: true,
-	definitions: true,
-	references: true,
-	documentHighlights: true,
-	rename: true,
-	colors: true,
-	foldingRanges: true,
-	diagnostics: true,
-	selectionRanges: true
+	completionItems: {
+		enable: true,
+		completionService: defaultCompletionService,
+		triggerCharacters: ['.', ' ']
+	},
+	diagnostics: true
 };

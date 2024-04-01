@@ -26,7 +26,7 @@ export function setupLanguageMode<T extends BaseSQLWorker>(
 			providers.push(new languageFeatures.DiagnosticsAdapter(languageId, worker, defaults));
 		}
 
-		if (modeConfiguration.completionItems) {
+		if (modeConfiguration.completionItems.enable) {
 			providers.push(
 				languages.registerCompletionItemProvider(
 					languageId,

@@ -11,11 +11,7 @@ import {
 import { debounce } from './common/utils';
 import { BaseSQLWorker } from './baseSQLWorker';
 import type { ParseError } from 'dt-sql-parser';
-import type {
-	LanguageServiceDefaults,
-	CompletionService,
-	ICompletionItem
-} from './monaco.contribution';
+import type { LanguageServiceDefaults } from './monaco.contribution';
 
 export interface WorkerAccessor<T extends BaseSQLWorker> {
 	(...uris: Uri[]): Promise<T>;
@@ -143,7 +139,9 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 	) {}
 
 	public get triggerCharacters(): string[] {
-		return ['.', ' '];
+		return Array.isArray(this._defaults.triggerCharacters)
+			? this._defaults.triggerCharacters
+			: ['.', ' '];
 	}
 
 	provideCompletionItems(
@@ -162,11 +160,13 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 				return worker.doCompletionWithEntities(code, position);
 			})
 			.then(([suggestions, allEntities]) => {
-				const completionService =
-					typeof this._defaults.completionService === 'function'
-						? this._defaults.completionService
-						: defaultCompletionService;
-				return completionService(model, position, context, suggestions, allEntities);
+				return this._defaults.completionService(
+					model,
+					position,
+					context,
+					suggestions,
+					allEntities
+				);
 			})
 			.then((completions) => {
 				const wordInfo = model.getWordUntilPosition(position);
@@ -200,28 +200,3 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 			});
 	}
 }
-
-/**
- * A built-in completion service.
- * It will invoke when there is no external completionService.
- * It will only build completion items of keywords.
- */
-const defaultCompletionService: CompletionService = function (
-	_model,
-	_position,
-	_context,
-	suggestions
-) {
-	if (!suggestions) {
-		return Promise.resolve([]);
-	}
-	const { keywords } = suggestions;
-
-	const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
-		label: kw,
-		kind: languages.CompletionItemKind.Keyword,
-		detail: 'keyword'
-	}));
-
-	return Promise.resolve(keywordsCompletionItems);
-};

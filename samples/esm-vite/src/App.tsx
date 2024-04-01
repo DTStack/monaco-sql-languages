@@ -42,7 +42,7 @@ const App = () => {
 					style={{
 						width: 120,
 						height: 32,
-						marginBottom: 16,
+						marginBottom: 8,
 						fontSize: 16
 					}}
 				>

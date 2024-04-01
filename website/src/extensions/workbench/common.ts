@@ -1,4 +1,14 @@
-export const defaultLanguage = 'FlinkSQL';
+export const languages = [
+	'FlinkSQL',
+	'SparkSQL',
+	'HiveSQL',
+	'MySQL',
+	'PGSQL',
+	'TrinoSQL',
+	'ImpalaSQL'
+];
+
+export const defaultLanguage = languages[0];
 
 export const defaultEditorTab = {
 	id: `fixedTab`,
@@ -14,14 +24,3 @@ export const defaultLanguageStatusItem = {
 	name: defaultLanguage,
 	sortIndex: 3
 };
-
-export const languages = [
-	'FlinkSQL',
-	'SparkSQL',
-	'HiveSQL',
-	'MySQL',
-	'PgSQL',
-	'SQL',
-	'TrinoSQL',
-	'ImpalaSQL'
-];

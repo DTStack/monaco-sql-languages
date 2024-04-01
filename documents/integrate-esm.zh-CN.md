@@ -27,58 +27,58 @@
             // 包含 Monaco SQL Languages 所提供的语言功能
             {
                 label: 'mysql',
-                entry: 'monaco-sql-languages/out/esm/mysql/mysql.contribution',
+                entry: 'monaco-sql-languages/esm/languages/mysql/mysql.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/mysql/mySQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/mysql/mysql.worker'
+                    id: '/esm/languages/mysql/',
+                    entry: 'monaco-sql-languages/esm/languages/mysql/mysql.worker'
                 }
             },
             {
                 label: 'flinksql',
-                entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution',
+                entry: 'monaco-sql-languages/esm/languages/flink/flink.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/flinksql/flinkSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/flinksql/flinksql.worker'
+                    id: '/esm/languages/flink/',
+                    entry: 'monaco-sql-languages/esm/languages/flink/flink.worker'
                 }
             },
             {
                 label: 'sparksql',
-                entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution',
+                entry: 'monaco-sql-languages/esm/languages/spark/spark.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/sparksql/sparkSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/sparksql/sparksql.worker'
+                    id: '/esm/languages/spark/',
+                    entry: 'monaco-sql-languages/esm/languages/spark/spark.worker'
                 }
             },
             {
                 label: 'hivesql',
-                entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution',
+                entry: 'monaco-sql-languages/esm/languages/hive/hive.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/hivesql/hiveSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/hivesql/hivesql.worker'
+                    id: '/esm/languages/hive/',
+                    entry: 'monaco-sql-languages/esm/languages/hive/hive.worker'
                 }
             },
             {
                 label: 'trinosql',
-                entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution',
+                entry: 'monaco-sql-languages/esm/languages/trino/trino.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/trinosql/TrinoSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/trinosql/trinosql.worker'
+                    id: '/esm/languages/trino/',
+                    entry: 'monaco-sql-languages/esm/languages/trino/trino.worker'
                 }
             },
             {
                 label: 'pgsql',
-                entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution',
+                entry: 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/pgsql/PgSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/pgsql/pgsql.worker'
+                    id: '/esm/languages/pgsql/',
+                    entry: 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker'
                 }
             },
             {
                 label: 'impalasql',
-                entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution',
+                entry: 'monaco-sql-languages/esm/languages/impala/impala.contribution',
                 worker: {
-                    id: 'monaco-sql-languages/out/esm/impalasql/impalaSQLWorker',
-                    entry: 'monaco-sql-languages/out/esm/impalasql/impalasql.worker'
+                    id: '/esm/languages/impala/',
+                    entry: 'monaco-sql-languages/esm/languages/impala/impala.worker'
                 }
             }
         ]
@@ -105,13 +105,13 @@
 
     module.exports = {
         entry: {
-            'mysql.worker': 'monaco-sql-languages/out/esm/mysql/mysql.worker.js',
-            'flinksql.worker': 'monaco-sql-languages/out/esm/flinksql/flinksql.worker.js',
-            'sparksql.worker': 'monaco-sql-languages/out/esm/sparksql/sparksql.worker.js',
-            'hivesql.worker': 'monaco-sql-languages/out/esm/hivesql/hivesql.worker.js',
-            'trinosql.worker': 'monaco-sql-languages/out/esm/trinosql/trinosql.worker.js',
-            'pgsql.worker': 'monaco-sql-languages/out/esm/pgsql/pgsql.worker.js',
-            'impalasql.worker': 'monaco-sql-languages/out/esm/impalasql/impalasql.worker.js',
+            'mysql.worker': 'monaco-sql-languages/esm/languages/mysql/mysql.worker.js',
+            'flink.worker': 'monaco-sql-languages/esm/languages/flink/flink.worker.js',
+            'spark.worker': 'monaco-sql-languages/esm/languages/spark/spark.worker.js',
+            'hive.worker': 'monaco-sql-languages/esm/languages/hive/hive.worker.js',
+            'trino.worker': 'monaco-sql-languages/esm/languages/trino/trino.worker.js',
+            'pgsql.worker': 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker.js',
+            'impala.worker': 'monaco-sql-languages/esm/languages/impala/impala.worker.js',
             'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
         }
     };
@@ -120,29 +120,32 @@
 2. 定义全局变量 `MonacoEnvironment`, 并声明 `getWorkerUrl`
 
     ```typescript
-    window.MonacoEnvironment = {
-        getWorkerUrl: function (moduleId, label) {
+    import { LanguageIdEnum } from 'monaco-sql-languages';
+
+    /** define MonacoEnvironment.getWorkerUrl  */
+    (globalThis as any).MonacoEnvironment = {
+        getWorkerUrl: function (_moduleId: string, label: string) {
             switch (label) {
-                case 'mysql': {
+                case LanguageIdEnum.MYSQL: {
                     return './mysql.worker.js';
                 }
-                case 'sparksql': {
-                    return './sparksql.worker.js';
+                case LanguageIdEnum.SPARK: {
+                    return './spark.worker.js';
                 }
-                case 'flinksql': {
-                    return './flinksql.worker.js';
+                case LanguageIdEnum.FLINK: {
+                    return './flink.worker.js';
                 }
-                case 'hivesql': {
-                    return './hivesql.worker.js';
+                case LanguageIdEnum.HIVE: {
+                    return './hive.worker.js';
                 }
-                case 'trinosql': {
-                    return './trinosql.worker.js';
+                case LanguageIdEnum.TRINO: {
+                    return './trino.worker.js';
                 }
-                case 'pgsql': {
+                case LanguageIdEnum.PG: {
                     return './pgsql.worker.js';
                 }
-                case 'impalasql': {
-                    return './impalasql.worker.js'
+                case LanguageIdEnum.IMPALA: {
+                    return './impala.worker.js'
                 }
                 default: {
                     return './editor.worker.js';
@@ -156,41 +159,44 @@
 
 ## 使用 Vite
 
-1. 定义全局变量 `MonacoEnvironment`, 并声明 `getWorkerUrl`
-    ```typescript
-    import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-    import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
-    import SparkSQLWorker from 'monaco-sql-languages/out/esm/sparksql/sparksql.worker?worker';
-    import HiveSQLWorker from 'monaco-sql-languages/out/esm/hivesql/hivesql.worker?worker';
-    import PGSQLWorker from 'monaco-sql-languages/out/esm/pgsql/pgsql.worker?worker';
-    import MySQLWorker from 'monaco-sql-languages/out/esm/mysql/mysql.worker?worker';
-    import TrinoSQLWorker from 'monaco-sql-languages/out/esm/trinosql/trinosql.worker?worker';
-    import ImpalaSQLWorker from 'monaco-sql-languages/out/esm/impalasql/impalasql.worker?worker';
+定义全局变量 `MonacoEnvironment`, 并声明 `getWorkerUrl`
 
-    self.MonacoEnvironment = {
-        getWorker(_, label) {
-            if (label === 'flinksql') {
-                return new FlinkSQLWorker();
-            }
-            if (label === 'hivesql') {
-                return new HiveSQLWorker();
-            }
-            if (label === 'sparksql') {
-                return new SparkSQLWorker();
-            }
-            if (label === 'pgsql') {
-                return new PGSQLWorker();
-            }
-            if (label === 'mysql') {
-                return new MySQLWorker();
-            }
-            if (label === 'trinosql') {
-                return new TrinoSQLWorker();
-            }
-            if (label === 'impalasql') {
-                return new ImpalaSQLWorker();
-            }
-            return new EditorWorker();
+```typescript
+import { LanguageIdEnum } from 'monaco-sql-languages';
+
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+import FlinkSQLWorker from 'monaco-sql-languages/esm/languages/flink/flink.worker?worker';
+import SparkSQLWorker from 'monaco-sql-languages/esm/languages/spark/spark.worker?worker';
+import HiveSQLWorker from 'monaco-sql-languages/esm/languages/hive/hive.worker?worker';
+import PGSQLWorker from 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker?worker';
+import MySQLWorker from 'monaco-sql-languages/esm/languages/mysql/mysql.worker?worker';
+import TrinoSQLWorker from 'monaco-sql-languages/esm/languages/trino/trino.worker?worker';
+import ImpalaSQLWorker from 'monaco-sql-languages/esm/languages/impala/impala.worker?worker';
+
+(globalThis as any).MonacoEnvironment = {
+    getWorker(_: any, label: string) {
+        if (label === LanguageIdEnum.FLINK) {
+            return new FlinkSQLWorker();
         }
-    };
-    ```
+        if (label === LanguageIdEnum.HIVE) {
+            return new HiveSQLWorker();
+        }
+        if (label === LanguageIdEnum.SPARK) {
+            return new SparkSQLWorker();
+        }
+        if (label === LanguageIdEnum.PG) {
+            return new PGSQLWorker();
+        }
+        if (label === LanguageIdEnum.MYSQL) {
+            return new MySQLWorker();
+        }
+        if (label === LanguageIdEnum.TRINO) {
+            return new TrinoSQLWorker();
+        }
+        if (label === LanguageIdEnum.IMPALA) {
+            return new ImpalaSQLWorker();
+        }
+        return new EditorWorker();
+    }
+};
+```

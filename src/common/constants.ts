@@ -35,9 +35,7 @@ export enum LanguageIdEnum {
 	HIVE = 'hivesql',
 	MYSQL = 'mysql',
 	PG = 'pgsql',
-	PL = 'plsql',
 	SPARK = 'sparksql',
-	SQL = 'sql',
 	TRINO = 'trinosql',
 	IMPALA = 'impalasql'
 }

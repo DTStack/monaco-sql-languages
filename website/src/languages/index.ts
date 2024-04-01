@@ -1,7 +1,7 @@
-import 'monaco-sql-languages/out/esm/all.contributions.js';
+import 'monaco-sql-languages/esm/all.contributions.js';
 import './languageWorker';
 import './theme';
-import { setupLanguageFeatures, LanguageIdEnum } from 'monaco-sql-languages/out/esm/main.js';
+import { setupLanguageFeatures, LanguageIdEnum } from 'monaco-sql-languages/esm/main.js';
 
 import { completionService } from './helpers/completionService';
 

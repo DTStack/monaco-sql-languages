@@ -8,8 +8,8 @@ import { Select, Option } from '@dtinsight/molecule/esm/components/select';
 import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/esm/model';
 
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
-import { LanguageService, ParseError } from 'monaco-sql-languages/out/esm/languageService';
-import { debounce } from 'monaco-sql-languages/out/esm/common/utils';
+import { LanguageService, ParseError } from 'monaco-sql-languages/esm/languageService';
+import { debounce } from 'monaco-sql-languages/esm/common/utils';
 
 export default class Sidebar extends React.Component {
 	private _language = defaultLanguage;

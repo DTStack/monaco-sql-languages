@@ -1,6 +1,6 @@
 import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-import { CompletionService, ICompletionItem } from 'monaco-sql-languages/out/esm/languageService';
-import { EntityContextType } from 'monaco-sql-languages/out/esm/main';
+import { CompletionService, ICompletionItem } from 'monaco-sql-languages/esm/languageService';
+import { EntityContextType } from 'monaco-sql-languages/esm/main';
 
 import { getCatalogs, getDataBases, getSchemas, getTables, getViews } from './dbMetaProvider';
 

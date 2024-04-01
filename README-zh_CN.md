@@ -9,42 +9,35 @@
 
 [English](./README.md) | 简体中文
 
-Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [monaco-languages](https://github.com/microsoft/monaco-languages) fork 而来。
+Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [monaco-languages](https://github.com/microsoft/monaco-languages) fork 而来。不同的是，Monaco SQL Languages 支持了各种大数据领域的 SQL 语言以及相应的高级语言功能。
 
-不同的是，Monaco SQL Languages 集成了各种大数据领域的 SQL 语言功能，比如 FLinkSQL, SparkSQL, HiveSQL 等等。另外，Monaco SQL Languages 还通过集成 [dt-sql-parser](https://github.com/DTStack/dt-sql-parser) 提供了**SQL 语法校验** 和 **自动补全功能**。
+<br/>
+
+## 功能亮点
+- 代码高亮
+- 语法校验
+- 自动补全
+
+> 由 [dt-sql-parser](https://github.com/DTStack/dt-sql-parser) 提供语法解析功能。
 
 <br/>
 
 ## 在线预览
-由 [molecule](https://github.com/DTStack/molecule) 提供 IDE UI 支持。
+<https://dtstack.github.io/monaco-sql-languages/>
 
- <https://dtstack.github.io/monaco-sql-languages/>
+> 由 [molecule](https://github.com/DTStack/molecule) 提供 IDE UI 支持。
 
 <br/>
 
 ## 已支持的 SQL 语言类型
 
 -   MySQL
--   FlinkSQL
--   SparkSQL
--   HiveSQL
--   TrinoSQL (PrestoSQL)
+-   Flink
+-   Spark
+-   Hive
+-   Trino (Presto)
 -   PostgreSQL
--   Impala SQL
-
-**自动补全功能支持**
-
-| SQL 类型   | 语言 ID      | 自动补全功能      |
-| ---------- | ----------- | --------------- |
-| MySQL      | mysql       | ✅              |
-| Flink SQL  | flinksql    | ✅              |
-| Spark SQL  | sparksql    | ✅              |
-| Hive SQL   | hivesql     | ✅              |
-| Trino SQL  | trinosql    | ✅              |
-| PostgreSQL | pgsql       | ✅              |
-| Impala SQL | impalasql   | ✅              |
-
-> Monaco SQL Languages 计划在未来支持更多类型的的 SQL Languages。 如果你需要某些目前未支持的 SQL Languages，可以在 [github](https://github.com/DTStack/monaco-sql-languages) 上联系我们。
+-   Impala
 
 <br/>
 
@@ -61,42 +54,41 @@ npm install monaco-sql-languages
 ## 集成
 
 - [集成 Monaco SQL Languages 的 ESM 版本](./documents/integrate-esm.zh-CN.md)
-- [Monaco SQL Languages 集成问题修复](./documents/problem-solving.zh-CN.md)
 
 <br/>
 
 ## 使用
 
-1. **导入语言的 contributions 文件**
+1. **导入语言的 contribution 文件**
 
     > Tips: 如果通过 MonacoEditorWebpackPlugin 来集成，插件会帮助我们自动引入相应的 contribution 文件。如果使用其他方式集成，则需要手动引入相应的 contribution 文件。
 
     ```typescript
-    import 'monaco-sql-languages/out/esm/mysql/mysql.contribution';
-    import 'monaco-sql-languages/out/esm/flinksql/flinksql.contribution';
-    import 'monaco-sql-languages/out/esm/sparksql/sparksql.contribution';
-    import 'monaco-sql-languages/out/esm/hivesql/hivesql.contribution';
-    import 'monaco-sql-languages/out/esm/trinosql/trinosql.contribution';
-    import 'monaco-sql-languages/out/esm/impalasql/impalasql.contribution';
-    import 'monaco-sql-languages/out/esm/pgsql/pgsql.contribution';
+    import 'monaco-sql-languages/esm/languages/mysql/mysql.contribution';
+    import 'monaco-sql-languages/esm/languages/flink/flink.contribution';
+    import 'monaco-sql-languages/esm/languages/spark/spark.contribution';
+    import 'monaco-sql-languages/esm/languages/hive/hive.contribution';
+    import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
+    import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
+    import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
 
     // 或者你可以通过下面的方式一次性导入所有的语言功能
-    // import 'monaco-sql-languages/out/esm/monaco.contribution';
+    // import 'monaco-sql-languages/esm/all.contributions';
     ```
 
 2. **设置语言功能**
 
-    你可以通过 `setupLanguageFeatures` 设置语言功能，比如禁用 FlinkSQL 语言的自动补全功能。
+    你可以通过 `setupLanguageFeatures` 设置语言功能，比如设置 FlinkSQL 语言的自动补全功能。
     ```typescript
-    import {
-        setupLanguageFeatures,
-        LanguageIdEnum,
-    } from 'monaco-sql-languages';
+    import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages';
 
-    setupLanguageFeatures({
-        languageId: LanguageIdEnum.FLINK,
-        completionItems: false
-    })
+    setupLanguageFeatures(LanguageIdEnum.FLINK, {
+        completionItems: {
+            enable: true,
+            triggerCharacters: [' ', '.'],
+            completionService: //... ,
+        }
+    });
     ```
 
     默认情况下，自动补全功能只提供关键字自动补全, 但你可以通过设置 `completionService` 自定义自动补全项。
@@ -115,7 +107,8 @@ npm install monaco-sql-languages
         model,
         position,
         completionContext,
-        suggestions
+        suggestions, // 语法推荐信息
+        entities // 当前编辑器文本的语法上下文中出现的表名、字段名等
     ) {
         return new Promise((resolve, reject) => {
             if (!suggestions) {
@@ -146,18 +139,22 @@ npm install monaco-sql-languages
         });
     };
 
-    setupLanguageFeatures({
-        languageId: LanguageIdEnum.FLINK,
-        completionService: completionService,
-    })
+    setupLanguageFeatures(LanguageIdEnum.FLINK, {
+        completionItems: {
+            enable: true,
+            completionService,
+        }
+    });
     ```
 
 3. **创建 Monaco Editor 并指定语言**
 
     ```typescript
+    import { LanguageIdEnum } from 'monaco-sql-languages';
+
     monaco.editor.create(document.getElementById('container'), {
         value: 'select * from tb_test',
-        language: 'flinksql' // languageId
+        language: LanguageIdEnum.FLINK // languageId
     });
     ```
 
@@ -215,7 +212,7 @@ const myThemeData: editor.IStandaloneThemeData = {
 editor.defineTheme('my-theme', myThemeData);
 ```
 
-> `postfixTokenClass` 在大多数情况下不是必须的，但是由于 Monaco SQL Languages 内部为所有的语言都设置了 `tokenPostfix: 'sql'`，所以在某些情况下，如果不使用 `postfixTokenClass` 处理 `TokenClassConsts.*`，你自定义的样式可能不生效。
+> `postfixTokenClass` 在大多数情况下不是必须的，但是由于 Monaco SQL Languages 内部为所有的语言都设置了 `tokenPostfix: 'sql'`。所以在某些情况下，如果不使用 `postfixTokenClass` 处理 `TokenClassConsts.*`，自定义的样式可能不生效。
 
 <br/>
 
@@ -236,15 +233,14 @@ editor.defineTheme('my-theme', myThemeData);
     pnpm dev
     ```
 
--   打包
+-   构建
 
     ```bash
-    pnpm compile
+    pnpm build
     ```
 
 -   单元测试
     ```
-    pnpm compile
     pnpm test
     ```
 

@@ -1,39 +1,36 @@
 // @ts-nocheck
+import { LanguageIdEnum } from 'monaco-sql-languages/esm/main.js';
+
 import EditorWorker from '../../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
+import FlinkSQLWorker from 'monaco-sql-languages/esm/languages/flink/flink.worker?worker';
+import SparkSQLWorker from 'monaco-sql-languages/esm/languages/spark/spark.worker?worker';
+import HiveSQLWorker from 'monaco-sql-languages/esm/languages/hive/hive.worker?worker';
+import PGSQLWorker from 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker?worker';
+import MySQLWorker from 'monaco-sql-languages/esm/languages/mysql/mysql.worker?worker';
+import TrinoSQLWorker from 'monaco-sql-languages/esm/languages/trino/trino.worker?worker';
+import ImpalaSQLWorker from 'monaco-sql-languages/esm/languages/impala/impala.worker?worker';
 
-import FlinkSQLWorker from 'monaco-sql-languages/out/esm/flinksql/flinksql.worker?worker';
-import SparkSQLWorker from 'monaco-sql-languages/out/esm/sparksql/sparksql.worker?worker';
-import HiveSQLWorker from 'monaco-sql-languages/out/esm/hivesql/hivesql.worker?worker';
-import PGSQLWorker from 'monaco-sql-languages/out/esm/pgsql/pgsql.worker?worker';
-import MySQLWorker from 'monaco-sql-languages/out/esm/mysql/mysql.worker?worker';
-import PLSQLWorker from 'monaco-sql-languages/out/esm/plsql/plsql.worker?worker';
-import TrinoSQLWorker from 'monaco-sql-languages/out/esm/trinosql/trinosql.worker?worker';
-import ImpalaSQLWorker from 'monaco-sql-languages/out/esm/impalasql/impalasql.worker?worker';
-
-self.MonacoEnvironment = {
+(globalThis as any).MonacoEnvironment = {
 	getWorker(_: any, label: string) {
-		if (label === 'flinksql') {
+		if (label === LanguageIdEnum.FLINK) {
 			return new FlinkSQLWorker();
 		}
-		if (label === 'hivesql') {
+		if (label === LanguageIdEnum.HIVE) {
 			return new HiveSQLWorker();
 		}
-		if (label === 'sparksql') {
+		if (label === LanguageIdEnum.SPARK) {
 			return new SparkSQLWorker();
 		}
-		if (label === 'pgsql') {
+		if (label === LanguageIdEnum.PG) {
 			return new PGSQLWorker();
 		}
-		if (label === 'plsql') {
-			return new PLSQLWorker();
-		}
-		if (label === 'mysql' || label === 'sql') {
+		if (label === LanguageIdEnum.MYSQL) {
 			return new MySQLWorker();
 		}
-		if (label === 'trinosql') {
+		if (label === LanguageIdEnum.TRINO) {
 			return new TrinoSQLWorker();
 		}
-		if (label === 'impalasql') {
+		if (label === LanguageIdEnum.IMPALA) {
 			return new ImpalaSQLWorker();
 		}
 		return new EditorWorker();

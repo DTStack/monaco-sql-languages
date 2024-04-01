@@ -3,11 +3,12 @@
 	"version": "0.12.0-beta.ng.2",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
-		"compile": "mrmdir ./out && tsc -p ./tsconfig.amd.json && tsc -p ./tsconfig.esm.json",
+		"build": "mrmdir ./esm && tsc -p ./tsconfig.esm.json",
+		"build-amd": "mrmdir ./out && tsc -p ./tsconfig.amd.json",
 		"watch-esm": "tsc -p ./tsconfig.esm.json --watch",
-		"test": "npm run compile && mocha ./test/all.js",
-		"prepublishOnly": "npm run compile",
-		"prettier": "prettier --write .",
+		"test": "npm run build-amd && mocha ./test/all.js",
+		"prepublishOnly": "npm run build",
+		"prettier": "prettier --write ./src",
 		"check-types": "tsc -p ./tsconfig.json",
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
 		"prod": "mrmdir ./docs && node --max_old_space_size=4092 & cd website && npm run build",
@@ -16,11 +17,11 @@
 	},
 	"author": "DTStack Corporation",
 	"license": "MIT",
-	"main": "out/esm/main.js",
-	"module": "out/esm/main.js",
-	"types": "out/esm/main.d.ts",
+	"main": "esm/main.js",
+	"module": "esm/main.js",
+	"types": "esm/main.d.ts",
 	"files": [
-		"out"
+		"esm"
 	],
 	"repository": {
 		"type": "git",

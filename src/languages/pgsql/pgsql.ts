@@ -14,7 +14,6 @@ export const conf: languages.LanguageConfiguration = {
 	brackets: [
 		['{', '}'],
 		['[', ']'],
-
 		['(', ')']
 	],
 	autoClosingPairs: [
@@ -40,7 +39,8 @@ export const language = <languages.IMonarchLanguage>{
 
 	brackets: [
 		{ open: '[', close: ']', token: TokenClassConsts.DELIMITER_SQUARE },
-		{ open: '(', close: ')', token: TokenClassConsts.DELIMITER_PAREN }
+		{ open: '(', close: ')', token: TokenClassConsts.DELIMITER_PAREN },
+		{ open: '{', close: '}', token: TokenClassConsts.DELIMITER_CURLY }
 	],
 
 	keywords: [

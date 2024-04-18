@@ -12,10 +12,12 @@ export const conf: languages.LanguageConfiguration = {
 		blockComment: ['/*', '*/']
 	},
 	brackets: [
+		['{', '}'],
 		['[', ']'],
 		['(', ')']
 	],
 	autoClosingPairs: [
+		{ open: '{', close: '}' },
 		{ open: '[', close: ']' },
 		{ open: '(', close: ')' },
 		{ open: '"', close: '"' },
@@ -23,6 +25,7 @@ export const conf: languages.LanguageConfiguration = {
 		{ open: '`', close: '`' }
 	],
 	surroundingPairs: [
+		{ open: '{', close: '}' },
 		{ open: '[', close: ']' },
 		{ open: '(', close: ')' },
 		{ open: '"', close: '"' },
@@ -37,7 +40,8 @@ export const language = <languages.IMonarchLanguage>{
 	ignoreCase: true,
 	brackets: [
 		{ open: '[', close: ']', token: TokenClassConsts.DELIMITER_SQUARE },
-		{ open: '(', close: ')', token: TokenClassConsts.DELIMITER_PAREN }
+		{ open: '(', close: ')', token: TokenClassConsts.DELIMITER_PAREN },
+		{ open: '{', close: '}', token: TokenClassConsts.DELIMITER_CURLY }
 	],
 	keywords: [
 		// https://spark.apache.org/docs/latest/sql-ref-ansi-compliance.html

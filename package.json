@@ -61,7 +61,7 @@
 		}
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.0.0-beta.4.12"
+		"dt-sql-parser": "4.0.0-beta.4.14"
 	},
 	"peerDependencies": {
 		"monaco-editor": ">=0.31.0"

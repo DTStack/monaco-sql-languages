@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0-beta.12](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.11...v0.12.0-beta.12) (2024-04-19)
+
+
+### Features
+
+* upgrade dt-sql-parser ([#120](https://github.com/DTStack/monaco-sql-languages/issues/120)) ([7fca45e](https://github.com/DTStack/monaco-sql-languages/commit/7fca45ed440753fefec0d85f8f04312d01c6564a))
+
+
+### Bug Fixes
+
+* [#117](https://github.com/DTStack/monaco-sql-languages/issues/117) sql brackets `{` ([#118](https://github.com/DTStack/monaco-sql-languages/issues/118)) ([5d5741c](https://github.com/DTStack/monaco-sql-languages/commit/5d5741cb5dd987760a96113fc127e768071464ab))
+
 ## [0.12.0-beta.11](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.10...v0.12.0-beta.11) (2024-04-01)
 
 

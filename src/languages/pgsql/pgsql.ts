@@ -968,6 +968,7 @@ export const language = <languages.IMonarchLanguage>{
 			{ include: '@comments' },
 			{ include: '@whitespace' },
 			{ include: '@pseudoColumns' },
+			{ include: '@customParams' },
 			{ include: '@numbers' },
 			{ include: '@strings' },
 			{ include: '@complexIdentifiers' },
@@ -1005,6 +1006,10 @@ export const language = <languages.IMonarchLanguage>{
 		],
 		pseudoColumns: [
 			// Not support
+		],
+		customParams: [
+			[/\${[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE],
+			[/\@\@{[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE]
 		],
 		numbers: [
 			[/0[xX][0-9a-fA-F]*/, TokenClassConsts.NUMBER_HEX],

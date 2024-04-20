@@ -439,6 +439,7 @@ export const language = <languages.IMonarchLanguage>{
 	typeKeywords: [
 		// https://impala.apache.org/docs/build/html/topics/impala_datatypes.html
 		'ARRAY',
+		'BINARY',
 		'BIGINT',
 		'BOOLEAN',
 		'CHAR',
@@ -455,7 +456,7 @@ export const language = <languages.IMonarchLanguage>{
 		'TIMESTAMP',
 		'TINYINT',
 		'VARCHAR',
-		'Complex'
+		'COMPLEX'
 	],
 	scopeKeywords: ['CASE', 'END', 'WHEN', 'THEN', 'ELSE'],
 	pseudoColumns: [

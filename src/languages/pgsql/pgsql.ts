@@ -942,6 +942,12 @@ export const language = <languages.IMonarchLanguage>{
 		'CAHR',
 		'BPCHAR',
 		'TEXT',
+		'BYTEA',
+		'JSON',
+		'GEOMETRY',
+		'MAP',
+		'ARRAY',
+		'INT',
 		'TIMESTAMP',
 		'DATE',
 		'INTERVAL',
@@ -975,7 +981,7 @@ export const language = <languages.IMonarchLanguage>{
 			{ include: '@scopes' },
 			{ include: '@complexDataTypes' },
 			[/[;,.]/, TokenClassConsts.DELIMITER],
-			[/[\(\)\[\]]/, '@brackets'],
+			[/[\(\)\[\]\{\}]/, '@brackets'],
 			[
 				/[\w@#$]+/,
 				{

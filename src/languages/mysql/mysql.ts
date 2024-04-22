@@ -912,7 +912,7 @@ export const language = <languages.IMonarchLanguage>{
 			{ include: '@scopes' },
 			{ include: '@complexOperators' },
 			[/[;,.]/, TokenClassConsts.DELIMITER],
-			[/[()]/, '@brackets'],
+			[/[\(\)\[\]\{\}]/, '@brackets'],
 			[
 				/[\w@]+/,
 				{

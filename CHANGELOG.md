@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0-beta.13](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.12...v0.12.0-beta.13) (2024-04-22)
+
+
+### Features
+
+* improve highlight conf ([#122](https://github.com/DTStack/monaco-sql-languages/issues/122)) ([0d14d3d](https://github.com/DTStack/monaco-sql-languages/commit/0d14d3d77b0079c461bf7580f303f016623615f0))
+
+
+### Bug Fixes
+
+* [#121](https://github.com/DTStack/monaco-sql-languages/issues/121) customParams use identifier highlight ([#123](https://github.com/DTStack/monaco-sql-languages/issues/123)) ([ea22ff0](https://github.com/DTStack/monaco-sql-languages/commit/ea22ff07611943014fd6bdedf17b760293afda61))
+
 ## [0.12.0-beta.12](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.11...v0.12.0-beta.12) (2024-04-19)
 
 

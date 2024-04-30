@@ -5,12 +5,7 @@ export * from './setupLanguageFeatures';
 export * from './common/constants';
 export * from './theme';
 
-export {
-	EntityContextType,
-	StmtContextType,
-	/** @deprecated use {@link EntityContextType} to instead. */
-	SyntaxContextType
-} from 'dt-sql-parser';
+export { EntityContextType, StmtContextType } from 'dt-sql-parser';
 
 export type {
 	WordRange,
@@ -18,5 +13,6 @@ export type {
 	Suggestions,
 	TextSlice,
 	ParseError,
-	EntityContext
+	EntityContext,
+	StmtContext
 } from 'dt-sql-parser';

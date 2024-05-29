@@ -31,6 +31,7 @@ const featureLoadedMap = new Map<string, boolean>();
 const languageModesMap = new Map<string, IDisposable>();
 const registerListenerMap = new Map<string, IDisposable>();
 const languageDefaultsMap = new Map<string, LanguageServiceDefaults>();
+const languageConfigurationMap = new Map<string, ModeConfiguration>();
 
 function setupMode(defaults: LanguageServiceDefaults) {
 	const languageId = defaults.languageId;
@@ -43,6 +44,12 @@ function setupMode(defaults: LanguageServiceDefaults) {
 	});
 }
 
+export function getLanguageConfiguration(
+	languageId: LanguageIdEnum
+): ModeConfiguration | undefined {
+	return languageConfigurationMap.get(languageId);
+}
+
 export function setupLanguageFeatures(
 	languageId: LanguageIdEnum,
 	configuration: FeatureConfiguration
@@ -53,6 +60,9 @@ export function setupLanguageFeatures(
 
 	const { preprocessCode, ...rest } = configuration;
 	const modeConf = processConfiguration(languageId, rest);
+
+	// Save languageId's configuration for getLanguageConfiguration
+	languageConfigurationMap.set(languageId, modeConf);
 
 	// Set up before language load
 	const defaults: LanguageServiceDefaults = new LanguageServiceDefaultsImpl(

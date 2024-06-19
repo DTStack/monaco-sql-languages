@@ -185,10 +185,7 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 						insertText:
 							item.insertText ??
 							(typeof item.label === 'string' ? item.label : item.label.label),
-						range: item.range ?? wordRange,
-						insertTextRules:
-							item.insertTextRules ??
-							languages.CompletionItemInsertTextRule.InsertAsSnippet
+						range: item.range ?? wordRange
 					})
 				);
 

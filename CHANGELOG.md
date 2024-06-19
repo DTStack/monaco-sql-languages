@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.1](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0...v0.12.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* [#132](https://github.com/DTStack/monaco-sql-languages/issues/132) optimize provideCompletionItems insertTextRules ([#133](https://github.com/DTStack/monaco-sql-languages/issues/133)) ([802f4cd](https://github.com/DTStack/monaco-sql-languages/commit/802f4cdcab33086b8c4fc4bd424cd6d2ddfb98d9))
+
 ## [0.12.0](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.0-beta.13...v0.12.0) (2024-04-30)
 
 

@@ -12,7 +12,7 @@
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
 		"prod": "rm -rf ./docs && node --max_old_space_size=4092 & cd website && npm run build",
 		"deploy": "npm run prod && gh-pages -d docs -r git@github.com:DTStack/monaco-sql-languages.git",
-		"prettier": "prettier --write .",
+		"format": "prettier --write .",
 		"prettier-check": "prettier --check .",
 		"check-types": "tsc -p ./tsconfig.json",
 		"release": "node ./scripts/bumpVersion.js"
@@ -25,12 +25,21 @@
 	"files": [
 		"esm"
 	],
+	"keywords": [
+		"monaco-editor",
+		"SQL",
+		"code-completion",
+		"hive",
+		"spark",
+		"mysql",
+		"postgresql",
+		"flink",
+		"trino",
+		"impala"
+	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/DTStack/monaco-sql-languages"
-	},
-	"bugs": {
-		"url": "https://github.com/DTStack/monaco-sql-languages/issues"
+		"url": "https://github.com/DTStack/monaco-sql-languages.git"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org/"
@@ -52,7 +61,7 @@
 		"typescript": "^5.0.4"
 	},
 	"simple-git-hooks": {
-		"pre-commit": "pretty-quick --staged  --bail"
+		"pre-commit": "pretty-quick --staged --bail"
 	},
 	"dependencies": {
 		"dt-sql-parser": "4.0.2"

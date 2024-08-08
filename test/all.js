@@ -1,6 +1,6 @@
 const requirejs = require('requirejs');
 const jsdom = require('jsdom');
-const glob = require('glob');
+const glob = require('fast-glob');
 const path = require('path');
 
 requirejs.config({
@@ -38,23 +38,24 @@ global.window = {
 requirejs(
 	['./test/setup'],
 	function () {
-		glob(
-			'out/amd/languages/*/*.test.js',
-			{ cwd: path.dirname(__dirname) },
-			function (err, files) {
-				if (err) {
-					console.log(err);
-					return;
-				}
-				requirejs(
-					files.map((f) => f.replace(/\.js$/, '')),
-					function () {
-						run(); // We can launch the tests!
-					},
-					function (err) {
-						console.log(err);
-					}
-				);
+		let files;
+		try {
+			files = glob.sync('out/amd/languages/*/*.test.js', {
+				cwd: path.dirname(__dirname),
+				dot: true
+			});
+		} catch (err) {
+			console.log(err);
+			return;
+		}
+
+		requirejs(
+			files.map((f) => f.replace(/\.js$/, '')),
+			function () {
+				run(); // We can launch the tests!
+			},
+			function (err) {
+				console.log(err);
 			}
 		);
 	},

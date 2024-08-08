@@ -1,7 +1,10 @@
 /out/
+/esm/
 /release/
 /public
 /docs
 .history
 node_modules
 **/*.md
+**/dist
+**/pnpm-lock.yaml

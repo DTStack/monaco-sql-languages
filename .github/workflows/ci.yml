@@ -36,7 +36,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run prettier check
-        run: prettier-check
+        run: pnpm prettier-check
 
       - name: Run tsc check
         run: pnpm check-types

@@ -89,27 +89,27 @@ function processConfiguration(
 	const diagnostics =
 		typeof configuration.diagnostics === 'boolean'
 			? configuration.diagnostics
-			: defaults?.modeConfiguration.diagnostics ?? modeConfigurationDefault.diagnostics;
+			: (defaults?.modeConfiguration.diagnostics ?? modeConfigurationDefault.diagnostics);
 
 	const completionEnable =
 		typeof configuration.completionItems === 'boolean'
 			? configuration.completionItems
-			: defaults?.modeConfiguration.completionItems.enable ??
-			  modeConfigurationDefault.completionItems.enable;
+			: (defaults?.modeConfiguration.completionItems.enable ??
+				modeConfigurationDefault.completionItems.enable);
 
 	const completionService =
 		typeof configuration.completionItems !== 'boolean' &&
 		typeof configuration.completionItems?.completionService === 'function'
 			? configuration.completionItems?.completionService
-			: defaults?.modeConfiguration.completionItems.completionService ??
-			  modeConfigurationDefault.completionItems.completionService;
+			: (defaults?.modeConfiguration.completionItems.completionService ??
+				modeConfigurationDefault.completionItems.completionService);
 
 	const triggerCharacters =
 		typeof configuration.completionItems !== 'boolean' &&
 		Array.isArray(configuration.completionItems?.triggerCharacters)
 			? configuration.completionItems!.triggerCharacters
-			: defaults?.modeConfiguration.completionItems.triggerCharacters ??
-			  modeConfigurationDefault.completionItems.triggerCharacters;
+			: (defaults?.modeConfiguration.completionItems.triggerCharacters ??
+				modeConfigurationDefault.completionItems.triggerCharacters);
 
 	return {
 		diagnostics,

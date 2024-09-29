@@ -44,8 +44,12 @@
 		"registry": "https://registry.npmjs.org/"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^17.7.2",
+		"@commitlint/config-conventional": "^17.7.0",
+		"@commitlint/cz-commitlint": "^17.7.2",
 		"@types/mocha": "^9.1.0",
 		"@types/node": "^20.4.0",
+		"commitizen": "^4.3.0",
 		"fast-glob": "^3.3.2",
 		"gh-pages": "^3.2.3",
 		"inquirer": "^8.2.2",
@@ -71,5 +75,15 @@
 	"engines": {
 		"node": ">=18"
 	},
-	"packageManager": "pnpm@9.7.0"
+	"packageManager": "pnpm@9.7.0",
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/@commitlint/cz-commitlint"
+		}
+	},
+	"lint-staged": {
+		"*": [
+			"prettier --write --ignore-unknown"
+		]
+	}
 }

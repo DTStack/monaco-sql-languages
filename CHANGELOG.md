@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.12.3-beta.3](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.1...v0.12.3-beta.3) (2024-09-29)
+
+
+### Features
+
+* support git cz ([5315b4f](https://github.com/DTStack/monaco-sql-languages/commit/5315b4f656508e15e3bcc8bec0b2670d94faa7f0))
+* upgrade dt-sql-parser ([7a0b04f](https://github.com/DTStack/monaco-sql-languages/commit/7a0b04f0b759d851de780112d72d744d316f3815))
+
+
+### Bug Fixes
+
+* [#134](https://github.com/DTStack/monaco-sql-languages/issues/134) upgrade dt-sql-parser@4.0.2 ([06ec26a](https://github.com/DTStack/monaco-sql-languages/commit/06ec26a72e1a42ecf3c46774b15f55eaf9d5c84d))
+* [#146](https://github.com/DTStack/monaco-sql-languages/issues/146) remove postinstall ([b82ab5e](https://github.com/DTStack/monaco-sql-languages/commit/b82ab5e5bf174dacd82f629be5e09b3779fd023e))
+
 ### [0.12.2](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.1...v0.12.2) (2024-06-19)
 
 

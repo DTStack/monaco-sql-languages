@@ -59,6 +59,7 @@ function execStandardVersion(res) {
 		.then(({ message }) => {
 			console.log('Please checkout recent commit, and then');
 			console.log('Push branch and new tag to github, publish package to npm');
+			console.log('Please run "npm run deploy" to deploy website to github pages.');
 			// message && console.log(message)
 		})
 		.catch(({ error, code }) => {

@@ -9,7 +9,7 @@ import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/e
 
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
 import { LanguageService, ParseError } from 'monaco-sql-languages/esm/languageService';
-import { debounce } from 'monaco-sql-languages/esm/common/utils';
+import { debounce } from './utils';
 
 export default class Sidebar extends React.Component {
 	private _language = defaultLanguage;

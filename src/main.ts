@@ -3,6 +3,7 @@ export * from './monaco.contribution';
 export * from './languageService';
 export * from './setupLanguageFeatures';
 export * from './common/constants';
+export * from './common/utils';
 export * from './theme';
 
 export { EntityContextType, StmtContextType } from 'dt-sql-parser';

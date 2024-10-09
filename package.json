@@ -9,7 +9,7 @@
 		"watch-esm": "tsc -p ./tsconfig.esm.json --watch",
 		"test": "npm run build-amd && mocha ./test/all.js",
 		"dev": "node --max_old_space_size=4092 & cd website && npm run dev",
-		"prod": "rm -rf ./docs && node --max_old_space_size=4092 & cd website && npm run build",
+		"prod": "npm run build && rm -rf ./docs && node --max_old_space_size=4092 & cd website && npm run build",
 		"deploy": "npm run prod && gh-pages -d docs -r git@github.com:DTStack/monaco-sql-languages.git",
 		"format": "prettier --write .",
 		"prettier-check": "prettier --check .",

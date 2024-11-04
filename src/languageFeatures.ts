@@ -11,7 +11,7 @@ import {
 import { debounce } from './common/utils';
 import { BaseSQLWorker } from './baseSQLWorker';
 import type { ParseError } from 'dt-sql-parser';
-import type { LanguageServiceDefaults } from './monaco.contribution';
+import type { CompletionSnippet, LanguageServiceDefaults } from './monaco.contribution';
 
 export interface WorkerAccessor<T extends BaseSQLWorker> {
 	(...uris: Uri[]): Promise<T>;
@@ -159,13 +159,22 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 				}
 				return worker.doCompletionWithEntities(code, position);
 			})
-			.then(([suggestions, allEntities]) => {
+			.then(({ suggestions, allEntities, context: semanticContext }) => {
+				let snippets: CompletionSnippet[] = [];
+				if (semanticContext?.isStatementBeginning) {
+					snippets = this._defaults.completionSnippets.map((item) => ({
+						...item,
+						insertText: typeof item.body === 'string' ? item.body : item.body.join('\n')
+					}));
+				}
+
 				return this._defaults.completionService(
 					model,
 					position,
 					context,
 					suggestions,
-					allEntities
+					allEntities,
+					snippets
 				);
 			})
 			.then((completions) => {

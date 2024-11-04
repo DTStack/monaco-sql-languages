@@ -8,6 +8,7 @@ import {
 } from './monaco.contribution';
 import { languages, IDisposable } from './fillers/monaco-editor-core';
 import { LanguageIdEnum } from './common/constants';
+import * as snippets from './snippets';
 
 export interface FeatureConfiguration {
 	/**
@@ -80,6 +81,27 @@ export function setupLanguageFeatures(
 	}
 }
 
+function getDefaultSnippets(languageId: LanguageIdEnum) {
+	switch (languageId) {
+		case LanguageIdEnum.HIVE:
+			return snippets.hiveSnippets;
+		case LanguageIdEnum.FLINK:
+			return snippets.flinkSnippets;
+		case LanguageIdEnum.IMPALA:
+			return snippets.impalaSnippets;
+		case LanguageIdEnum.MYSQL:
+			return snippets.mysqlSnippets;
+		case LanguageIdEnum.PG:
+			return snippets.pgsqlSnippets;
+		case LanguageIdEnum.SPARK:
+			return snippets.sparkSnippets;
+		case LanguageIdEnum.TRINO:
+			return snippets.trinoSnippets;
+		default:
+			return [];
+	}
+}
+
 function processConfiguration(
 	languageId: LanguageIdEnum,
 	configuration: FeatureConfiguration
@@ -111,12 +133,20 @@ function processConfiguration(
 			: (defaults?.modeConfiguration.completionItems.triggerCharacters ??
 				modeConfigurationDefault.completionItems.triggerCharacters);
 
+	const snippets =
+		typeof configuration.completionItems !== 'boolean' &&
+		Array.isArray(configuration.completionItems?.snippets)
+			? configuration.completionItems!.snippets
+			: (defaults?.modeConfiguration.completionItems.snippets ??
+				getDefaultSnippets(languageId));
+
 	return {
 		diagnostics,
 		completionItems: {
 			enable: completionEnable,
 			completionService,
-			triggerCharacters
+			triggerCharacters,
+			snippets
 		}
 	};
 }

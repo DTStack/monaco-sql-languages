@@ -1,5 +1,16 @@
-import { languages, Emitter, IEvent, editor, Position, IRange } from './fillers/monaco-editor-core';
-import { EntityContext, Suggestions } from 'dt-sql-parser';
+import {
+	EntityContext,
+	Suggestions,
+} from 'dt-sql-parser';
+
+import {
+	editor,
+	Emitter,
+	IEvent,
+	IRange,
+	languages,
+	Position,
+} from './fillers/monaco-editor-core';
 
 /**
  * A completion item.
@@ -65,7 +76,7 @@ export interface ModeConfiguration {
 	/**
 	 * Defines whether the built-in definitions provider is enabled.
 	 */
-	// readonly definitions?: boolean;
+	readonly definitions?: boolean;
 
 	/**
 	 * Defines whether the built-in rename provider is enabled.
@@ -75,7 +86,7 @@ export interface ModeConfiguration {
 	/**
 	 * Defines whether the built-in references provider is enabled.
 	 */
-	// readonly references?: boolean;
+	readonly references?: boolean;
 }
 
 /**
@@ -171,5 +182,7 @@ export const modeConfigurationDefault: Required<ModeConfiguration> = {
 		completionService: defaultCompletionService,
 		triggerCharacters: ['.', ' ']
 	},
-	diagnostics: true
+	diagnostics: true,
+	definitions: true,
+	references: true
 };

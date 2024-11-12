@@ -1,6 +1,6 @@
 import { registerLanguage } from '../../_.contribution';
-import { setupLanguageFeatures } from '../../setupLanguageFeatures';
 import { LanguageIdEnum } from '../../common/constants';
+import { setupLanguageFeatures } from '../../setupLanguageFeatures';
 
 registerLanguage({
 	id: LanguageIdEnum.TRINO,
@@ -11,5 +11,7 @@ registerLanguage({
 
 setupLanguageFeatures(LanguageIdEnum.TRINO, {
 	completionItems: true,
-	diagnostics: true
+	diagnostics: true,
+	references: true,
+	definitions: true,
 });

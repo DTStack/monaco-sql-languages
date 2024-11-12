@@ -1,8 +1,12 @@
-import { WorkerManager } from './workerManager';
-import { LanguageServiceDefaults } from './monaco.contribution';
-import * as languageFeatures from './languageFeatures';
-import { Uri, IDisposable, languages } from './fillers/monaco-editor-core';
 import type { BaseSQLWorker } from './baseSQLWorker';
+import {
+	IDisposable,
+	languages,
+	Uri,
+} from './fillers/monaco-editor-core';
+import * as languageFeatures from './languageFeatures';
+import { LanguageServiceDefaults } from './monaco.contribution';
+import { WorkerManager } from './workerManager';
 
 export function setupLanguageMode<T extends BaseSQLWorker>(
 	defaults: LanguageServiceDefaults
@@ -19,7 +23,6 @@ export function setupLanguageMode<T extends BaseSQLWorker>(
 
 	function registerProviders(): void {
 		const { languageId, modeConfiguration } = defaults;
-
 		disposeAll(providers);
 
 		if (modeConfiguration.diagnostics) {
@@ -31,6 +34,24 @@ export function setupLanguageMode<T extends BaseSQLWorker>(
 				languages.registerCompletionItemProvider(
 					languageId,
 					new languageFeatures.CompletionAdapter(worker, defaults)
+				)
+			);
+		}
+
+		if (modeConfiguration.references) {
+			providers.push(
+				languages.registerReferenceProvider(
+					languageId,
+					new languageFeatures.ReferenceAdapter(worker, defaults)
+				)
+			);
+		}
+
+		if (modeConfiguration.definitions) {
+			providers.push(
+				languages.registerDefinitionProvider(
+					languageId,
+					new languageFeatures.DefinitionAdapter(worker, defaults)
 				)
 			);
 		}

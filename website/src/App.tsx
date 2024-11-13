@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { create, Workbench } from '@dtinsight/molecule';
 import InstanceService from '@dtinsight/molecule/esm/services/instanceService';
 import { ExtendsWorkbench } from './extensions/workbench';
+import { version, dependencies } from '../../package.json';
 
 import './languages';
 
@@ -27,5 +28,10 @@ function App(): React.ReactElement {
 
 	return <div>{MyWorkbench}</div>;
 }
+
+window.console.log(
+	`%c dt-sql-parser: v${dependencies['dt-sql-parser']} \n monaco-sql-languages: v${version}`,
+	'font-family: Cabin, Helvetica, Arial, sans-serif;text-align: left;font-size:32px;color:#B21212;'
+);
 
 export default App;

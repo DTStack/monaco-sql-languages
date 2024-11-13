@@ -12,6 +12,12 @@ export default defineConfig({
 		}
 	},
 	base: '/monaco-sql-languages/',
+	build: {
+		commonjsOptions: {
+			transformMixedEsModules: true
+		},
+		outDir: resolve(__dirname, '../docs')
+	},
 	server: {
 		fs: {
 			allow: ['..']

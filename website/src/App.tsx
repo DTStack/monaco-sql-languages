@@ -30,8 +30,8 @@ function App(): React.ReactElement {
 }
 
 window.console.log(
-	`%c dt-sql-parser: v${dependencies['dt-sql-parser']} \n monaco-sql-languages: v${version}`,
-	'font-family: Cabin, Helvetica, Arial, sans-serif;text-align: left;font-size:32px;color:#B21212;'
+	`%c dt-sql-parser: ${dependencies['dt-sql-parser']} \n\n monaco-sql-languages: ${version}`,
+	'font-family: Cabin, Helvetica, Arial, sans-serif;text-align: left;font-size:26px;color:#B21212;'
 );
 
 export default App;

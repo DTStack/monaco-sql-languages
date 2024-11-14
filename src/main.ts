@@ -13,6 +13,9 @@ export type {
 	Suggestions,
 	TextSlice,
 	ParseError,
+	StmtContext,
 	EntityContext,
-	StmtContext
+	CommonEntityContext,
+	ColumnEntityContext,
+	FuncEntityContext
 } from 'dt-sql-parser';

@@ -100,7 +100,7 @@ npm install monaco-sql-languages
         LanguageIdEnum,
         CompletionService,
         ICompletionItem,
-        SyntaxContextType
+        EntityContextType
      } from 'monaco-sql-languages';
 
     const completionService: CompletionService = function (
@@ -125,11 +125,11 @@ npm install monaco-sql-languages
             let syntaxCompletionItems: ICompletionItem[] = [];
 
             syntax.forEach((item) => {
-                if (item.syntaxContextType === SyntaxContextType.DATABASE) {
+                if (item.syntaxContextType === EntityContextType.DATABASE) {
                     const databaseCompletions: ICompletionItem[] = []; // some completions about databaseName
                     syntaxCompletionItems = [...syntaxCompletionItems, ...databaseCompletions];
                 }
-                if (item.syntaxContextType === SyntaxContextType.TABLE) {
+                if (item.syntaxContextType === EntityContextType.TABLE) {
                     const tableCompletions: ICompletionItem[] = []; // some completions about tableName
                     syntaxCompletionItems = [...syntaxCompletionItems, ...tableCompletions];
                 }

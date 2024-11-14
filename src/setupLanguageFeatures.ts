@@ -1,13 +1,13 @@
+import { LanguageIdEnum } from './common/constants';
+import { IDisposable, languages } from './fillers/monaco-editor-core';
 import {
-	PreprocessCode,
+	CompletionOptions,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
-	modeConfigurationDefault,
 	ModeConfiguration,
-	CompletionOptions
+	modeConfigurationDefault,
+	PreprocessCode
 } from './monaco.contribution';
-import { languages, IDisposable } from './fillers/monaco-editor-core';
-import { LanguageIdEnum } from './common/constants';
 
 export interface FeatureConfiguration {
 	/**
@@ -20,6 +20,14 @@ export interface FeatureConfiguration {
 	 * Defaults to true.
 	 */
 	diagnostics?: boolean;
+	/**
+	 * Defines whether the built-in definitions provider is enabled.
+	 */
+	definitions?: boolean;
+	/**
+	 * Defines whether the built-in references provider is enabled.
+	 */
+	references?: boolean;
 	/**
 	 * Define a function to preprocess code.
 	 * By default, do not something.
@@ -110,6 +118,14 @@ function processConfiguration(
 			? configuration.completionItems!.triggerCharacters
 			: (defaults?.modeConfiguration.completionItems.triggerCharacters ??
 				modeConfigurationDefault.completionItems.triggerCharacters);
+	const references =
+		typeof configuration.references === 'boolean'
+			? configuration.references
+			: (defaults?.modeConfiguration.references ?? modeConfigurationDefault.references);
+	const definitions =
+		typeof configuration.definitions === 'boolean'
+			? configuration.definitions
+			: (defaults?.modeConfiguration.definitions ?? modeConfigurationDefault.definitions);
 
 	return {
 		diagnostics,
@@ -117,6 +133,8 @@ function processConfiguration(
 			enable: completionEnable,
 			completionService,
 			triggerCharacters
-		}
+		},
+		references,
+		definitions
 	};
 }

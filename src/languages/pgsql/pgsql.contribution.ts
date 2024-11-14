@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { registerLanguage } from '../../_.contribution';
-import { setupLanguageFeatures } from '../../setupLanguageFeatures';
 import { LanguageIdEnum } from '../../common/constants';
+import { setupLanguageFeatures } from '../../setupLanguageFeatures';
 
 registerLanguage({
 	id: LanguageIdEnum.PG,
@@ -16,5 +16,7 @@ registerLanguage({
 
 setupLanguageFeatures(LanguageIdEnum.PG, {
 	completionItems: true,
-	diagnostics: true
+	diagnostics: true,
+	references: true,
+	definitions: true
 });

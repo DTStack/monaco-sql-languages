@@ -18,5 +18,5 @@ setupLanguageFeatures(LanguageIdEnum.HIVE, {
 	completionItems: true,
 	diagnostics: true,
 	references: true,
-	definitions: true,
+	definitions: true
 });

@@ -1,7 +1,5 @@
 import type { ParseError } from 'dt-sql-parser';
-import {
-	EntityContext,
-} from 'dt-sql-parser/dist/parser/common/entityCollector';
+import { EntityContext } from 'dt-sql-parser/dist/parser/common/entityCollector';
 import { WordPosition } from 'dt-sql-parser/dist/parser/common/textAndWord';
 import * as monaco from 'monaco-editor';
 
@@ -15,7 +13,7 @@ import {
 	MarkerSeverity,
 	Position,
 	Range,
-	Uri,
+	Uri
 } from './fillers/monaco-editor-core';
 import type { LanguageServiceDefaults } from './monaco.contribution';
 
@@ -207,7 +205,8 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 export class DefinitionAdapter<T extends BaseSQLWorker> implements languages.DefinitionProvider {
 	constructor(
 		private readonly _worker: WorkerAccessor<T>,
-		private readonly _defaults: LanguageServiceDefaults) {}
+		private readonly _defaults: LanguageServiceDefaults
+	) {}
 	provideDefinition(
 		model: editor.IReadOnlyModel,
 		position: Position,

@@ -18,5 +18,5 @@ setupLanguageFeatures(LanguageIdEnum.PG, {
 	completionItems: true,
 	diagnostics: true,
 	references: true,
-	definitions: true,
+	definitions: true
 });

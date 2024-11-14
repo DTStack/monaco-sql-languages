@@ -18,5 +18,5 @@ setupLanguageFeatures(LanguageIdEnum.FLINK, {
 	completionItems: true,
 	diagnostics: true,
 	references: true,
-	definitions: true,
+	definitions: true
 });

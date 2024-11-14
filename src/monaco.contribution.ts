@@ -1,16 +1,6 @@
-import {
-	EntityContext,
-	Suggestions,
-} from 'dt-sql-parser';
+import { EntityContext, Suggestions } from 'dt-sql-parser';
 
-import {
-	editor,
-	Emitter,
-	IEvent,
-	IRange,
-	languages,
-	Position,
-} from './fillers/monaco-editor-core';
+import { editor, Emitter, IEvent, IRange, languages, Position } from './fillers/monaco-editor-core';
 
 /**
  * A completion item.

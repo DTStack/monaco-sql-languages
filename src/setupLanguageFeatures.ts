@@ -1,15 +1,12 @@
 import { LanguageIdEnum } from './common/constants';
-import {
-	IDisposable,
-	languages,
-} from './fillers/monaco-editor-core';
+import { IDisposable, languages } from './fillers/monaco-editor-core';
 import {
 	CompletionOptions,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
 	ModeConfiguration,
 	modeConfigurationDefault,
-	PreprocessCode,
+	PreprocessCode
 } from './monaco.contribution';
 
 export interface FeatureConfiguration {
@@ -122,13 +119,13 @@ function processConfiguration(
 			: (defaults?.modeConfiguration.completionItems.triggerCharacters ??
 				modeConfigurationDefault.completionItems.triggerCharacters);
 	const references =
-				typeof configuration.references === 'boolean'
-					? configuration.references
-					: (defaults?.modeConfiguration.references ?? modeConfigurationDefault.references);
+		typeof configuration.references === 'boolean'
+			? configuration.references
+			: (defaults?.modeConfiguration.references ?? modeConfigurationDefault.references);
 	const definitions =
-					typeof configuration.definitions === 'boolean'
-						? configuration.definitions
-						: (defaults?.modeConfiguration.definitions ?? modeConfigurationDefault.definitions);
+		typeof configuration.definitions === 'boolean'
+			? configuration.definitions
+			: (defaults?.modeConfiguration.definitions ?? modeConfigurationDefault.definitions);
 
 	return {
 		diagnostics,
@@ -138,6 +135,6 @@ function processConfiguration(
 			triggerCharacters
 		},
 		references,
-		definitions,
+		definitions
 	};
 }

@@ -18,5 +18,5 @@ setupLanguageFeatures(LanguageIdEnum.IMPALA, {
 	completionItems: true,
 	diagnostics: true,
 	references: true,
-	definitions: true,
+	definitions: true
 });

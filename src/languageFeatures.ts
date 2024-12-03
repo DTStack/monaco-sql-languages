@@ -1,5 +1,7 @@
 import type { ParseError } from 'dt-sql-parser';
-import { EntityContext } from 'dt-sql-parser/dist/parser/common/entityCollector';
+import {
+	EntityContext,
+} from 'dt-sql-parser/dist/parser/common/entityCollector';
 import { WordPosition } from 'dt-sql-parser/dist/parser/common/textAndWord';
 import * as monaco from 'monaco-editor';
 
@@ -13,7 +15,7 @@ import {
 	MarkerSeverity,
 	Position,
 	Range,
-	Uri
+	Uri,
 } from './fillers/monaco-editor-core';
 import type { LanguageServiceDefaults } from './monaco.contribution';
 
@@ -232,15 +234,27 @@ export class DefinitionAdapter<T extends BaseSQLWorker> implements languages.Def
 					startColumn: -1,
 					endColumn: -1
 				};
-				entities?.forEach((entity: EntityContext) => {
-					if (
-						entity.entityContextType.includes('Create') &&
-						word?.word &&
-						entity.text === word?.word
-					) {
-						pos = entity.position;
+				const curEntity = entities?.find((entity: EntityContext) => {
+					const entityPosition = entity.position;
+					if (entityPosition.startColumn === word?.startColumn && entityPosition.endColumn === word?.endColumn && entityPosition.line === position.lineNumber) {
+						return entity;
 					}
-				});
+					return null;
+				})
+				if (curEntity) {
+					for(let k in entities) {
+						const entity = entities[Number(k)];
+						if (
+							entity.entityContextType.includes('Create') &&
+							word?.word &&
+							entity.text === word?.word &&
+							entity.entityContextType.includes(curEntity.entityContextType)
+						) {
+							pos = entity.position;
+							break;
+						}
+					}
+				}
 				if (pos && pos.line !== -1) {
 					return {
 						uri: model.uri,
@@ -281,21 +295,31 @@ export class ReferenceAdapter<T extends BaseSQLWorker> implements languages.Refe
 			.then((entities) => {
 				const word = model.getWordAtPosition(position);
 				const arr: languages.Location[] = [];
-				entities?.forEach((entity) => {
-					if (word?.word && entity.text === word?.word) {
-						let pos: WordPosition | null = null;
-						pos = entity.position;
-						arr.push({
-							uri: model.uri,
-							range: new monaco.Range(
-								pos?.line,
-								pos?.startColumn,
-								pos?.line,
-								pos?.endColumn
-							)
-						});
+				const curEntity = entities?.find((entity: EntityContext) => {
+					const entityPosition = entity.position;
+					if (entityPosition.startColumn === word?.startColumn && entityPosition.endColumn === word?.endColumn && entityPosition.line === position.lineNumber) {
+						return entity;
 					}
-				});
+					return null;
+				})
+				if (curEntity) {
+					entities?.forEach((entity) => {
+						if (word?.word && entity.text === word?.word && curEntity.entityContextType.includes(entity.entityContextType)) {
+							let pos: WordPosition | null = null;
+							pos = entity.position;
+							arr.push({
+								uri: model.uri,
+								range: new monaco.Range(
+									pos?.line,
+									pos?.startColumn,
+									pos?.line,
+									pos?.endColumn
+								)
+							});
+						}
+					});
+
+				}
 				return arr;
 			});
 	}

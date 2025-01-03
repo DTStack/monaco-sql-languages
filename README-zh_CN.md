@@ -17,6 +17,7 @@ Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [m
 - 代码高亮
 - 语法校验
 - 自动补全
+- 内置SQL代码片段
 
 > 由 [dt-sql-parser](https://github.com/DTStack/dt-sql-parser) 提供语法解析功能。
 
@@ -91,7 +92,7 @@ npm install monaco-sql-languages
     });
     ```
 
-    默认情况下，自动补全功能只提供关键字自动补全, 但你可以通过设置 `completionService` 自定义自动补全项。
+    默认情况下，自动补全功能只提供关键字自动补全与内置SQL代码片段补全, 但你可以通过设置 `completionService` 自定义自动补全项。
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
@@ -108,7 +109,8 @@ npm install monaco-sql-languages
         position,
         completionContext,
         suggestions, // 语法推荐信息
-        entities // 当前编辑器文本的语法上下文中出现的表名、字段名等
+        entities, // 当前编辑器文本的语法上下文中出现的表名、字段名等
+        snippets // 代码片段
     ) {
         return new Promise((resolve, reject) => {
             if (!suggestions) {
@@ -159,6 +161,92 @@ npm install monaco-sql-languages
     ```
 
 <br/>
+
+## 代码片段
+我们为每种SQL语言内置了一部分代码片段, 帮助我们快速编写SQL。
+
+**如何自定义代码片段?**
+
+在进行设置语言功能时, 通过配置`snippets`实现, 当`snippets`传入空数组时, 则关闭内置代码片段。
+
+```typescript
+import { snippets, CompletionSnippetOption } from 'monaco-sql-languages/esm/main.js';
+
+const customSnippets: CompletionSnippetOption[] = [
+    {
+        label: 'INSERT',
+        prefix: 'insert',
+        // Will join the line with `\n`
+        body: [
+            'INSERT INTO ${1:table_name}',
+            'SELECT ${3:column1}, ${4:column2}',
+            'FROM ${2:source_table}',
+            'WHERE ${5:conditions};\n$6'
+        ],
+        description: "This is an 'insert into select' snippet"
+    }
+];
+
+setupLanguageFeatures(LanguageIdEnum.MYSQL, {
+    completionItems: {
+        enable: true,
+        snippets: [...snippets.mysqlSnippets, ...customSnippets],
+        completionService
+    },
+    preprocessCode
+});
+```
+代码片段详细语法可以参考[vscode-snippet](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax), 不过与 vscode 代码片段不同的是, 我们仅会在**SQL语句开头**提供 snippets 补全项。
+
+还需要注意的是，如果您提供了自定义的`completionService`方法, 您需要将`snippets`作为补全项手动返回, 以下是一个简单示例:
+
+```typescript
+const completionService: CompletionService = async function (
+    model,
+    position,
+    completionContext,
+    suggestions,
+    entities,
+    snippets
+) {
+    const { keywords } = suggestions;
+
+    const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
+        label: kw,
+        kind: languages.CompletionItemKind.Keyword,
+        detail: 'keyword',
+        sortText: '2' + kw
+    }));
+
+    const snippetCompletionItems: ICompletionItem[] =
+        snippets?.map((item) => ({
+            label: item.label || item.prefix,
+            kind: languages.CompletionItemKind.Snippet,
+            filterText: item.prefix,
+            insertText: item.insertText,
+            insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            sortText: '3' + item.prefix,
+            detail: item.description !== undefined ? item.description : 'SQL Snippet',
+            documentation: item.insertText
+        })) || [];
+
+    return [...keywordsCompletionItems, ...snippetCompletionItems];
+};
+```
+
+**其他注意事项**
+
+当处于代码片段中时, 可以通过`Tab`键移动到下一个输入位置, 但普通的关键字补全功能也是通过`Tab`键接受补全的，这会产生快捷键冲突, 所以 Monaco-Editor 规定, 当处于代码片段上下文时, 不会触发补全功能。
+![snippet-prevent-completion](./documents/images/snippet-prevent-completion.gif)
+如果想要在代码片段中仍能支持智能补全, 可以通过设置 Monaco-Editor 配置项`suggest.snippetsPreventQuickSuggestions`为`false`来实现。
+```typescript
+editor.create(editorElement, {
+    suggest: {
+        snippetsPreventQuickSuggestions: false
+    }
+})
+```
+![snippet-no-prevent-completion](./documents/images/snippet-no-prevent-completion.gif)
 
 ## Monaco Theme
 

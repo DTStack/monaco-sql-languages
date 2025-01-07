@@ -16,7 +16,9 @@ export const completionService: CompletionService = async function (
 	model,
 	_position,
 	_completionContext,
-	suggestions
+	suggestions,
+	_entities,
+	snippets
 ) {
 	if (!suggestions) {
 		return Promise.resolve([]);
@@ -183,5 +185,18 @@ export const completionService: CompletionService = async function (
 			}
 		}
 	}
-	return [...syntaxCompletionItems, ...keywordsCompletionItems];
+
+	const snippetCompletionItems: ICompletionItem[] =
+		snippets?.map((item) => ({
+			label: item.label || item.prefix,
+			kind: languages.CompletionItemKind.Snippet,
+			filterText: item.prefix,
+			insertText: item.insertText,
+			insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+			sortText: '3' + item.prefix,
+			detail: item.description !== undefined ? item.description : 'SQL模板',
+			documentation: item.insertText
+		})) || [];
+
+	return [...syntaxCompletionItems, ...keywordsCompletionItems, ...snippetCompletionItems];
 };

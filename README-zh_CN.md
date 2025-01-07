@@ -315,11 +315,10 @@ editor.defineTheme('my-theme', myThemeData);
 -   本地启动 web demo
 
     ```bash
-    pnpm watch-esm
-    cd website
-    pnpm install
     pnpm dev
     ```
+
+	在浏览器打开：http://localhost:5173/monaco-sql-languages
 
 -   构建
 

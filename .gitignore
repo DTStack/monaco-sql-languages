@@ -1,10 +1,11 @@
 /.idea/
 /*.iml
-/node_modules/
-/out/
-/esm/
+node_modules
+out
+esm
 /release/
 .history
 /docs/
 .DS_Store
 *.tgz
+.turbo

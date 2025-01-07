@@ -309,11 +309,10 @@ editor.defineTheme('my-theme', myThemeData);
 -   open the dev web
 
     ```bash
-    pnpm watch-esm
-    cd website
-    pnpm install
     pnpm dev
     ```
+
+	Open the web in browser: http://localhost:5173/monaco-sql-languages
 
 -   build
 

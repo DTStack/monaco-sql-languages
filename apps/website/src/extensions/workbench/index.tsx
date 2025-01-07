@@ -52,5 +52,7 @@ export const ExtendsWorkbench: IExtension = {
 
 		molecule.statusBar.add(defaultLanguageStatusItem, Float.right);
 	},
-	dispose() {}
+	dispose() {
+		console.log('Dispose ExtendsWorkbench');
+	}
 };

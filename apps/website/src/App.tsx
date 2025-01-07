@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { create, Workbench } from '@dtinsight/molecule';
 import InstanceService from '@dtinsight/molecule/esm/services/instanceService';
 import { ExtendsWorkbench } from './extensions/workbench';
-import { version, dependencies } from '../../package.json';
+import { version, dependencies } from '../../../packages/monaco-sql-languages/package.json';
 import { editor } from 'monaco-editor';
 import './languages';
 

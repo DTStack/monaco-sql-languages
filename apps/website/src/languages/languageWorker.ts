@@ -1,7 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { LanguageIdEnum } from 'monaco-sql-languages/esm/main.js';
 
-import EditorWorker from '../../node_modules/monaco-editor/esm/vs/editor/editor.worker?worker';
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import FlinkSQLWorker from 'monaco-sql-languages/esm/languages/flink/flink.worker?worker';
 import SparkSQLWorker from 'monaco-sql-languages/esm/languages/spark/spark.worker?worker';
 import HiveSQLWorker from 'monaco-sql-languages/esm/languages/hive/hive.worker?worker';

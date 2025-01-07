@@ -1,0 +1,53 @@
+{
+	"name": "monaco-sql-languages",
+	"version": "0.12.3-beta.12",
+	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
+	"scripts": {
+		"build": "rm -rf ./esm && tsc -p ./tsconfig.esm.json",
+		"build-amd": "rm -rf ./out && tsc -p ./tsconfig.amd.json",
+		"dev": "tsc -p ./tsconfig.esm.json --watch",
+		"test": "npm run build-amd && mocha ./test/all.js"
+	},
+	"author": "DTStack Corporation",
+	"license": "MIT",
+	"main": "esm/main.js",
+	"module": "esm/main.js",
+	"types": "esm/main.d.ts",
+	"files": [
+		"esm"
+	],
+	"keywords": [
+		"monaco-editor",
+		"SQL",
+		"code-completion",
+		"hive",
+		"spark",
+		"mysql",
+		"postgresql",
+		"flink",
+		"trino",
+		"impala"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DTStack/monaco-sql-languages.git"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
+	"devDependencies": {
+		"fast-glob": "^3.3.2",
+		"jsdom": "^16.4.0",
+		"monaco-editor": "0.31.0"
+	},
+	"dependencies": {
+		"dt-sql-parser": "4.1.0-beta.8"
+	},
+	"peerDependencies": {
+		"monaco-editor": ">=0.31.0"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"packageManager": "pnpm@9.7.0"
+}

@@ -636,7 +636,7 @@ export const language = <languages.IMonarchLanguage>{
 			{ include: '@complexIdentifiers' },
 			{ include: '@scopes' },
 			{ include: '@complexDataTypes' },
-			[/[;,.]/, TokenClassConsts.DELIMITER],
+			[/[:;,.]/, TokenClassConsts.DELIMITER],
 			[/[\(\)\[\]\{\}]/, '@brackets'],
 			[
 				/[\w@$-]+/, // https://trino.io/docs/current/language/reserved.html#language-identifiers

@@ -1,8 +1,15 @@
 import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-import { CompletionService, ICompletionItem } from 'monaco-sql-languages/esm/languageService';
+import {
+	CommonEntityContext,
+	CompletionService,
+	ICompletionItem,
+	Suggestions,
+	WordRange
+} from 'monaco-sql-languages/esm/languageService';
 import { EntityContextType } from 'monaco-sql-languages/esm/main';
 
 import { getCatalogs, getDataBases, getSchemas, getTables, getViews } from './dbMetaProvider';
+import { AttrName, EntityContext } from 'dt-sql-parser/dist/parser/common/entityCollector';
 
 const haveCatalogSQLType = (languageId: string) => {
 	return ['flinksql', 'trinosql'].includes(languageId.toLowerCase());
@@ -12,27 +19,17 @@ const namedSchemaSQLType = (languageId: string) => {
 	return ['trinosql', 'hivesql', 'sparksql'].includes(languageId);
 };
 
-export const completionService: CompletionService = async function (
-	model,
-	_position,
-	_completionContext,
-	suggestions
-) {
-	if (!suggestions) {
-		return Promise.resolve([]);
-	}
-	const languageId = model.getLanguageId();
+const isWordRangesEndWithWhiteSpace = (wordRanges: WordRange[]) => {
+	return wordRanges.length > 1 && wordRanges.at(-1)?.text === ' ';
+};
+
+const getSyntaxCompletionItems = async (
+	languageId: string,
+	syntax: Suggestions['syntax'],
+	entities: EntityContext[] | null
+): Promise<ICompletionItem[]> => {
 	const haveCatalog = haveCatalogSQLType(languageId);
 	const getDBOrSchema = namedSchemaSQLType(languageId) ? getSchemas : getDataBases;
-
-	const { keywords, syntax } = suggestions;
-
-	const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
-		label: kw,
-		kind: languages.CompletionItemKind.Keyword,
-		detail: '关键字',
-		sortText: '2' + kw
-	}));
 
 	let syntaxCompletionItems: ICompletionItem[] = [];
 
@@ -57,6 +54,13 @@ export const completionService: CompletionService = async function (
 		// e.g. words -> ['cat', '.', 'database', '.', 'table']
 		const words = wordRanges.map((wr) => wr.text);
 		const wordCount = words.length;
+
+		/**
+		 * 在做上下文判断时，如果已经键入了空格，则表示已经离开了该上下文。
+		 * 如: SELECT id  |  FROM t1
+		 * 光标所处位置在id后且键入了空格，虽然收集到的上下文信息中包含了`EntityContextType.COLUMN`，但不应该继续补全字段, table同理
+		 */
+		if (isWordRangesEndWithWhiteSpace(wordRanges)) continue;
 
 		if (
 			syntaxContextType === EntityContextType.CATALOG ||
@@ -108,8 +112,21 @@ export const completionService: CompletionService = async function (
 				}
 
 				if (!existTableCompletions) {
+					const createTables =
+						entities
+							?.filter(
+								(entity) =>
+									entity.entityContextType === EntityContextType.TABLE_CREATE
+							)
+							.map((tb) => ({
+								label: tb.text,
+								kind: languages.CompletionItemKind.Field,
+								detail: 'table',
+								sortText: '1' + tb.text
+							})) || [];
 					syntaxCompletionItems = syntaxCompletionItems.concat(
-						await getTables(languageId)
+						await getTables(languageId),
+						createTables
 					);
 					existTableCompletions = true;
 				}
@@ -182,6 +199,168 @@ export const completionService: CompletionService = async function (
 				}
 			}
 		}
+
+		if (syntaxContextType === EntityContextType.COLUMN) {
+			const inSelectStmtContext = entities?.some(
+				(entity) =>
+					entity.entityContextType === EntityContextType.TABLE &&
+					entity.belongStmt.isContainCaret
+			);
+			// 上下文中建的所有表
+			const allCreateTables =
+				(entities?.filter(
+					(entity) => entity.entityContextType === EntityContextType.TABLE_CREATE
+				) as CommonEntityContext[]) || [];
+
+			if (inSelectStmtContext) {
+				// select语句中的来源表
+				// todo filter 子查询中的表
+				const fromTables =
+					entities?.filter(
+						(entity) =>
+							entity.entityContextType === EntityContextType.TABLE &&
+							entity.belongStmt.isContainCaret
+					) || [];
+				// 从上下文中找到来源表的定义信息
+				const fromTableDefinitionEntities = allCreateTables.filter((tb) =>
+					fromTables?.some((ft) => ft.text === tb.text)
+				);
+				const tableNameAliasMap = fromTableDefinitionEntities.reduce(
+					(acc: Record<string, string>, tb) => {
+						acc[tb.text] =
+							fromTables?.find((ft) => ft.text === tb.text)?.[AttrName.alias]?.text ||
+							tb.text;
+						return acc;
+					},
+					{}
+				);
+
+				let fromTableColumns: (ICompletionItem & {
+					_tableName?: string;
+					_columnText?: string;
+				})[] = [];
+
+				if (wordRanges.length <= 1) {
+					const columnRepeatCountMap = new Map<string, number>();
+					fromTableColumns = fromTableDefinitionEntities
+						.map((tb) => {
+							const displayTbName =
+								tableNameAliasMap[tb.text] === tb.text
+									? tb.text
+									: tableNameAliasMap[tb.text];
+							return (
+								tb.columns?.map((column) => {
+									const columnName = column.text;
+									const repeatCount = columnRepeatCountMap.get(columnName) || 0;
+									columnRepeatCountMap.set(columnName, repeatCount + 1);
+									return {
+										label:
+											column.text +
+											(column[AttrName.colType]?.text
+												? `(${column[AttrName.colType].text})`
+												: ''),
+										insertText: column.text,
+										kind: languages.CompletionItemKind.EnumMember,
+										detail: `来源表 ${displayTbName} 的字段`,
+										sortText: '0' + displayTbName + column.text + repeatCount,
+										_tableName: displayTbName,
+										_columnText: column.text
+									};
+								}) || []
+							);
+						})
+						.flat();
+
+					// 如果有多个重名字段，则插入的字段自动包含表名
+					fromTableColumns = fromTableColumns.map((column) => {
+						const columnRepeatCount =
+							columnRepeatCountMap.get(column.label as string) || 0;
+						const isFromMultipleTables = fromTables.length > 1;
+						return columnRepeatCount > 1 && isFromMultipleTables
+							? {
+									...column,
+									insertText: `${column._tableName}.${column._columnText}`
+								}
+							: column;
+					});
+
+					// 输入字段时提供可选表
+					const tableOrAliasCompletionItems = fromTables.map((tb) => {
+						const displayTbName = tableNameAliasMap[tb.text]
+							? tableNameAliasMap[tb.text]
+							: tb.text;
+						return {
+							label: displayTbName,
+							kind: languages.CompletionItemKind.Field,
+							detail: `table`,
+							sortText: '1' + displayTbName
+						};
+					});
+
+					syntaxCompletionItems = syntaxCompletionItems.concat(
+						tableOrAliasCompletionItems
+					);
+				} else if (wordRanges.length >= 2 && words[1] === '.') {
+					const tbNameOrAlias = words[0];
+					fromTableColumns = fromTableDefinitionEntities
+						.filter(
+							(tb) =>
+								tb.text === tbNameOrAlias ||
+								tableNameAliasMap[tb.text] === tbNameOrAlias
+						)
+						.map((tb) => {
+							const displayTbName = tableNameAliasMap[tb.text]
+								? tableNameAliasMap[tb.text]
+								: tb.text;
+							return (
+								tb.columns?.map((column) => ({
+									label:
+										column.text +
+										(column[AttrName.colType]?.text
+											? `(${column[AttrName.colType].text})`
+											: ''),
+									insertText: column.text,
+									kind: languages.CompletionItemKind.EnumMember,
+									detail: `来源表 ${displayTbName} 的字段`,
+									sortText: '0' + displayTbName + column.text
+								})) || []
+							);
+						})
+						.flat();
+				}
+
+				syntaxCompletionItems = syntaxCompletionItems.concat(fromTableColumns);
+			}
+		}
 	}
+
+	return syntaxCompletionItems;
+};
+
+export const completionService: CompletionService = async function (
+	model,
+	_position,
+	_completionContext,
+	suggestions,
+	entities
+) {
+	if (!suggestions) {
+		return Promise.resolve([]);
+	}
+	const languageId = model.getLanguageId();
+
+	const { keywords, syntax } = suggestions;
+	console.log('syntax', syntax);
+	console.log('entities', entities);
+
+	const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
+		label: kw,
+		kind: languages.CompletionItemKind.Keyword,
+		detail: '关键字',
+		sortText: '2' + kw
+	}));
+
+	const syntaxCompletionItems = await getSyntaxCompletionItems(languageId, syntax, entities);
+
 	return [...syntaxCompletionItems, ...keywordsCompletionItems];
 };

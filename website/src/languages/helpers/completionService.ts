@@ -250,9 +250,8 @@ const getSyntaxCompletionItems = async (
 									: tableNameAliasMap[tb.text];
 							return (
 								tb.columns?.map((column) => {
-									const columnName = column.text;
-									const repeatCount = columnRepeatCountMap.get(columnName) || 0;
-									columnRepeatCountMap.set(columnName, repeatCount + 1);
+									const repeatCount = columnRepeatCountMap.get(column.text) || 0;
+									columnRepeatCountMap.set(column.text, repeatCount + 1);
 									return {
 										label:
 											column.text +
@@ -274,11 +273,12 @@ const getSyntaxCompletionItems = async (
 					// 如果有多个重名字段，则插入的字段自动包含表名
 					fromTableColumns = fromTableColumns.map((column) => {
 						const columnRepeatCount =
-							columnRepeatCountMap.get(column.label as string) || 0;
+							columnRepeatCountMap.get(column._columnText as string) || 0;
 						const isFromMultipleTables = fromTables.length > 1;
 						return columnRepeatCount > 1 && isFromMultipleTables
 							? {
 									...column,
+									label: `${column._tableName}.${column.label}`,
 									insertText: `${column._tableName}.${column._columnText}`
 								}
 							: column;

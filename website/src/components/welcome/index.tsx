@@ -1,0 +1,28 @@
+import './style.css';
+import quickStart from '../../assets/quickStart.svg';
+import checkDemo from '../../assets/checkDemo.svg';
+import checkFile from '../../assets/checkFile.svg';
+const Welcome = () => {
+	// todo: 图片 hover 动效会整体位置发生变化
+	// todo: 点击交互跳转没有实现
+	return (
+		<div className="welcome">
+			<ul>
+				<li>
+					<img src={quickStart} alt="quickStart" />
+					<span>快速开始</span>
+				</li>
+				<li>
+					<img src={checkFile} alt="checkFile" />
+					<span>查看接口文档</span>
+				</li>
+				<li>
+					<img src={checkDemo} alt="checkDemo" />
+					<span>查看 Demo</span>
+				</li>
+			</ul>
+		</div>
+	);
+};
+
+export default Welcome;

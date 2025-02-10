@@ -21,7 +21,8 @@
 		"noUnusedParameters": false,
 		"noFallthroughCasesInSwitch": true,
 		"paths": {
-			"monaco-sql-languages/*": ["../"]
+			"monaco-sql-languages/*": ["../"],
+			"@/*": ["src/*"]
 		}
 	},
 	"include": ["src"],

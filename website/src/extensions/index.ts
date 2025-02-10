@@ -1,3 +1,4 @@
+import { mainExt } from './main';
 import { viewExt } from './view';
 
-export default [viewExt];
+export default [viewExt, mainExt];

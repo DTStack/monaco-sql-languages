@@ -12,7 +12,8 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'monaco-editor': resolve('node_modules/monaco-editor'),
-			'monaco-sql-languages': resolve('../')
+			'monaco-sql-languages': resolve('../'),
+			'@': resolve(__dirname, 'src')
 		}
 	},
 	base: '/monaco-sql-languages/',

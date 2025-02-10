@@ -1,7 +1,6 @@
 import React from 'react';
 import * as monaco from 'monaco-editor';
 
-import lips from '@jcubic/lips';
 import molecule from '@dtinsight/molecule';
 import { Button } from '@dtinsight/molecule/esm/components';
 import { Select, Option } from '@dtinsight/molecule/esm/components/select';
@@ -10,6 +9,8 @@ import { IEditorTab, IProblemsItem, MarkerSeverity } from '@dtinsight/molecule/e
 import { defaultLanguage, defaultEditorTab, defaultLanguageStatusItem, languages } from './common';
 import { LanguageService, ParseError } from 'monaco-sql-languages/esm/languageService';
 import { debounce } from './utils';
+import TreeVisualizerPanel from './treeVisualizerPanel';
+import { defaultParseTreePanel } from '.';
 
 export default class Sidebar extends React.Component {
 	private _language = defaultLanguage;
@@ -20,9 +21,16 @@ export default class Sidebar extends React.Component {
 	}
 
 	componentDidMount() {
-		molecule.editor.onUpdateTab(this.analyseProblems);
+		molecule.editor.onUpdateTab((tab) => {
+			this.analyseProblems(tab);
+			this.updateParseTree();
+		});
 
 		monaco.editor.setTheme('sql-dark');
+
+		setTimeout(() => {
+			this.updateParseTree();
+		}, 500);
 	}
 
 	private get language(): string {
@@ -112,31 +120,26 @@ export default class Sidebar extends React.Component {
 			sortIndex: 3
 		});
 		this.analyseProblems(nextTab);
+		this.updateParseTree();
 		molecule.statusBar.update(nextStatusItem);
 	}
 
-	parse = () => {
-		this.setupOutputLanguage();
-		const sql = molecule.editor.editorInstance.getValue();
-		molecule.panel.cleanOutput();
+	updateParseTree = debounce(() => {
+		if (!molecule.panel.getPanel(defaultParseTreePanel.id)) return;
 
-		this.languageService.parserTreeToString(this.language, sql).then((res) => {
-			const pre = res?.replace(/(\(|\))/g, '$1\n');
-			const format = new lips.Formatter(pre);
-			const formatted = format.format({
-				indent: 2,
-				offset: 2
-			});
-			const panel =
-				molecule.panel.getPanel(molecule.builtin.getConstants().PANEL_OUTPUT ?? '') ??
-				({} as any);
+		const sql = molecule.editor.editorInstance.getValue();
+
+		this.languageService.getSerializedParseTree(this.language, sql).then((tree) => {
 			molecule.panel.update({
-				...panel,
-				data: formatted
+				...defaultParseTreePanel,
+				renderPane: () => (
+					<div style={{ height: '100%' }}>
+						{tree ? <TreeVisualizerPanel parseTree={tree} /> : null}
+					</div>
+				)
 			});
-			molecule.panel.appendOutput('');
 		});
-	};
+	}, 400);
 
 	async setupOutputLanguage() {
 		const model = await molecule.panel.outputEditorInstance?.getModel();
@@ -172,7 +175,18 @@ export default class Sidebar extends React.Component {
 						Select a language:{' '}
 					</h1>
 					{this.renderColorThemes()}
-					<Button onClick={this.parse}>Parse</Button>
+					<Button
+						onClick={() => {
+							molecule.panel.setActive('ParseTreePanel');
+							if (!molecule.panel.getPanel(defaultParseTreePanel.id)) {
+								molecule.panel.add(defaultParseTreePanel);
+								molecule.panel.setActive(defaultParseTreePanel.id);
+							}
+							this.updateParseTree();
+						}}
+					>
+						Parse
+					</Button>
 				</div>
 			</div>
 		);

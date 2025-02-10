@@ -4,6 +4,11 @@ import { IExtension } from '@dtinsight/molecule/esm/model/extension';
 import Sidebar from './sidebar';
 import { defaultEditorTab, defaultLanguageStatusItem } from './common';
 
+export const defaultParseTreePanel = {
+	id: 'ParseTreePanel',
+	name: 'Parse Tree Visualizer'
+};
+
 export const ExtendsWorkbench: IExtension = {
 	id: 'ExtendWorkbench',
 	name: 'ExtendWorkbench',
@@ -41,6 +46,8 @@ export const ExtendsWorkbench: IExtension = {
 		molecule.activityBar.setState({
 			selected: parserActivityBarItem.id
 		});
+
+		molecule.panel.add(defaultParseTreePanel);
 
 		molecule.activityBar.onClick((id) => {
 			if (id === githubPageActivityBarItem.id) {

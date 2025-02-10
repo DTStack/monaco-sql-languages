@@ -1,0 +1,11 @@
+.activityBar-imgIcon {
+	display: flex;
+	padding: 12px;
+	align-items: center;
+	gap: 10px;
+}
+.activityBar-imgIcon img {
+	width: 24px;
+	height: 24px;
+	color: #ebecf0;
+}

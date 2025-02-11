@@ -1,12 +1,15 @@
 import './style.css';
-import quickStart from '../../assets/quickStart.svg';
-import checkDemo from '../../assets/checkDemo.svg';
-import checkFile from '../../assets/checkFile.svg';
+import { components, slots } from '@dtinsight/molecule';
+import quickStart from '@/assets/quickStart.svg';
+import checkDemo from '@/assets/checkDemo.svg';
+import checkFile from '@/assets/checkFile.svg';
 const Welcome = () => {
-	// todo: 图片 hover 动效会整体位置发生变化
 	// todo: 点击交互跳转没有实现
 	return (
 		<div className="welcome">
+			<div className="welcome-header">
+				<components.Text>dt-sql-parser</components.Text>
+			</div>
 			<ul>
 				<li>
 					<img src={quickStart} alt="quickStart" />

@@ -1,11 +1,18 @@
 .activityBar-imgIcon {
 	display: flex;
-	padding: 12px;
 	align-items: center;
 	gap: 10px;
+	color: #666666;
 }
-.activityBar-imgIcon img {
-	width: 24px;
-	height: 24px;
+
+.activityBar-imgIcon:hover {
 	color: #ebecf0;
+}
+/* 复写 molecule 的样式 */
+.mo-activityBar__container {
+	width: 40px !important;
+}
+
+.mo-activityBar__item {
+	width: 40px !important;
 }

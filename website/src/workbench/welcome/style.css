@@ -1,12 +1,29 @@
 .welcome {
 	width: 100%;
 }
+
+.welcome .welcome-header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 20px 8px 20px;
+	border-bottom: 1px solid #333;
+
+	color: #f9f9fa;
+	font-family: 'PingFang SC';
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 22px;
+}
+
 .welcome ul {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 159px;
 	gap: 36px;
+	cursor: pointer;
 }
 
 .welcome ul li {

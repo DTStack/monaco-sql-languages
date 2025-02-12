@@ -64,24 +64,21 @@ export abstract class BaseSQLWorker {
 		const parser = this.parser.createParser(code);
 		const parseTree = parser.program();
 		const ruleNames = parser.ruleNames;
-		const tokenTypeMap = parser.getTokenTypeMap();
-		const tokenNameMap = new Map();
-
-		for (const [name, tokenType] of tokenTypeMap.entries()) {
-			tokenNameMap.set(tokenType, name);
-		}
+		const symbolicNames: string[] = (parser as any).symbolicNames || [];
 
 		// 只保留必要信息, 避免worker通信传输失败
 		function serializeNode(node: any): SerializedTreeNode | null {
 			if (!node) return null;
 
 			const isRuleNode = !node.symbol;
+			const text = isRuleNode
+				? ''
+				: (symbolicNames[node.symbol?.type] ? symbolicNames[node.symbol.type] + ': ' : '') +
+					node.symbol?.text;
 
 			const serializedNode: SerializedTreeNode = {
 				ruleName: isRuleNode ? ruleNames[node.ruleIndex] : node.constructor.name,
-				text: isRuleNode
-					? ''
-					: tokenNameMap.get(node.symbol.tokenSource?.type) + ': ' + node.symbol.text,
+				text,
 				children: []
 			};
 

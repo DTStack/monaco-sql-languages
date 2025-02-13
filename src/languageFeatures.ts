@@ -201,12 +201,17 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 			});
 	}
 }
-
+/**
+ * The adapter is for the definition of the symbol at the given position and document.
+ **/
 export class DefinitionAdapter<T extends BaseSQLWorker> implements languages.DefinitionProvider {
 	constructor(
 		private readonly _worker: WorkerAccessor<T>,
 		private readonly _defaults: LanguageServiceDefaults
 	) {}
+	/**
+	 * Provide the definition of the symbol at the given position and document.
+	 **/
 	provideDefinition(
 		model: editor.IReadOnlyModel,
 		position: Position,
@@ -271,12 +276,17 @@ export class DefinitionAdapter<T extends BaseSQLWorker> implements languages.Def
 			});
 	}
 }
-
+/**
+ * The adapter is for the references of the symbol at the given position and document.
+ **/
 export class ReferenceAdapter<T extends BaseSQLWorker> implements languages.ReferenceProvider {
 	constructor(
 		private readonly _worker: WorkerAccessor<T>,
 		private readonly _defaults: LanguageServiceDefaults
 	) {}
+	/**
+	 * Provide a set of project-wide references for the given position and document.
+	 **/
 	provideReferences(
 		model: editor.IReadOnlyModel,
 		position: Position,

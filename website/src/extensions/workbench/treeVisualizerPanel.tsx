@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import {
 	ReactFlow,
 	Node,
@@ -28,6 +28,20 @@ enum NodeDisplayType {
 	RuleNode = 'RuleNode'
 }
 
+interface NodeData {
+	label: string;
+	displayType: NodeDisplayType;
+	[key: string]: string;
+}
+
+interface NodeStyleProps {
+	displayType: NodeDisplayType;
+	label: string;
+	isSelected?: boolean;
+	isChild?: boolean;
+	hasSelection?: boolean;
+}
+
 // 计算文本宽度的辅助函数
 const calculateTextWidth = (text: string): number => {
 	const canvas = document.createElement('canvas');
@@ -41,7 +55,13 @@ const calculateTextWidth = (text: string): number => {
 };
 
 // 自定义节点样式
-const getNodeStyle = (displayType: string, label: string) => {
+const getNodeStyle = ({
+	displayType,
+	label,
+	isSelected = false,
+	isChild = false,
+	hasSelection = false
+}: NodeStyleProps) => {
 	const width = calculateTextWidth(label);
 
 	return {
@@ -58,8 +78,13 @@ const getNodeStyle = (displayType: string, label: string) => {
 		fontSize: '13px',
 		width: width,
 		textAlign: 'center' as const,
-		boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-		transition: 'all 0.2s ease'
+		transition: 'all 0.2s ease',
+		opacity: hasSelection && !isSelected && !isChild ? 0.3 : 1,
+		boxShadow: isSelected
+			? '0 0 10px #4a90e2'
+			: isChild
+				? '0 0 6px #4a90e2'
+				: '0 2px 6px rgba(0,0,0,0.1)'
 	};
 };
 
@@ -70,7 +95,11 @@ const edgeStyle = {
 };
 
 // 设置布局方向为从上到下
-const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => {
+const getLayoutedElements = <T extends Record<string, any>>(
+	nodes: Node<T>[],
+	edges: Edge[],
+	direction = 'TB'
+) => {
 	// 每次都创建新的 dagre 图实例
 	const dagreGraph = new dagre.graphlib.Graph();
 	dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -116,17 +145,54 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => 
 };
 
 const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
-	const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+	const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+	const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 	const { fitView } = useReactFlow();
 
+	// 获取节点的所有子节点ID
+	const getChildNodeIds = useCallback(
+		(nodeId: string | null): string[] => {
+			if (!nodeId) return [];
+			const childIds: string[] = [];
+			const queue = [nodeId];
+
+			while (queue.length > 0) {
+				const currentId = queue.shift()!;
+				edges.forEach((edge) => {
+					if (edge.source === currentId) {
+						childIds.push(edge.target);
+						queue.push(edge.target);
+					}
+				});
+			}
+
+			return childIds;
+		},
+		[edges]
+	);
+
+	const handleNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+		setSelectedNodeId(node.id);
+	}, []);
+
+	const handlePaneClick = useCallback(() => {
+		setSelectedNodeId(null);
+	}, []);
+
 	const convertTreeToElements = useCallback((tree: SerializedTreeNode) => {
-		const newNodes: Node[] = [];
+		const newNodes: Node<NodeData>[] = [];
 		const newEdges: Edge[] = [];
 		let nodeId = 0;
+		let rootNodeId: string | null = null;
 
 		const processNode = (node: SerializedTreeNode, parentId?: string): string => {
 			const currentId = `node-${nodeId++}`;
+
+			if (rootNodeId === null) {
+				rootNodeId = currentId;
+			}
+
 			const nodeDisplayType = [
 				NodeDisplayType.TerminalNode,
 				NodeDisplayType.ErrorNode
@@ -141,10 +207,16 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 				type: 'default',
 				data: {
 					label,
-					displayType: nodeDisplayType
+					displayType: nodeDisplayType as NodeDisplayType
 				},
 				position: { x: 0, y: 0 },
-				style: getNodeStyle(nodeDisplayType, label),
+				style: getNodeStyle({
+					displayType: nodeDisplayType as NodeDisplayType,
+					label,
+					isSelected: false,
+					isChild: false,
+					hasSelection: false
+				}),
 				sourcePosition: Position.Bottom,
 				targetPosition: Position.Top,
 				draggable: false
@@ -169,7 +241,7 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 		};
 
 		processNode(tree);
-		return { nodes: newNodes, edges: newEdges };
+		return { nodes: newNodes, edges: newEdges, rootNodeId };
 	}, []);
 
 	useEffect(() => {
@@ -180,12 +252,30 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 
 		setNodes(layoutedElements.nodes);
 		setEdges(layoutedElements.edges);
+		setSelectedNodeId(elements.rootNodeId);
 
 		// 等待节点渲染完成后自动适应视图
 		setTimeout(() => {
 			fitView({ padding: 0.2, includeHiddenNodes: false });
 		}, 100);
 	}, [parseTree]);
+
+	useEffect(() => {
+		const childIds = getChildNodeIds(selectedNodeId);
+
+		setNodes((nodes) =>
+			nodes.map((node) => ({
+				...node,
+				style: getNodeStyle({
+					displayType: node.data.displayType,
+					label: node.data.label,
+					isSelected: node.id === selectedNodeId,
+					isChild: childIds.includes(node.id),
+					hasSelection: selectedNodeId !== null // 只有当有选中节点时才降低其他节点亮度
+				})
+			}))
+		);
+	}, [selectedNodeId, getChildNodeIds]);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
@@ -198,6 +288,8 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 				fitViewOptions={{ padding: 0.2 }}
 				minZoom={0.1}
 				maxZoom={2}
+				onNodeClick={handleNodeClick}
+				onPaneClick={handlePaneClick}
 				defaultEdgeOptions={{
 					type: 'smoothstep',
 					animated: true,

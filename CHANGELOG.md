@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.1](https://github.com/DTStack/monaco-sql-languages/compare/v0.13.0...v0.13.1) (2025-02-17)
+
+
+### Features
+
+* [#167](https://github.com/DTStack/monaco-sql-languages/issues/167) support dt highlight style ([#168](https://github.com/DTStack/monaco-sql-languages/issues/168)) ([7beb537](https://github.com/DTStack/monaco-sql-languages/commit/7beb5373a40317a7ecd18a9cc66f5f133e27345b))
+* update dt-sql-parser's version ([#174](https://github.com/DTStack/monaco-sql-languages/issues/174)) ([159df20](https://github.com/DTStack/monaco-sql-languages/commit/159df20946198d549705afb61cbbdc7ef72e7d88))
+
 ## [0.13.0](https://github.com/DTStack/monaco-sql-languages/compare/v0.12.1...v0.13.0) (2025-02-13)
 
 

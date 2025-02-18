@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState, useTransition } from 'react';
 import {
 	ReactFlow,
 	Node,
@@ -6,7 +6,6 @@ import {
 	useNodesState,
 	useEdgesState,
 	Position,
-	useReactFlow,
 	ConnectionMode,
 	Background,
 	BackgroundVariant,
@@ -88,7 +87,6 @@ const getNodeStyle = ({
 	};
 };
 
-// 边的样式
 const edgeStyle = {
 	stroke: '#4a90e2',
 	strokeWidth: 2
@@ -148,37 +146,34 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<Node<NodeData>>([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 	const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-	const { fitView } = useReactFlow();
+	const [_, startTransition] = useTransition();
 
 	// 获取节点的所有子节点ID
-	const getChildNodeIds = useCallback(
-		(nodeId: string | null): string[] => {
-			if (!nodeId) return [];
-			const childIds: string[] = [];
-			const queue = [nodeId];
+	const getChildNodeIds = (nodeId: string | null): string[] => {
+		if (!nodeId) return [];
+		const childIds: string[] = [];
+		const queue = [nodeId];
 
-			while (queue.length > 0) {
-				const currentId = queue.shift()!;
-				edges.forEach((edge) => {
-					if (edge.source === currentId) {
-						childIds.push(edge.target);
-						queue.push(edge.target);
-					}
-				});
-			}
+		while (queue.length > 0) {
+			const currentId = queue.shift()!;
+			edges.forEach((edge) => {
+				if (edge.source === currentId) {
+					childIds.push(edge.target);
+					queue.push(edge.target);
+				}
+			});
+		}
 
-			return childIds;
-		},
-		[edges]
-	);
+		return childIds;
+	};
 
-	const handleNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+	const handleNodeClick = (_event: React.MouseEvent, node: Node) => {
 		setSelectedNodeId(node.id);
-	}, []);
+	};
 
-	const handlePaneClick = useCallback(() => {
+	const handlePaneClick = () => {
 		setSelectedNodeId(null);
-	}, []);
+	};
 
 	const convertTreeToElements = useCallback((tree: SerializedTreeNode) => {
 		const newNodes: Node<NodeData>[] = [];
@@ -245,19 +240,20 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 	}, []);
 
 	useEffect(() => {
-		if (!parseTree) return;
+		if (!parseTree) {
+			setEdges([]);
+			setNodes([]);
+			return;
+		}
 
 		const elements = convertTreeToElements(parseTree);
 		const layoutedElements = getLayoutedElements(elements.nodes, elements.edges);
 
-		setNodes(layoutedElements.nodes);
-		setEdges(layoutedElements.edges);
-		setSelectedNodeId(elements.rootNodeId);
-
-		// 等待节点渲染完成后自动适应视图
-		setTimeout(() => {
-			fitView({ padding: 0.2, includeHiddenNodes: false });
-		}, 100);
+		startTransition(() => {
+			setNodes(layoutedElements.nodes);
+			setEdges(layoutedElements.edges);
+			setSelectedNodeId(null);
+		});
 	}, [parseTree]);
 
 	useEffect(() => {
@@ -275,7 +271,7 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 				})
 			}))
 		);
-	}, [selectedNodeId, getChildNodeIds]);
+	}, [selectedNodeId]);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
@@ -288,6 +284,7 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 				fitViewOptions={{ padding: 0.2 }}
 				minZoom={0.1}
 				maxZoom={2}
+				onlyRenderVisibleElements
 				onNodeClick={handleNodeClick}
 				onPaneClick={handlePaneClick}
 				defaultEdgeOptions={{

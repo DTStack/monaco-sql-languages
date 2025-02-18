@@ -7,6 +7,12 @@ import { WorkerManager } from './workerManager';
 import { BaseSQLWorker } from './baseSQLWorker';
 import { Position, Uri, editor } from './fillers/monaco-editor-core';
 
+export interface SerializedTreeNode {
+	ruleName: string;
+	text?: string;
+	children: SerializedTreeNode[];
+}
+
 export class LanguageService<T extends BaseSQLWorker = BaseSQLWorker> {
 	private workerClients: Map<string, WorkerManager<T>> = new Map();
 
@@ -20,13 +26,13 @@ export class LanguageService<T extends BaseSQLWorker = BaseSQLWorker> {
 		});
 	}
 
-	public parserTreeToString(language: string, model: editor.IReadOnlyModel | string) {
+	public getSerializedParseTree(language: string, model: editor.IReadOnlyModel | string) {
 		const text = typeof model === 'string' ? model : model.getValue();
 		const uri = typeof model === 'string' ? void 0 : model.uri;
 
 		const clientWorker = this.getClientWorker(language, uri as Uri);
 		return clientWorker.then((worker) => {
-			return worker.parserTreeToString(text);
+			return worker.getSerializedParseTree(text);
 		});
 	}
 

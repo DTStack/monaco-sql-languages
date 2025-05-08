@@ -67,7 +67,7 @@
 		"pre-commit": "npx pretty-quick --staged"
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.1.0-beta.4"
+		"dt-sql-parser": "4.1.0-beta.8"
 	},
 	"peerDependencies": {
 		"monaco-editor": ">=0.31.0"

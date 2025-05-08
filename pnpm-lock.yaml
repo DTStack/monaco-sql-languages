@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       dt-sql-parser:
-        specifier: 4.1.0-beta.4
-        version: 4.1.0-beta.4(antlr4ng-cli@1.0.7)
+        specifier: 4.1.0-beta.8
+        version: 4.1.0-beta.8(antlr4ng-cli@1.0.7)
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.7.2
@@ -714,8 +714,8 @@ packages:
     resolution: {integrity: sha512-sCm11ak2oY6DglEPpCB8TixLjWAxd3kJTs6UIcSasNYxXdFPV+YKlye92c8H4kKFqV5qYMIh7d+cYecEg0dIkA==}
     engines: {node: '>=6'}
 
-  dt-sql-parser@4.1.0-beta.4:
-    resolution: {integrity: sha512-L+Qsw+lv7enkMuhy0XXOm7H63gaajwX7X0RUGCNU8h5xw9Pj5DEWvLcKTS0R+YmO4FzVXOpEzH9e1KkqQaKFaQ==}
+  dt-sql-parser@4.1.0-beta.8:
+    resolution: {integrity: sha512-yZRM64sckvQ3uumIwQuYfu8KoN39B1sL5n4PSbF82xh6ZKtzYWazxAA2SSIK2LnDk5S/XitE2QIGeO45rSOgFA==}
     engines: {node: '>=18'}
 
   email-addresses@3.1.0:
@@ -2061,7 +2061,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.5.4)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.5.4))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.5.4))(typescript@5.5.4)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.5.4))(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))(typescript@5.5.4)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -2577,7 +2577,7 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.5.4))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.5.4))(typescript@5.5.4):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.5.4))(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))(typescript@5.5.4):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.5.4)
@@ -2703,7 +2703,7 @@ snapshots:
       find-up: 3.0.0
       minimatch: 3.1.2
 
-  dt-sql-parser@4.1.0-beta.4(antlr4ng-cli@1.0.7):
+  dt-sql-parser@4.1.0-beta.8(antlr4ng-cli@1.0.7):
     dependencies:
       antlr4-c3: 3.3.7(antlr4ng-cli@1.0.7)
       antlr4ng: 2.0.11(antlr4ng-cli@1.0.7)

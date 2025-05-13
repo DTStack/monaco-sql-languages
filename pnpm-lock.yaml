@@ -9,13 +9,8 @@ importers:
   .:
     dependencies:
       dt-sql-parser:
-<<<<<<< HEAD
-        specifier: 4.1.1
-        version: 4.1.1(antlr4ng-cli@1.0.7)
-=======
         specifier: 4.2.0
         version: 4.2.0(antlr4ng-cli@1.0.7)
->>>>>>> next
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.7.2
@@ -313,7 +308,6 @@ packages:
 
   antlr4ng-cli@1.0.7:
     resolution: {integrity: sha512-qN2FsDBmLvsQcA5CWTrPz8I8gNXeS1fgXBBhI78VyxBSBV/EJgqy8ks6IDTC9jyugpl40csCQ4sL5K4i2YZ/2w==}
-    deprecated: 'This package is deprecated and will no longer be updated. Please use the new antlr-ng package instead: https://github.com/mike-lischke/antlr-ng'
     hasBin: true
 
   antlr4ng@2.0.11:
@@ -720,13 +714,8 @@ packages:
     resolution: {integrity: sha512-sCm11ak2oY6DglEPpCB8TixLjWAxd3kJTs6UIcSasNYxXdFPV+YKlye92c8H4kKFqV5qYMIh7d+cYecEg0dIkA==}
     engines: {node: '>=6'}
 
-<<<<<<< HEAD
-  dt-sql-parser@4.1.1:
-    resolution: {integrity: sha512-9f4m+CxIzhIrFqW8g95bCRQd+B+WeiC+RgDinBL5hwxa9OXrC6iIbaUtmiMDLO3GDBONn9ybgc+kQzv+G7EKcg==}
-=======
   dt-sql-parser@4.2.0:
     resolution: {integrity: sha512-tsTHGNGIeTd7xACh8FNzSCaQHYyITJeSTMZPxGFkROiccPxj82uEqOeUgJ+bYof9hEacf4h61LsiMyxPy+tl7g==}
->>>>>>> next
     engines: {node: '>=18'}
 
   email-addresses@3.1.0:
@@ -1507,7 +1496,6 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
-
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   querystringify@2.2.0:
@@ -2714,11 +2702,7 @@ snapshots:
       find-up: 3.0.0
       minimatch: 3.1.2
 
-<<<<<<< HEAD
-  dt-sql-parser@4.1.1(antlr4ng-cli@1.0.7):
-=======
   dt-sql-parser@4.2.0(antlr4ng-cli@1.0.7):
->>>>>>> next
     dependencies:
       antlr4-c3: 3.3.7(antlr4ng-cli@1.0.7)
       antlr4ng: 2.0.11(antlr4ng-cli@1.0.7)

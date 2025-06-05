@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       dt-sql-parser:
-        specifier: 4.3.0
-        version: 4.3.0(antlr4ng-cli@1.0.7)
+        specifier: 4.3.1
+        version: 4.3.1(antlr4ng-cli@1.0.7)
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.7.2
@@ -715,8 +715,8 @@ packages:
     resolution: {integrity: sha512-sCm11ak2oY6DglEPpCB8TixLjWAxd3kJTs6UIcSasNYxXdFPV+YKlye92c8H4kKFqV5qYMIh7d+cYecEg0dIkA==}
     engines: {node: '>=6'}
 
-  dt-sql-parser@4.3.0:
-    resolution: {integrity: sha512-k3G9xga1F4Y4KKj+6Up9G/4BK4dM6rjISISln+s8FaV8qmMfmCJOmzfJQkY9/9xrqLFKCesBi1HYDK9FcIHoKA==}
+  dt-sql-parser@4.3.1:
+    resolution: {integrity: sha512-WlFB9of+ChwWtc5M222jHGIpzqHx51szLe/11GAwwbA+4hRaVkMpWMf2bbYj4i855edSoTQ52zyLJVOpe+4OVg==}
     engines: {node: '>=18'}
 
   email-addresses@3.1.0:
@@ -2703,7 +2703,7 @@ snapshots:
       find-up: 3.0.0
       minimatch: 3.1.2
 
-  dt-sql-parser@4.3.0(antlr4ng-cli@1.0.7):
+  dt-sql-parser@4.3.1(antlr4ng-cli@1.0.7):
     dependencies:
       antlr4-c3: 3.3.7(antlr4ng-cli@1.0.7)
       antlr4ng: 2.0.11(antlr4ng-cli@1.0.7)

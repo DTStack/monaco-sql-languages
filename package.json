@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "0.13.1",
+	"version": "0.15.1",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"prepublishOnly": "npm run build",
@@ -66,9 +66,6 @@
 	"simple-git-hooks": {
 		"pre-commit": "npx pretty-quick --staged"
 	},
-	"dependencies": {
-		"dt-sql-parser": "4.1.1"
-	},
 	"peerDependencies": {
 		"monaco-editor": ">=0.31.0"
 	},
@@ -85,5 +82,8 @@
 		"*": [
 			"prettier --write --ignore-unknown"
 		]
+	},
+	"dependencies": {
+		"dt-sql-parser": "4.3.1"
 	}
 }

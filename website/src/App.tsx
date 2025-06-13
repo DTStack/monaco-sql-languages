@@ -4,11 +4,25 @@ import { create, Workbench } from '@dtinsight/molecule';
 import InstanceService from '@dtinsight/molecule/esm/services/instanceService';
 import { ExtendsWorkbench } from './extensions/workbench';
 import { version, dependencies } from '../../package.json';
-
+import { editor } from 'monaco-editor';
 import './languages';
 
 import '@dtinsight/molecule/esm/style/mo.css';
+
 import './App.css';
+
+/**
+ * Allow code completion when typing in snippets.
+ *
+ * You can also set configurations when creating monaco-editor instance
+ */
+editor.onDidCreateEditor((editor) => {
+	editor.updateOptions({
+		suggest: {
+			snippetsPreventQuickSuggestions: false
+		}
+	});
+});
 
 function App(): React.ReactElement {
 	const refMoInstance = useRef<InstanceService>();

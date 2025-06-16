@@ -1,4 +1,5 @@
 import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
+import { ICompletionItem } from 'monaco-sql-languages/esm/languageService';
 
 const catalogList = ['mock_catalog_1', 'mock_catalog_2', 'mock_catalog_3'];
 const schemaList = ['mock_schema_1', 'mock_schema_2', 'mock_schema_3'];
@@ -21,7 +22,7 @@ const prefixLabel = (languageId: string, text: string) => {
 };
 
 /**
- * 获取所有的 catalog
+ * Get all catalogs
  */
 export function getCatalogs(languageId: string) {
 	const catCompletions = catalogList.map((cat) => ({
@@ -34,7 +35,7 @@ export function getCatalogs(languageId: string) {
 }
 
 /**
- * 根据catalog 获取 database
+ * Get databases based on catalog
  */
 export function getDataBases(languageId: string, catalog?: string) {
 	const databases = catalog ? databaseList : tmpDatabaseList;
@@ -50,7 +51,7 @@ export function getDataBases(languageId: string, catalog?: string) {
 }
 
 /**
- * 根据catalog 获取 schema
+ * Get schemas based on catalog
  */
 export function getSchemas(languageId: string, catalog?: string) {
 	const schemas = catalog ? schemaList : tmpSchemaList;
@@ -66,7 +67,7 @@ export function getSchemas(languageId: string, catalog?: string) {
 }
 
 /**
- * 根据 catalog 和 database 获取 table
+ * Get tables based on catalog and database
  */
 export function getTables(languageId: string, catalog?: string, database?: string) {
 	const tables = catalog && database ? tableList : tmpTableList;
@@ -82,7 +83,7 @@ export function getTables(languageId: string, catalog?: string, database?: strin
 }
 
 /**
- * 根据 catalog 和 database 获取 view
+ * Get views based on catalog and database
  */
 export function getViews(languageId: string, catalog?: string, database?: string) {
 	const views = catalog && database ? viewList : tmpViewList;
@@ -95,4 +96,31 @@ export function getViews(languageId: string, catalog?: string, database?: string
 	}));
 
 	return Promise.resolve(viewCompletions);
+}
+
+/**
+ * Get column information for a specific table
+ * @param languageId Language ID
+ * @param tableName Table name
+ * @returns Column completion items
+ */
+export function getColumns(languageId: string, tableName: string): Promise<ICompletionItem[]> {
+	// Mock column data, should fetch from cloud in real environment
+	const mockColumns = [
+		{ name: 'id', type: 'INT' },
+		{ name: 'name', type: 'VARCHAR' },
+		{ name: 'age', type: 'INT' },
+		{ name: 'created_at', type: 'TIMESTAMP' },
+		{ name: 'updated_at', type: 'TIMESTAMP' }
+	];
+
+	const columnCompletions = mockColumns.map((col) => ({
+		label: `${col.name}(${col.type})`,
+		insertText: col.name,
+		kind: languages.CompletionItemKind.EnumMember,
+		detail: `Remote: \`${tableName}\`'s column`,
+		sortText: '0' + tableName + col.name
+	}));
+
+	return Promise.resolve(columnCompletions);
 }

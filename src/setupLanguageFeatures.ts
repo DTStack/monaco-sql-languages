@@ -1,13 +1,14 @@
+import { LanguageIdEnum } from './common/constants';
+import { IDisposable, languages } from './fillers/monaco-editor-core';
 import {
-	PreprocessCode,
+	CompletionOptions,
 	LanguageServiceDefaults,
 	LanguageServiceDefaultsImpl,
-	modeConfigurationDefault,
 	ModeConfiguration,
-	CompletionOptions
+	modeConfigurationDefault,
+	PreprocessCode
 } from './monaco.contribution';
-import { languages, IDisposable } from './fillers/monaco-editor-core';
-import { LanguageIdEnum } from './common/constants';
+import * as snippets from './snippets';
 
 export interface FeatureConfiguration {
 	/**
@@ -20,6 +21,14 @@ export interface FeatureConfiguration {
 	 * Defaults to true.
 	 */
 	diagnostics?: boolean;
+	/**
+	 * Defines whether the built-in definitions provider is enabled.
+	 */
+	definitions?: boolean;
+	/**
+	 * Defines whether the built-in references provider is enabled.
+	 */
+	references?: boolean;
 	/**
 	 * Define a function to preprocess code.
 	 * By default, do not something.
@@ -80,6 +89,27 @@ export function setupLanguageFeatures(
 	}
 }
 
+function getDefaultSnippets(languageId: LanguageIdEnum) {
+	switch (languageId) {
+		case LanguageIdEnum.HIVE:
+			return snippets.hiveSnippets;
+		case LanguageIdEnum.FLINK:
+			return snippets.flinkSnippets;
+		case LanguageIdEnum.IMPALA:
+			return snippets.impalaSnippets;
+		case LanguageIdEnum.MYSQL:
+			return snippets.mysqlSnippets;
+		case LanguageIdEnum.PG:
+			return snippets.pgsqlSnippets;
+		case LanguageIdEnum.SPARK:
+			return snippets.sparkSnippets;
+		case LanguageIdEnum.TRINO:
+			return snippets.trinoSnippets;
+		default:
+			return [];
+	}
+}
+
 function processConfiguration(
 	languageId: LanguageIdEnum,
 	configuration: FeatureConfiguration
@@ -110,13 +140,31 @@ function processConfiguration(
 			? configuration.completionItems!.triggerCharacters
 			: (defaults?.modeConfiguration.completionItems.triggerCharacters ??
 				modeConfigurationDefault.completionItems.triggerCharacters);
+	const references =
+		typeof configuration.references === 'boolean'
+			? configuration.references
+			: (defaults?.modeConfiguration.references ?? modeConfigurationDefault.references);
+	const definitions =
+		typeof configuration.definitions === 'boolean'
+			? configuration.definitions
+			: (defaults?.modeConfiguration.definitions ?? modeConfigurationDefault.definitions);
+
+	const snippets =
+		typeof configuration.completionItems !== 'boolean' &&
+		Array.isArray(configuration.completionItems?.snippets)
+			? configuration.completionItems!.snippets
+			: (defaults?.modeConfiguration.completionItems.snippets ??
+				getDefaultSnippets(languageId));
 
 	return {
 		diagnostics,
 		completionItems: {
 			enable: completionEnable,
 			completionService,
-			triggerCharacters
-		}
+			triggerCharacters,
+			snippets
+		},
+		references,
+		definitions
 	};
 }

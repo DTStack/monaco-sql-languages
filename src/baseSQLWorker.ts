@@ -3,6 +3,7 @@ import { worker } from './fillers/monaco-editor-core';
 import { Suggestions, ParseError, EntityContext } from 'dt-sql-parser';
 import { Position } from './fillers/monaco-editor-core';
 import type { SerializedTreeNode } from './languageService';
+import { SemanticContext } from 'dt-sql-parser/dist/parser/common/types';
 
 export interface ICreateData {
 	languageId: string;
@@ -36,7 +37,11 @@ export abstract class BaseSQLWorker {
 	async doCompletionWithEntities(
 		code: string,
 		position: Position
-	): Promise<[Suggestions | null, EntityContext[] | null]> {
+	): Promise<{
+		suggestions: Suggestions | null;
+		allEntities: EntityContext[] | null;
+		context: SemanticContext | null;
+	}> {
 		code = code || this.getTextDocument();
 		if (code) {
 			const suggestions = this.parser.getSuggestionAtCaretPosition(code, position);
@@ -44,9 +49,20 @@ export abstract class BaseSQLWorker {
 			if (suggestions?.syntax?.length) {
 				allEntities = this.parser.getAllEntities(code, position);
 			}
-			return Promise.resolve([suggestions, allEntities]);
+			const semanticContext = this.parser.getSemanticContextAtCaretPosition(code, position);
+
+			return Promise.resolve({
+				suggestions,
+				allEntities,
+				context: semanticContext
+			});
 		}
-		return Promise.resolve([null, null]);
+
+		return Promise.resolve({
+			suggestions: null,
+			allEntities: null,
+			context: null
+		});
 	}
 
 	async getAllEntities(code: string, position?: Position): Promise<EntityContext[] | null> {

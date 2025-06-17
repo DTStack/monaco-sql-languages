@@ -4,6 +4,7 @@ export * from './languageService';
 export * from './setupLanguageFeatures';
 export * from './common/constants';
 export * from './theme';
+export * as snippets from './snippets';
 
 export { EntityContextType, StmtContextType } from 'dt-sql-parser';
 

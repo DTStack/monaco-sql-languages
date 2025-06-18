@@ -10,9 +10,14 @@ import {
 	Background,
 	BackgroundVariant,
 	Controls,
-	ReactFlowProvider
+	ReactFlowProvider,
+	useReactFlow,
+	getNodesBounds,
+	getViewportForBounds,
+	ControlButton
 } from '@xyflow/react';
 import dagre from 'dagre';
+import { toPng } from 'html-to-image';
 import { SerializedTreeNode } from 'monaco-sql-languages/esm/languageService';
 
 import '@xyflow/react/dist/style.css';
@@ -45,12 +50,12 @@ interface NodeStyleProps {
 const calculateTextWidth = (text: string): number => {
 	const canvas = document.createElement('canvas');
 	const context = canvas.getContext('2d');
-	if (!context) return 120;
+	if (!context) return 80;
 
-	context.font = '13px Monaco, monospace';
+	context.font = '14px Monaco, monospace';
 	const metrics = context.measureText(text);
 	// 添加内边距和一些缓冲空间
-	return Math.max(120, Math.ceil(metrics.width + 40));
+	return Math.max(80, Math.ceil(metrics.width + 20));
 };
 
 // 自定义节点样式
@@ -64,31 +69,25 @@ const getNodeStyle = ({
 	const width = calculateTextWidth(label);
 
 	return {
-		padding: '8px 12px',
-		border: '2px solid #4a90e2',
-		borderRadius: '6px',
+		padding: '8px 0px',
+		borderRadius: '8px',
 		backgroundColor:
 			displayType === NodeDisplayType.TerminalNode
-				? 'rgb(136 205 255)'
+				? 'rgba(22, 163, 74, 0.8)'
 				: displayType === NodeDisplayType.ErrorNode
-					? 'rgb(255 205 210)'
-					: '#fff',
-		color: '#2c3e50',
-		fontSize: '13px',
+					? 'rgba(220, 38, 38, 0.8)'
+					: 'rgba(27, 126, 191, 0.8)',
+		color: '#ffffff',
+		fontSize: '12px',
 		width: width,
 		textAlign: 'center' as const,
 		transition: 'all 0.2s ease',
-		opacity: hasSelection && !isSelected && !isChild ? 0.3 : 1,
-		boxShadow: isSelected
-			? '0 0 10px #4a90e2'
-			: isChild
-				? '0 0 6px #4a90e2'
-				: '0 2px 6px rgba(0,0,0,0.1)'
+		opacity: hasSelection && !isSelected && !isChild ? 0.3 : 1
 	};
 };
 
 const edgeStyle = {
-	stroke: '#4a90e2',
+	stroke: 'rgb(14, 99, 156)',
 	strokeWidth: 2
 };
 
@@ -140,6 +139,70 @@ const getLayoutedElements = <T extends Record<string, any>>(
 	});
 
 	return { nodes: layoutedNodes, edges };
+};
+
+const downloadImage = (dataUrl: string) => {
+	const a = document.createElement('a');
+	a.setAttribute('download', `parse-tree-${new Date().toLocaleString()}.png`);
+	a.setAttribute('href', dataUrl);
+	a.click();
+};
+
+const DownloadButton = () => {
+	const { getNodes } = useReactFlow();
+
+	const onClick = () => {
+		const nodes = getNodes();
+		if (nodes.length === 0) return;
+
+		const nodesBounds = getNodesBounds(nodes);
+
+		const padding = 30;
+		const imageWidth = nodesBounds.width + padding;
+		const imageHeight = nodesBounds.height + padding;
+
+		// 计算用于导出的视口变换
+		const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.1, 2, 0.1);
+
+		const viewportElement = document.querySelector('.react-flow__viewport') as HTMLElement;
+		if (!viewportElement) return;
+
+		toPng(viewportElement, {
+			backgroundColor: '#ffffff',
+			width: imageWidth,
+			height: imageHeight,
+			style: {
+				width: `${imageWidth}px`,
+				height: `${imageHeight}px`,
+				transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`
+			}
+		})
+			.then((dataUrl: string) => {
+				downloadImage(dataUrl);
+			})
+			.catch((error: Error) => {
+				console.error('Download image failed:', error);
+			});
+	};
+
+	return (
+		<ControlButton onClick={onClick} title="Download Image">
+			<svg
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			>
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+				<polyline points="7,10 12,15 17,10" />
+				<line x1="12" y1="15" x2="12" y2="3" />
+			</svg>
+		</ControlButton>
+	);
 };
 
 const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
@@ -280,6 +343,7 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 				edges={edges}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
+				colorMode="dark"
 				fitView
 				fitViewOptions={{ padding: 0.2 }}
 				minZoom={0.1}
@@ -308,7 +372,7 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 					gap={12}
 					size={1}
 					color="#91919a"
-					style={{ opacity: 0.6 }}
+					style={{ opacity: 0.7 }}
 				/>
 				<Controls
 					showInteractive={false}
@@ -317,7 +381,9 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 						flexDirection: 'column',
 						gap: '8px'
 					}}
-				/>
+				>
+					<DownloadButton />
+				</Controls>
 			</ReactFlow>
 		</div>
 	);

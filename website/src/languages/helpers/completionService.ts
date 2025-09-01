@@ -20,7 +20,6 @@ import {
 	AttrName,
 	ColumnDeclareType,
 	EntityContext,
-	isCommonEntityContext,
 	TableDeclareType
 } from 'dt-sql-parser/dist/parser/common/entityCollector';
 
@@ -187,71 +186,52 @@ const getDatabaseObjectCompletions = async (
 };
 
 /**
- * Get columns from locally defined tables
+ * Parse entity text and extract different parts
+ * @param originEntityText - The origin entity text
+ * @returns Parsed entity information
+ * @example
+ * parseEntityText('catalog.database.table') => { catalog: 'catalog', schema: 'database', table: 'table', fullPath: 'catalog.database.table' }
+ * parseEntityText('schema.table') => { catalog: null, schema: 'schema', table: 'table', fullPath: 'schema.table' }
+ * parseEntityText('table') => { catalog: null, schema: null, table: 'table', fullPath: 'table' }
  */
-const getLocalTableColumns = (
-	sourceTableDefinitionEntities: CommonEntityContext[],
-	tableNameAliasMap: Record<string, string> = {}
-): EnhancedCompletionItem[] => {
-	return sourceTableDefinitionEntities
-		.map((tb) => {
-			const tableName = tableNameAliasMap[tb.text] || getPureEntityText(tb.text);
-			return (
-				tb.columns?.map((column) => {
-					const columnName =
-						column[AttrName.alias]?.text || getPureEntityText(column.text);
-					return {
-						label:
-							columnName +
-							(column[AttrName.colType]?.text
-								? `(${column[AttrName.colType].text})`
-								: ''),
-						insertText: columnName,
-						kind: languages.CompletionItemKind.EnumMember,
-						detail: `\`${tableName}\`'s column`,
-						sortText: '0' + tableName + columnName,
-						_tableName: tableName,
-						_columnText: columnName
-					};
-				}) || []
-			);
-		})
-		.flat();
-};
+const parseEntityText = (originEntityText: string) => {
+	const words = originEntityText
+		.split('.')
+		.map((word) =>
+			word.startsWith('`') && word.endsWith('`') && word.length >= 3
+				? word.slice(1, -1)
+				: word
+		);
 
-/**
- * Get columns from derived tables (subqueries)
- */
-const getDerivedTableColumns = (
-	derivedTableEntities: CommonEntityContext[]
-): EnhancedCompletionItem[] => {
-	return derivedTableEntities
-		.map((tb: CommonEntityContext) => {
-			const derivedTableQueryResult = tb.relatedEntities?.find(
-				(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
-			) as CommonEntityContext | undefined;
-
-			const tableName = tb[AttrName.alias]?.text || getPureEntityText(tb.text);
-
-			return (
-				derivedTableQueryResult?.columns
-					?.filter((column) => column.declareType !== ColumnDeclareType.ALL)
-					.map((column) => {
-						const columnName =
-							column[AttrName.alias]?.text || getPureEntityText(column.text);
-						return {
-							label: columnName,
-							insertText: columnName,
-							kind: languages.CompletionItemKind.EnumMember,
-							detail: `\`${tableName}\`'s column`,
-							sortText: '0' + tableName + columnName,
-							_tableName: tableName,
-							_columnText: columnName
-						};
-					}) || []
-			);
-		})
-		.flat();
+	const length = words.length;
+	if (length >= 3) {
+		// catalog.schema.table format
+		return {
+			catalog: words[0],
+			schema: words[1],
+			table: words[2],
+			fullPath: words.join('.'),
+			pureEntityText: words[2]
+		};
+	} else if (length === 2) {
+		// schema.table format
+		return {
+			catalog: null,
+			schema: words[0],
+			table: words[1],
+			fullPath: words.join('.'),
+			pureEntityText: words[1]
+		};
+	} else {
+		// table format
+		return {
+			catalog: null,
+			schema: null,
+			table: words[0],
+			fullPath: words[0],
+			pureEntityText: words[0]
+		};
+	}
 };
 
 /**
@@ -264,14 +244,35 @@ const getDerivedTableColumns = (
  * getPureEntityText('`a1`') => 'a1'
  */
 const getPureEntityText = (originEntityText: string) => {
-	const words = originEntityText
-		.split('.')
-		.map((word) =>
-			word.startsWith('`') && word.endsWith('`') && word.length >= 3
-				? word.slice(1, -1)
-				: word
-		);
-	return words[words.length - 1];
+	return parseEntityText(originEntityText).pureEntityText;
+};
+
+/**
+ * Check if two entity paths match, considering schema information
+ * @param createTablePath - The path from CREATE TABLE statement
+ * @param referenceTablePath - The path from table reference
+ * @returns Whether the paths match
+ */
+const isEntityPathMatch = (createTablePath: string, referenceTablePath: string): boolean => {
+	const createInfo = parseEntityText(createTablePath);
+	const refInfo = parseEntityText(referenceTablePath);
+
+	// Exact match
+	if (createInfo.fullPath === refInfo.fullPath) {
+		return true;
+	}
+
+	// If reference has no schema but table name matches
+	if (!refInfo.schema && createInfo.table === refInfo.table) {
+		return true;
+	}
+
+	// If both have schema and table, they must match exactly
+	if (createInfo.schema && refInfo.schema) {
+		return createInfo.schema === refInfo.schema && createInfo.table === refInfo.table;
+	}
+
+	return false;
 };
 
 /**
@@ -299,44 +300,75 @@ const getColumnCompletions = async (
 			(entity) => entity.entityContextType === EntityContextType.TABLE && entity.isAccessible
 		) as CommonEntityContext[]) || [];
 
-	// Find table definitions from source tables
+	// Find table definitions from source tables (regular CREATE TABLE with explicit columns)
 	const sourceTableDefinitionEntities = allTableDefinitionEntities.filter((createTable) =>
 		sourceTables?.some(
 			(sourceTable) =>
-				sourceTable.declareType === TableDeclareType.COMMON &&
-				// You can also check schema name here
-				getPureEntityText(sourceTable.text) === getPureEntityText(createTable.text) &&
-				sourceTable.isAccessible
+				sourceTable.declareType === TableDeclareType.LITERAL &&
+				isEntityPathMatch(createTable.text, sourceTable.text)
+		)
+	);
+
+	// Find CTAS table definitions from source tables (CREATE TABLE AS SELECT)
+	const ctasTableDefinitionEntities = allTableDefinitionEntities.filter((createTable) =>
+		sourceTables?.some(
+			(sourceTable) =>
+				sourceTable.declareType === TableDeclareType.LITERAL &&
+				// Check if the CREATE TABLE has relatedEntities with QUERY_RESULT (indicates CTAS)
+				createTable.relatedEntities?.some(
+					(relatedEntity) =>
+						relatedEntity.entityContextType === EntityContextType.QUERY_RESULT
+				) &&
+				isEntityPathMatch(createTable.text, sourceTable.text)
 		)
 	);
 
 	const derivedTableEntities =
-		(entities?.filter(
-			(entity) =>
-				isCommonEntityContext(entity) &&
-				entity.entityContextType === EntityContextType.TABLE &&
-				entity.isAccessible &&
-				entity.declareType === TableDeclareType.EXPRESSION
-		) as CommonEntityContext[]) || [];
+		sourceTables?.filter((entity) => entity.declareType === TableDeclareType.EXPRESSION) || [];
 
 	const tableNameAliasMap: Record<string, string> = sourceTables.reduce(
 		(acc: Record<string, string>, tb) => {
-			acc[tb.text] = tb[AttrName.alias]?.text || '';
+			const alias = tb[AttrName.alias]?.text;
+			if (alias) {
+				acc[tb.text] = alias;
+			}
 			return acc;
 		},
 		{}
 	);
-	console.log(wordRanges);
+
+	// alias to full table path
+	const aliasToTableMap: Record<string, string> = Object.fromEntries(
+		Object.entries(tableNameAliasMap).map(([tablePath, alias]) => [alias, tablePath])
+	);
 
 	// When not typing a dot, suggest all source tables and columns (if source tables are directly created in local context)
 	if (wordRanges.length <= 1) {
 		const columnRepeatCountMap = new Map<string, number>();
 
 		// Get columns from local tables
-		let sourceTableColumns = [
-			...getLocalTableColumns(sourceTableDefinitionEntities, tableNameAliasMap),
-			...getDerivedTableColumns(derivedTableEntities)
-		];
+		let sourceTableColumns: EnhancedCompletionItem[] = [];
+
+		sourceTables.forEach((sourceTable) => {
+			const realTablePath = sourceTable.text;
+			const displayAlias = tableNameAliasMap[sourceTable.text];
+
+			const tableColumns = [
+				...getSpecificTableColumns(
+					sourceTableDefinitionEntities,
+					realTablePath,
+					displayAlias
+				),
+				...getSpecificDerivedTableColumns(derivedTableEntities, displayAlias),
+				...getSpecificCTASTableColumns(
+					ctasTableDefinitionEntities,
+					realTablePath,
+					displayAlias
+				)
+			];
+
+			sourceTableColumns.push(...tableColumns);
+		});
 
 		// Count duplicate column names
 		sourceTableColumns.forEach((col) => {
@@ -367,7 +399,7 @@ const getColumnCompletions = async (
 			return {
 				label: tableName,
 				kind: languages.CompletionItemKind.Field,
-				detail: tb.declareType === TableDeclareType.COMMON ? 'table' : 'derived table',
+				detail: tb.declareType === TableDeclareType.LITERAL ? 'table' : 'derived table',
 				sortText: '1' + tableName
 			};
 		});
@@ -377,33 +409,57 @@ const getColumnCompletions = async (
 		// Table.column format completion
 		const tbNameOrAlias = words[0];
 
+		let realTablePath = tbNameOrAlias;
+
+		// Check if the input is an alias and resolve to full table path
+		if (aliasToTableMap[tbNameOrAlias]) {
+			realTablePath = aliasToTableMap[tbNameOrAlias];
+		} else {
+			// Try to find matching table in source tables (handles partial schema references)
+			const matchingTable = sourceTables.find((tb) => {
+				const parsedTable = parseEntityText(tb.text);
+				// Check if input matches table name or schema.table pattern
+				return (
+					parsedTable.table === tbNameOrAlias ||
+					parsedTable.fullPath === tbNameOrAlias ||
+					tb.text === tbNameOrAlias
+				);
+			});
+
+			if (matchingTable) {
+				realTablePath = matchingTable.text;
+			}
+		}
+
 		// Find columns in local table definitions
+		const displayAlias = aliasToTableMap[tbNameOrAlias] ? tbNameOrAlias : undefined;
+
 		const localTableColumns = [
-			...getSpecificTableColumns(
-				sourceTableDefinitionEntities,
-				tbNameOrAlias,
-				tableNameAliasMap
-			),
-			...getSpecificDerivedTableColumns(
-				derivedTableEntities,
-				tbNameOrAlias,
-				tableNameAliasMap
-			)
+			...getSpecificTableColumns(sourceTableDefinitionEntities, realTablePath, displayAlias),
+			...getSpecificDerivedTableColumns(derivedTableEntities, displayAlias),
+			...getSpecificCTASTableColumns(ctasTableDefinitionEntities, realTablePath, displayAlias)
 		];
 
 		result.push(...localTableColumns);
 
 		// If no local table columns found, try to fetch from cloud
 		if (localTableColumns.length === 0) {
-			// Find the real table name for the alias
-			const realTableName =
-				Object.entries(tableNameAliasMap).find(
-					([_table, alias]) => alias === tbNameOrAlias
-				)?.[0] || tbNameOrAlias;
+			// Check if this table is locally created
+			const isLocallyCreatedTable = allTableDefinitionEntities.some((createTable) => {
+				return isEntityPathMatch(createTable.text, realTablePath);
+			});
 
-			// Get columns from cloud
-			const remoteColumns = await getColumns(languageId, realTableName);
-			result.push(...remoteColumns);
+			const isLiteralTable = sourceTables.some(
+				(tb) =>
+					tb.declareType === TableDeclareType.LITERAL &&
+					(tb.text === realTablePath || isEntityPathMatch(tb.text, realTablePath))
+			);
+
+			// Only fetch from remote if table is not locally created
+			if (!isLocallyCreatedTable && isLiteralTable) {
+				const remoteColumns = await getColumns(languageId, realTablePath);
+				result.push(...remoteColumns);
+			}
 		}
 	}
 
@@ -415,15 +471,19 @@ const getColumnCompletions = async (
  */
 const getSpecificTableColumns = (
 	sourceTableDefinitionEntities: CommonEntityContext[],
-	tableNameOrAlias: string,
-	tableNameAliasMap: Record<string, string> = {}
+	realTablePath: string,
+	displayAlias?: string
 ): ICompletionItem[] => {
 	return sourceTableDefinitionEntities
 		.filter((tb) => {
-			return tb.text === tableNameOrAlias || tableNameAliasMap[tb.text] === tableNameOrAlias;
+			return (
+				tb.text === realTablePath ||
+				isEntityPathMatch(tb.text, realTablePath) ||
+				getPureEntityText(tb.text) === getPureEntityText(realTablePath)
+			);
 		})
 		.map((tb) => {
-			const tableName = tableNameAliasMap[tb.text] || getPureEntityText(tb.text);
+			const tableName = displayAlias || getPureEntityText(tb.text);
 			return (
 				tb.columns?.map((column) => {
 					const columnName =
@@ -450,19 +510,19 @@ const getSpecificTableColumns = (
  */
 const getSpecificDerivedTableColumns = (
 	derivedTableEntities: CommonEntityContext[],
-	tableNameOrAlias: string,
-	tableNameAliasMap: Record<string, string> = {}
+	displayAlias?: string
 ): ICompletionItem[] => {
 	return derivedTableEntities
 		.filter((tb) => {
-			return tb.text === tableNameOrAlias || tableNameAliasMap[tb.text] === tableNameOrAlias;
+			return displayAlias ? tb[AttrName.alias]?.text === displayAlias : false;
 		})
 		.map((tb) => {
 			const derivedTableQueryResult = tb.relatedEntities?.find(
 				(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
 			) as CommonEntityContext | undefined;
 
-			const tableName = tb[AttrName.alias]?.text || tb.text;
+			const tableName =
+				displayAlias || tb[AttrName.alias]?.text || getPureEntityText(tb.text);
 
 			return (
 				derivedTableQueryResult?.columns
@@ -472,6 +532,52 @@ const getSpecificDerivedTableColumns = (
 							column[AttrName.alias]?.text || getPureEntityText(column.text);
 						return {
 							label: columnName,
+							insertText: columnName,
+							kind: languages.CompletionItemKind.EnumMember,
+							detail: `\`${tableName}\`'s column`,
+							sortText: '0' + tableName + columnName
+						};
+					}) || []
+			);
+		})
+		.flat();
+};
+
+/**
+ * Get columns from a specific CTAS table
+ */
+const getSpecificCTASTableColumns = (
+	ctasTableEntities: CommonEntityContext[],
+	realTablePath: string,
+	displayAlias?: string
+): ICompletionItem[] => {
+	return ctasTableEntities
+		.filter((tb) => {
+			return (
+				tb.text === realTablePath ||
+				isEntityPathMatch(tb.text, realTablePath) ||
+				getPureEntityText(tb.text) === getPureEntityText(realTablePath)
+			);
+		})
+		.map((tb) => {
+			const ctasQueryResult = tb.relatedEntities?.find(
+				(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
+			) as CommonEntityContext | undefined;
+
+			const tableName = displayAlias || getPureEntityText(tb.text);
+
+			return (
+				ctasQueryResult?.columns
+					?.filter((column) => column.declareType !== ColumnDeclareType.ALL)
+					.map((column) => {
+						const columnName =
+							column[AttrName.alias]?.text || getPureEntityText(column.text);
+						return {
+							label:
+								columnName +
+								(column[AttrName.colType]?.text
+									? `(${column[AttrName.colType].text})`
+									: ''),
 							insertText: columnName,
 							kind: languages.CompletionItemKind.EnumMember,
 							detail: `\`${tableName}\`'s column`,

@@ -348,7 +348,6 @@ const TreeVisualizerContent = ({ parseTree }: TreeVisualizerPanelProps) => {
 				fitViewOptions={{ padding: 0.2 }}
 				minZoom={0.1}
 				maxZoom={2}
-				onlyRenderVisibleElements
 				onNodeClick={handleNodeClick}
 				onPaneClick={handlePaneClick}
 				defaultEdgeOptions={{

@@ -497,7 +497,9 @@ const getSpecificTableColumns = (
 						insertText: columnName,
 						kind: languages.CompletionItemKind.EnumMember,
 						detail: `\`${tableName}\`'s column`,
-						sortText: '0' + tableName + columnName
+						sortText: '0' + tableName + columnName,
+						_columnText: columnName,
+						_tableName: tableName
 					};
 				}) || []
 			);
@@ -535,7 +537,9 @@ const getSpecificDerivedTableColumns = (
 							insertText: columnName,
 							kind: languages.CompletionItemKind.EnumMember,
 							detail: `\`${tableName}\`'s column`,
-							sortText: '0' + tableName + columnName
+							sortText: '0' + tableName + columnName,
+							_columnText: columnName,
+							_tableName: tableName
 						};
 					}) || []
 			);
@@ -581,7 +585,9 @@ const getSpecificCTASTableColumns = (
 							insertText: columnName,
 							kind: languages.CompletionItemKind.EnumMember,
 							detail: `\`${tableName}\`'s column`,
-							sortText: '0' + tableName + columnName
+							sortText: '0' + tableName + columnName,
+							_columnText: columnName,
+							_tableName: tableName
 						};
 					}) || []
 			);

@@ -28,7 +28,7 @@ export function getCatalogs(languageId: string) {
 	const catCompletions = catalogList.map((cat) => ({
 		label: prefixLabel(languageId, cat),
 		kind: languages.CompletionItemKind.Field,
-		detail: 'catalog',
+		detail: 'Remote: catalog',
 		sortText: '1' + prefixLabel(languageId, cat)
 	}));
 	return Promise.resolve(catCompletions);
@@ -43,7 +43,7 @@ export function getDataBases(languageId: string, catalog?: string) {
 	const databaseCompletions = databases.map((db) => ({
 		label: prefixLabel(languageId, db),
 		kind: languages.CompletionItemKind.Field,
-		detail: 'database',
+		detail: 'Remote: database',
 		sortText: '1' + prefixLabel(languageId, db)
 	}));
 
@@ -59,7 +59,7 @@ export function getSchemas(languageId: string, catalog?: string) {
 	const schemaCompletions = schemas.map((sc) => ({
 		label: prefixLabel(languageId, sc),
 		kind: languages.CompletionItemKind.Field,
-		detail: 'schema',
+		detail: 'Remote: schema',
 		sortText: '1' + prefixLabel(languageId, sc)
 	}));
 
@@ -75,7 +75,7 @@ export function getTables(languageId: string, catalog?: string, database?: strin
 	const tableCompletions = tables.map((tb) => ({
 		label: prefixLabel(languageId, tb),
 		kind: languages.CompletionItemKind.Field,
-		detail: 'table',
+		detail: 'Remote: table',
 		sortText: '1' + prefixLabel(languageId, tb)
 	}));
 
@@ -91,7 +91,7 @@ export function getViews(languageId: string, catalog?: string, database?: string
 	const viewCompletions = views.map((v) => ({
 		label: prefixLabel(languageId, v),
 		kind: languages.CompletionItemKind.Field,
-		detail: 'view',
+		detail: 'Remote: view',
 		sortText: '1' + prefixLabel(languageId, v)
 	}));
 

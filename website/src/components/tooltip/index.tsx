@@ -26,7 +26,7 @@ const Tooltip = ({ children, values }: IProps) => {
 			<div className="tooltip-trigger">{children}</div>
 			<ul className="tooltip-content">
 				{values.map((item, index) => (
-					<li>
+					<li key={item.href}>
 						<a key={index} href={item.href} target="_blank" rel="noreferrer">
 							{item.title}
 						</a>

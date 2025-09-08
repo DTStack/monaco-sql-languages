@@ -1,37 +1,25 @@
+import Tabs from '@/components/tabs';
 import { SOURCE_FILE, SOURCE_OUTLINE } from '@/consts';
-import Tabs from 'rc-tabs';
-import 'rc-tabs/assets/index.css';
-const SourceSpace = () => {
-	const callback = (key: string) => {
-		console.log(key);
-	};
-
+import Parser from './components/parser';
+const SourceSpace = ({ molecule }) => {
 	const items = [
 		{
+			id: SOURCE_FILE,
 			key: SOURCE_FILE,
-			label: '文件',
-			children: (
-				<div className="text-xl">
-					<p>1</p>
-				</div>
-			)
+			name: '文件',
+			children: <Parser molecule={molecule} />
 		},
 		{
+			id: SOURCE_OUTLINE,
 			key: SOURCE_OUTLINE,
-			label: '大纲',
+			name: '大纲',
 			children: <div>2</div>
 		}
 	];
 
 	return (
 		<div>
-			<Tabs
-				tabPosition="top"
-				items={items}
-				defaultActiveKey="1"
-				onChange={callback}
-				style={{ color: '#F9F9FA' }}
-			/>
+			<Tabs data={items}></Tabs>
 		</div>
 	);
 };

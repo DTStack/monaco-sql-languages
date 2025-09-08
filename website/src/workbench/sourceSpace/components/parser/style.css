@@ -1,0 +1,30 @@
+.folder-tree .mo-tree .mo-tree__treenode {
+	display: flex;
+	width: 252px;
+	align-items: center;
+	gap: 8px;
+	border-radius: 4px;
+	background: #161616;
+	/* Base/Medium */
+	font-family: 'PingFang SC';
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 22px; /* 157.143% */
+}
+
+.folder-tree .mo-collapse {
+	height: 400px;
+}
+.folder-tree .mo-split {
+	margin-top: 3px;
+}
+
+.folder-tree .mo-collapse .mo-collapse__pane {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	top: 3px;
+	border-radius: 4px;
+	background-color: #161616;
+}

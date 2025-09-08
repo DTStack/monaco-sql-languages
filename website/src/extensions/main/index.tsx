@@ -1,4 +1,5 @@
-import { IContributeType, IExtension } from '@dtinsight/molecule';
+import { FileTypes, IContributeType, IExtension, tree } from '@dtinsight/molecule';
+
 import Welcome from '@/workbench/welcome';
 import {
 	FILE_PATH,
@@ -6,7 +7,8 @@ import {
 	PARSE_LANGUAGE,
 	ACTIVITY_FOLDER,
 	ACTIVITY_SQL,
-	ACTIVITY_API
+	ACTIVITY_API,
+	SQL_LANGUAGES
 } from '@/consts';
 import QuickGithub from '@/workbench/quickGithub';
 import SourceSpace from '@/workbench/sourceSpace';
@@ -32,15 +34,43 @@ export const mainExt: IExtension = {
 		}));
 		molecule.editor.setEntry(<Welcome />);
 
+		// ------- 初始化开始-----
 		molecule.activityBar.reset();
 		molecule.sidebar.reset();
 
+		const { EXPLORER_ITEM_OPEN_EDITOR, EXPLORER_ITEM_WORKSPACE } =
+			molecule.builtin.getConstants();
+
+		molecule.explorer.update({
+			id: EXPLORER_ITEM_OPEN_EDITOR,
+			hidden: !molecule.explorer.get(EXPLORER_ITEM_OPEN_EDITOR)?.hidden
+		});
+		molecule.explorer.update({
+			id: EXPLORER_ITEM_WORKSPACE,
+			hidden: !molecule.explorer.get(EXPLORER_ITEM_WORKSPACE)?.hidden
+		});
+		// ------- 初始化完成-----
+
 		molecule.sidebar.add({
 			id: ACTIVITY_FOLDER,
-			name: '文件',
+			name: '',
 			sortIndex: 1,
-			render: () => <SourceSpace />
+			render: () => <SourceSpace molecule={molecule} />
 		});
+
+		molecule.explorer.add(
+			SQL_LANGUAGES?.map((item) => ({
+				id: item,
+				name: item,
+				toolbar: [
+					{
+						icon: <div>11</div>,
+						id: `explorer.${item}`,
+						title: 'add file'
+					}
+				]
+			}))
+		);
 		molecule.sidebar.add({
 			id: ACTIVITY_SQL,
 			name: '单测 SQL',
@@ -156,5 +186,23 @@ export const mainExt: IExtension = {
 			alignment: 'right',
 			sortIndex: 2
 		});
+
+		molecule.folderTree.add(
+			new tree.TreeNodeModel('sql-parser', 'sql-parser', 'RootFolder', [
+				...SQL_LANGUAGES.map(
+					(folder) =>
+						new tree.TreeNodeModel<void>(
+							`/${folder}`,
+							folder,
+							'Folder',
+							undefined,
+							undefined
+						)
+				)
+			])
+		);
+
+		molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
+		molecule.sidebar.setCurrent(ACTIVITY_FOLDER);
 	}
 };

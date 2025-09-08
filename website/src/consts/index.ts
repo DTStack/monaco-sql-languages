@@ -28,3 +28,13 @@ export const QUICK_GITHUB_HREF = [
 		title: 'dt-react-monaco-editor'
 	}
 ];
+
+export const SQL_LANGUAGES = [
+	'FlinkSQL',
+	'SparkSQL',
+	'HiveSQL',
+	'MySQL',
+	'PGSQL',
+	'TrinoSQL',
+	'ImpalaSQL'
+];

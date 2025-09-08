@@ -1,5 +1,5 @@
 import './style.css';
-import { components, slots } from '@dtinsight/molecule';
+import { components } from '@dtinsight/molecule';
 import quickStart from '@/assets/quickStart.svg';
 import checkDemo from '@/assets/checkDemo.svg';
 import checkFile from '@/assets/checkFile.svg';

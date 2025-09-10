@@ -1,4 +1,4 @@
-import { FileTypes, IContributeType, IExtension, tree } from '@dtinsight/molecule';
+import { IContributeType, IExtension, components } from '@dtinsight/molecule';
 
 import Welcome from '@/workbench/welcome';
 import {
@@ -12,6 +12,8 @@ import {
 } from '@/consts';
 import QuickGithub from '@/workbench/quickGithub';
 import SourceSpace from '@/workbench/sourceSpace';
+import UnitTest from '@/workbench/unitTest';
+import ApiDocPage from '@/workbench/apiDocPage';
 
 export const mainExt: IExtension = {
 	id: 'mainExt',
@@ -32,11 +34,10 @@ export const mainExt: IExtension = {
 				'editor.background': '#161616'
 			}
 		}));
-		molecule.editor.setEntry(<Welcome />);
+		molecule.editor.setEntry(<Welcome context={molecule} />);
 
 		// ------- 初始化开始-----
 		molecule.activityBar.reset();
-		molecule.sidebar.reset();
 
 		const { EXPLORER_ITEM_OPEN_EDITOR, EXPLORER_ITEM_WORKSPACE } =
 			molecule.builtin.getConstants();
@@ -45,6 +46,7 @@ export const mainExt: IExtension = {
 			id: EXPLORER_ITEM_OPEN_EDITOR,
 			hidden: !molecule.explorer.get(EXPLORER_ITEM_OPEN_EDITOR)?.hidden
 		});
+
 		molecule.explorer.update({
 			id: EXPLORER_ITEM_WORKSPACE,
 			hidden: !molecule.explorer.get(EXPLORER_ITEM_WORKSPACE)?.hidden
@@ -59,29 +61,33 @@ export const mainExt: IExtension = {
 		});
 
 		molecule.explorer.add(
-			SQL_LANGUAGES?.map((item) => ({
-				id: item,
-				name: item,
-				toolbar: [
-					{
-						icon: <div>11</div>,
-						id: `explorer.${item}`,
-						title: 'add file'
-					}
-				]
-			}))
+			SQL_LANGUAGES?.map((item) => {
+				return {
+					id: item,
+					name: item,
+					toolbar: [
+						{
+							group: 'inline',
+							icon: 'new-file',
+							id: `explorer.contextMenu.createFile_${item}`,
+							name: '新建文件'
+						}
+					]
+				};
+			})
 		);
+
 		molecule.sidebar.add({
 			id: ACTIVITY_SQL,
 			name: '单测 SQL',
 			sortIndex: 1,
-			render: () => <div>单测文档</div>
+			render: () => <UnitTest molecule={molecule} />
 		});
 		molecule.sidebar.add({
 			id: ACTIVITY_API,
 			name: '接口文档',
 			sortIndex: 1,
-			render: () => <div>接口文档</div>
+			render: () => <ApiDocPage molecule={molecule} />
 		});
 
 		molecule.activityBar.add([
@@ -186,21 +192,6 @@ export const mainExt: IExtension = {
 			alignment: 'right',
 			sortIndex: 2
 		});
-
-		molecule.folderTree.add(
-			new tree.TreeNodeModel('sql-parser', 'sql-parser', 'RootFolder', [
-				...SQL_LANGUAGES.map(
-					(folder) =>
-						new tree.TreeNodeModel<void>(
-							`/${folder}`,
-							folder,
-							'Folder',
-							undefined,
-							undefined
-						)
-				)
-			])
-		);
 
 		molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
 		molecule.sidebar.setCurrent(ACTIVITY_FOLDER);

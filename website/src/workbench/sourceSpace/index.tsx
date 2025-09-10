@@ -1,7 +1,8 @@
 import Tabs from '@/components/tabs';
 import { SOURCE_FILE, SOURCE_OUTLINE } from '@/consts';
 import Parser from './components/parser';
-const SourceSpace = ({ molecule }) => {
+import { IMoleculeContext } from '@dtinsight/molecule';
+const SourceSpace = ({ molecule }: { molecule: IMoleculeContext }) => {
 	const items = [
 		{
 			id: SOURCE_FILE,

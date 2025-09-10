@@ -1,27 +1,46 @@
 import './style.css';
-import { components } from '@dtinsight/molecule';
+import { components, IMoleculeContext } from '@dtinsight/molecule';
 import quickStart from '@/assets/quickStart.svg';
 import checkDemo from '@/assets/checkDemo.svg';
-import checkFile from '@/assets/checkFile.svg';
-const Welcome = () => {
-	// todo: 点击交互跳转没有实现
+import { ACTIVITY_API, ACTIVITY_FOLDER, ACTIVITY_SQL } from '@/consts';
+
+const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
+	const handleClickApiDoc = (key: string) => {
+		switch (key) {
+			case 'quickStart':
+				molecule.sidebar.setCurrent(ACTIVITY_FOLDER);
+				molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
+				break;
+			case 'viewApiDoc':
+				molecule.sidebar.setCurrent(ACTIVITY_API);
+				molecule.activityBar.setCurrent(ACTIVITY_API);
+				break;
+			case 'checkDemo':
+				molecule.sidebar.setCurrent(ACTIVITY_SQL);
+				molecule.activityBar.setCurrent(ACTIVITY_SQL);
+				break;
+			default:
+				break;
+		}
+	};
+
 	return (
 		<div className="welcome">
 			<div className="welcome-header">
-				<components.Text>dt-sql-parser</components.Text>
+				<components.Text>monaco-sql-languages</components.Text>
 			</div>
 			<ul>
-				<li>
+				<li key={'quickStart'} onClick={() => handleClickApiDoc('quickStart')}>
 					<img src={quickStart} alt="quickStart" />
-					<span>快速开始</span>
+					<span className="text-sm">快速开始</span>
 				</li>
-				<li>
-					<img src={checkFile} alt="checkFile" />
-					<span>查看接口文档</span>
+				<li key={'viewApiDoc'} onClick={() => handleClickApiDoc('viewApiDoc')}>
+					<img src={checkDemo} alt="viewApiDoc" />
+					<span className="text-sm">接口文档</span>
 				</li>
-				<li>
+				<li key={'checkDemo'} onClick={() => handleClickApiDoc('checkDemo')}>
 					<img src={checkDemo} alt="checkDemo" />
-					<span>查看 Demo</span>
+					<span className="text-sm">查看 Demo</span>
 				</li>
 			</ul>
 		</div>

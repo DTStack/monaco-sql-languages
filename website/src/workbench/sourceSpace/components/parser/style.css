@@ -12,9 +12,8 @@
 	font-weight: 500;
 	line-height: 22px; /* 157.143% */
 }
-
-.folder-tree .mo-collapse {
-	height: 400px;
+.folder-tree {
+	height: calc(100vh - 78px);
 }
 .folder-tree .mo-split {
 	margin-top: 3px;

@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "1.0.0-beta.1",
+	"version": "1.0.0-beta.2",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"prepublishOnly": "npm run build",

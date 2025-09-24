@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "1.0.0-beta.3",
+	"version": "1.0.0-beta.4",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"prepublishOnly": "npm run build",
@@ -55,7 +55,7 @@
 		"inquirer": "^8.2.2",
 		"jsdom": "^16.4.0",
 		"mocha": "^9.2.0",
-		"monaco-editor": "0.52.2",
+		"monaco-editor": "0.53.0",
 		"prettier": "^3.3.3",
 		"pretty-quick": "^4.0.0",
 		"requirejs": "^2.3.6",
@@ -67,7 +67,7 @@
 		"pre-commit": "npx pretty-quick --staged"
 	},
 	"peerDependencies": {
-		"monaco-editor": ">=0.52.2"
+		"monaco-editor": ">=0.53.0"
 	},
 	"engines": {
 		"node": ">=18"
@@ -84,6 +84,7 @@
 		]
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.3.1"
+		"dt-sql-parser": "4.3.1",
+		"monaco-editor-core": "0.52.2"
 	}
 }

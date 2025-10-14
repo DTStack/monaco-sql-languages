@@ -48,7 +48,7 @@ This project is based on the SQL language project of Monaco Editor, which was fo
 npm install monaco-sql-languages
 ```
 
-> Tips: Monaco SQL Languages is only guaranteed to work stably on `monaco-editor@0.31.0` for now.
+> Tips: Monaco SQL Languages is only guaranteed to work stably on `monaco-editor@0.52.2` for now.
 
 <br/>
 

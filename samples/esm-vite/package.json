@@ -9,8 +9,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"monaco-editor": "0.31.0",
-		"monaco-sql-languages": "0.12.0-beta.11",
+		"monaco-editor": "0.52.2",
+		"monaco-sql-languages": "1.0.0-beta.5",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},

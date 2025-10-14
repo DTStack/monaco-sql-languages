@@ -6,6 +6,20 @@ import extensions from './extensions';
 
 import './languages';
 import './App.css';
+import { editor } from 'monaco-editor';
+
+/**
+ * Allow code completion when typing in snippets.
+ *
+ * You can also set configurations when creating monaco-editor instance
+ */
+editor.onDidCreateEditor((editor) => {
+	editor.updateOptions({
+		suggest: {
+			snippetsPreventQuickSuggestions: false
+		}
+	});
+});
 
 const instance = create({
 	extensions,

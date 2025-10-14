@@ -23,7 +23,7 @@ global.document.queryCommandSupported = function () {
 	return false;
 };
 global.UIEvent = tmp.window.UIEvent;
-
+global.define = requirejs.define;
 global.window = {
 	location: {},
 	navigator: tmp.window.navigator,

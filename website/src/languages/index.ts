@@ -59,7 +59,6 @@ const preprocessCodeHive = (code: string, mark?: string): string => {
 	}
 	return result;
 };
-
 setupLanguageFeatures(LanguageIdEnum.FLINK, {
 	completionItems: {
 		enable: true,

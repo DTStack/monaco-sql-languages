@@ -2,7 +2,7 @@ import './style.css';
 import { components, IMoleculeContext } from '@dtinsight/molecule';
 import quickStart from '@/assets/quickStart.svg';
 import checkDemo from '@/assets/checkDemo.svg';
-import { ACTIVITY_API, ACTIVITY_FOLDER, ACTIVITY_SQL } from '@/consts';
+import { ACTIVITY_API, ACTIVITY_FOLDER, ACTIVITY_SQL, defaultLanguage } from '@/consts';
 
 const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
 	const handleClickApiDoc = (key: string) => {
@@ -10,6 +10,8 @@ const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
 			case 'quickStart':
 				molecule.sidebar.setCurrent(ACTIVITY_FOLDER);
 				molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
+				molecule.explorer.setActive([defaultLanguage]);
+				molecule.editor.setEntry(null);
 				break;
 			case 'viewApiDoc':
 				molecule.sidebar.setCurrent(ACTIVITY_API);

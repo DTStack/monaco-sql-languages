@@ -18,6 +18,9 @@ define('vs/nls', [], {
 	localize: function () {
 		return 'NO_LOCALIZATION_FOR_YOU';
 	},
+	localize2: function () {
+		return 'NO_LOCALIZATION_FOR_YOU';
+	},
 	load: function (name, req, load) {
 		load({});
 	}

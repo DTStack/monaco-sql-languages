@@ -48,7 +48,7 @@ Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [m
 npm install monaco-sql-languages
 ```
 
-> Tips: 目前 Monaco SQL Languages 仅保证在 `monaco-editor@0.31.0` 上稳定运行。
+> Tips: 目前 Monaco SQL Languages 仅保证在 `monaco-editor@0.52.2` 上稳定运行。
 
 <br/>
 

@@ -1,13 +1,11 @@
 import { IEditorTab, IMenuItemProps, IMoleculeContext, slots, UniqueId } from '@dtinsight/molecule';
 
 import { useState } from 'react';
-import lips from '@jcubic/lips';
 import { Tree } from '@dtinsight/molecule/esm/client/components';
 import { randomId } from '@/utils/tool';
 import * as monaco from 'monaco-editor';
 
 import { FILE_PATH, PARSE_LANGUAGE } from '@/consts';
-import { LanguageService, ParseError } from 'monaco-sql-languages/esm/languageService';
 
 import './style.css';
 
@@ -20,7 +18,6 @@ const { Explorer } = slots;
 
 const Parser = ({ molecule }: { molecule: IMoleculeContext }) => {
 	const [fileData, setFileData] = useState<Record<string, IEditorTab<IFile>[]>>({});
-	const languageService = new LanguageService();
 
 	const addFile = (item: IMenuItemProps) => {
 		const { id } = item;
@@ -62,52 +59,31 @@ const Parser = ({ molecule }: { molecule: IMoleculeContext }) => {
 
 	const handleUpdateEditor = (file: IEditorTab<IFile>) => {
 		// 打开文件，需要确定不同的 sql 类型， 使用不同的 sql 解析器
-		const model = monaco.editor.createModel(
-			'', // 空内容
-			file.language?.toLocaleLowerCase(), // 指定语言（比如空文件用 plaintext）
-			monaco.Uri.parse(`${file.language}/${file.name}`)
-		);
+		let model = monaco.editor.getModel(monaco.Uri.parse(`${file.language}/${file.name}`));
+		if (!model) {
+			model = monaco.editor.createModel(
+				'', // 空内容
+				file.language?.toLocaleLowerCase(), // 指定语言（比如空文件用 plaintext）
+				monaco.Uri.parse(`${file.language}/${file.name}`)
+			);
+		}
+
 		monaco.editor.getModel(model.uri);
-		molecule.editor.open({ ...file }, molecule.editor.getState().groups?.at(0)?.id);
-	};
-
-	// const analystProblems = () => {};
-
-	// const setupOutputLanguage = async () => {
-	// 	const model = await molecule.panel.outputEditorInstance?.getModel();
-	// 	if (model) {
-	// 		monaco.editor.setModelLanguage(model, 'clojure');
-	// 	}
-	// };
-
-	const parseToAST = () => {
-		// todo: 暂时注释掉，因为我不知道这段代码是做什么用的
-		// this.setupOutputLanguage();
-		const sql = molecule.editor.getCurrentGroup()?.editorInstance?.getValue();
-		molecule.panel.reset();
-		const curActiveTab = molecule.editor.getCurrentTab();
-		const lang = curActiveTab?.language?.toLocaleLowerCase();
-		if (lang && sql) {
-			languageService.parserTreeToString(lang, sql).then((res) => {
-				const pre = res?.replace(/(\(|\))/g, '$1\n');
-				const format = new lips.Formatter(pre);
-				const formatted = format.format({
-					indent: 2,
-					offset: 2
-				});
-				molecule.panel.update({
-					id: molecule.builtin.getConstants().PANEL_ITEM_OUTPUT,
-					data: formatted
-				});
-			});
+		const defaultGroupId = molecule.editor.getState().groups?.at(0)?.id || -1;
+		// todo: 已经保存的再次打开，需要把文件的 value 保存下来
+		molecule.editor.open({ ...file }, defaultGroupId);
+		if (model && file.language) {
+			monaco.editor.setModelLanguage(model, file.language.toLocaleLowerCase());
 		}
 	};
 
 	const handleOpenFile = (file: IEditorTab<IFile>) => {
 		handleUpdateStatusBarPath(file);
 		handleUpdateStatusBarLang(file);
+
 		// analystProblems(nextTab);
-		const groupId = molecule.editor.getState().groups?.at(0)?.id;
+
+		const groupId = molecule.editor.getState().groups?.at(0)?.id || -1;
 		// 如果已经 active, 则不走逻辑
 		const curActiveTab = molecule.editor.getCurrentTab();
 		const isAgainOpenTab = curActiveTab?.id === file.id;

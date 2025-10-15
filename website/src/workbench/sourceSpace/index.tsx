@@ -14,7 +14,7 @@ const SourceSpace = ({ molecule }: { molecule: IMoleculeContext }) => {
 			id: SOURCE_OUTLINE,
 			key: SOURCE_OUTLINE,
 			name: '大纲',
-			children: <div>2</div>
+			children: <div>待开发</div>
 		}
 	];
 

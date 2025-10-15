@@ -64,7 +64,8 @@ function ProblemsPaneView({ problemsService }: { problemsService: any }) {
 					className={treeClassName}
 					expandedKeys={data[0].expandedKeys}
 					data={data}
-					renderTitle={(item) => {
+					renderTitle={(item: any) => {
+						// todo： item 参数带修复 ts类型
 						const value = item.value;
 						const children = item.children;
 						return !item.isLeaf ? (

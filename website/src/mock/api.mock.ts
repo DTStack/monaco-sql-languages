@@ -118,8 +118,3 @@ function search(value: string) {
 
 	return res;
 }
-
-function getUnitCatalog() {
-	const root = path.join(__dirname, '..', '..');
-	return getFolderAndFiles(root);
-}

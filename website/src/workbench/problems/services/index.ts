@@ -1,6 +1,5 @@
 import { IProblemsProps, ProblemModel, ProblemsEvent } from '../model';
 import { BaseService } from '@dtinsight/molecule/esm/glue';
-import { UniqueId } from '@dtinsight/molecule';
 
 export class ProblemsService extends BaseService<ProblemModel> {
 	protected state: ProblemModel;
@@ -63,7 +62,7 @@ export class ProblemsService extends BaseService<ProblemModel> {
 		for (const fn of this.listeners) fn([data]);
 	}
 
-	public onSelect = (callback: (nodeId: UniqueId) => void) => {
+	public onSelect = (callback: (problem: IProblemsProps) => void) => {
 		this.subscribe(ProblemsEvent.onSelect, callback);
 	};
 }

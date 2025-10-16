@@ -10,14 +10,14 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@dtinsight/molecule": "2.0.0-alpha.8",
+		"@dtinsight/molecule": "2.0.0-alpha.10",
 		"@jcubic/lips": "^0.20.3",
 		"@vscode/codicons": "^0.0.41",
 		"classnames": "^2.5.1",
 		"esbuild": "^0.24.2",
 		"idb-keyval": "^6.2.1",
 		"immer": "^10.1.3",
-		"monaco-editor": "0.31.1",
+		"monaco-editor": "0.52.2",
 		"rc-tabs": "^15.5.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",

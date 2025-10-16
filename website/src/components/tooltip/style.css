@@ -18,11 +18,9 @@
 	align-items: flex-start;
 	gap: 4px;
 	align-self: stretch;
-	width: 157px;
-	height: 72px;
 
 	position: absolute;
-	bottom: 10px;
+	bottom: 15px;
 	left: 2px;
 	border-radius: 4px;
 	z-index: 99;

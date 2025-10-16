@@ -25,10 +25,6 @@ function ProblemsPaneView({ problemsService }: { problemsService: any }) {
 	const context = useContext(Context);
 	const { onselect } = context;
 
-	useEffect(() => {
-		console.log('组件重新渲染');
-	}, [data]);
-
 	if (!data?.length) {
 		return (
 			<div style={{ margin: '0 18px', userSelect: 'none' }}>

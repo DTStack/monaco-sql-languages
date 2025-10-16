@@ -1,4 +1,14 @@
-import { IContributeType, IExtension, components } from '@dtinsight/molecule';
+import {
+	IContributeType,
+	IEditorTab,
+	IExtension,
+	IMoleculeContext,
+	TabGroup,
+	UniqueId
+} from '@dtinsight/molecule';
+import lips from '@jcubic/lips';
+
+import * as monaco from 'monaco-editor';
 
 import Welcome from '@/workbench/welcome';
 import {
@@ -14,6 +24,15 @@ import QuickGithub from '@/workbench/quickGithub';
 import SourceSpace from '@/workbench/sourceSpace';
 import UnitTest from '@/workbench/unitTest';
 import ApiDocPage from '@/workbench/apiDocPage';
+import { debounce } from '@/utils/tool';
+import { LanguageService } from '../../../../esm/languageService';
+import { ParseError } from 'dt-sql-parser';
+import { ProblemsPaneView } from '@/workbench/problems';
+import ProblemStore from '@/workbench/problems/clients/problemStore';
+import { ProblemsService } from '@/workbench/problems/services';
+import { ProblemsController } from '@/workbench/problems/controllers';
+
+const problemsService = new ProblemsService();
 
 export const mainExt: IExtension = {
 	id: 'mainExt',
@@ -22,8 +41,15 @@ export const mainExt: IExtension = {
 		[IContributeType.Modules]: {
 			menuBar: null
 		}
+		// [IContributeType.Grammar]: grammars
 	},
 	activate(molecule) {
+		const languageService = new LanguageService();
+		problemsService.onSelect((item) => {
+			// 写入展开的数组内； 当展开的时候 root 的icon 进行变换
+			problemsService.toggleRoot(item);
+		});
+
 		molecule.colorTheme.update('Default Dark+', (data) => ({
 			colors: {
 				...data.colors,
@@ -170,7 +196,17 @@ export const mainExt: IExtension = {
 			id: 'problem',
 			name: '问题',
 			sortIndex: 2,
-			render: () => <div style={{ padding: 20 }}>Test</div>
+			render: () => {
+				return (
+					<ProblemStore
+						value={{
+							onselect: new ProblemsController().onSelect
+						}}
+					>
+						<ProblemsPaneView problemsService={problemsService} />
+					</ProblemStore>
+				);
+			}
 		});
 
 		molecule.statusBar.add({
@@ -195,5 +231,152 @@ export const mainExt: IExtension = {
 
 		molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
 		molecule.sidebar.setCurrent(ACTIVITY_FOLDER);
+
+		molecule.editor.onCurrentChange((tab) => {
+			const language = (tab.tabId as string)?.split('_')?.[0];
+			const groups = molecule.editor.getGroups();
+			const fileData = groups[0]?.data?.find((item) => item.id === tab.tabId);
+			molecule.output.setState({ value: '' });
+
+			if (fileData?.model) {
+				monaco.editor.setModelLanguage(fileData.model, language);
+				analyzeProblems({ fileData, molecule, tab });
+			}
+			activeExplore(tab, molecule);
+		});
+
+		molecule.editor.onContextMenu((pos, tabId, groupId) => {
+			molecule.editor.setCurrent(tabId, groupId);
+			molecule.contextMenu.open(
+				[
+					{
+						id: 'parse',
+						name: 'parse'
+					}
+				],
+				pos,
+				{
+					name: molecule.builtin.getConstants().CONTEXTMENU_ITEM_EDITOR,
+					item: { tabId, groupId }
+				}
+			);
+		});
+
+		molecule.editor.onContextMenuClick((item, tabId, groupId) => {
+			switch (item.id) {
+				case 'parse': {
+					parseToAST(molecule, languageService);
+					break;
+				}
+				default:
+					break;
+			}
+		});
+
+		molecule.editor.onFocus((item) => {
+			const groupId = (molecule.editor.getCurrentGroup() || -1) as UniqueId;
+			const tab = molecule.editor.getCurrentTab();
+			if (tab?.id && tab.language) {
+				molecule.editor.setCurrent(tab?.id, groupId);
+			}
+		});
+
+		molecule.editor.onUpdateState((item) => {
+			const tab = molecule.editor.getCurrentTab();
+			const groups = molecule.editor.getGroups();
+			const fileData = groups[0]?.data?.find((item) => item.id === tab?.id);
+			analyzeProblems({ fileData, molecule, tab });
+		});
+	}
+};
+
+const analyzeProblems = debounce((info: any) => {
+	const { fileData, molecule, tab } = info || {};
+	const { value: sql, language } = fileData || {};
+	// todo： 一定要 active Tab 才能获取到 language
+	if (!language) return;
+	const languageService = new LanguageService();
+	languageService.valid(language.toLocaleLowerCase(), fileData.model).then((res) => {
+		const problems = convertMsgToProblemItem(tab, sql, res);
+
+		molecule.panel.update({
+			id: 'problem',
+			data: problems.value
+		});
+		problems.icon = 'chevron-right';
+		problemsService.update(problems);
+	});
+}, 200);
+
+const convertMsgToProblemItem = (tab: IEditorTab<any>, code: string, msgs: ParseError[] = []) => {
+	const rootId = tab?.id;
+	const rootName = `${tab.name || ''}`;
+	const languageProblems = {
+		id: rootId,
+		name: rootName,
+		isLeaf: false,
+		value: {
+			code: rootName,
+			message: '',
+			startLineNumber: 0,
+			startColumn: 1,
+			endLineNumber: 0,
+			endColumn: 1,
+			status: monaco.MarkerSeverity.Hint
+		},
+		children: []
+	} as any;
+
+	languageProblems.children = msgs.map((msg: any, index: number) => {
+		return {
+			id: `${rootId}-${index}`,
+			name: msg.code || '',
+			isLeaf: true,
+			value: {
+				code: msg.code,
+				message: msg.message,
+				startLineNumber: Number(msg.startLine),
+				startColumn: Number(msg.startCol),
+				endLineNumber: Number(msg.endLine),
+				endColumn: Number(msg.endCol),
+				status: monaco.MarkerSeverity.Error
+			},
+			children: []
+		};
+	});
+
+	return languageProblems;
+};
+
+const activeExplore = (tab: Partial<TabGroup>, molecule: IMoleculeContext) => {
+	const language = (tab.tabId as string)?.split('_')?.[0];
+	const curActiveExplore = molecule.explorer.getActive() || [];
+	const isExist = curActiveExplore
+		.map((item) => (item as string).toLocaleLowerCase())
+		.includes(language?.toLocaleLowerCase());
+	if (!isExist && language) {
+		const activeExploreId = SQL_LANGUAGES.find(
+			(item) => item.toLocaleLowerCase() === language.toLocaleLowerCase()
+		) as string;
+		molecule.explorer.setActive([...curActiveExplore, activeExploreId]?.filter(Boolean));
+	}
+};
+
+const parseToAST = (molecule: IMoleculeContext, languageService: LanguageService) => {
+	const sql = molecule.editor.getCurrentGroup()?.editorInstance?.getValue();
+
+	const curActiveTab = molecule.editor.getCurrentTab();
+	const lang = curActiveTab?.language?.toLocaleLowerCase();
+	if (lang && sql) {
+		languageService.parserTreeToString(lang, sql).then((res) => {
+			const pre = res?.replace(/(\(|\))/g, '$1\n');
+			const format = new lips.Formatter(pre);
+			const formatted = format.format({
+				indent: 2,
+				offset: 2
+			});
+			molecule.panel.setCurrent(molecule.builtin.getConstants().PANEL_ITEM_OUTPUT);
+			molecule.output.setState({ value: formatted });
+		});
 	}
 };

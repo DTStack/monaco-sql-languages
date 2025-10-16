@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dtinsight/molecule':
-        specifier: 2.0.0-alpha.8
-        version: 2.0.0-alpha.8(@types/node@20.14.14)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vscode-oniguruma@2.0.1)(vscode-textmate@9.2.0)
+        specifier: 2.0.0-alpha.10
+        version: 2.0.0-alpha.10(@types/node@20.14.14)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vscode-oniguruma@2.0.1)(vscode-textmate@9.2.0)
       '@jcubic/lips':
         specifier: ^0.20.3
         version: 0.20.3
@@ -30,8 +30,8 @@ importers:
         specifier: ^10.1.3
         version: 10.1.3
       monaco-editor:
-        specifier: 0.31.1
-        version: 0.31.1
+        specifier: 0.52.2
+        version: 0.52.2
       rc-tabs:
         specifier: ^15.5.1
         version: 15.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -207,14 +207,14 @@ packages:
   '@dtinsight/dt-utils@1.3.1':
     resolution: {integrity: sha512-bV3xfCUthEtPkBpsCV/798J/Fz9xhxq9QybAaXhOtfGlZRuqPrb4Irdp2ySj7UaFB4VmmDg0wTIyxv0HMyGctQ==}
 
-  '@dtinsight/molecule@2.0.0-alpha.8':
-    resolution: {integrity: sha512-1TdptK0bWO6zykZZ3KmVEZaZvl2AfXk7VOcqAxymVrzbrGiHebVwqBa2K/+ioZ7GNlup8C3v6q29qcsati+rhw==}
+  '@dtinsight/molecule@2.0.0-alpha.10':
+    resolution: {integrity: sha512-MDqpaHNGfesiNa1uvchzswkVIpa9ahKChh5xyC4h25yschXbMkO7s/ZfzxAiaG7QbuD0rgafvAj9OFX/e/66jw==}
     engines: {node: '>=18'}
     peerDependencies:
       react: '>=16.13.1'
       react-dom: '>=16.13.1'
       vscode-oniguruma: ^2.0.1
-      vscode-textmate: 6.x
+      vscode-textmate: 9.2.0
     peerDependenciesMeta:
       vscode-oniguruma:
         optional: true
@@ -1926,11 +1926,11 @@ packages:
     resolution: {integrity: sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==}
     engines: {node: '>=0.10.0'}
 
-  monaco-editor-nls@2.0.0:
-    resolution: {integrity: sha512-gQy0LxyUkvmGFRfjRaFHFDdv3UjCX2DfjoL4Dy6mhcq94r6pu2mzcCWIxJz+y7FCrQwpj+xXXUpy0ynOrmONoQ==}
+  monaco-editor-nls@3.1.0:
+    resolution: {integrity: sha512-GdzgKRAiwXlGI/ude/HbzP8ukml28yUoZ7rx/xsSsmYf9W13jTyWjXjoMK/+pjL6JorAThH2WkCYaDoCnIX7Jg==}
 
-  monaco-editor@0.31.1:
-    resolution: {integrity: sha512-FYPwxGZAeP6mRRyrr5XTGHD9gRXVjy7GUzF4IPChnyt3fS5WrNxIkS8DNujWf6EQy0Zlzpxw8oTVE+mWI2/D1Q==}
+  monaco-editor@0.52.2:
+    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
 
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
@@ -3024,14 +3024,14 @@ snapshots:
       lodash: 4.17.21
       standard-version: 9.5.0
 
-  '@dtinsight/molecule@2.0.0-alpha.8(@types/node@20.14.14)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vscode-oniguruma@2.0.1)(vscode-textmate@9.2.0)':
+  '@dtinsight/molecule@2.0.0-alpha.10(@types/node@20.14.14)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vscode-oniguruma@2.0.1)(vscode-textmate@9.2.0)':
     dependencies:
       '@dtinsight/dt-utils': 1.3.1
       '@vscode/codicons': 0.0.33
       immer: 10.1.3
       lodash-es: 4.17.21
-      monaco-editor: 0.31.1
-      monaco-editor-nls: 2.0.0
+      monaco-editor: 0.52.2
+      monaco-editor-nls: 3.1.0
       normalize.css: 8.0.1
       rc-dropdown: 4.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-menu: 9.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4658,9 +4658,9 @@ snapshots:
 
   modify-values@1.0.1: {}
 
-  monaco-editor-nls@2.0.0: {}
+  monaco-editor-nls@3.1.0: {}
 
-  monaco-editor@0.31.1: {}
+  monaco-editor@0.52.2: {}
 
   ms@2.1.2: {}
 
@@ -4710,7 +4710,7 @@ snapshots:
   normalize-package-data@3.0.3:
     dependencies:
       hosted-git-info: 4.1.0
-      is-core-module: 2.15.0
+      is-core-module: 2.16.1
       semver: 7.6.3
       validate-npm-package-license: 3.0.4
 
@@ -5578,7 +5578,7 @@ snapshots:
   yargs@16.2.0:
     dependencies:
       cliui: 7.0.4
-      escalade: 3.1.2
+      escalade: 3.2.0
       get-caller-file: 2.0.5
       require-directory: 2.1.1
       string-width: 4.2.3

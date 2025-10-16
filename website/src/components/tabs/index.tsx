@@ -26,11 +26,7 @@ const Tabs = ({ data }: IProps) => {
 	};
 	return (
 		<div>
-			<Prevent
-				onContextMenu={() => {
-					console.log('11');
-				}}
-			>
+			<Prevent>
 				<Header className="tabs-header" trackStyle={{ height: 3 }}>
 					{data.map((p) => (
 						<PanelItem

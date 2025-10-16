@@ -1,27 +1,25 @@
 import Tabs from '@/components/tabs';
 import { SOURCE_FILE } from '@/consts';
 import { useUnitCatalog } from '@/hooks/useUnitCatalog';
+import { openFile } from '@/utils';
 import { components, IMoleculeContext } from '@dtinsight/molecule';
 import { Progress } from '@dtinsight/molecule/esm/client/components';
 import { useConnector } from '@dtinsight/molecule/esm/client/hooks';
 import { FolderTree } from '@dtinsight/molecule/esm/client/slots';
+import { FolderTreeEvent } from '@dtinsight/molecule/esm/models/folderTree';
 import { searchById } from '@dtinsight/molecule/esm/utils';
+import { TreeNodeModel } from '@dtinsight/molecule/esm/utils/tree';
 import { createElement, useEffect } from 'react';
 // sql-parser 的 unit 文档
 const UnitTest = ({ molecule }: { molecule: IMoleculeContext }) => {
 	const sidebar = useConnector('sidebar');
 	const pane = sidebar.data.find(searchById(sidebar.current));
 
-	const { data, loading } = useUnitCatalog({
+	const { loading } = useUnitCatalog({
 		callback: (tree) => {
-			molecule.panel.update({
-				id: 1
-			});
 			molecule.folderTree.add(tree, 'unitTest');
 		}
 	});
-
-	console.log('loading', loading);
 
 	useEffect(() => {
 		molecule.explorer.update({
@@ -33,10 +31,34 @@ const UnitTest = ({ molecule }: { molecule: IMoleculeContext }) => {
 		});
 	}, []);
 
+	const handleSelect = (treeNode: TreeNodeModel<any>) => {
+		const group = molecule.editor.getGroups().find((group) => {
+			const tab = molecule.editor.getTab(treeNode.id, group.id);
+			return !!tab;
+		});
+		if (group) {
+			const tab = molecule.editor.getTab(treeNode.id, group.id)!;
+			molecule.editor.setCurrent(tab.id, group.id);
+		} else if (treeNode.fileType === 'File') {
+			openFile(treeNode, molecule);
+		} else {
+			// 点击是文件夹
+			molecule.folderTree.toggleExpanded(treeNode.id);
+
+			if (!Array.isArray(treeNode.children)) {
+				molecule.folderTree.emit(FolderTreeEvent.onLoad, treeNode.id);
+			}
+		}
+	};
+
 	const renderUnitContent = () => {
 		return (
 			<components.ScrollBar isShowShadow>
-				<FolderTree panel={{ id: 'unitTest' }} />
+				<FolderTree
+					panel={{ id: 'unitTest' }}
+					{...(molecule.folderTree as any)}
+					onSelect={handleSelect}
+				/>
 			</components.ScrollBar>
 		);
 	};

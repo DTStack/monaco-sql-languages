@@ -4,7 +4,7 @@ import { Tree } from '@dtinsight/molecule/esm/client/components';
 import { randomId } from '@/utils/tool';
 
 import './style.css';
-import { useFileManager } from '@/hooks/useFileManage';
+import { addFile, initMolecule, openFile, updateExplorer } from '@/services/fileManagerService';
 
 export interface IFile {
 	name: string;
@@ -14,31 +14,28 @@ export interface IFile {
 const { Explorer } = slots;
 
 const Parser = ({ molecule }: { molecule: IMoleculeContext }) => {
-	const {
-		updateExplorer,
-		openFile: handleEditorOpen,
-		addFile
-	} = useFileManager({
-		molecule
-	});
-
+	initMolecule(molecule);
 	const handleAddFile = (item: IMenuItemProps) => {
 		const { id } = item;
 		const curSQL = (id as string).split('_')?.[1];
 		const fileName = `${curSQL.toLocaleLowerCase()}_file_${randomId()}.sql`;
 		addFile(item);
-
-		const curFileArray = updateExplorer({
-			name: fileName,
-			icon: 'file',
-			id: fileName,
-			language: curSQL
-		});
+		const { explorerData } =
+			updateExplorer({
+				name: fileName,
+				icon: 'file',
+				id: fileName,
+				language: curSQL
+			}) || {};
 
 		molecule.explorer.update({
 			id: curSQL,
 			render: () => {
-				return <Tree data={curFileArray as any} onSelect={handleEditorOpen}></Tree>;
+				return (
+					explorerData && (
+						<Tree data={explorerData?.[curSQL] as any} onSelect={openFile}></Tree>
+					)
+				);
 			}
 		});
 	};

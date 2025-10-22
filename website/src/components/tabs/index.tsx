@@ -34,7 +34,7 @@ const Tabs = ({ data }: IProps) => {
 							data={p}
 							className={classNames(
 								'tabs-item',
-								currentId === p.id && 'tabs-item-active '
+								currentId === p.id && 'tabs-item-active'
 							)}
 							onClick={() => handelChangeTab(p.id)}
 						/>

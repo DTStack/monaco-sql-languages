@@ -30,9 +30,9 @@ export const QUICK_GITHUB_HREF = [
 ];
 
 export const SQL_LANGUAGES = [
-	'FlinkSQL',
-	'SparkSQL',
 	'HiveSQL',
+	'SparkSQL',
+	'FlinkSQL',
 	'MySQL',
 	'PGSQL',
 	'TrinoSQL',

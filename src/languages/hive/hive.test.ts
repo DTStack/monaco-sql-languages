@@ -3,8 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import './hive.contribution';
+
+import { postfixTokenClass, TokenClassConsts } from '../../common/constants';
 import { testTokenization } from '../../test/testRunner';
-import { TokenClassConsts, postfixTokenClass } from '../../common/constants';
 
 testTokenization('hivesql', [
 	// Comments

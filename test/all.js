@@ -2,14 +2,15 @@ const requirejs = require('requirejs');
 const jsdom = require('jsdom');
 const glob = require('fast-glob');
 const path = require('path');
+const Mocha = require('mocha');
 
 requirejs.config({
-	baseUrl: '',
+	baseUrl: path.join(__dirname, '../'),
 	paths: {
+		vs: 'node_modules/monaco-editor/dev/vs',
 		'vs/css': 'test/css.mock',
 		'vs/nls': 'test/nls.mock',
-		'out/amd/fillers/monaco-editor-core': 'out/amd/fillers/monaco-editor-core-amd',
-		vs: 'node_modules/monaco-editor/dev/vs'
+		'out/amd/fillers/monaco-editor-core': 'out/amd/fillers/monaco-editor-core-amd'
 	},
 	nodeRequire: require
 });
@@ -24,6 +25,9 @@ global.document.queryCommandSupported = function () {
 };
 global.UIEvent = tmp.window.UIEvent;
 global.define = requirejs.define;
+
+// 添加完整的DOM环境支持
+global.Element = tmp.window.Element;
 global.window = {
 	location: {},
 	navigator: tmp.window.navigator,
@@ -32,8 +36,18 @@ global.window = {
 			matches: false,
 			addEventListener: function () {}
 		};
-	}
+	},
+	setInterval: setInterval,
+	clearInterval: clearInterval,
+	setTimeout: setTimeout,
+	clearTimeout: clearTimeout,
+	document: tmp.window.document,
+	Element: tmp.window.Element
 };
+if (!document.body) {
+	const body = document.createElement('body');
+	document.appendChild(body);
+}
 
 requirejs(
 	['./test/setup'],
@@ -52,10 +66,37 @@ requirejs(
 		requirejs(
 			files.map((f) => f.replace(/\.js$/, '')),
 			function () {
-				run(); // We can launch the tests!
+				// 初始化Mocha
+				const mocha = new Mocha({
+					ui: 'bdd',
+					reporter: 'spec',
+					timeout: 5000
+				});
+
+				// 手动添加测试到Mocha的suite
+				const Suite = require('mocha/lib/suite');
+				const Test = require('mocha/lib/test');
+
+				// 创建一个根suite
+				const rootSuite = new Suite('Root Suite');
+				mocha.suite.addSuite(rootSuite);
+
+				// 添加存储的测试
+				if (global._pendingTests && global._pendingTests.length > 0) {
+					global._pendingTests.forEach(function (test) {
+						const mochaTest = new Test(test.name, test.fn);
+						rootSuite.addTest(mochaTest);
+					});
+				}
+
+				// 运行测试
+				mocha.run(function (failures) {
+					process.exit(failures ? 1 : 0);
+				});
 			},
 			function (err) {
-				console.log(err);
+				console.log('Error loading test files:', err);
+				process.exit(1);
 			}
 		);
 	},

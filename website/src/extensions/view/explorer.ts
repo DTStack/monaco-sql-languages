@@ -6,11 +6,28 @@ export const ExtendsExplorer: IExtension = {
 	contributes: {},
 	activate: function (molecule): void {
 		molecule.explorer.onPanelToolbarClick((toolbar, panelId) => {
-			if (panelId === 'FlinkSQL') {
+			const {
+				EXPLORER_TOOLBAR_CLOSE_ALL,
+				EXPLORER_TOOLBAR_SAVE_ALL,
+				EXPLORER_ITEM_OPEN_EDITOR
+			} = molecule.builtin.getState().constants;
+			if (panelId === EXPLORER_ITEM_OPEN_EDITOR) {
 				switch (toolbar.id) {
-					case 'explorer.contextMenu.createFile': {
+					case EXPLORER_TOOLBAR_CLOSE_ALL: {
+						molecule.editor.closeAll();
 						break;
 					}
+
+					case EXPLORER_TOOLBAR_SAVE_ALL: {
+						molecule.editor.getState().groups.forEach((group) => {
+							const unsaved = group.data
+								.filter((tab) => tab.modified)
+								.map((t) => t.id);
+							molecule.editor.saveTabs(unsaved, group.id);
+						});
+						break;
+					}
+
 					default:
 						break;
 				}

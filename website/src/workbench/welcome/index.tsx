@@ -1,18 +1,37 @@
 import './style.css';
-import { components, IMoleculeContext } from '@dtinsight/molecule';
+import { components, IEditorTab, IMoleculeContext } from '@dtinsight/molecule';
 import quickStart from '@/assets/quickStart.svg';
 import checkDemo from '@/assets/checkDemo.svg';
 import { ACTIVITY_API, ACTIVITY_FOLDER, ACTIVITY_SQL, defaultLanguage } from '@/consts';
+import { randomId } from '@/utils/tool';
+
+import { Tree } from '@dtinsight/molecule/esm/client/components';
+import { useFileManager } from '@/hooks/useFileManage';
+import { IFile } from '../sourceSpace/components/parser';
 
 const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
-	const handleClickApiDoc = (key: string) => {
+	const { openFile: openEditorFile, updateExplorer } = useFileManager({
+		molecule
+	});
+
+	const switchWorkspaceView = (key: string) => {
 		switch (key) {
-			case 'quickStart':
+			case 'quickStart': {
 				molecule.sidebar.setCurrent(ACTIVITY_FOLDER);
 				molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
 				molecule.explorer.setActive([defaultLanguage]);
+				const fileName = `${defaultLanguage.toLocaleLowerCase()}_file_${randomId()}.sql`;
+				const initFile = {
+					name: fileName,
+					icon: 'file',
+					id: fileName,
+					language: defaultLanguage
+				};
+				openEditorFile(initFile);
+				handleUpdateExplorer(initFile);
 				molecule.editor.setEntry(null);
 				break;
+			}
 			case 'viewApiDoc':
 				molecule.sidebar.setCurrent(ACTIVITY_API);
 				molecule.activityBar.setCurrent(ACTIVITY_API);
@@ -26,21 +45,33 @@ const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
 		}
 	};
 
+	const handleUpdateExplorer = (file: IEditorTab<IFile>) => {
+		const explorerData = updateExplorer(file);
+		molecule.explorer.update({
+			id: defaultLanguage,
+			render: () => {
+				return (
+					!!explorerData && <Tree data={explorerData} onSelect={openEditorFile}></Tree>
+				);
+			}
+		});
+	};
+
 	return (
 		<div className="welcome">
 			<div className="welcome-header">
 				<components.Text>monaco-sql-languages</components.Text>
 			</div>
 			<ul>
-				<li key={'quickStart'} onClick={() => handleClickApiDoc('quickStart')}>
+				<li key={'quickStart'} onClick={() => switchWorkspaceView('quickStart')}>
 					<img src={quickStart} alt="quickStart" />
 					<span className="text-sm">快速开始</span>
 				</li>
-				<li key={'viewApiDoc'} onClick={() => handleClickApiDoc('viewApiDoc')}>
+				<li key={'viewApiDoc'} onClick={() => switchWorkspaceView('viewApiDoc')}>
 					<img src={checkDemo} alt="viewApiDoc" />
 					<span className="text-sm">接口文档</span>
 				</li>
-				<li key={'checkDemo'} onClick={() => handleClickApiDoc('checkDemo')}>
+				<li key={'checkDemo'} onClick={() => switchWorkspaceView('checkDemo')}>
 					<img src={checkDemo} alt="checkDemo" />
 					<span className="text-sm">查看 Demo</span>
 				</li>

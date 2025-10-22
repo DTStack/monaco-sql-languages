@@ -6,14 +6,11 @@ import { ACTIVITY_API, ACTIVITY_FOLDER, ACTIVITY_SQL, defaultLanguage } from '@/
 import { randomId } from '@/utils/tool';
 
 import { Tree } from '@dtinsight/molecule/esm/client/components';
-import { useFileManager } from '@/hooks/useFileManage';
+import { initMolecule, openFile, updateExplorer } from '@/services/fileManagerService';
 import { IFile } from '../sourceSpace/components/parser';
 
 const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
-	const { openFile: openEditorFile, updateExplorer } = useFileManager({
-		molecule
-	});
-
+	initMolecule(molecule);
 	const switchWorkspaceView = (key: string) => {
 		switch (key) {
 			case 'quickStart': {
@@ -27,7 +24,7 @@ const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
 					id: fileName,
 					language: defaultLanguage
 				};
-				openEditorFile(initFile);
+				openFile(initFile);
 				handleUpdateExplorer(initFile);
 				molecule.editor.setEntry(null);
 				break;
@@ -46,13 +43,12 @@ const Welcome = ({ context: molecule }: { context: IMoleculeContext }) => {
 	};
 
 	const handleUpdateExplorer = (file: IEditorTab<IFile>) => {
-		const explorerData = updateExplorer(file);
+		const { explorerData } = updateExplorer(file) || {};
 		molecule.explorer.update({
 			id: defaultLanguage,
 			render: () => {
-				return (
-					!!explorerData && <Tree data={explorerData} onSelect={openEditorFile}></Tree>
-				);
+				const fileData = explorerData?.[defaultLanguage] as any;
+				return !!fileData && <Tree data={fileData} onSelect={openFile}></Tree>;
 			}
 		});
 	};

@@ -10,12 +10,21 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@dtinsight/molecule": "^1.3.4",
+		"@dtinsight/molecule": "2.0.0-alpha.10",
 		"@jcubic/lips": "^0.20.3",
-		"monaco-editor": "0.31.0",
+		"@vscode/codicons": "^0.0.41",
+		"classnames": "^2.5.1",
+		"esbuild": "^0.24.2",
+		"idb-keyval": "^6.2.1",
+		"immer": "^10.1.3",
+		"monaco-editor": "0.52.2",
+		"rc-tabs": "^15.5.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"reflect-metadata": "^0.1.13"
+		"reflect-metadata": "^0.1.13",
+		"tsyringe": "^4.8.0",
+		"vscode-oniguruma": "^2.0.1",
+		"vscode-textmate": "^9.2.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.2.5",
@@ -24,11 +33,16 @@
 		"@typescript-eslint/eslint-plugin": "^5.59.0",
 		"@typescript-eslint/parser": "^5.59.0",
 		"@vitejs/plugin-react": "^4.0.0",
+		"autoprefixer": "^10.4.21",
 		"eslint": "^8.38.0",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.3.4",
+		"postcss": "^8.5.6",
+		"sass": "^1.93.2",
+		"tailwindcss": "3",
 		"typescript": "^5.0.2",
-		"vite": "^4.3.9"
+		"vite": "^4.3.9",
+		"vite-plugin-mock-dev-server": "^2.0.1"
 	},
 	"engines": {
 		"node": ">=18"

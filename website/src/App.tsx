@@ -1,15 +1,12 @@
 import 'reflect-metadata';
-import React, { useEffect, useRef, useState } from 'react';
-import { create, Workbench } from '@dtinsight/molecule';
-import InstanceService from '@dtinsight/molecule/esm/services/instanceService';
-import { ExtendsWorkbench } from './extensions/workbench';
+import { useEffect, useRef } from 'react';
+import { create } from '@dtinsight/molecule';
 import { version, dependencies } from '../../package.json';
-import { editor } from 'monaco-editor';
+import extensions from './extensions';
+
 import './languages';
-
-import '@dtinsight/molecule/esm/style/mo.css';
-
 import './App.css';
+import { editor } from 'monaco-editor';
 
 /**
  * Allow code completion when typing in snippets.
@@ -24,28 +21,26 @@ editor.onDidCreateEditor((editor) => {
 	});
 });
 
-function App(): React.ReactElement {
-	const refMoInstance = useRef<InstanceService>();
-	const [MyWorkbench, setMyWorkbench] = useState<React.ReactElement>();
+const instance = create({
+	extensions,
+	defaultLocale: 'zh-CN',
+	defaultColorTheme: 'Default Dark+',
+	onigurumPath: '/wasm/onig.wasm'
+});
 
+export default function App() {
+	const container = useRef<HTMLDivElement>(null);
 	useEffect(() => {
-		if (!refMoInstance.current) {
-			refMoInstance.current = create({
-				extensions: [ExtendsWorkbench]
-			});
-			if (refMoInstance.current) {
-				const IDE = () => refMoInstance.current?.render(<Workbench />);
-				setMyWorkbench(IDE);
-			}
-		}
-	}, []);
+		instance.render(container.current);
 
-	return <div>{MyWorkbench}</div>;
+		return () => {
+			instance.dispose();
+		};
+	}, []);
+	return <div ref={container} />;
 }
 
 window.console.log(
 	`%c dt-sql-parser: ${dependencies['dt-sql-parser']} \n\n monaco-sql-languages: ${version}`,
 	'font-family: Cabin, Helvetica, Arial, sans-serif;text-align: left;font-size:26px;color:#B21212;'
 );
-
-export default App;

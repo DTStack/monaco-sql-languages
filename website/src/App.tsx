@@ -24,7 +24,7 @@ editor.onDidCreateEditor((editor) => {
 const instance = create({
 	extensions,
 	defaultLocale: 'zh-CN',
-	defaultColorTheme: 'Default Dark+',
+	defaultColorTheme: 'sql-dark',
 	onigurumPath: '/wasm/onig.wasm'
 });
 

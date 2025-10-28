@@ -51,6 +51,14 @@ export function setupLanguageMode<T extends BaseSQLWorker>(
 				)
 			);
 		}
+		if (modeConfiguration.hover) {
+			providers.push(
+				languages.registerHoverProvider(
+					languageId,
+					new languageFeatures.HoverAdapter(worker, defaults)
+				)
+			);
+		}
 	}
 
 	registerProviders();

@@ -17,6 +17,7 @@ registerLanguage({
 setupLanguageFeatures(LanguageIdEnum.MYSQL, {
 	completionItems: true,
 	diagnostics: true,
-	references: true,
-	definitions: true
+	references: false,
+	definitions: false,
+	hover: false
 });

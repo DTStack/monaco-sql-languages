@@ -195,13 +195,22 @@ const getDatabaseObjectCompletions = async (
  * parseEntityText('table') => { catalog: null, schema: null, table: 'table', fullPath: 'table' }
  */
 const parseEntityText = (originEntityText: string) => {
-	const words = originEntityText
-		.split('.')
-		.map((word) =>
-			word.startsWith('`') && word.endsWith('`') && word.length >= 3
-				? word.slice(1, -1)
-				: word
-		);
+	// Use regex to split correctly, keeping backtick-wrapped parts as a whole.
+	// Match: backtick-wrapped content (including internal dots) or regular non-dot characters.
+	// '`xx.xx`' should be treated as a whole word `xx.xx`.
+	const regex = /`[^`]+`|[^.]+/g;
+	const matches = originEntityText.match(regex) || [];
+
+	const words = matches.map((word) => {
+		if (word.startsWith('`') && word.endsWith('`') && word.length >= 3) {
+			const content = word.slice(1, -1);
+			// Only remove backticks when content contains only letters, numbers, and underscores
+			if (/^[a-zA-Z0-9_]+$/.test(content)) {
+				return content;
+			}
+		}
+		return word;
+	});
 
 	const length = words.length;
 	if (length >= 3) {
@@ -245,6 +254,15 @@ const parseEntityText = (originEntityText: string) => {
  */
 const getPureEntityText = (originEntityText: string) => {
 	return parseEntityText(originEntityText).pureEntityText;
+};
+
+/**
+ * Remove backticks from text for filter matching
+ * @param text - The text that may contain backticks
+ * @returns The text without backticks
+ */
+const removeBackticks = (text: string): string => {
+	return text.replace(/`/g, '');
 };
 
 /**
@@ -382,27 +400,37 @@ const getColumnCompletions = async (
 		sourceTableColumns = sourceTableColumns.map((column) => {
 			const columnRepeatCount = columnRepeatCountMap.get(column._columnText as string) || 0;
 			const isIncludeInMultipleTables = sourceTables.length > 1;
-			return columnRepeatCount > 1 && isIncludeInMultipleTables
-				? {
-						...column,
-						label: `${column._tableName}.${column.label}`,
-						insertText: `${column._tableName}.${column._columnText}`
-					}
-				: column;
+			if (columnRepeatCount > 1 && isIncludeInMultipleTables) {
+				const newLabel = `${column._tableName}.${column.label}`;
+				return {
+					...column,
+					label: newLabel,
+					filterText: removeBackticks(newLabel),
+					insertText: `${column._tableName}.${column._columnText}`
+				};
+			}
+			return column;
 		});
 
 		result.push(...sourceTableColumns);
 
 		// Also suggest tables when inputting column
-		const tableCompletionItems = sourceTables.map((tb) => {
-			const tableName = tb[AttrName.alias]?.text ?? getPureEntityText(tb.text);
-			return {
-				label: tableName,
-				kind: languages.CompletionItemKind.Field,
-				detail: tb.declareType === TableDeclareType.LITERAL ? 'table' : 'derived table',
-				sortText: '1' + tableName
-			};
-		});
+		const tableCompletionItems =
+			sourceTables.length > 1
+				? sourceTables.map((tb) => {
+						const tableName = tb[AttrName.alias]?.text ?? getPureEntityText(tb.text);
+						return {
+							label: tableName,
+							filterText: removeBackticks(tableName),
+							kind: languages.CompletionItemKind.Field,
+							detail:
+								tb.declareType === TableDeclareType.LITERAL
+									? 'table'
+									: 'derived table',
+							sortText: '1' + tableName
+						};
+					})
+				: [];
 
 		result.push(...tableCompletionItems);
 	} else if (wordRanges.length === 2 && words[1] === '.') {
@@ -488,12 +516,14 @@ const getSpecificTableColumns = (
 				tb.columns?.map((column) => {
 					const columnName =
 						column[AttrName.alias]?.text || getPureEntityText(column.text);
+					const label =
+						columnName +
+						(column[AttrName.colType]?.text
+							? `(${column[AttrName.colType].text})`
+							: '');
 					return {
-						label:
-							columnName +
-							(column[AttrName.colType]?.text
-								? `(${column[AttrName.colType].text})`
-								: ''),
+						label,
+						filterText: removeBackticks(label),
 						insertText: columnName,
 						kind: languages.CompletionItemKind.EnumMember,
 						detail: `\`${tableName}\`'s column`,
@@ -534,6 +564,7 @@ const getSpecificDerivedTableColumns = (
 							column[AttrName.alias]?.text || getPureEntityText(column.text);
 						return {
 							label: columnName,
+							filterText: removeBackticks(columnName),
 							insertText: columnName,
 							kind: languages.CompletionItemKind.EnumMember,
 							detail: `\`${tableName}\`'s column`,
@@ -576,12 +607,14 @@ const getSpecificCTASTableColumns = (
 					.map((column) => {
 						const columnName =
 							column[AttrName.alias]?.text || getPureEntityText(column.text);
+						const label =
+							columnName +
+							(column[AttrName.colType]?.text
+								? `(${column[AttrName.colType].text})`
+								: '');
 						return {
-							label:
-								columnName +
-								(column[AttrName.colType]?.text
-									? `(${column[AttrName.colType].text})`
-									: ''),
+							label,
+							filterText: removeBackticks(label),
 							insertText: columnName,
 							kind: languages.CompletionItemKind.EnumMember,
 							detail: `\`${tableName}\`'s column`,
@@ -649,6 +682,7 @@ const getSyntaxCompletionItems = async (
 						const tableName = getPureEntityText(tb.text);
 						return {
 							label: tableName,
+							filterText: removeBackticks(tableName),
 							kind: languages.CompletionItemKind.Field,
 							detail: 'table',
 							sortText: '1' + tableName

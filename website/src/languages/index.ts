@@ -1,7 +1,9 @@
 import 'monaco-sql-languages/esm/all.contributions.js';
 import './languageWorker';
 import './theme';
-import { setupLanguageFeatures, LanguageIdEnum } from 'monaco-sql-languages/esm/main.js';
+
+import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages/esm/main.js';
+
 import { completionService } from './helpers/completionService';
 
 /**
@@ -65,6 +67,9 @@ setupLanguageFeatures(LanguageIdEnum.FLINK, {
 		enable: true,
 		completionService
 	},
+	references: true,
+	definitions: true,
+	hover: true,
 	preprocessCode
 });
 
@@ -73,6 +78,9 @@ setupLanguageFeatures(LanguageIdEnum.SPARK, {
 		enable: true,
 		completionService
 	},
+	references: true,
+	definitions: true,
+	hover: true,
 	preprocessCode
 });
 
@@ -81,6 +89,9 @@ setupLanguageFeatures(LanguageIdEnum.HIVE, {
 		enable: true,
 		completionService
 	},
+	references: true,
+	definitions: true,
+	hover: true,
 	preprocessCode: (code: string) => preprocessCodeHive(code, '`')
 });
 
@@ -89,6 +100,9 @@ setupLanguageFeatures(LanguageIdEnum.MYSQL, {
 		enable: true,
 		completionService
 	},
+	references: true,
+	definitions: true,
+	hover: true,
 	preprocessCode
 });
 
@@ -97,6 +111,9 @@ setupLanguageFeatures(LanguageIdEnum.TRINO, {
 		enable: true,
 		completionService
 	},
+	references: true,
+	definitions: true,
+	hover: true,
 	preprocessCode
 });
 
@@ -105,6 +122,9 @@ setupLanguageFeatures(LanguageIdEnum.PG, {
 		enable: true,
 		completionService
 	},
+	references: true,
+	definitions: true,
+	hover: true,
 	preprocessCode
 });
 
@@ -113,5 +133,8 @@ setupLanguageFeatures(LanguageIdEnum.IMPALA, {
 		enable: true,
 		completionService
 	},
+	references: true,
+	definitions: true,
+	hover: true,
 	preprocessCode
 });

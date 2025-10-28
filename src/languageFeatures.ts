@@ -1,4 +1,5 @@
 import type { ParseError } from 'dt-sql-parser';
+import { ColumnEntityContext, CommonEntityContext, EntityContextType } from 'dt-sql-parser';
 import { EntityContext } from 'dt-sql-parser/dist/parser/common/entityCollector';
 import { WordPosition } from 'dt-sql-parser/dist/parser/common/textAndWord';
 import * as monaco from 'monaco-editor';
@@ -17,6 +18,16 @@ import {
 } from './fillers/monaco-editor-core';
 import type { CompletionSnippet, LanguageServiceDefaults } from './monaco.contribution';
 
+export interface ColumnInfo {
+	/** 字段名 */
+	column: string;
+	/** 字段类型 */
+	type: string | undefined;
+	/** 注释 */
+	comment?: string;
+	/** 别名 */
+	alias?: string;
+}
 export interface WorkerAccessor<T extends BaseSQLWorker> {
 	(...uris: Uri[]): Promise<T>;
 }
@@ -351,4 +362,106 @@ export class ReferenceAdapter<T extends BaseSQLWorker> implements languages.Refe
 				return arr;
 			});
 	}
+}
+/**
+ * The adapter is for the hover provider interface defines the contract between extensions and
+ * the [hover](https://code.visualstudio.com/docs/editor/intellisense)-feature.
+ **/
+export class HoverAdapter<T extends BaseSQLWorker> implements languages.HoverProvider {
+	constructor(
+		private readonly _worker: WorkerAccessor<T>,
+		private readonly _defaults: LanguageServiceDefaults
+	) {}
+	provideHover(
+		model: editor.IReadOnlyModel,
+		position: Position,
+		_token: CancellationToken
+	): languages.ProviderResult<languages.Hover> {
+		const resource = model.uri;
+		const lineContent = model.getLineContent(position.lineNumber);
+		if (lineContent.trim().startsWith('--')) return null;
+		return this._worker(resource)
+			.then((worker) => {
+				let code = model?.getValue() || '';
+				if (typeof this._defaults.preprocessCode === 'function') {
+					code = this._defaults.preprocessCode(code);
+				}
+				return worker.getAllEntities(code, position);
+			})
+			.then((entities) => {
+				if (!entities || !entities.length) return null;
+				const curEntity = entities.find((entity: EntityContext) => {
+					const p = entity.position;
+					return (
+						p.startColumn <= position.column &&
+						p.endColumn >= position.column &&
+						p.line === position.lineNumber
+					);
+				});
+				if (!curEntity) return null;
+				const tableCreate = curEntity ? findTableCreateEntity(curEntity, entities) : null;
+				const columns = tableCreate ? toColumnsInfo(tableCreate) || [] : [];
+				const columnsDesc = columns.reduce((res, cur) => {
+					const { column, type, comment, alias } = cur;
+					return (
+						res +
+						`\`${column}\` ${type ? `&nbsp;&nbsp; **${type}**` : ''} ${
+							comment ? `&nbsp;&nbsp; *${comment}*` : ''
+						} ${alias ? `&nbsp;&nbsp; *${alias}*` : ''} \n`
+					);
+				}, '');
+				const pos = curEntity.position;
+				const range = new monaco.Range(pos.line, pos.startColumn, pos.line, pos.endColumn);
+				const contents: monaco.IMarkdownString[] = [
+					{ value: `**${curEntity.text}**` },
+					{ value: columnsDesc }
+				];
+				return { contents, range };
+			});
+	}
+}
+
+export function isTableCreateEntity(en: EntityContext): en is CommonEntityContext {
+	return en.entityContextType === EntityContextType.TABLE_CREATE;
+}
+/**
+ * According to the table name or table entity field, get the corresponding create table information
+ */
+export function findTableCreateEntity(
+	tableEntity: EntityContext | string,
+	allEntities: EntityContext[]
+): CommonEntityContext | null {
+	if (
+		typeof tableEntity !== 'string' &&
+		tableEntity.entityContextType !== EntityContextType.TABLE
+	) {
+		return null;
+	}
+
+	const tableName: string = typeof tableEntity === 'string' ? tableEntity : tableEntity.text;
+	return (
+		allEntities.find(
+			(en): en is CommonEntityContext =>
+				en.entityContextType === EntityContextType.TABLE_CREATE && en.text === tableName
+		) ?? null
+	);
+}
+
+/**
+ * Transform table create entity to columns info
+ */
+export function toColumnsInfo(tableEntity: CommonEntityContext): ColumnInfo[] | null {
+	if (!tableEntity) return null;
+	if (tableEntity.entityContextType !== EntityContextType.TABLE_CREATE) return null;
+	if (!tableEntity.columns?.length) return null;
+	const columnsInfo: ColumnInfo[] = [];
+	tableEntity.columns.forEach((col: ColumnEntityContext) => {
+		columnsInfo.push({
+			column: col.text,
+			type: col._colType?.text,
+			comment: col._comment?.text,
+			alias: col._alias?.text
+		});
+	});
+	return columnsInfo;
 }

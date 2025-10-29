@@ -390,16 +390,25 @@ export class HoverAdapter<T extends BaseSQLWorker> implements languages.HoverPro
 			})
 			.then((entities) => {
 				if (!entities || !entities.length) return null;
+				let isAlias = false;
 				const curEntity = entities.find((entity: EntityContext) => {
 					const p = entity.position;
+					const alias = entity._alias;
+					isAlias = !!(
+						alias &&
+						alias.startColumn <= position.column &&
+						alias.endColumn >= position.column &&
+						alias.line === position.lineNumber
+					);
 					return (
-						p.startColumn <= position.column &&
-						p.endColumn >= position.column &&
-						p.line === position.lineNumber
+						(p.startColumn <= position.column &&
+							p.endColumn >= position.column &&
+							p.line === position.lineNumber) ||
+						isAlias
 					);
 				});
 				if (!curEntity) return null;
-				const tableCreate = curEntity ? findTableCreateEntity(curEntity, entities) : null;
+				const tableCreate = findTableCreateEntity(curEntity, entities);
 				const columns = tableCreate ? toColumnsInfo(tableCreate) || [] : [];
 				const columnsDesc = columns.reduce((res, cur) => {
 					const { column, type, comment, alias } = cur;
@@ -410,10 +419,23 @@ export class HoverAdapter<T extends BaseSQLWorker> implements languages.HoverPro
 						} ${alias ? `&nbsp;&nbsp; *${alias}*` : ''} \n`
 					);
 				}, '');
-				const pos = curEntity.position;
-				const range = new monaco.Range(pos.line, pos.startColumn, pos.line, pos.endColumn);
+				const tableText = isAlias
+					? (curEntity._alias?.text ?? curEntity.text)
+					: curEntity.text;
+				let range: monaco.Range;
+				if (isAlias && curEntity._alias) {
+					range = new monaco.Range(
+						curEntity._alias.line,
+						curEntity._alias.startColumn,
+						curEntity._alias.line,
+						curEntity._alias.endColumn
+					);
+				} else {
+					const p = curEntity.position;
+					range = new monaco.Range(p.line, p.startColumn, p.line, p.endColumn);
+				}
 				const contents: monaco.IMarkdownString[] = [
-					{ value: `**${curEntity.text}**` },
+					{ value: `**${tableText}**` },
 					{ value: columnsDesc }
 				];
 				return { contents, range };
@@ -421,9 +443,6 @@ export class HoverAdapter<T extends BaseSQLWorker> implements languages.HoverPro
 	}
 }
 
-export function isTableCreateEntity(en: EntityContext): en is CommonEntityContext {
-	return en.entityContextType === EntityContextType.TABLE_CREATE;
-}
 /**
  * According to the table name or table entity field, get the corresponding create table information
  */
@@ -439,10 +458,14 @@ export function findTableCreateEntity(
 	}
 
 	const tableName: string = typeof tableEntity === 'string' ? tableEntity : tableEntity.text;
+	function removeQuotes(str: string): string {
+		return str.replace(/^['"`“”‘’«»]|['"`“”‘’«»]$/g, '');
+	}
 	return (
 		allEntities.find(
 			(en): en is CommonEntityContext =>
-				en.entityContextType === EntityContextType.TABLE_CREATE && en.text === tableName
+				en.entityContextType === EntityContextType.TABLE_CREATE &&
+				removeQuotes(en.text) === removeQuotes(tableName)
 		) ?? null
 	);
 }
@@ -451,9 +474,12 @@ export function findTableCreateEntity(
  * Transform table create entity to columns info
  */
 export function toColumnsInfo(tableEntity: CommonEntityContext): ColumnInfo[] | null {
-	if (!tableEntity) return null;
-	if (tableEntity.entityContextType !== EntityContextType.TABLE_CREATE) return null;
-	if (!tableEntity.columns?.length) return null;
+	if (
+		!tableEntity ||
+		tableEntity.entityContextType !== EntityContextType.TABLE_CREATE ||
+		!tableEntity.columns?.length
+	)
+		return null;
 	const columnsInfo: ColumnInfo[] = [];
 	tableEntity.columns.forEach((col: ColumnEntityContext) => {
 		columnsInfo.push({

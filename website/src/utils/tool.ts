@@ -2,11 +2,11 @@ export function randomId() {
 	return Math.round(Math.random() * 1000);
 }
 
-export function debounce<T extends (...args: unknown[]) => unknown>(
+export function debounce<T extends (...args: any[]) => any>(
 	func: T,
 	timeout: number,
 	immediate?: boolean
-): (...args: Parameters<T>) => unknown {
+): (...args: Parameters<T>) => ReturnType<T> {
 	let timer: NodeJS.Timeout | null = null;
 	return (...args) => {
 		if (timer) {

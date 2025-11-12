@@ -14,6 +14,8 @@ export const SOURCE_FILE = 'activity.source.file';
 
 export const SOURCE_OUTLINE = 'activity.source.outline';
 
+export const PARSE_TREE = 'panel.item.visualizer';
+
 export const QUICK_GITHUB_HREF = [
 	{
 		href: 'https://github.com/DTStack/dt-sql-parser',

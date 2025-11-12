@@ -23,10 +23,14 @@
 		"react-dom": "^18.2.0",
 		"reflect-metadata": "^0.1.13",
 		"tsyringe": "^4.8.0",
+		"html-to-image": "^1.11.13",
 		"vscode-oniguruma": "^2.0.1",
-		"vscode-textmate": "^9.2.0"
+		"vscode-textmate": "^9.2.0",
+		"@xyflow/react": "^12.4.2",
+		"dagre": "^0.8.5"
 	},
 	"devDependencies": {
+		"@types/dagre": "^0.7.52",
 		"@types/node": "^20.2.5",
 		"@types/react": "^18.0.37",
 		"@types/react-dom": "^18.0.11",

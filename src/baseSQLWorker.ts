@@ -3,6 +3,7 @@ import { worker } from './fillers/monaco-editor-core';
 import { Suggestions, ParseError, EntityContext } from 'dt-sql-parser';
 import { Position } from './fillers/monaco-editor-core';
 import { SemanticContext } from 'dt-sql-parser/dist/parser/common/types';
+import type { SerializedTreeNode } from './languageService';
 
 export interface ICreateData {
 	languageId: string;
@@ -24,14 +25,43 @@ export abstract class BaseSQLWorker {
 		return Promise.resolve([]);
 	}
 
-	async parserTreeToString(code: string): Promise<string> {
-		if (code) {
-			const parser = this.parser.createParser(code);
-			const parseTree = parser.program();
-			const result = parseTree.toStringTree(parser);
-			return Promise.resolve(result);
+	async getSerializedParseTree(code: string): Promise<SerializedTreeNode | null> {
+		if (!code) return Promise.resolve(null);
+
+		const parser = this.parser.createParser(code);
+		const parseTree = parser.program();
+		const ruleNames = parser.ruleNames;
+		const tokenTypeMap = parser.getTokenTypeMap();
+		const tokenNameMap = new Map();
+
+		for (const [name, tokenType] of tokenTypeMap.entries()) {
+			tokenNameMap.set(tokenType, name);
 		}
-		return Promise.resolve('');
+
+		function serializeNode(node: any): SerializedTreeNode | null {
+			if (!node) return null;
+
+			const isRuleNode = !node.symbol;
+
+			const serializedNode: SerializedTreeNode = {
+				ruleName: isRuleNode ? ruleNames[node.ruleIndex] : node.constructor.name,
+				text: isRuleNode
+					? ''
+					: tokenNameMap.get(node.symbol.tokenSource?.type) + ': ' + node.symbol.text,
+				children: []
+			};
+
+			for (let i = 0; i < node.getChildCount(); i++) {
+				const child = node.getChild(i);
+				if (child) {
+					serializedNode.children.push(serializeNode(child)!);
+				}
+			}
+
+			return serializedNode;
+		}
+
+		return Promise.resolve(serializeNode(parseTree));
 	}
 
 	async doCompletion(code: string, position: Position): Promise<Suggestions | null> {

@@ -34,9 +34,10 @@ export abstract class BaseSQLWorker {
 		const tokenTypeMap = parser.getTokenTypeMap();
 		const tokenNameMap = new Map();
 
-		for (const [name, tokenType] of tokenTypeMap.entries()) {
+		// Revert map key and value
+		tokenTypeMap.forEach((tokenType, name) => {
 			tokenNameMap.set(tokenType, name);
-		}
+		});
 
 		function serializeNode(node: any): SerializedTreeNode | null {
 			if (!node) return null;

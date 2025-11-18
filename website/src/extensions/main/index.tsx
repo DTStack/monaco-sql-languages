@@ -19,7 +19,8 @@ import {
 	ACTIVITY_FOLDER,
 	ACTIVITY_SQL,
 	ACTIVITY_API,
-	SQL_LANGUAGES
+	SQL_LANGUAGES,
+	PARSE_TREE
 } from '@/consts';
 import QuickGithub from '@/workbench/quickGithub';
 import SourceSpace from '@/workbench/sourceSpace';
@@ -32,6 +33,7 @@ import { ProblemsPaneView } from '@/workbench/problems';
 import ProblemStore from '@/workbench/problems/clients/problemStore';
 import { ProblemsService } from '@/workbench/problems/services';
 import { ProblemsController } from '@/workbench/problems/controllers';
+import TreeVisualizerPanel from '@/components/treeVisualizerPanel';
 
 const problemsService = new ProblemsService();
 
@@ -332,6 +334,17 @@ export const mainExt: IExtension = {
 			}
 		});
 
+		// 添加解析树可视化
+		molecule.panel.add({
+			id: PARSE_TREE,
+			name: '语法解析树',
+			sortIndex: 3,
+			data: null,
+			render: (panelItem) => {
+				return <TreeVisualizerPanel parseTree={panelItem.data} />;
+			}
+		});
+
 		molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
 		molecule.sidebar.setCurrent(ACTIVITY_FOLDER);
 
@@ -343,7 +356,8 @@ export const mainExt: IExtension = {
 
 			if (fileData?.model) {
 				monaco.editor.setModelLanguage(fileData.model, language);
-				analyzeProblems({ fileData, molecule, tab });
+				analyzeProblems({ fileData, molecule, tab, languageService });
+				updateParseTree(molecule, languageService);
 			}
 			activeExplore(tab, molecule);
 		});
@@ -368,7 +382,8 @@ export const mainExt: IExtension = {
 		molecule.editor.onContextMenuClick((item, tabId, groupId) => {
 			switch (item.id) {
 				case 'parse': {
-					parseToAST(molecule, languageService);
+					updateParseTree(molecule, languageService);
+					molecule.panel.setCurrent(PARSE_TREE);
 					break;
 				}
 				default:
@@ -388,18 +403,20 @@ export const mainExt: IExtension = {
 			const tab = molecule.editor.getCurrentTab();
 			const groups = molecule.editor.getGroups();
 			const fileData = groups[0]?.data?.find((item) => item.id === tab?.id);
-			analyzeProblems({ fileData, molecule, tab });
+			analyzeProblems({ fileData, molecule, tab, languageService });
+			debounceUpdateParseTree(molecule, languageService);
 		});
 	}
 };
 
 const analyzeProblems = debounce((info: any) => {
-	const { fileData, molecule, tab } = info || {};
+	const { fileData, molecule, tab, languageService } = info || {};
 	const { value: sql, language } = fileData || {};
+
 	// todo： 一定要 active Tab 才能获取到 language
 	if (!language) return;
-	const languageService = new LanguageService();
-	languageService.valid(language.toLocaleLowerCase(), fileData.model).then((res) => {
+
+	languageService.valid(language.toLocaleLowerCase(), sql).then((res: ParseError[]) => {
 		const problems = convertMsgToProblemItem(tab, sql, res);
 
 		molecule.panel.update({
@@ -465,21 +482,21 @@ const activeExplore = (tab: Partial<TabGroup>, molecule: IMoleculeContext) => {
 	}
 };
 
-const parseToAST = (molecule: IMoleculeContext, languageService: LanguageService) => {
-	const sql = molecule.editor.getCurrentGroup()?.editorInstance?.getValue();
+const updateParseTree = (molecule: IMoleculeContext, languageService: LanguageService) => {
+	const parseTreePanel = molecule.panel.get(PARSE_TREE);
+	const group = molecule.editor.getGroups()[0];
+	const activeTab = group?.data?.find((item) => item.id === group.activeTab);
+	const language = activeTab?.language?.toLocaleLowerCase();
 
-	const curActiveTab = molecule.editor.getCurrentTab();
-	const lang = curActiveTab?.language?.toLocaleLowerCase();
-	if (lang && sql) {
-		languageService.parserTreeToString(lang, sql).then((res) => {
-			const pre = res?.replace(/(\(|\))/g, '$1\n');
-			const format = new lips.Formatter(pre);
-			const formatted = format.format({
-				indent: 2,
-				offset: 2
-			});
-			molecule.panel.setCurrent(molecule.builtin.getConstants().PANEL_ITEM_OUTPUT);
-			molecule.output.setState({ value: formatted });
+	if (!parseTreePanel || !language || !activeTab) return;
+	const sql = activeTab.model?.getValue() || '';
+
+	languageService.getSerializedParseTree(language, sql).then((tree) => {
+		molecule.panel.update({
+			id: PARSE_TREE,
+			data: tree
 		});
-	}
+	});
 };
+
+const debounceUpdateParseTree = debounce(updateParseTree, 400);

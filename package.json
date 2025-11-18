@@ -67,7 +67,7 @@
 		"pre-commit": "npx pretty-quick --staged"
 	},
 	"peerDependencies": {
-		"monaco-editor": ">=0.52.2"
+		"monaco-editor": ">=0.37.1"
 	},
 	"engines": {
 		"node": ">=18"

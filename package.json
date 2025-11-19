@@ -84,7 +84,6 @@
 		]
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.3.1",
-		"monaco-editor-core": "0.52.2"
+		"dt-sql-parser": "4.3.1"
 	}
 }

@@ -11,9 +11,6 @@ importers:
       dt-sql-parser:
         specifier: 4.3.1
         version: 4.3.1(antlr4ng-cli@1.0.7)
-      monaco-editor-core:
-        specifier: 0.52.2
-        version: 0.52.2
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.7.2
@@ -1308,9 +1305,6 @@ packages:
   modify-values@1.0.1:
     resolution: {integrity: sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==}
     engines: {node: '>=0.10.0'}
-
-  monaco-editor-core@0.52.2:
-    resolution: {integrity: sha512-5TOyTUymNx7jB24TGP4Qs5UEVrntDKSMzDUvW3ADaI1CFRO1t7FPhbT2u4m3iIKZf85zTM+mkCxiUSgj+v/YtA==}
 
   monaco-editor@0.52.2:
     resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
@@ -3374,8 +3368,6 @@ snapshots:
       yargs-unparser: 2.0.0
 
   modify-values@1.0.1: {}
-
-  monaco-editor-core@0.52.2: {}
 
   monaco-editor@0.52.2: {}
 

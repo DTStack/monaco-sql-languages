@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.8](https://github.com/DTStack/monaco-sql-languages/compare/v0.15.1...v1.0.0-beta.8) (2025-11-26)
+
+
+### Features
+
+* optimize dependencies and readme ([612efa5](https://github.com/DTStack/monaco-sql-languages/commit/612efa570989f50a0d10ee028ff9037b9505b3e0))
+* support hover provider feat ([79de9a9](https://github.com/DTStack/monaco-sql-languages/commit/79de9a93126c410c553a72aaf7d98ded1eaf17eb))
+* support quote tablename and alias tablename ([1c97d6c](https://github.com/DTStack/monaco-sql-languages/commit/1c97d6c4a29501215f6ccda7e4bed96b9dbf787d))
+* update contribute ts and update unit test ([5efa097](https://github.com/DTStack/monaco-sql-languages/commit/5efa097eed5a288c7f8481506904b0d812f58d0e))
+* update demo and others after upgrade monaco-editor's version ([4dcfb30](https://github.com/DTStack/monaco-sql-languages/commit/4dcfb309cdd80fcff8ec765b535c7cc974dd25e1))
+* update peerDependencies' lowest version ([1c0aaec](https://github.com/DTStack/monaco-sql-languages/commit/1c0aaec603d3283536ae59cb0d654f29ed31f872))
+* **website:** [#171](https://github.com/DTStack/monaco-sql-languages/issues/171), add parse tree visualizer in panel ([8bb7dd2](https://github.com/DTStack/monaco-sql-languages/commit/8bb7dd268c906923b6d8db0c650e1c3d4d4b6744))
+
+
+### Bug Fixes
+
+* using forEach to traverse the map to solve compatibility issues ([45204eb](https://github.com/DTStack/monaco-sql-languages/commit/45204ebb46388d68ea150586f1d453ce52bd4b0e))
+* **website:** fix sql theme in monaco editor ([b1fe915](https://github.com/DTStack/monaco-sql-languages/commit/b1fe915d35fc0e416dc988105c701b2e5ca10d04))
+
 ## [1.0.0-beta.5](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2025-09-25)
 
 ## [1.0.0-beta.4](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2025-09-24)

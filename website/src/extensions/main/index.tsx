@@ -267,6 +267,7 @@ export const mainExt: IExtension = {
 				)
 			}
 		]);
+		molecule.panel.remove('panel.item.output');
 
 		molecule.panel.add({
 			id: 'problem',

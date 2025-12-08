@@ -3,10 +3,8 @@ import {
 	IEditorTab,
 	IExtension,
 	IMoleculeContext,
-	TabGroup,
-	UniqueId
+	TabGroup
 } from '@dtinsight/molecule';
-import lips from '@jcubic/lips';
 
 import * as monaco from 'monaco-editor';
 import { vsPlusTheme } from 'monaco-sql-languages/esm/main';
@@ -37,6 +35,8 @@ import TreeVisualizerPanel from '@/components/treeVisualizerPanel';
 
 const problemsService = new ProblemsService();
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+const disposed: { dispose: Function; [key: string]: any }[] = [];
 export const mainExt: IExtension = {
 	id: 'mainExt',
 	name: 'mainExt',
@@ -380,7 +380,7 @@ export const mainExt: IExtension = {
 			);
 		});
 
-		molecule.editor.onContextMenuClick((item, tabId, groupId) => {
+		molecule.editor.onContextMenuClick((item) => {
 			switch (item.id) {
 				case 'parse': {
 					updateParseTree(molecule, languageService);
@@ -392,8 +392,7 @@ export const mainExt: IExtension = {
 			}
 		});
 
-		molecule.editor.onFocus((item) => {
-			const groupId = (molecule.editor.getCurrentGroup() || -1) as UniqueId;
+		molecule.editor.onModelMount((_, groupId) => {
 			const tab = molecule.editor.getCurrentTab();
 			if (tab?.id && tab.language) {
 				molecule.editor.setCurrent(tab?.id, groupId);
@@ -407,6 +406,9 @@ export const mainExt: IExtension = {
 			analyzeProblems({ fileData, molecule, tab, languageService });
 			debounceUpdateParseTree(molecule, languageService);
 		});
+	},
+	dispose() {
+		disposed.forEach((d) => d.dispose());
 	}
 };
 
@@ -414,8 +416,7 @@ const analyzeProblems = debounce((info: any) => {
 	const { fileData, molecule, tab, languageService } = info || {};
 	const { value: sql, language } = fileData || {};
 
-	// todo： 一定要 active Tab 才能获取到 language
-	if (!language) return;
+	if (!language || !sql) return;
 
 	languageService.valid(language.toLocaleLowerCase(), sql).then((res: ParseError[]) => {
 		const problems = convertMsgToProblemItem(tab, sql, res);
@@ -490,7 +491,13 @@ const updateParseTree = (molecule: IMoleculeContext, languageService: LanguageSe
 	const language = activeTab?.language?.toLocaleLowerCase();
 
 	if (!parseTreePanel || !language || !activeTab) return;
-	const sql = activeTab.model?.getValue() || '';
+	// 为了解决 activeTab?.model 可能是 undefined 进行getValue 会出现报错问题
+	let sql = '';
+	try {
+		sql = activeTab?.model?.getValue() || '';
+	} catch (e) {
+		sql = '';
+	}
 
 	languageService.getSerializedParseTree(language, sql).then((tree) => {
 		molecule.panel.update({

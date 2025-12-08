@@ -16,7 +16,7 @@ const treeLeafSubInfoClassName = getBEMElement(treeLeafClassName, 'subInfo');
 
 function ProblemsPaneView({ problemsService }: { problemsService: any }) {
 	const localize = useLocale();
-	const [data, setData] = useState(() => problemsService.get());
+	const [data, setData] = useState(() => problemsService.get()?.filter(Boolean));
 
 	useEffect(() => {
 		const unsubscribe = problemsService.subscribeData(setData);

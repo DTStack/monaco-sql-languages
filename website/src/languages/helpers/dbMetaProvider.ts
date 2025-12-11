@@ -1,4 +1,5 @@
 import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
+import { ICompletionItem } from 'monaco-sql-languages/esm/languageService';
 
 const catalogList = ['mock_catalog_1', 'mock_catalog_2', 'mock_catalog_3'];
 const schemaList = ['mock_schema_1', 'mock_schema_2', 'mock_schema_3'];
@@ -21,78 +22,136 @@ const prefixLabel = (languageId: string, text: string) => {
 };
 
 /**
- * 获取所有的 catalog
+ * Remove backticks from text for filter matching
+ */
+const removeBackticks = (text: string): string => {
+	return text.replace(/`/g, '');
+};
+
+/**
+ * Get all catalogs
  */
 export function getCatalogs(languageId: string) {
-	const catCompletions = catalogList.map((cat) => ({
-		label: prefixLabel(languageId, cat),
-		kind: languages.CompletionItemKind.Field,
-		detail: 'catalog',
-		sortText: '1' + prefixLabel(languageId, cat)
-	}));
+	const catCompletions = catalogList.map((cat) => {
+		const label = prefixLabel(languageId, cat);
+		return {
+			label,
+			filterText: removeBackticks(label),
+			kind: languages.CompletionItemKind.Field,
+			detail: 'Remote: catalog',
+			sortText: '1' + label
+		};
+	});
 	return Promise.resolve(catCompletions);
 }
 
 /**
- * 根据catalog 获取 database
+ * Get databases based on catalog
  */
 export function getDataBases(languageId: string, catalog?: string) {
 	const databases = catalog ? databaseList : tmpDatabaseList;
 
-	const databaseCompletions = databases.map((db) => ({
-		label: prefixLabel(languageId, db),
-		kind: languages.CompletionItemKind.Field,
-		detail: 'database',
-		sortText: '1' + prefixLabel(languageId, db)
-	}));
+	const databaseCompletions = databases.map((db) => {
+		const label = prefixLabel(languageId, db);
+		return {
+			label,
+			filterText: removeBackticks(label),
+			kind: languages.CompletionItemKind.Field,
+			detail: 'Remote: database',
+			sortText: '1' + label
+		};
+	});
 
 	return Promise.resolve(databaseCompletions);
 }
 
 /**
- * 根据catalog 获取 schema
+ * Get schemas based on catalog
  */
 export function getSchemas(languageId: string, catalog?: string) {
 	const schemas = catalog ? schemaList : tmpSchemaList;
 
-	const schemaCompletions = schemas.map((sc) => ({
-		label: prefixLabel(languageId, sc),
-		kind: languages.CompletionItemKind.Field,
-		detail: 'schema',
-		sortText: '1' + prefixLabel(languageId, sc)
-	}));
+	const schemaCompletions = schemas.map((sc) => {
+		const label = prefixLabel(languageId, sc);
+		return {
+			label,
+			filterText: removeBackticks(label),
+			kind: languages.CompletionItemKind.Field,
+			detail: 'Remote: schema',
+			sortText: '1' + label
+		};
+	});
 
 	return Promise.resolve(schemaCompletions);
 }
 
 /**
- * 根据 catalog 和 database 获取 table
+ * Get tables based on catalog and database
  */
 export function getTables(languageId: string, catalog?: string, database?: string) {
 	const tables = catalog && database ? tableList : tmpTableList;
 
-	const tableCompletions = tables.map((tb) => ({
-		label: prefixLabel(languageId, tb),
-		kind: languages.CompletionItemKind.Field,
-		detail: 'table',
-		sortText: '1' + prefixLabel(languageId, tb)
-	}));
+	const tableCompletions = tables.map((tb) => {
+		const label = prefixLabel(languageId, tb);
+		return {
+			label,
+			filterText: removeBackticks(label),
+			kind: languages.CompletionItemKind.Field,
+			detail: 'Remote: table',
+			sortText: '1' + label
+		};
+	});
 
 	return Promise.resolve(tableCompletions);
 }
 
 /**
- * 根据 catalog 和 database 获取 view
+ * Get views based on catalog and database
  */
 export function getViews(languageId: string, catalog?: string, database?: string) {
 	const views = catalog && database ? viewList : tmpViewList;
 
-	const viewCompletions = views.map((v) => ({
-		label: prefixLabel(languageId, v),
-		kind: languages.CompletionItemKind.Field,
-		detail: 'view',
-		sortText: '1' + prefixLabel(languageId, v)
-	}));
+	const viewCompletions = views.map((v) => {
+		const label = prefixLabel(languageId, v);
+		return {
+			label,
+			filterText: removeBackticks(label),
+			kind: languages.CompletionItemKind.Field,
+			detail: 'Remote: view',
+			sortText: '1' + label
+		};
+	});
 
 	return Promise.resolve(viewCompletions);
+}
+
+/**
+ * Get column information for a specific table
+ * @param languageId Language ID
+ * @param tableName Table name
+ * @returns Column completion items
+ */
+export function getColumns(languageId: string, tableName: string): Promise<ICompletionItem[]> {
+	// Mock column data, should fetch from cloud in real environment
+	const mockColumns = [
+		{ name: 'id', type: 'INT' },
+		{ name: 'name', type: 'VARCHAR' },
+		{ name: 'age', type: 'INT' },
+		{ name: 'created_at', type: 'TIMESTAMP' },
+		{ name: 'updated_at', type: 'TIMESTAMP' }
+	];
+
+	const columnCompletions = mockColumns.map((col) => {
+		const label = `${col.name}(${col.type})`;
+		return {
+			label,
+			filterText: removeBackticks(label),
+			insertText: col.name,
+			kind: languages.CompletionItemKind.EnumMember,
+			detail: `Remote: \`${tableName}\`'s column`,
+			sortText: '0' + tableName + col.name
+		};
+	});
+
+	return Promise.resolve(columnCompletions);
 }

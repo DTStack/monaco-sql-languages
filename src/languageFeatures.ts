@@ -255,7 +255,9 @@ export class DefinitionAdapter<T extends BaseSQLWorker> implements languages.Def
 					startIndex: -1,
 					endIndex: -1,
 					startColumn: -1,
-					endColumn: -1
+					endColumn: -1,
+					startTokenIndex: -1,
+					endTokenIndex: -1
 				};
 				const curEntity = entities?.find((entity: EntityContext) => {
 					const entityPosition = entity.position;

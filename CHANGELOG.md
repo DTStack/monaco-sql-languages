@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.5](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2025-09-25)
+
+## [1.0.0-beta.4](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2025-09-24)
+
+## [1.0.0-beta.3](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2025-09-24)
+
+## [1.0.0-beta.2](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2025-09-23)
+
+## [1.0.0-beta.1](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0-beta.0...v1.0.0-beta.1) (2025-09-23)
+
+## [1.0.0-beta.0](https://github.com/DTStack/monaco-sql-languages/compare/v0.15.1...v1.0.0-beta.0) (2025-09-22)
+
 ### [0.15.1](https://github.com/DTStack/monaco-sql-languages/compare/v0.15.0...v0.15.1) (2025-06-06)
 
 

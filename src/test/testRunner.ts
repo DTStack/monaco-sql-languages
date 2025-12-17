@@ -4,8 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import '../all.contributions';
-import { loadLanguage } from '../_.contribution';
+
 import * as assert from 'assert';
+
+import { loadLanguage } from '../_.contribution';
 import { editor } from '../fillers/monaco-editor-core';
 
 export interface IRelaxedToken {
@@ -59,5 +61,10 @@ function runTest(languageId: string, test: ITestItem[]): void {
 		};
 	});
 
-	assert.deepStrictEqual(actual, test);
+	try {
+		assert.deepStrictEqual(actual, test);
+	} catch (err) {
+		console.error(`❌ Tokenization mismatch for ${languageId}:`);
+		throw err;
+	}
 }

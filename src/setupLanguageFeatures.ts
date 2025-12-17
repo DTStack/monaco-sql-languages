@@ -30,6 +30,10 @@ export interface FeatureConfiguration {
 	 */
 	references?: boolean;
 	/**
+	 * Defines whether the built-in hover provider is enabled.
+	 */
+	hover?: boolean;
+	/**
 	 * Define a function to preprocess code.
 	 * By default, do not something.
 	 */
@@ -148,6 +152,10 @@ function processConfiguration(
 		typeof configuration.definitions === 'boolean'
 			? configuration.definitions
 			: (defaults?.modeConfiguration.definitions ?? modeConfigurationDefault.definitions);
+	const hover =
+		typeof configuration.hover === 'boolean'
+			? configuration.hover
+			: (defaults?.modeConfiguration.hover ?? modeConfigurationDefault.hover);
 
 	const snippets =
 		typeof configuration.completionItems !== 'boolean' &&
@@ -165,6 +173,7 @@ function processConfiguration(
 			snippets
 		},
 		references,
-		definitions
+		definitions,
+		hover
 	};
 }

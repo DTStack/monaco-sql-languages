@@ -1,0 +1,51 @@
+.welcome {
+	width: 100%;
+}
+
+.welcome .welcome-header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 20px 8px 20px;
+	border-bottom: 1px solid #333;
+
+	color: #f9f9fa;
+	font-family: 'PingFang SC';
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 22px;
+}
+
+.welcome ul {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 159px;
+	gap: 36px;
+	cursor: pointer;
+}
+
+.welcome ul li {
+	list-style: none;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.3);
+	display: flex;
+	width: 156px;
+	height: 134px;
+	padding: 24px 40px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
+	transition: all 0.3s ease-out;
+}
+
+.welcome ul li:hover {
+	transform: scale(1.1);
+	border-radius: 12px;
+	border: 1px solid rgba(255, 255, 255, 0.8);
+	background: rgba(255, 255, 255, 0.5);
+	box-shadow: 0px 4px 20px 0px rgba(167, 183, 212, 0.2);
+	transition: all 0.3s ease-out;
+}

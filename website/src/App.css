@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.activityBar-imgIcon {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: #666666;
+}
+
+.activityBar-imgIcon:hover {
+	color: #ebecf0;
+}
+/* 复写 molecule 的样式 */
+.mo-activityBar__container {
+	width: 40px !important;
+}
+
+.mo-activityBar__item {
+	width: 40px !important;
+}

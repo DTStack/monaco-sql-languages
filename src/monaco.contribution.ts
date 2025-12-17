@@ -90,6 +90,10 @@ export interface ModeConfiguration {
 	 * Defines whether the built-in references provider is enabled.
 	 */
 	readonly references?: boolean;
+	/**
+	 * Defines whether the built-in hover provider is enabled.
+	 */
+	readonly hover?: boolean;
 }
 
 /**
@@ -205,6 +209,7 @@ export const modeConfigurationDefault: Required<ModeConfiguration> = {
 		triggerCharacters: ['.', ' ']
 	},
 	diagnostics: true,
-	definitions: true,
-	references: true
+	definitions: false,
+	references: false,
+	hover: false
 };

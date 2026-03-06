@@ -14,6 +14,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.0.0-beta.0](https://github.com/DTStack/monaco-sql-languages/compare/v0.15.1...v1.0.0-beta.0) (2025-09-22)
 
+### [0.15.2](https://github.com/DTStack/monaco-sql-languages/compare/v0.15.2-beta.0...v0.15.2) (2026-03-06)
+
+
+### Bug Fixes
+
+* **flinksql:** [#464](https://github.com/DTStack/monaco-sql-languages/issues/464) upgrade dt-sql-parser@4.4.2 ([d65f36a](https://github.com/DTStack/monaco-sql-languages/commit/d65f36a3ccad2bc0eb01d186bfb92c60dd84cac9))
+
 ### [0.15.1](https://github.com/DTStack/monaco-sql-languages/compare/v0.15.0...v0.15.1) (2025-06-06)
 
 

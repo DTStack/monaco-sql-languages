@@ -240,6 +240,7 @@ export const language = <languages.IMonarchLanguage>{
 		'CHECKSUM',
 		'CHR',
 		'CLASSIFY',
+		'COALESCE',
 		'CODEPOINT',
 		'COLOR',
 		'COMBINATIONS',
@@ -585,7 +586,7 @@ export const language = <languages.IMonarchLanguage>{
 		'ZIP_WITH'
 	],
 	builtinVariables: [
-		// Not support
+		// Not Supporteded
 	],
 	typeKeywords: [
 		// https://trino.io/docs/current/language/types.html
@@ -623,7 +624,7 @@ export const language = <languages.IMonarchLanguage>{
 	],
 	scopeKeywords: ['CASE', 'END', 'WHEN', 'THEN', 'ELSE'],
 	pseudoColumns: [
-		// Not support
+		// Not Supporteded
 	],
 	tokenizer: {
 		root: [
@@ -705,7 +706,7 @@ export const language = <languages.IMonarchLanguage>{
 			[/"/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [
-			// Not Support
+			// Not Supported
 		],
 		complexDataTypes: [
 			[/WITHOUT\s+TIME\s+ZONE\b/i, { token: TokenClassConsts.TYPE }],

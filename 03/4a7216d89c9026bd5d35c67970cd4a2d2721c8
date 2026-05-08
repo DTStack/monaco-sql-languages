@@ -1,0 +1,58 @@
+src/workerManager.ts
+  s_5338a94eeaea52::t_0722c9508e43c7 1-2
+  s_5338a94eeaea52::t_250631c7144f50 53-60,62-63
+samples/esm-monaco-webpack-plugin/package.json
+  s_5338a94eeaea52::t_13ef894ab6c48c 26
+website/package.json
+  s_5338a94eeaea52::t_af1af2698b2244 20
+samples/esm-plain-webpack/package.json
+  s_5338a94eeaea52::t_418c70865026c9 26
+samples/esm-vite/package.json
+  s_5338a94eeaea52::t_796f2ecafe67d4 12
+test/all.js
+  5338a94eeaea5293 18-21,23-32
+  s_5338a94eeaea52::t_49b006314fc20a 53-54
+src/monaco.contribution.ts
+  s_5338a94eeaea52::t_2d648f86b88778 105-133
+package.json
+  h_3070dc1062bb3b 3
+  s_5338a94eeaea52::t_49c51d6ae04a82 58
+pnpm-lock.yaml
+  ai_agent 49-50,252-254,323,712-714,1251-1255,1320-1321,2098,2251-2253,2618,2737-2740,3309-3310,3392-3395
+test/setup.js
+  ai_agent 33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "034a7216d89c9026bd5d35c67970cd4a2d2721c8",
+  "prompts": {
+    "5338a94eeaea5293": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "29e2b5ee-5b09-4036-8701-68bc63eb3bb1",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": "liuxy0551",
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 14,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_3070dc1062bb3b": {
+      "author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  },
+  "sessions": {
+    "s_5338a94eeaea52": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "29e2b5ee-5b09-4036-8701-68bc63eb3bb1",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": null
+    }
+  }
+}

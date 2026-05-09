@@ -1,5 +1,5 @@
 import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-import { ICompletionItem } from 'monaco-sql-languages/esm/languageService';
+import type { ICompletionItem } from 'monaco-sql-languages/esm/monaco.contribution';
 
 const catalogList = ['mock_catalog_1', 'mock_catalog_2', 'mock_catalog_3'];
 const schemaList = ['mock_schema_1', 'mock_schema_2', 'mock_schema_3'];

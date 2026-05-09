@@ -1,27 +1,25 @@
-import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-import {
-	CommonEntityContext,
-	CompletionService,
-	ICompletionItem,
-	Suggestions,
-	WordRange
-} from 'monaco-sql-languages/esm/languageService';
-import { EntityContextType, StmtContextType } from 'monaco-sql-languages/esm/main';
-
-import {
-	getCatalogs,
-	getDataBases,
-	getSchemas,
-	getTables,
-	getViews,
-	getColumns
-} from './dbMetaProvider';
+import type { CommonEntityContext, Suggestions, WordRange } from 'dt-sql-parser';
 import {
 	AttrName,
 	ColumnDeclareType,
 	EntityContext,
 	TableDeclareType
 } from 'dt-sql-parser/dist/parser/common/entityCollector';
+import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
+import { EntityContextType, StmtContextType } from 'monaco-sql-languages/esm/main';
+import type {
+	CompletionService,
+	ICompletionItem
+} from 'monaco-sql-languages/esm/monaco.contribution';
+
+import {
+	getCatalogs,
+	getColumns,
+	getDataBases,
+	getSchemas,
+	getTables,
+	getViews
+} from './dbMetaProvider';
 
 // Custom completion item interface, extending ICompletionItem to support additional properties
 interface EnhancedCompletionItem extends ICompletionItem {
@@ -306,6 +304,19 @@ const getColumnCompletions = async (
 	const words = wordRanges.map((wr) => wr.text);
 	const result: ICompletionItem[] = [];
 
+	// Extract already selected columns from QUERY_RESULT to filter them out
+	const queryResultEntity = entities.find(
+		(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
+	) as CommonEntityContext | undefined;
+
+	const selectedColumns = new Set<string>();
+	queryResultEntity?.columns?.forEach((col) => {
+		const columnName = col[AttrName.alias]?.text || getPureEntityText(col.text);
+		if (columnName) {
+			selectedColumns.add(columnName);
+		}
+	});
+
 	// All tables defined in the context
 	const allTableDefinitionEntities =
 		(entities?.filter(
@@ -361,7 +372,18 @@ const getColumnCompletions = async (
 	);
 
 	// When not typing a dot, suggest all source tables and columns (if source tables are directly created in local context)
-	if (wordRanges.length <= 1) {
+	// Handle the case where input is like 't1.' -> wordRanges could be ['t1', '.'] or ['t1.']
+	const currentText = words[words.length - 1] || '';
+	const isDotContext =
+		(wordRanges.length === 2 && words[1] === '.') ||
+		(wordRanges.length === 1 && currentText.endsWith('.'));
+	const tbNameOrAliasForDotContext = isDotContext
+		? wordRanges.length === 2
+			? words[0]
+			: currentText.slice(0, -1)
+		: null;
+
+	if (wordRanges.length <= 1 && !currentText.endsWith('.')) {
 		const columnRepeatCountMap = new Map<string, number>();
 
 		// Get columns from local tables
@@ -433,9 +455,10 @@ const getColumnCompletions = async (
 				: [];
 
 		result.push(...tableCompletionItems);
-	} else if (wordRanges.length === 2 && words[1] === '.') {
-		// Table.column format completion
-		const tbNameOrAlias = words[0];
+	} else if (isDotContext && tbNameOrAliasForDotContext) {
+		// Table.column format completion when input is like 't1.'
+		// wordRanges could be ['t1', '.'] or ['t1.']
+		const tbNameOrAlias = tbNameOrAliasForDotContext;
 
 		let realTablePath = tbNameOrAlias;
 
@@ -443,10 +466,9 @@ const getColumnCompletions = async (
 		if (aliasToTableMap[tbNameOrAlias]) {
 			realTablePath = aliasToTableMap[tbNameOrAlias];
 		} else {
-			// Try to find matching table in source tables (handles partial schema references)
+			// Try to find matching table in source tables
 			const matchingTable = sourceTables.find((tb) => {
 				const parsedTable = parseEntityText(tb.text);
-				// Check if input matches table name or schema.table pattern
 				return (
 					parsedTable.table === tbNameOrAlias ||
 					parsedTable.fullPath === tbNameOrAlias ||
@@ -472,7 +494,6 @@ const getColumnCompletions = async (
 
 		// If no local table columns found, try to fetch from cloud
 		if (localTableColumns.length === 0) {
-			// Check if this table is locally created
 			const isLocallyCreatedTable = allTableDefinitionEntities.some((createTable) => {
 				return isEntityPathMatch(createTable.text, realTablePath);
 			});
@@ -483,12 +504,21 @@ const getColumnCompletions = async (
 					(tb.text === realTablePath || isEntityPathMatch(tb.text, realTablePath))
 			);
 
-			// Only fetch from remote if table is not locally created
 			if (!isLocallyCreatedTable && isLiteralTable) {
 				const remoteColumns = await getColumns(languageId, realTablePath);
 				result.push(...remoteColumns);
 			}
 		}
+	}
+
+	// Filter out already selected columns in QUERY_RESULT
+	if (selectedColumns.size > 0) {
+		return result.filter((item) => {
+			const columnName =
+				(item as any)._columnText ||
+				(typeof item.label === 'string' ? item.label : (item.label as any).label);
+			return !selectedColumns.has(columnName);
+		});
 	}
 
 	return result;
@@ -501,7 +531,7 @@ const getSpecificTableColumns = (
 	sourceTableDefinitionEntities: CommonEntityContext[],
 	realTablePath: string,
 	displayAlias?: string
-): ICompletionItem[] => {
+): any[] => {
 	return sourceTableDefinitionEntities
 		.filter((tb) => {
 			return (
@@ -516,6 +546,7 @@ const getSpecificTableColumns = (
 				tb.columns?.map((column) => {
 					const columnName =
 						column[AttrName.alias]?.text || getPureEntityText(column.text);
+					if (!columnName) return null;
 					const label =
 						columnName +
 						(column[AttrName.colType]?.text
@@ -534,7 +565,8 @@ const getSpecificTableColumns = (
 				}) || []
 			);
 		})
-		.flat();
+		.flat()
+		.filter(Boolean);
 };
 
 /**
@@ -543,7 +575,7 @@ const getSpecificTableColumns = (
 const getSpecificDerivedTableColumns = (
 	derivedTableEntities: CommonEntityContext[],
 	displayAlias?: string
-): ICompletionItem[] => {
+): any[] => {
 	return derivedTableEntities
 		.filter((tb) => {
 			return displayAlias ? tb[AttrName.alias]?.text === displayAlias : false;
@@ -562,6 +594,7 @@ const getSpecificDerivedTableColumns = (
 					.map((column) => {
 						const columnName =
 							column[AttrName.alias]?.text || getPureEntityText(column.text);
+						if (!columnName) return null;
 						return {
 							label: columnName,
 							filterText: removeBackticks(columnName),
@@ -575,7 +608,8 @@ const getSpecificDerivedTableColumns = (
 					}) || []
 			);
 		})
-		.flat();
+		.flat()
+		.filter(Boolean);
 };
 
 /**
@@ -585,7 +619,7 @@ const getSpecificCTASTableColumns = (
 	ctasTableEntities: CommonEntityContext[],
 	realTablePath: string,
 	displayAlias?: string
-): ICompletionItem[] => {
+): any[] => {
 	return ctasTableEntities
 		.filter((tb) => {
 			return (
@@ -607,6 +641,7 @@ const getSpecificCTASTableColumns = (
 					.map((column) => {
 						const columnName =
 							column[AttrName.alias]?.text || getPureEntityText(column.text);
+						if (!columnName) return null;
 						const label =
 							columnName +
 							(column[AttrName.colType]?.text
@@ -625,7 +660,8 @@ const getSpecificCTASTableColumns = (
 					}) || []
 			);
 		})
-		.flat();
+		.flat()
+		.filter(Boolean);
 };
 
 const getSyntaxCompletionItems = async (
@@ -721,8 +757,6 @@ export const completionService: CompletionService = async function (
 	const languageId = model.getLanguageId();
 
 	const { keywords, syntax } = suggestions;
-	console.log('syntax', syntax);
-	console.log('entities', entities);
 
 	const keywordsCompletionItems: ICompletionItem[] = keywords.map((kw) => ({
 		label: kw,

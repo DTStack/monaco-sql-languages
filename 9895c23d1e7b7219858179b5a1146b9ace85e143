@@ -1,0 +1,28 @@
+README.md
+  s_3d89e7e11f5374::t_2a0a2566f58175 42
+  s_3d89e7e11f5374::t_240117391c2fa8 75
+README-zh_CN.md
+  s_3d89e7e11f5374::t_711d24597fb1c0 76
+  s_3d89e7e11f5374::t_99e610d3dc72ee 42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "9895c23d1e7b7219858179b5a1146b9ace85e143",
+  "prompts": {},
+  "humans": {
+    "h_3070dc1062bb3b": {
+      "author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  },
+  "sessions": {
+    "s_3d89e7e11f5374": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1e99cbcd4ffe2cJEtOUN5QEB1W",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  }
+}

@@ -38,7 +38,8 @@ export const SQL_LANGUAGES = [
 	'MySQL',
 	'PGSQL',
 	'TrinoSQL',
-	'ImpalaSQL'
+	'ImpalaSQL',
+	'GenericSQL'
 ];
 
 export const defaultLanguage = SQL_LANGUAGES[0];

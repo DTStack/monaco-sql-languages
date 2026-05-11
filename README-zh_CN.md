@@ -39,6 +39,7 @@ Monaco SQL Languages 是一个基于 Monaco Editor 的 SQL 语言项目，从 [m
 -   Trino (Presto)
 -   PostgreSQL
 -   Impala
+-   GenericSQL
 
 <br/>
 
@@ -72,6 +73,7 @@ npm install monaco-sql-languages
     import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
     import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
     import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
+    import 'monaco-sql-languages/esm/languages/generic/generic.contribution';
 
     // 或者你可以通过下面的方式一次性导入所有的语言功能
     // import 'monaco-sql-languages/esm/all.contributions';

@@ -109,6 +109,8 @@ function getDefaultSnippets(languageId: LanguageIdEnum) {
 			return snippets.sparkSnippets;
 		case LanguageIdEnum.TRINO:
 			return snippets.trinoSnippets;
+		case LanguageIdEnum.GENERIC:
+			return snippets.genericSnippets;
 		default:
 			return [];
 	}

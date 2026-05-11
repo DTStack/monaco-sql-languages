@@ -5,3 +5,4 @@ import './languages/trino/trino.contribution';
 import './languages/mysql/mysql.contribution';
 import './languages/pgsql/pgsql.contribution';
 import './languages/impala/impala.contribution';
+import './languages/generic/generic.contribution';

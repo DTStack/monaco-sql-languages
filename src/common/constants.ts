@@ -37,5 +37,6 @@ export enum LanguageIdEnum {
 	PG = 'pgsql',
 	SPARK = 'sparksql',
 	TRINO = 'trinosql',
-	IMPALA = 'impalasql'
+	IMPALA = 'impalasql',
+	GENERIC = 'genericsql'
 }

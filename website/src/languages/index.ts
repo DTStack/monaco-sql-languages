@@ -137,3 +137,15 @@ setupLanguageFeatures(LanguageIdEnum.IMPALA, {
 	hover: true,
 	preprocessCode
 });
+
+setupLanguageFeatures(LanguageIdEnum.GENERIC, {
+	completionItems: {
+		enable: true,
+		completionService
+	},
+	diagnostics: false,
+	references: false,
+	definitions: false,
+	hover: false,
+	preprocessCode
+});

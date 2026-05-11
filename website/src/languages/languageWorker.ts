@@ -9,6 +9,7 @@ import PGSQLWorker from 'monaco-sql-languages/esm/languages/pgsql/pgsql.worker?w
 import MySQLWorker from 'monaco-sql-languages/esm/languages/mysql/mysql.worker?worker';
 import TrinoSQLWorker from 'monaco-sql-languages/esm/languages/trino/trino.worker?worker';
 import ImpalaSQLWorker from 'monaco-sql-languages/esm/languages/impala/impala.worker?worker';
+import GenericSQLWorker from 'monaco-sql-languages/esm/languages/generic/generic.worker?worker';
 
 (globalThis as any).MonacoEnvironment = {
 	getWorker(_: any, label: string) {
@@ -32,6 +33,9 @@ import ImpalaSQLWorker from 'monaco-sql-languages/esm/languages/impala/impala.wo
 		}
 		if (label === LanguageIdEnum.IMPALA) {
 			return new ImpalaSQLWorker();
+		}
+		if (label === LanguageIdEnum.GENERIC) {
+			return new GenericSQLWorker();
 		}
 		return new EditorWorker();
 	}

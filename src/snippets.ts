@@ -5,3 +5,4 @@ export { pgsqlSnippets } from './languages/pgsql/pgsql.snippet';
 export { sparkSnippets } from './languages/spark/spark.snippet';
 export { mysqlSnippets } from './languages/mysql/mysql.snippet';
 export { impalaSnippets } from './languages/impala/impala.snippet';
+export { genericSnippets } from './languages/generic/generic.snippet';

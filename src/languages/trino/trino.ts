@@ -586,7 +586,7 @@ export const language = <languages.IMonarchLanguage>{
 		'ZIP_WITH'
 	],
 	builtinVariables: [
-		// Not Supporteded
+		// Not support
 	],
 	typeKeywords: [
 		// https://trino.io/docs/current/language/types.html
@@ -624,7 +624,7 @@ export const language = <languages.IMonarchLanguage>{
 	],
 	scopeKeywords: ['CASE', 'END', 'WHEN', 'THEN', 'ELSE'],
 	pseudoColumns: [
-		// Not Supporteded
+		// Not support
 	],
 	tokenizer: {
 		root: [
@@ -706,7 +706,7 @@ export const language = <languages.IMonarchLanguage>{
 			[/"/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [
-			// Not Supported
+			// Not support
 		],
 		complexDataTypes: [
 			[/WITHOUT\s+TIME\s+ZONE\b/i, { token: TokenClassConsts.TYPE }],

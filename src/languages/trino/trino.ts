@@ -706,7 +706,7 @@ export const language = <languages.IMonarchLanguage>{
 			[/"/, { token: TokenClassConsts.IDENTIFIER_QUOTE, next: '@pop' }]
 		],
 		scopes: [
-			// Not support
+			// Not Support
 		],
 		complexDataTypes: [
 			[/WITHOUT\s+TIME\s+ZONE\b/i, { token: TokenClassConsts.TYPE }],

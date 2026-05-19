@@ -1,0 +1,27 @@
+website/src/services/fileManagerService.ts
+  s_692bc9e9aa098d::t_cd066a5d439d6e 4
+  s_692bc9e9aa098d::t_0bb4df0c744aac 90,93
+website/src/workbench/sourceSpace/components/parser/index.tsx
+  s_692bc9e9aa098d::t_c2fb1a1842fb1a 22-25,37-38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "3830003ac7db5e37b986718d26369996f351e77b",
+  "prompts": {},
+  "humans": {
+    "h_3070dc1062bb3b": {
+      "author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  },
+  "sessions": {
+    "s_692bc9e9aa098d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be325b81-48d4-4090-8b2c-85615bd5f4b7",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  }
+}

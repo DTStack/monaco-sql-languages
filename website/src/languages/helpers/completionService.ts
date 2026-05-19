@@ -309,7 +309,7 @@ const getColumnCompletions = async (
 		(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
 	) as CommonEntityContext | undefined;
 
-	const selectedColumns = new Set<string>();
+	const selectedColumns = new Set<string | languages.CompletionItemLabel>();
 	queryResultEntity?.columns?.forEach((col) => {
 		const columnName = col[AttrName.alias]?.text || getPureEntityText(col.text);
 		if (columnName) {
@@ -515,8 +515,10 @@ const getColumnCompletions = async (
 	if (selectedColumns.size > 0) {
 		return result.filter((item) => {
 			const columnName =
-				(item as any)._columnText ||
-				(typeof item.label === 'string' ? item.label : (item.label as any).label);
+				(item as EnhancedCompletionItem)._columnText ||
+				(typeof item.label === 'string'
+					? item.label
+					: (item.label as EnhancedCompletionItem).label);
 			return !selectedColumns.has(columnName);
 		});
 	}

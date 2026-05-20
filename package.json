@@ -34,7 +34,8 @@
 		"postgresql",
 		"flink",
 		"trino",
-		"impala"
+		"impala",
+		"generic"
 	],
 	"repository": {
 		"type": "git",
@@ -84,6 +85,6 @@
 		]
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.4.2"
+		"dt-sql-parser": "4.5.0"
 	}
 }

@@ -39,6 +39,7 @@ This project is based on the SQL language project of Monaco Editor, which was fo
 -   Trino (Presto)
 -   PostgreSQL
 -   Impala
+-   GenericSQL
 
 <br/>
 
@@ -71,6 +72,7 @@ npm install monaco-sql-languages
     import 'monaco-sql-languages/esm/languages/trino/trino.contribution';
     import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
     import 'monaco-sql-languages/esm/languages/impala/impala.contribution';
+    import 'monaco-sql-languages/esm/languages/generic/generic.contribution';
 
     // Or you can import all language contributions at once.
     // import 'monaco-sql-languages/esm/all.contributions';

@@ -1,0 +1,27 @@
+website/src/extensions/main/index.tsx
+  s_692bc9e9aa098d::t_8bfe201b3bf022 177-178
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "00c39917c549791b90d0882895af83b17662f623",
+  "prompts": {},
+  "humans": {
+    "h_3070dc1062bb3b": {
+      "author": "liuxy0551 <liuxy0551@qq.com>"
+    },
+    "h_98b8b691222da1": {
+      "author": "liuxy0551"
+    }
+  },
+  "sessions": {
+    "s_692bc9e9aa098d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be325b81-48d4-4090-8b2c-85615bd5f4b7",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  }
+}

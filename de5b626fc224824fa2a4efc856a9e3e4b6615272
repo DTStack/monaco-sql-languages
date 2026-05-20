@@ -1,0 +1,26 @@
+src/languages/generic/generic.contribution.ts
+  h_3070dc1062bb3b 15-17
+website/src/languages/index.ts
+  s_3d89e7e11f5374::t_58b39fcdd61b4d 147-149
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "de5b626fc224824fa2a4efc856a9e3e4b6615272",
+  "prompts": {},
+  "humans": {
+    "h_3070dc1062bb3b": {
+      "author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  },
+  "sessions": {
+    "s_3d89e7e11f5374": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1e99cbcd4ffe2cJEtOUN5QEB1W",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": "liuxy0551 <liuxy0551@qq.com>"
+    }
+  }
+}

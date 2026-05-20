@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0...v1.1.0) (2026-05-20)
+
+
+### Features
+
+* Add COALESCE function to trino language ([#214](https://github.com/DTStack/monaco-sql-languages/issues/214)) ([6bad88e](https://github.com/DTStack/monaco-sql-languages/commit/6bad88ebc39f2d660f91504a3bcde40af20f86bf))
+* add generic SQL language support ([#217](https://github.com/DTStack/monaco-sql-languages/issues/217)) ([6c72eed](https://github.com/DTStack/monaco-sql-languages/commit/6c72eed9bbb98c0e53dcd9b008e72d111acc85aa))
+* enhance website demo for column completions ([#216](https://github.com/DTStack/monaco-sql-languages/issues/216)) ([5da90ad](https://github.com/DTStack/monaco-sql-languages/commit/5da90ade200cbb04952387949d27bdd821a1e065))
+
+
+### Bug Fixes
+
+* delet panel item output ([0724872](https://github.com/DTStack/monaco-sql-languages/commit/0724872a4fd3e68f429be2b7d9f84edc0d8fa71a))
+* prevent shortcut loss on editor blur ([1e60bde](https://github.com/DTStack/monaco-sql-languages/commit/1e60bde0c29c8736a87d92e96cd91e82495a023b))
+* problem panel show error when init,[#197](https://github.com/DTStack/monaco-sql-languages/issues/197) ([9f63fd2](https://github.com/DTStack/monaco-sql-languages/commit/9f63fd2748e026bf50d82ce275ee3a3a2d4ab3da))
+
 ## [1.0.0](https://github.com/DTStack/monaco-sql-languages/compare/v0.15.2...v1.0.0) (2026-03-06)
 
 

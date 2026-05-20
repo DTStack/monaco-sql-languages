@@ -1,3 +1,29 @@
+import { ParseError } from 'dt-sql-parser';
+import * as monaco from 'monaco-editor';
+import { vsPlusTheme } from 'monaco-sql-languages/esm/main';
+import { LanguageService, type SerializedTreeNode } from 'monaco-sql-languages/esm/languageService';
+
+import TreeVisualizerPanel from '@/components/treeVisualizerPanel';
+import {
+	ACTIVITY_API,
+	ACTIVITY_FOLDER,
+	ACTIVITY_SQL,
+	FILE_PATH,
+	PARSE_LANGUAGE,
+	PARSE_TREE,
+	QUICK_GITHUB,
+	SQL_LANGUAGES
+} from '@/consts';
+import { debounce } from '@/utils/tool';
+import ApiDocPage from '@/workbench/apiDocPage';
+import { ProblemsPaneView } from '@/workbench/problems';
+import ProblemStore from '@/workbench/problems/clients/problemStore';
+import { ProblemsController } from '@/workbench/problems/controllers';
+import { ProblemsService } from '@/workbench/problems/services';
+import QuickGithub from '@/workbench/quickGithub';
+import SourceSpace from '@/workbench/sourceSpace';
+import UnitTest from '@/workbench/unitTest';
+import Welcome from '@/workbench/welcome';
 import {
 	IContributeType,
 	IEditorTab,
@@ -5,33 +31,6 @@ import {
 	IMoleculeContext,
 	TabGroup
 } from '@dtinsight/molecule';
-
-import * as monaco from 'monaco-editor';
-import { vsPlusTheme } from 'monaco-sql-languages/esm/main';
-
-import Welcome from '@/workbench/welcome';
-import {
-	FILE_PATH,
-	QUICK_GITHUB,
-	PARSE_LANGUAGE,
-	ACTIVITY_FOLDER,
-	ACTIVITY_SQL,
-	ACTIVITY_API,
-	SQL_LANGUAGES,
-	PARSE_TREE
-} from '@/consts';
-import QuickGithub from '@/workbench/quickGithub';
-import SourceSpace from '@/workbench/sourceSpace';
-import UnitTest from '@/workbench/unitTest';
-import ApiDocPage from '@/workbench/apiDocPage';
-import { debounce } from '@/utils/tool';
-import { LanguageService } from '../../../../esm/languageService';
-import { ParseError } from 'dt-sql-parser';
-import { ProblemsPaneView } from '@/workbench/problems';
-import ProblemStore from '@/workbench/problems/clients/problemStore';
-import { ProblemsService } from '@/workbench/problems/services';
-import { ProblemsController } from '@/workbench/problems/controllers';
-import TreeVisualizerPanel from '@/components/treeVisualizerPanel';
 
 const problemsService = new ProblemsService();
 
@@ -499,12 +498,14 @@ const updateParseTree = (molecule: IMoleculeContext, languageService: LanguageSe
 		sql = '';
 	}
 
-	languageService.getSerializedParseTree(language, sql).then((tree) => {
-		molecule.panel.update({
-			id: PARSE_TREE,
-			data: tree
+	languageService
+		.getSerializedParseTree(language, sql)
+		.then((tree: SerializedTreeNode | null) => {
+			molecule.panel.update({
+				id: PARSE_TREE,
+				data: tree
+			});
 		});
-	});
 };
 
 const debounceUpdateParseTree = debounce(updateParseTree, 400);

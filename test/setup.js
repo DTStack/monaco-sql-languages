@@ -30,7 +30,13 @@ define('vs/nls', [], {
 });
 
 define(['vs/editor/editor.main'], function (api) {
-	global.monaco = api;
+	// Monaco Editor 0.54.0+ exports as api.m instead of api directly
+	const monaco = api.m || api;
+	global.monaco = monaco;
+	globalThis.monaco = monaco;
+	if (typeof self !== 'undefined') {
+		self.monaco = monaco;
+	}
 });
 
 // 定义Mocha全局函数

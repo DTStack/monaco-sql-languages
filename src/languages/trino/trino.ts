@@ -240,6 +240,7 @@ export const language = <languages.IMonarchLanguage>{
 		'CHECKSUM',
 		'CHR',
 		'CLASSIFY',
+		'COALESCE',
 		'CODEPOINT',
 		'COLOR',
 		'COMBINATIONS',

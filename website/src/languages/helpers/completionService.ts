@@ -304,19 +304,6 @@ const getColumnCompletions = async (
 	const words = wordRanges.map((wr) => wr.text);
 	const result: ICompletionItem[] = [];
 
-	// Extract already selected columns from QUERY_RESULT to filter them out
-	const queryResultEntity = entities.find(
-		(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
-	) as CommonEntityContext | undefined;
-
-	const selectedColumns = new Set<string | languages.CompletionItemLabel>();
-	queryResultEntity?.columns?.forEach((col) => {
-		const columnName = col[AttrName.alias]?.text || getPureEntityText(col.text);
-		if (columnName) {
-			selectedColumns.add(columnName);
-		}
-	});
-
 	// All tables defined in the context
 	const allTableDefinitionEntities =
 		(entities?.filter(
@@ -509,18 +496,6 @@ const getColumnCompletions = async (
 				result.push(...remoteColumns);
 			}
 		}
-	}
-
-	// Filter out already selected columns in QUERY_RESULT
-	if (selectedColumns.size > 0) {
-		return result.filter((item) => {
-			const columnName =
-				(item as EnhancedCompletionItem)._columnText ||
-				(typeof item.label === 'string'
-					? item.label
-					: (item.label as EnhancedCompletionItem).label);
-			return !selectedColumns.has(columnName);
-		});
 	}
 
 	return result;

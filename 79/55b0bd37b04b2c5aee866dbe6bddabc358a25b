@@ -1,0 +1,26 @@
+src/languages/pgsql/pgsql.ts
+  s_6686a4e0c8efc7::t_2154e15f0d522c 1018
+src/languages/flink/flink.ts
+  s_6686a4e0c8efc7::t_2154e15f0d522c 528
+src/languages/trino/trino.ts
+  s_6686a4e0c8efc7::t_2154e15f0d522c 680
+src/languages/spark/spark.ts
+  s_6686a4e0c8efc7::t_2154e15f0d522c 744
+src/languages/hive/hive.ts
+  s_6686a4e0c8efc7::t_2154e15f0d522c 560
+src/languages/mysql/mysql.ts
+  s_6686a4e0c8efc7::t_2154e15f0d522c 959
+  s_6686a4e0c8efc7::t_0a24d9655dfa68 934
+website/src/languages/index.ts
+  s_6686a4e0c8efc7::t_b24197b251c0a1 71
+  s_6686a4e0c8efc7::t_75ffa3814c9e6f 9,16,29-30,32-33,38,46,68-70,72
+  s_6686a4e0c8efc7::t_93808b14ce7405 31,73
+src/languages/impala/impala.ts
+  s_6686a4e0c8efc7::t_2154e15f0d522c 508
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "7955b0bd37b04b2c5aee866dbe6bddabc358a25b",
+  "prompts": {}
+}

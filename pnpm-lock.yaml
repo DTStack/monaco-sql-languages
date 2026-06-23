@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       dt-sql-parser:
-        specifier: 4.1.0-beta.7
-        version: 4.1.0-beta.7(antlr4ng-cli@1.0.7)
+        specifier: 4.5.1-beta.2
+        version: 4.5.1-beta.2(antlr4ng-cli@1.0.7)
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.7.2
@@ -308,6 +308,7 @@ packages:
 
   antlr4ng-cli@1.0.7:
     resolution: {integrity: sha512-qN2FsDBmLvsQcA5CWTrPz8I8gNXeS1fgXBBhI78VyxBSBV/EJgqy8ks6IDTC9jyugpl40csCQ4sL5K4i2YZ/2w==}
+    deprecated: 'This package is deprecated and will no longer be updated. Please use the new antlr-ng package instead: https://github.com/mike-lischke/antlr-ng'
     hasBin: true
 
   antlr4ng@2.0.11:
@@ -714,8 +715,8 @@ packages:
     resolution: {integrity: sha512-sCm11ak2oY6DglEPpCB8TixLjWAxd3kJTs6UIcSasNYxXdFPV+YKlye92c8H4kKFqV5qYMIh7d+cYecEg0dIkA==}
     engines: {node: '>=6'}
 
-  dt-sql-parser@4.1.0-beta.7:
-    resolution: {integrity: sha512-fVQkZfBRMLtRUKQWiCYY8LcfpwG767ihwNIhi9XKtA2CnC7A8ZIJ4f5Ks0fjtsUUwwBAm/lzxqV3Pp4OA1FO9A==}
+  dt-sql-parser@4.5.1-beta.2:
+    resolution: {integrity: sha512-7vd+ivo/PUjtO7qotq4Pt09zHjrBCMnHgdVT1ZtrmYF9RTXt6gyyX6pZZYqjvizXG1qFadiPfKKFNBhaDOTQRA==}
     engines: {node: '>=18'}
 
   email-addresses@3.1.0:
@@ -2703,7 +2704,7 @@ snapshots:
       find-up: 3.0.0
       minimatch: 3.1.2
 
-  dt-sql-parser@4.1.0-beta.7(antlr4ng-cli@1.0.7):
+  dt-sql-parser@4.5.1-beta.2(antlr4ng-cli@1.0.7):
     dependencies:
       antlr4-c3: 3.3.7(antlr4ng-cli@1.0.7)
       antlr4ng: 2.0.11(antlr4ng-cli@1.0.7)

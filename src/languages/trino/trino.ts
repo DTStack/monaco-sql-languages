@@ -677,7 +677,8 @@ export const language = <languages.IMonarchLanguage>{
 		],
 		customParams: [
 			[/\${[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE],
-			[/\@\@{[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE]
+			[/\@\@{[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE],
+			[/#\{[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE]
 		],
 		numbers: [
 			[/[$][+-]*\d*(\.\d*)?/, TokenClassConsts.NUMBER],

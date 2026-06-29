@@ -32,7 +32,7 @@ export const lightThemeData: editor.IStandaloneThemeData = {
 		{ token: postfixTokenClass(TokenClassConsts.STRING), foreground: 'a31515' },
 		{ token: postfixTokenClass(TokenClassConsts.STRING_ESCAPE), foreground: 'a31515' },
 		{ token: postfixTokenClass(TokenClassConsts.TYPE), foreground: '267f99' },
-		{ token: postfixTokenClass(TokenClassConsts.VARIABLE), foreground: '4fc1ff' }
+		{ token: postfixTokenClass(TokenClassConsts.VARIABLE), foreground: '00ad84' }
 	],
 	colors: {}
 };

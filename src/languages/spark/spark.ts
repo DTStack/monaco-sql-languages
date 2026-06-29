@@ -741,7 +741,8 @@ export const language = <languages.IMonarchLanguage>{
 		],
 		customParams: [
 			[/\${[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE],
-			[/\@\@{[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE]
+			[/\@\@{[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE],
+			[/#\{[A-Za-z0-9._-]*}/, TokenClassConsts.VARIABLE]
 		],
 		numbers: [
 			// https://spark.apache.org/docs/latest/sql-ref-literals.html#numeric-literal

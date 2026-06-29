@@ -6,13 +6,14 @@ import { setupLanguageFeatures, LanguageIdEnum } from 'monaco-sql-languages/esm/
 import { completionService } from './helpers/completionService';
 
 /**
- * replace dtstack custom params, eg: @@{componentParams}, ${taskCustomParams}
+ * replace dtstack custom params, eg: @@{componentParams}, ${taskCustomParams}, #{taskCustomParams}
  * @param code editor value
  * @returns replaced string
  */
 const preprocessCode = (code: string): string => {
 	const regex1 = /@@{[A-Za-z0-9._-]*}/g;
 	const regex2 = /\${[A-Za-z0-9._-]*}/g;
+	const regex3 = /#\{[A-Za-z0-9._-]*}/g;
 	let result = code;
 
 	if (regex1.test(code)) {
@@ -20,16 +21,21 @@ const preprocessCode = (code: string): string => {
 			return str.replace(/@|{|}|\.|-/g, '_');
 		});
 	}
-	if (regex2.test(code)) {
+	if (regex2.test(result)) {
 		result = result.replace(regex2, (str) => {
 			return str.replace(/\$|{|}|\.|-/g, '_');
+		});
+	}
+	if (regex3.test(result)) {
+		result = result.replace(regex3, (str) => {
+			return str.replace(/#|{|}|\.|-/g, '_');
 		});
 	}
 	return result;
 };
 
 /**
- * replace dtstack custom grammar, eg: @@{componentParams}, ${taskCustomParams}
+ * replace dtstack custom grammar, eg: @@{componentParams}, ${taskCustomParams}, #{taskCustomParams}
  * @param code editor value
  * @param mark some sql grammar need special mark to replace the beginning and the end
  * @returns replaced string
@@ -37,6 +43,7 @@ const preprocessCode = (code: string): string => {
 const preprocessCodeHive = (code: string, mark?: string): string => {
 	const regex1 = /@@{[A-Za-z0-9._-]*}/g;
 	const regex2 = /\${[A-Za-z0-9._-]*}/g;
+	const regex3 = /#\{[A-Za-z0-9._-]*}/g;
 	let result = code;
 
 	if (regex1.test(code)) {
@@ -50,12 +57,20 @@ const preprocessCodeHive = (code: string, mark?: string): string => {
 			return str.replace(/@|{|}|\.|-/g, '_');
 		});
 	}
-	if (regex2.test(code)) {
+	if (regex2.test(result)) {
 		result = result.replace(regex2, (str) => {
 			if (mark) {
 				return str.replace(/\$|}/g, mark).replace(/{|\.|-/g, '_');
 			}
 			return str.replace(/\$|{|}|\.|-/g, '_');
+		});
+	}
+	if (regex3.test(result)) {
+		result = result.replace(regex3, (str) => {
+			if (mark) {
+				return str.replace(/#|}/g, mark).replace(/{|\.|-/g, '_');
+			}
+			return str.replace(/#|{|}|\.|-/g, '_');
 		});
 	}
 	return result;

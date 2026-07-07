@@ -7,18 +7,38 @@ import extensions from './extensions';
 import './languages';
 import './App.css';
 import { editor } from 'monaco-editor';
+import {
+	createRunStatementButton,
+	type RunStatementButtonController
+} from 'monaco-sql-languages/esm/main';
+
+/** Demo-only: one controller per editor; dispose on app unmount. Production: dispose in editor unmount. */
+const runButtonControllers = new Map<editor.IStandaloneCodeEditor, RunStatementButtonController>();
 
 /**
  * Allow code completion when typing in snippets.
  *
  * You can also set configurations when creating monaco-editor instance
  */
-editor.onDidCreateEditor((editor) => {
-	editor.updateOptions({
+editor.onDidCreateEditor((editorInstance) => {
+	const codeEditor = editorInstance as editor.IStandaloneCodeEditor;
+
+	codeEditor.updateOptions({
 		suggest: {
 			snippetsPreventQuickSuggestions: false
 		}
 	});
+
+	// languageId is resolved from the model on each refresh; no need to pass it at create time.
+	const runButtonController = createRunStatementButton({
+		editor: codeEditor,
+		glyphMarginHoverMessage: '运行此语句',
+		onRun: ({ statement }) => {
+			window.console.log('[run-statement-button]', statement.text);
+		}
+	});
+
+	runButtonControllers.set(codeEditor, runButtonController);
 });
 
 const instance = create({
@@ -34,6 +54,8 @@ export default function App() {
 		instance.render(container.current);
 
 		return () => {
+			runButtonControllers.forEach((controller) => controller.dispose());
+			runButtonControllers.clear();
 			instance.dispose();
 		};
 	}, []);

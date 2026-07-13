@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       monaco-editor:
-        specifier: 0.52.2
-        version: 0.52.2
+        specifier: 0.54.0
+        version: 0.54.0
       monaco-editor-webpack-plugin:
         specifier: 7.0.1
-        version: 7.0.1(monaco-editor@0.52.2)(webpack@5.101.3(webpack-cli@5.1.4))
+        version: 7.0.1(monaco-editor@0.54.0)(webpack@5.101.3(webpack-cli@5.1.4))
       monaco-sql-languages:
         specifier: 1.0.0-beta.5
-        version: 1.0.0-beta.5(antlr4ng-cli@1.0.7)(monaco-editor@0.52.2)
+        version: 1.0.0-beta.5(antlr4ng-cli@1.0.7)(monaco-editor@0.54.0)
     devDependencies:
       css-loader:
         specifier: ^6.8.1
@@ -544,6 +544,9 @@ packages:
     resolution: {integrity: sha512-GrwoxYN+uWlzO8uhUXRl0P+kHE4GtVPfYzVLcUxPL7KNdHKj66vvlhiweIHqYYXWlw+T8iLMp42Lm67ghw4WMQ==}
     engines: {node: '>= 4'}
 
+  dompurify@3.1.7:
+    resolution: {integrity: sha512-VaTstWtsneJY8xzy7DekmYWEOZcmzIe3Qb3zPd4STve1OBTa+e+WmS1ITQec1fZYXI3HCsOZZiSMpG6oxoWMWQ==}
+
   domutils@2.8.0:
     resolution: {integrity: sha512-w96Cjofp72M5IIhpjgobBimYEfoPjx1Vx0BSX9P30WBdZW2WIKU0T1Bd0kz2eNZ9ikjKgHbEyKx8BB6H1L3h3A==}
 
@@ -1048,6 +1051,11 @@ packages:
   lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
 
+  marked@14.0.0:
+    resolution: {integrity: sha512-uIj4+faQ+MgHgwUW1l2PsPglZLOLOT1uErt06dAPtx2kjteLAkbsd/0FiYg/MGS+i7ZKLb7w2WClxHkzOOuryQ==}
+    engines: {node: '>= 18'}
+    hasBin: true
+
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
@@ -1121,8 +1129,8 @@ packages:
       monaco-editor: '>= 0.31.0'
       webpack: ^4.5.0 || 5.x
 
-  monaco-editor@0.52.2:
-    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
+  monaco-editor@0.54.0:
+    resolution: {integrity: sha512-hx45SEUoLatgWxHKCmlLJH81xBo0uXP4sRkESUpmDQevfi+e7K1VuiSprK6UpQ8u4zOcKNiH0pMvHvlMWA/4cw==}
 
   monaco-sql-languages@1.0.0-beta.5:
     resolution: {integrity: sha512-VEjQ3qp8lch/yz6N50Qd71JBKLAsI4a258J8CIwNvUKQ2d3g7UqLFN+SoG5eQgNcz4soQDiLWorUjw5deEpTgQ==}
@@ -2282,6 +2290,8 @@ snapshots:
     dependencies:
       domelementtype: 2.3.0
 
+  dompurify@3.1.7: {}
+
   domutils@2.8.0:
     dependencies:
       dom-serializer: 1.4.1
@@ -2793,6 +2803,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  marked@14.0.0: {}
+
   math-intrinsics@1.1.0: {}
 
   math-random@1.0.4: {}
@@ -2865,18 +2877,21 @@ snapshots:
 
   monaco-editor-core@0.52.2: {}
 
-  monaco-editor-webpack-plugin@7.0.1(monaco-editor@0.52.2)(webpack@5.101.3(webpack-cli@5.1.4)):
+  monaco-editor-webpack-plugin@7.0.1(monaco-editor@0.54.0)(webpack@5.101.3(webpack-cli@5.1.4)):
     dependencies:
       loader-utils: 2.0.4
-      monaco-editor: 0.52.2
+      monaco-editor: 0.54.0
       webpack: 5.101.3(webpack-cli@5.1.4)
 
-  monaco-editor@0.52.2: {}
+  monaco-editor@0.54.0:
+    dependencies:
+      dompurify: 3.1.7
+      marked: 14.0.0
 
-  monaco-sql-languages@1.0.0-beta.5(antlr4ng-cli@1.0.7)(monaco-editor@0.52.2):
+  monaco-sql-languages@1.0.0-beta.5(antlr4ng-cli@1.0.7)(monaco-editor@0.54.0):
     dependencies:
       dt-sql-parser: 4.3.1(antlr4ng-cli@1.0.7)
-      monaco-editor: 0.52.2
+      monaco-editor: 0.54.0
       monaco-editor-core: 0.52.2
     transitivePeerDependencies:
       - antlr4ng-cli

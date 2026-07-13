@@ -3,31 +3,65 @@ const jsdom = require('jsdom');
 const glob = require('fast-glob');
 const path = require('path');
 const Mocha = require('mocha');
+const nodeCrypto = require('crypto');
 
-requirejs.config({
-	baseUrl: path.join(__dirname, '../'),
-	paths: {
-		vs: 'node_modules/monaco-editor/dev/vs',
-		'vs/css': 'test/css.mock',
-		'vs/nls': 'test/nls.mock',
-		'out/amd/fillers/monaco-editor-core': 'out/amd/fillers/monaco-editor-core-amd'
-	},
-	nodeRequire: require
-});
+// Monaco Editor 0.54.0+ requires crypto for generating unique IDs
+if (!globalThis.crypto) {
+	globalThis.crypto = {
+		randomUUID: () => nodeCrypto.randomUUID(),
+		getRandomValues: (arr) => nodeCrypto.getRandomValues(arr)
+	};
+}
+global.crypto = globalThis.crypto;
 
+// Set up DOM environment BEFORE any AMD module loading
 const tmp = new jsdom.JSDOM('<!DOCTYPE html><html><body></body></html>');
 global.AMD = true;
 global.document = tmp.window.document;
 global.navigator = tmp.window.navigator;
 global.self = global;
+global.UIEvent = tmp.window.UIEvent;
+global.Element = tmp.window.Element;
+global.CSS = {
+	supports: function () {
+		return false;
+	},
+	escape: function (value) {
+		return String(value).replace(/[^a-zA-Z0-9_\-]/g, function (ch) {
+			return '\\' + ch;
+		});
+	}
+};
 global.document.queryCommandSupported = function () {
 	return false;
 };
-global.UIEvent = tmp.window.UIEvent;
-global.define = requirejs.define;
 
-// 添加完整的DOM环境支持
-global.Element = tmp.window.Element;
+// Monaco Editor 0.54.0+ uses document.baseURI for worker URLs
+if (!document.baseURI) {
+	Object.defineProperty(document, 'baseURI', {
+		get: () => 'file://' + process.cwd() + '/',
+		configurable: true
+	});
+}
+
+// Mock URL constructor for Node.js environment
+const OriginalURL = globalThis.URL;
+class MockURL {
+	constructor(url, base) {
+		if (typeof url === 'string' && url.startsWith('/')) {
+			this.href = url;
+			return;
+		}
+		try {
+			const instance = new OriginalURL(url, base);
+			this.href = instance.href;
+		} catch {
+			this.href = url;
+		}
+	}
+}
+global.URL = MockURL;
+
 global.window = {
 	location: {},
 	navigator: tmp.window.navigator,
@@ -37,6 +71,8 @@ global.window = {
 			addEventListener: function () {}
 		};
 	},
+	addEventListener: function () {},
+	removeEventListener: function () {},
 	setInterval: setInterval,
 	clearInterval: clearInterval,
 	setTimeout: setTimeout,
@@ -48,6 +84,19 @@ if (!document.body) {
 	const body = document.createElement('body');
 	document.appendChild(body);
 }
+
+global.define = requirejs.define;
+
+requirejs.config({
+	baseUrl: path.join(__dirname, '../'),
+	paths: {
+		vs: 'node_modules/monaco-editor/dev/vs',
+		'vs/css': 'test/css.mock',
+		'vs/nls': 'test/nls.mock',
+		'out/amd/fillers/monaco-editor-core': 'out/amd/fillers/monaco-editor-core-amd'
+	},
+	nodeRequire: require
+});
 
 requirejs(
 	['./test/setup'],

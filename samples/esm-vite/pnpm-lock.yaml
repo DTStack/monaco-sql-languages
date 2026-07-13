@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       monaco-editor:
-        specifier: 0.52.2
-        version: 0.52.2
+        specifier: 0.54.0
+        version: 0.54.0
       monaco-sql-languages:
-        specifier: 1.0.0-beta.3
-        version: 1.0.0-beta.3(antlr4ng-cli@1.0.7)(monaco-editor@0.52.2)
+        specifier: 1.0.0-beta.5
+        version: 1.0.0-beta.5(antlr4ng-cli@1.0.7)(monaco-editor@0.54.0)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -316,56 +316,67 @@ packages:
     resolution: {integrity: sha512-kDWSPafToDd8LcBYd1t5jw7bD5Ojcu12S3uT372e5HKPzQt532vW+rGFFOaiR0opxePyUkHrwz8iWYEyH1IIQA==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.52.2':
     resolution: {integrity: sha512-gKm7Mk9wCv6/rkzwCiUC4KnevYhlf8ztBrDRT9g/u//1fZLapSRc+eDZj2Eu2wpJ+0RzUKgtNijnVIB4ZxyL+w==}
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.52.2':
     resolution: {integrity: sha512-66lA8vnj5mB/rtDNwPgrrKUOtCLVQypkyDa2gMfOefXK6rcZAxKLO9Fy3GkW8VkPnENv9hBkNOFfGLf6rNKGUg==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.52.2':
     resolution: {integrity: sha512-s+OPucLNdJHvuZHuIz2WwncJ+SfWHFEmlC5nKMUgAelUeBUnlB4wt7rXWiyG4Zn07uY2Dd+SGyVa9oyLkVGOjA==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-loong64-gnu@4.52.2':
     resolution: {integrity: sha512-8wTRM3+gVMDLLDdaT6tKmOE3lJyRy9NpJUS/ZRWmLCmOPIJhVyXwjBo+XbrrwtV33Em1/eCTd5TuGJm4+DmYjw==}
     cpu: [loong64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-ppc64-gnu@4.52.2':
     resolution: {integrity: sha512-6yqEfgJ1anIeuP2P/zhtfBlDpXUb80t8DpbYwXQ3bQd95JMvUaqiX+fKqYqUwZXqdJDd8xdilNtsHM2N0cFm6A==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-gnu@4.52.2':
     resolution: {integrity: sha512-sshYUiYVSEI2B6dp4jMncwxbrUqRdNApF2c3bhtLAU0qA8Lrri0p0NauOsTWh3yCCCDyBOjESHMExonp7Nzc0w==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-musl@4.52.2':
     resolution: {integrity: sha512-duBLgd+3pqC4MMwBrKkFxaZerUxZcYApQVC5SdbF5/e/589GwVvlRUnyqMFbM8iUSb1BaoX/3fRL7hB9m2Pj8Q==}
     cpu: [riscv64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-s390x-gnu@4.52.2':
     resolution: {integrity: sha512-tzhYJJidDUVGMgVyE+PmxENPHlvvqm1KILjjZhB8/xHYqAGeizh3GBGf9u6WdJpZrz1aCpIIHG0LgJgH9rVjHQ==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.52.2':
     resolution: {integrity: sha512-opH8GSUuVcCSSyHHcl5hELrmnk4waZoVpgn/4FDao9iyE4WpQhyWJ5ryl5M3ocp4qkRuHfyXnGqg8M9oKCEKRA==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.52.2':
     resolution: {integrity: sha512-LSeBHnGli1pPKVJ79ZVJgeZWWZXkEe/5o8kcn23M8eMKCUANejchJbF/JqzM4RRjOJfNRhKJk8FuqL1GKjF5oQ==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-openharmony-arm64@4.52.2':
     resolution: {integrity: sha512-uPj7MQ6/s+/GOpolavm6BPo+6CbhbKYyZHUDvZ/SmJM7pfDBgdGisFX3bY/CBDMg2ZO4utfhlApkSfZ92yXw7Q==}
@@ -467,6 +478,9 @@ packages:
       supports-color:
         optional: true
 
+  dompurify@3.1.7:
+    resolution: {integrity: sha512-VaTstWtsneJY8xzy7DekmYWEOZcmzIe3Qb3zPd4STve1OBTa+e+WmS1ITQec1fZYXI3HCsOZZiSMpG6oxoWMWQ==}
+
   dt-sql-parser@4.3.1:
     resolution: {integrity: sha512-WlFB9of+ChwWtc5M222jHGIpzqHx51szLe/11GAwwbA+4hRaVkMpWMf2bbYj4i855edSoTQ52zyLJVOpe+4OVg==}
     engines: {node: '>=18'}
@@ -512,11 +526,19 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  monaco-editor@0.52.2:
-    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
+  marked@14.0.0:
+    resolution: {integrity: sha512-uIj4+faQ+MgHgwUW1l2PsPglZLOLOT1uErt06dAPtx2kjteLAkbsd/0FiYg/MGS+i7ZKLb7w2WClxHkzOOuryQ==}
+    engines: {node: '>= 18'}
+    hasBin: true
 
-  monaco-sql-languages@1.0.0-beta.3:
-    resolution: {integrity: sha512-lmSFrgr3cvtbkUFZmiXC5OqJZ0GM6vXzRFnNSd8OoGNX/MenYypkH9FdJ/2SJhHzKIKRm4KCiGPK7r+VNHCk5A==}
+  monaco-editor-core@0.52.2:
+    resolution: {integrity: sha512-5TOyTUymNx7jB24TGP4Qs5UEVrntDKSMzDUvW3ADaI1CFRO1t7FPhbT2u4m3iIKZf85zTM+mkCxiUSgj+v/YtA==}
+
+  monaco-editor@0.54.0:
+    resolution: {integrity: sha512-hx45SEUoLatgWxHKCmlLJH81xBo0uXP4sRkESUpmDQevfi+e7K1VuiSprK6UpQ8u4zOcKNiH0pMvHvlMWA/4cw==}
+
+  monaco-sql-languages@1.0.0-beta.5:
+    resolution: {integrity: sha512-VEjQ3qp8lch/yz6N50Qd71JBKLAsI4a258J8CIwNvUKQ2d3g7UqLFN+SoG5eQgNcz4soQDiLWorUjw5deEpTgQ==}
     engines: {node: '>=18'}
     peerDependencies:
       monaco-editor: '>=0.52.2'
@@ -968,6 +990,8 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  dompurify@3.1.7: {}
+
   dt-sql-parser@4.3.1(antlr4ng-cli@1.0.7):
     dependencies:
       antlr4-c3: 3.3.7(antlr4ng-cli@1.0.7)
@@ -1024,12 +1048,20 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  monaco-editor@0.52.2: {}
+  marked@14.0.0: {}
 
-  monaco-sql-languages@1.0.0-beta.3(antlr4ng-cli@1.0.7)(monaco-editor@0.52.2):
+  monaco-editor-core@0.52.2: {}
+
+  monaco-editor@0.54.0:
+    dependencies:
+      dompurify: 3.1.7
+      marked: 14.0.0
+
+  monaco-sql-languages@1.0.0-beta.5(antlr4ng-cli@1.0.7)(monaco-editor@0.54.0):
     dependencies:
       dt-sql-parser: 4.3.1(antlr4ng-cli@1.0.7)
-      monaco-editor: 0.52.2
+      monaco-editor: 0.54.0
+      monaco-editor-core: 0.52.2
     transitivePeerDependencies:
       - antlr4ng-cli
 

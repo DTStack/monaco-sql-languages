@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/DTStack/monaco-sql-languages/compare/v1.1.1-beta.0...v1.2.0) (2026-07-13)
+
+
+### Features
+
+* upgrade demos' monaco-editor@0.54.0 ([1d87d46](https://github.com/DTStack/monaco-sql-languages/commit/1d87d4610baa1edc9d2df6ee7ddd57c632d6b3e4))
+
 ## [1.1.0](https://github.com/DTStack/monaco-sql-languages/compare/v1.0.0...v1.1.0) (2026-05-20)
 
 

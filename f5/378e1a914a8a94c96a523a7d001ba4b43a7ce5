@@ -1,0 +1,12 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "f5378e1a914a8a94c96a523a7d001ba4b43a7ce5",
+  "prompts": {},
+  "humans": {
+    "h_8067a67b8aeac4": {
+      "author": "zhaoge"
+    }
+  }
+}

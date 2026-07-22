@@ -1,5 +1,6 @@
 import type { BaseSQLWorker } from './baseSQLWorker';
 import { IDisposable, languages, Uri } from './fillers/monaco-editor-core';
+import { getFormatActionRegistrar, reportFormatEntryMissing } from './formatBridge';
 import * as languageFeatures from './languageFeatures';
 import { LanguageServiceDefaults } from './monaco.contribution';
 import { WorkerManager } from './workerManager';
@@ -9,6 +10,7 @@ export function setupLanguageMode<T extends BaseSQLWorker>(
 ): IDisposable {
 	const disposables: IDisposable[] = [];
 	const providers: IDisposable[] = [];
+	let disposed = false;
 
 	const client = new WorkerManager<T>(defaults);
 	disposables.push(client);
@@ -59,13 +61,31 @@ export function setupLanguageMode<T extends BaseSQLWorker>(
 				)
 			);
 		}
+
+		if (modeConfiguration.format.enable) {
+			const registerFormatAction = getFormatActionRegistrar();
+			if (registerFormatAction) {
+				providers.push(registerFormatAction(defaults));
+			} else {
+				// Defensive: language may load after setup threw, or before a late format import.
+				reportFormatEntryMissing(languageId);
+			}
+		}
 	}
 
 	registerProviders();
 
 	disposables.push(asDisposable(providers));
 
-	return asDisposable(disposables);
+	return {
+		dispose: () => {
+			if (disposed) {
+				return;
+			}
+			disposed = true;
+			disposeAll(disposables);
+		}
+	};
 }
 
 function asDisposable(disposables: IDisposable[]): IDisposable {

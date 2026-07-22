@@ -1,6 +1,9 @@
 import { EntityContext, Suggestions } from 'dt-sql-parser';
 
+import type { FormatFallback } from './formatTypes';
 import { editor, Emitter, IEvent, IRange, languages, Position } from './fillers/monaco-editor-core';
+
+export type { FormatFallback } from './formatTypes';
 
 /**
  * A completion item.
@@ -58,6 +61,31 @@ export interface CompletionSnippet {
 
 export type CompletionSnippetOption = Omit<CompletionSnippet, 'insertText'>;
 
+export interface FormatOptions {
+	/**
+	 * Defines whether the built-in Format action is enabled.
+	 * Defaults to false.
+	 */
+	enable: boolean;
+	/**
+	 * Called when sql-formatter is unavailable or throws. Should return formatted SQL.
+	 */
+	fallback?: FormatFallback;
+	/**
+	 * Indent width passed to sql-formatter. Defaults to 4.
+	 * Values below 1 (or non-finite) fall back to 4; fractional values are floored.
+	 */
+	tabWidth?: number;
+	/**
+	 * Custom keybindings for the Format action.
+	 * Defaults to Ctrl/Cmd+Alt+F.
+	 */
+	keybindings?: number[];
+}
+
+/** Runtime options passed to {@link formatSQL} / {@link formatEditorSQL}. */
+export type FormatSQLOptions = Pick<FormatOptions, 'fallback' | 'tabWidth'>;
+
 export interface ModeConfiguration {
 	/**
 	 * Defines whether the built-in completionItemProvider is enabled.
@@ -94,6 +122,12 @@ export interface ModeConfiguration {
 	 * Defines whether the built-in hover provider is enabled.
 	 */
 	readonly hover?: boolean;
+	/**
+	 * Defines whether the built-in Format action is enabled.
+	 * Defaults to false.
+	 * When enabled, a single "Format" item is added to the editor context menu.
+	 */
+	readonly format: FormatOptions;
 }
 
 /**
@@ -211,5 +245,8 @@ export const modeConfigurationDefault: Required<ModeConfiguration> = {
 	diagnostics: true,
 	definitions: false,
 	references: false,
-	hover: false
+	hover: false,
+	format: {
+		enable: false
+	}
 };

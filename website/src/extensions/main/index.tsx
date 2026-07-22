@@ -1,6 +1,7 @@
 import { ParseError } from 'dt-sql-parser';
 import * as monaco from 'monaco-editor';
 import { vsPlusTheme } from 'monaco-sql-languages/esm/main';
+import { formatEditorSQL } from 'monaco-sql-languages/esm/format.entry';
 import { LanguageService, type SerializedTreeNode } from 'monaco-sql-languages/esm/languageService';
 
 import TreeVisualizerPanel from '@/components/treeVisualizerPanel';
@@ -14,6 +15,7 @@ import {
 	QUICK_GITHUB,
 	SQL_LANGUAGES
 } from '@/consts';
+import { formatFallback } from '@/languages';
 import { debounce } from '@/utils/tool';
 import ApiDocPage from '@/workbench/apiDocPage';
 import { ProblemsPaneView } from '@/workbench/problems';
@@ -31,6 +33,8 @@ import {
 	IMoleculeContext,
 	TabGroup
 } from '@dtinsight/molecule';
+
+const FORMAT_TOOLBAR_ID = 'editor.toolbar.formatSql';
 
 const problemsService = new ProblemsService();
 
@@ -347,6 +351,28 @@ export const mainExt: IExtension = {
 
 		molecule.activityBar.setCurrent(ACTIVITY_FOLDER);
 		molecule.sidebar.setCurrent(ACTIVITY_FOLDER);
+
+		molecule.editor.addToolbars([
+			{
+				id: FORMAT_TOOLBAR_ID,
+				name: 'Format',
+				title: 'Format',
+				icon: 'symbol-misc',
+				group: 'inline',
+				sortIndex: 1
+			}
+		]);
+
+		molecule.editor.onToolbarClick(async (item, groupId) => {
+			if (item.id !== FORMAT_TOOLBAR_ID) return;
+			const group = molecule.editor.getGroup(groupId) ?? molecule.editor.getCurrentGroup();
+			const editorInstance = group?.editorInstance;
+			if (!editorInstance) return;
+			// Cast across monaco-editor minor version differences in the demo deps.
+			await formatEditorSQL(editorInstance as Parameters<typeof formatEditorSQL>[0], {
+				fallback: formatFallback
+			});
+		});
 
 		molecule.editor.onCurrentChange((tab) => {
 			const language = (tab.tabId as string)?.split('_')?.[0];

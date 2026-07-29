@@ -5,6 +5,7 @@ import { WordPosition } from 'dt-sql-parser/dist/parser/common/textAndWord';
 import * as monaco from 'monaco-editor';
 
 import { BaseSQLWorker } from './baseSQLWorker';
+import { TokenClassConsts } from './common/constants';
 import { debounce } from './common/utils';
 import {
 	CancellationToken,
@@ -145,6 +146,25 @@ function toDiagnostics(_resource: Uri, diag: ParseError): editor.IMarkerData {
 	};
 }
 
+function isPositionInComment(model: editor.IReadOnlyModel, position: Position): boolean {
+	const textBeforePosition = model.getValueInRange(
+		new Range(1, 1, position.lineNumber, position.column)
+	);
+	// 在光标处追加哨兵字符，避免将刚结束的块注释误判为仍在注释中
+	const tokenizedLines = editor.tokenize(`${textBeforePosition}x`, model.getLanguageId());
+	const lineTokens = tokenizedLines[tokenizedLines.length - 1] || [];
+	const sentinelOffset = position.column - 1;
+
+	for (let index = lineTokens.length - 1; index >= 0; index--) {
+		const token = lineTokens[index];
+		if (token.offset <= sentinelOffset) {
+			return token.type.startsWith(TokenClassConsts.COMMENT);
+		}
+	}
+
+	return false;
+}
+
 export class CompletionAdapter<T extends BaseSQLWorker>
 	implements languages.CompletionItemProvider
 {
@@ -165,6 +185,10 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 		context: languages.CompletionContext,
 		_token: CancellationToken
 	): Promise<languages.CompletionList> {
+		if (isPositionInComment(model, position)) {
+			return Promise.resolve({ suggestions: [] });
+		}
+
 		const resource = model.uri;
 		return this._worker(resource)
 			.then((worker) => {

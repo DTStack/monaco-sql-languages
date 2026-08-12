@@ -5,7 +5,6 @@ import { WordPosition } from 'dt-sql-parser/dist/parser/common/textAndWord';
 import * as monaco from 'monaco-editor';
 
 import { BaseSQLWorker } from './baseSQLWorker';
-import { TokenClassConsts } from './common/constants';
 import { debounce } from './common/utils';
 import {
 	CancellationToken,
@@ -146,23 +145,31 @@ function toDiagnostics(_resource: Uri, diag: ParseError): editor.IMarkerData {
 	};
 }
 
-function isPositionInComment(model: editor.IReadOnlyModel, position: Position): boolean {
-	const textBeforePosition = model.getValueInRange(
-		new Range(1, 1, position.lineNumber, position.column)
-	);
-	// 在光标处追加哨兵字符，避免将刚结束的块注释误判为仍在注释中
-	const tokenizedLines = editor.tokenize(`${textBeforePosition}x`, model.getLanguageId());
-	const lineTokens = tokenizedLines[tokenizedLines.length - 1] || [];
-	const sentinelOffset = position.column - 1;
+interface TokenizationTextModel {
+	tokenization?: {
+		tokenizeLinesAt?: (
+			lineNumber: number,
+			lines: string[]
+		) => Array<{
+			findTokenIndexAtOffset: (offset: number) => number;
+			getStandardTokenType: (tokenIndex: number) => number;
+		}> | null;
+	};
+}
 
-	for (let index = lineTokens.length - 1; index >= 0; index--) {
-		const token = lineTokens[index];
-		if (token.offset <= sentinelOffset) {
-			return token.type.startsWith(TokenClassConsts.COMMENT);
-		}
+function isPositionInComment(model: editor.IReadOnlyModel, position: Position): boolean {
+	const lineContent = model.getLineContent(position.lineNumber);
+	const tokenizationModel = model as editor.IReadOnlyModel & TokenizationTextModel;
+	// 在光标处追加哨兵字符，避免将刚结束的块注释误判为仍在注释中
+	const tokenizedLine = tokenizationModel.tokenization?.tokenizeLinesAt?.(position.lineNumber, [
+		`${lineContent.slice(0, position.column - 1)}x`
+	])?.[0];
+	if (!tokenizedLine) {
+		return false;
 	}
 
-	return false;
+	const tokenIndex = tokenizedLine.findTokenIndexAtOffset(position.column - 1);
+	return tokenizedLine.getStandardTokenType(tokenIndex) === 1;
 }
 
 export class CompletionAdapter<T extends BaseSQLWorker>

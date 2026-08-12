@@ -166,6 +166,58 @@ test('does not treat a single minus sign as a comment', async () => {
 	assert.strictEqual(result.workerCallCount, 1);
 });
 
+test('checks comment state without reading the whole document prefix', async () => {
+	const value = 'SELECT 1;\n-- comment';
+	const model = editor.createModel(value, MYSQL_DIALECT.languageId);
+	const position = getEndPosition(value);
+	const originalGetValueInRange = model.getValueInRange.bind(model);
+	const cancellationTokenSource = new CancellationTokenSource();
+	const defaults = new LanguageServiceDefaultsImpl(
+		MYSQL_DIALECT.languageId,
+		modeConfigurationDefault
+	);
+	const adapter = new CompletionAdapter(
+		async () =>
+			({
+				doCompletionWithEntities: async () => ({
+					suggestions: {
+						syntax: [],
+						keywords: ['SELECT']
+					},
+					allEntities: null,
+					context: null
+				})
+			}) as unknown as BaseSQLWorker,
+		defaults
+	);
+
+	model.getValueInRange = ((range, eol) => {
+		if (
+			range.startLineNumber === 1 &&
+			range.startColumn === 1 &&
+			(range.endLineNumber > 1 || range.endColumn > 1)
+		) {
+			throw new Error('comment detection should not read the whole document prefix');
+		}
+
+		return originalGetValueInRange(range, eol);
+	}) as typeof model.getValueInRange;
+
+	try {
+		const completionList = await adapter.provideCompletionItems(
+			model,
+			position,
+			{ triggerKind: languages.CompletionTriggerKind.Invoke },
+			cancellationTokenSource.token
+		);
+
+		assert.deepStrictEqual(completionList.suggestions, []);
+	} finally {
+		cancellationTokenSource.dispose();
+		model.dispose();
+	}
+});
+
 test('keeps the existing completion flow for regular SQL', async () => {
 	const result = await provideCompletionItems(MYSQL_DIALECT.languageId, 'SELECT ');
 

@@ -103,7 +103,7 @@ requirejs(
 	function () {
 		let files;
 		try {
-			files = glob.sync('out/amd/languages/*/*.test.js', {
+			files = glob.sync(['out/amd/languages/*/*.test.js', 'out/amd/test/*.test.js'], {
 				cwd: path.dirname(__dirname),
 				dot: true
 			});

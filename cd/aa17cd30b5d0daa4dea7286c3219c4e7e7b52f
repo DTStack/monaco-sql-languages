@@ -1,0 +1,16 @@
+package.json
+  h_8067a67b8aeac4 107
+pnpm-lock.yaml
+  h_8067a67b8aeac4 12-13,726-727,2772
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "cdaa17cd30b5d0daa4dea7286c3219c4e7e7b52f",
+  "prompts": {},
+  "humans": {
+    "h_8067a67b8aeac4": {
+      "author": "zhaoge"
+    }
+  }
+}

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/DTStack/monaco-sql-languages/compare/v1.2.0...v1.2.1) (2026-08-25)
+
+
+### Features
+
+* [#206](https://github.com/DTStack/monaco-sql-languages/issues/206) add configurable SQL formatting with formatSQL API ([c8d7d63](https://github.com/DTStack/monaco-sql-languages/commit/c8d7d635a344421664838ed4cf0ec4e2b24cb004))
+* [#222](https://github.com/DTStack/monaco-sql-languages/issues/222) support sql run feature ([fa7227d](https://github.com/DTStack/monaco-sql-languages/commit/fa7227da3784ca5760ebc1a965f75da1ed661d6a))
+* upgrade dt-sql-parser's version ([cdaa17c](https://github.com/DTStack/monaco-sql-languages/commit/cdaa17cd30b5d0daa4dea7286c3219c4e7e7b52f))
+
+
+### Bug Fixes
+
+* [#165](https://github.com/DTStack/monaco-sql-languages/issues/165) disable completion in comments ([3828f85](https://github.com/DTStack/monaco-sql-languages/commit/3828f85c5a23c80d4be9f82d9c8941a8c9d85a63))
+* [#165](https://github.com/DTStack/monaco-sql-languages/issues/165) optimize comment tokenization ([596e5dc](https://github.com/DTStack/monaco-sql-languages/commit/596e5dcb8523c275f22e870df2d7de774c54e58a))
+
 ## [1.2.0](https://github.com/DTStack/monaco-sql-languages/compare/v1.1.1-beta.0...v1.2.0) (2026-07-13)
 
 

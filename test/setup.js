@@ -29,6 +29,17 @@ define('vs/nls', [], {
 	}
 });
 
+define('dt-sql-parser', [], {
+	EntityContextType: {
+		TABLE: 'table',
+		TABLE_CREATE: 'tableCreate'
+	}
+});
+
+define('monaco-editor', ['vs/editor/editor.main'], function (api) {
+	return api.m || api;
+});
+
 define(['vs/editor/editor.main'], function (api) {
 	// Monaco Editor 0.54.0+ exports as api.m instead of api directly
 	const monaco = api.m || api;

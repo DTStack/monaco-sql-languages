@@ -1,10 +1,16 @@
+export interface DebouncedFunction<T extends (...args: unknown[]) => unknown> {
+	(...args: Parameters<T>): unknown;
+	cancel: () => void;
+}
+
 export function debounce<T extends (...args: unknown[]) => unknown>(
 	func: T,
 	timeout: number,
 	immediate?: boolean
-): (...args: Parameters<T>) => unknown {
+): DebouncedFunction<T> {
 	let timer: NodeJS.Timeout | null = null;
-	return (...args) => {
+
+	const debounced = (...args: Parameters<T>) => {
 		if (timer) {
 			clearTimeout(timer);
 		}
@@ -18,4 +24,13 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 			func?.(...args);
 		}, timeout);
 	};
+
+	debounced.cancel = () => {
+		if (timer) {
+			clearTimeout(timer);
+			timer = null;
+		}
+	};
+
+	return debounced;
 }

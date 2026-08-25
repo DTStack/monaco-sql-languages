@@ -145,6 +145,33 @@ function toDiagnostics(_resource: Uri, diag: ParseError): editor.IMarkerData {
 	};
 }
 
+interface TokenizationTextModel {
+	tokenization?: {
+		tokenizeLinesAt?: (
+			lineNumber: number,
+			lines: string[]
+		) => Array<{
+			findTokenIndexAtOffset: (offset: number) => number;
+			getStandardTokenType: (tokenIndex: number) => number;
+		}> | null;
+	};
+}
+
+function isPositionInComment(model: editor.IReadOnlyModel, position: Position): boolean {
+	const lineContent = model.getLineContent(position.lineNumber);
+	const tokenizationModel = model as editor.IReadOnlyModel & TokenizationTextModel;
+	// 在光标处追加哨兵字符，避免将刚结束的块注释误判为仍在注释中
+	const tokenizedLine = tokenizationModel.tokenization?.tokenizeLinesAt?.(position.lineNumber, [
+		`${lineContent.slice(0, position.column - 1)}x`
+	])?.[0];
+	if (!tokenizedLine) {
+		return false;
+	}
+
+	const tokenIndex = tokenizedLine.findTokenIndexAtOffset(position.column - 1);
+	return tokenizedLine.getStandardTokenType(tokenIndex) === 1;
+}
+
 export class CompletionAdapter<T extends BaseSQLWorker>
 	implements languages.CompletionItemProvider
 {
@@ -165,6 +192,10 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 		context: languages.CompletionContext,
 		_token: CancellationToken
 	): Promise<languages.CompletionList> {
+		if (isPositionInComment(model, position)) {
+			return Promise.resolve({ suggestions: [] });
+		}
+
 		const resource = model.uri;
 		return this._worker(resource)
 			.then((worker) => {

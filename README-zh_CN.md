@@ -205,6 +205,45 @@ npm install monaco-sql-languages
 
 <br/>
 
+## 运行语句按钮
+
+在每条 SQL 语句前显示 gutter 运行图标。创建编辑器后调用 `createRunStatementButton`，编辑器销毁时调用 `dispose()`。
+
+```typescript
+import {
+    LanguageIdEnum,
+    createRunStatementButton,
+    getStatementRangesByLanguage
+} from 'monaco-sql-languages';
+
+const controller = createRunStatementButton({
+    editor,
+    languageId: LanguageIdEnum.FLINK,
+    glyphMarginHoverMessage: '运行此语句',
+    preprocessCode: (code) => code,
+    onRun: ({ statement, editor, model }) => {
+        console.log(statement.text);
+    }
+});
+
+// controller.refresh(); // 需要时手动刷新图标
+// controller.dispose(); // 编辑器卸载时调用
+```
+
+**说明**
+
+- 建议显式传入 `languageId`，以便内置拆分器使用正确的 parser。
+- 自定义 `getStatementRanges` 只需提供准确的 `startLineNumber` 和 `text`，`executableLineNumber` 会自动归一化。
+- 编辑器只读时不显示图标，且忽略点击。
+- 若只需内置拆分逻辑，可单独使用 `getStatementRangesByLanguage(code, languageId, preprocessCode)`。
+- `preprocessCode` 必须与编辑器 model 保持行号对齐（不要增删行导致行号偏移）；装饰是打在原始 model 上的。
+- 默认情况下，仅空白或仅分号的片段（如 `;;;`）不显示运行图标。
+- `executableLineNumber` 会跳过 leading 注释，但不解析字符串字面量；若 leading 字符串内含 `/*` 或 `--` 可能误判（实际场景较少见）。
+- 多条语句的 `executableLineNumber` 相同时会输出 console 警告，gutter 点击以最后一条为准。
+- 编辑器销毁时请调用 `controller.dispose()`（每个编辑器实例对应一个 controller）。
+
+<br/>
+
 ## 代码片段
 我们为每种SQL语言内置了一部分代码片段, 帮助我们快速编写SQL。
 

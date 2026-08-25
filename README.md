@@ -205,6 +205,45 @@ npm install monaco-sql-languages
 
 <br/>
 
+## Run Statement Button
+
+Add a gutter run icon before each SQL statement. Call `createRunStatementButton` after creating the editor and dispose the controller when the editor is destroyed.
+
+```typescript
+import {
+    LanguageIdEnum,
+    createRunStatementButton,
+    getStatementRangesByLanguage
+} from 'monaco-sql-languages';
+
+const controller = createRunStatementButton({
+    editor,
+    languageId: LanguageIdEnum.FLINK,
+    glyphMarginHoverMessage: 'Run this statement',
+    preprocessCode: (code) => code,
+    onRun: ({ statement, editor, model }) => {
+        console.log(statement.text);
+    }
+});
+
+// controller.refresh(); // recompute icons manually when needed
+// controller.dispose(); // on editor unmount
+```
+
+**Notes**
+
+- Pass `languageId` explicitly so the built-in splitter uses the correct parser.
+- Custom `getStatementRanges` only needs accurate `startLineNumber` and `text`; `executableLineNumber` is normalized automatically.
+- Icons are hidden and clicks are ignored when the editor is read-only.
+- Use `getStatementRangesByLanguage(code, languageId, preprocessCode)` if you need the built-in splitter outside the button.
+- `preprocessCode` must keep the same line mapping as the editor model (no insert/delete that shifts lines); decorations are applied to the original model.
+- By default, blank or semicolon-only fragments (e.g. `;;;`) do not show a run icon.
+- `executableLineNumber` detection skips leading comments but does not parse string literals; a leading string that contains `/*` or `--` may be misidentified (rare in practice).
+- When multiple statements share the same `executableLineNumber`, a console warning is emitted and the last one wins for gutter clicks.
+- Call `controller.dispose()` when the editor is destroyed (one controller per editor instance).
+
+<br/>
+
 ## SQL Snippets
 
 We provide some built-in SQL snippets for each SQL language, which helps us to write SQL quickly.

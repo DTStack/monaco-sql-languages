@@ -162,6 +162,47 @@ npm install monaco-sql-languages
     });
     ```
 
+4. **SQL 格式化（可选）**
+
+    格式化依赖 [`sql-formatter`](https://github.com/sql-formatter-org/sql-formatter) 作为**可选 peer**。主入口**不要求**安装该包：只用补全/诊断时不必安装 `sql-formatter`。
+
+    仅在开启格式化，或 import 格式化 API 时再安装。应用里须 **先 import 一次** format 入口（副作用），再调用 `setupLanguageFeatures(..., { format: { enable: true } })`。未 import 就开启 format 会 **抛错**；若之后再 import format，已加载的语言会自动补偿注册。
+
+    ```bash
+    npm install sql-formatter
+    ```
+
+    必须设置 `format.enable: true` 才会注册编辑器 Format 菜单/快捷键（只传 `fallback` 无效）。**优先级：** 内置 sql-formatter → `fallback`（不可用或抛错）→ 原文。
+
+    ```typescript
+    import { KeyCode, KeyMod } from 'monaco-editor';
+    import 'monaco-sql-languages/format';
+    import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages';
+
+    setupLanguageFeatures(LanguageIdEnum.MYSQL, {
+        format: {
+            enable: true, // 注册右键 / 快捷键所必需
+            tabWidth: 4,
+            fallback: (code, languageId) => myLegacyFormat(code, languageId),
+            // 可选；默认 Ctrl/Cmd+Alt+F
+            keybindings: [KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.KeyF]
+        }
+    });
+    ```
+
+    工具栏等外部 UI 请从 format 入口引入（**构建期需要**已安装 `sql-formatter`）：
+
+    ```typescript
+    import { formatEditorSQL, formatSQL } from 'monaco-sql-languages/format';
+
+    await formatEditorSQL(editor, { tabWidth: 4, fallback: myLegacyFormat });
+    const text = await formatSQL(code, LanguageIdEnum.MYSQL, { tabWidth: 4 });
+    ```
+
+    > **版本：** 使用项目中安装的 sql-formatter。peer 要求 **`>=10.7.2`**（覆盖 `hive` / `trino` 与 `tabWidth`）。现代浏览器用 v15+ 亦可；Chrome 75 请 pin `sql-formatter@10.7.2`。
+
+    默认快捷键：**Ctrl/Cmd+Alt+F**（右键 **Format**）。结果与原文相同则不写 edits。
+
 <br/>
 
 ## 运行语句按钮

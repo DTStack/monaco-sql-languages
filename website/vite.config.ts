@@ -16,7 +16,8 @@ export default defineConfig({
 	],
 	resolve: {
 		alias: {
-			'monaco-editor': resolve('node_modules/monaco-editor'),
+			// Keep a single monaco copy aligned with the library peer (0.54.0)
+			'monaco-editor': resolve(__dirname, '../node_modules/monaco-editor'),
 			'monaco-sql-languages': resolve('../'),
 			'@': resolve(__dirname, 'src')
 		}

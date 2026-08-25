@@ -162,6 +162,47 @@ npm install monaco-sql-languages
     });
     ```
 
+4. **SQL Formatting (optional)**
+
+    Formatting uses [`sql-formatter`](https://github.com/sql-formatter-org/sql-formatter) as an **optional peer**. The main package entry does **not** require it: completion and diagnostics work without installing `sql-formatter`.
+
+    Install the peer **only** if you enable formatting or import the format API. Import the format entry **once** (side effect) **before** `setupLanguageFeatures(..., { format: { enable: true } })`. Enabling format without that import throws. If the format entry is imported later, already-loaded languages are re-registered automatically.
+
+    ```bash
+    npm install sql-formatter
+    ```
+
+    `format.enable` must be `true` to register the editor Format action (passing only `fallback` does nothing). **Priority:** built-in sql-formatter → `fallback` (unavailable or throw) → original code.
+
+    ```typescript
+    import { KeyCode, KeyMod } from 'monaco-editor';
+    import 'monaco-sql-languages/format';
+    import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages';
+
+    setupLanguageFeatures(LanguageIdEnum.MYSQL, {
+        format: {
+            enable: true, // required for the context-menu / shortcut action
+            tabWidth: 4,
+            fallback: (code, languageId) => myLegacyFormat(code, languageId),
+            // optional; default is Ctrl/Cmd+Alt+F
+            keybindings: [KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.KeyF]
+        }
+    });
+    ```
+
+    Toolbar or other UI should import the format entry (this **does** require `sql-formatter` at build time):
+
+    ```typescript
+    import { formatEditorSQL, formatSQL } from 'monaco-sql-languages/format';
+
+    await formatEditorSQL(editor, { tabWidth: 4, fallback: myLegacyFormat });
+    const text = await formatSQL(code, LanguageIdEnum.MYSQL, { tabWidth: 4 });
+    ```
+
+    > **Versions:** Use the `sql-formatter` version you install. Peer requires **`>=10.7.2`** (covers `hive` / `trino` and `tabWidth`). Modern browsers may use v15+; Chrome 75: pin `sql-formatter@10.7.2`.
+
+    Editor shortcut defaults to **Ctrl/Cmd+Alt+F** (context menu **Format**). Unchanged results apply no edit.
+
 <br/>
 
 ## Run Statement Button

@@ -1,0 +1,17 @@
+package.json
+  h_8067a67b8aeac4 14
+  h_8067a67b8aeac4 3
+CHANGELOG.md
+  h_8067a67b8aeac4 5-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "03d44a8ccb810ad8b2a069272da64926a7c3c3be",
+  "prompts": {},
+  "humans": {
+    "h_8067a67b8aeac4": {
+      "author": "zhaoge"
+    }
+  }
+}

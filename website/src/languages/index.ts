@@ -1,10 +1,23 @@
 import 'monaco-sql-languages/esm/all.contributions.js';
 import './languageWorker';
 import './theme';
+import 'monaco-sql-languages/esm/format.entry';
 
-import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages/esm/main.js';
+import {
+	type FormatFallback,
+	LanguageIdEnum,
+	setupLanguageFeatures
+} from 'monaco-sql-languages/esm/main.js';
 
 import { completionService } from './helpers/completionService';
+
+/** Demo fallback when sql-formatter fails; shared by feature setup and toolbar. */
+export const formatFallback: FormatFallback = (code) => `-- formatted by demo fallback\n${code}`;
+
+const formatFeatureOptions = {
+	enable: true,
+	fallback: formatFallback
+} as const;
 
 /**
  * replace dtstack custom params, eg: @@{componentParams}, ${taskCustomParams}
@@ -69,6 +82,7 @@ setupLanguageFeatures(LanguageIdEnum.FLINK, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode
 });
 
@@ -80,6 +94,7 @@ setupLanguageFeatures(LanguageIdEnum.SPARK, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode
 });
 
@@ -91,6 +106,7 @@ setupLanguageFeatures(LanguageIdEnum.HIVE, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode: (code: string) => preprocessCodeHive(code, '`')
 });
 
@@ -102,6 +118,7 @@ setupLanguageFeatures(LanguageIdEnum.MYSQL, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode
 });
 
@@ -113,6 +130,7 @@ setupLanguageFeatures(LanguageIdEnum.TRINO, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode
 });
 
@@ -124,6 +142,7 @@ setupLanguageFeatures(LanguageIdEnum.PG, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode
 });
 
@@ -135,6 +154,7 @@ setupLanguageFeatures(LanguageIdEnum.IMPALA, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode
 });
 
@@ -147,5 +167,6 @@ setupLanguageFeatures(LanguageIdEnum.GENERIC, {
 	references: true,
 	definitions: true,
 	hover: true,
+	format: formatFeatureOptions,
 	preprocessCode
 });

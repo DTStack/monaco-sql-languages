@@ -6,5 +6,6 @@
 		"target": "es6",
 		"noEmit": false,
 		"declaration": true
-	}
+	},
+	"exclude": ["**/*.test.ts", "src/test/**"]
 }

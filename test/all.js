@@ -103,10 +103,20 @@ requirejs(
 	function () {
 		let files;
 		try {
-			files = glob.sync('out/amd/languages/*/*.test.js', {
-				cwd: path.dirname(__dirname),
-				dot: true
-			});
+			files = [
+				...glob.sync('out/amd/languages/*/*.test.js', {
+					cwd: path.dirname(__dirname),
+					dot: true
+				}),
+				...glob.sync('out/amd/format.test.js', {
+					cwd: path.dirname(__dirname),
+					dot: true
+				}),
+				...glob.sync('out/amd/formatBridge.test.js', {
+					cwd: path.dirname(__dirname),
+					dot: true
+				})
+			];
 		} catch (err) {
 			console.log(err);
 			return;

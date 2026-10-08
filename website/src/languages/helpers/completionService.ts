@@ -255,6 +255,27 @@ const getPureEntityText = (originEntityText: string) => {
 };
 
 /**
+ * Check whether an entity's text can actually be a name.
+ *
+ * Entity text is a raw slice of the source, so when the SQL has a syntax error
+ * the error recovery can stretch a context across a whole clause: `FROM`
+ * followed by `JOIN myOwn` used to yield the table entity
+ * `JOIN myOwn\nORDER BY 1`, which then became a completion label.
+ *
+ * `parseEntityText` keeps a backticked identifier whole when its content is not
+ * a bare identifier, so `` `my table` `` arrives here with its backticks and
+ * must stay valid. Anything else has to be made of identifier characters only.
+ * @param name - The entity text to check
+ * @returns Whether the text is identifier-shaped
+ */
+const isEntityName = (name: string | undefined): name is string => {
+	if (!name) return false;
+	// A backticked identifier is opaque: it may contain dots, spaces, anything.
+	if (/^`[^`]*`$/.test(name)) return true;
+	return name.split('.').every((segment) => /^[A-Za-z0-9_$]+$/.test(segment));
+};
+
+/**
  * Remove backticks from text for filter matching
  * @param text - The text that may contain backticks
  * @returns The text without backticks
@@ -379,6 +400,10 @@ const getColumnCompletions = async (
 		sourceTables.forEach((sourceTable) => {
 			const realTablePath = sourceTable.text;
 			const displayAlias = tableNameAliasMap[sourceTable.text];
+			// A CTE definition and its FROM/JOIN reference share `text`, so the map
+			// above gives both the same alias. Expand derived columns only from the
+			// entity that actually owns the alias.
+			const derivedAlias = sourceTable[AttrName.alias]?.text;
 
 			const tableColumns = [
 				...getSpecificTableColumns(
@@ -386,7 +411,7 @@ const getColumnCompletions = async (
 					realTablePath,
 					displayAlias
 				),
-				...getSpecificDerivedTableColumns(derivedTableEntities, displayAlias),
+				...getSpecificDerivedTableColumns(derivedTableEntities, derivedAlias),
 				...getSpecificCTASTableColumns(
 					ctasTableDefinitionEntities,
 					realTablePath,
@@ -423,21 +448,30 @@ const getColumnCompletions = async (
 
 		result.push(...sourceTableColumns);
 
-		// Also suggest tables when inputting column
+		// Also suggest tables when inputting column.
+		// A CTE definition and an unaliased reference share the same label; keep one.
+		const seenTableLabels = new Set<string>();
 		const tableCompletionItems =
 			sourceTables.length > 1
-				? sourceTables.map((tb) => {
-						const tableName = tb[AttrName.alias]?.text ?? getPureEntityText(tb.text);
-						return {
-							label: tableName,
-							filterText: removeBackticks(tableName),
-							kind: languages.CompletionItemKind.Field,
-							detail:
-								tb.declareType === TableDeclareType.LITERAL
-									? 'table'
-									: 'derived table',
-							sortText: '1' + tableName
-						};
+				? sourceTables.flatMap((tb) => {
+						const alias = tb[AttrName.alias]?.text;
+						// CTE names are suggested separately. An unaliased reference would repeat that name.
+						if (tb.declareType === TableDeclareType.EXPRESSION && !alias) return [];
+						const tableName = alias ?? getPureEntityText(tb.text);
+						if (!isEntityName(tableName) || seenTableLabels.has(tableName)) return [];
+						seenTableLabels.add(tableName);
+						return [
+							{
+								label: tableName,
+								filterText: removeBackticks(tableName),
+								kind: languages.CompletionItemKind.Field,
+								detail:
+									tb.declareType === TableDeclareType.LITERAL
+										? 'table'
+										: 'derived table',
+								sortText: '1' + tableName
+							}
+						];
 					})
 				: [];
 
@@ -473,7 +507,7 @@ const getColumnCompletions = async (
 
 		const localTableColumns = [
 			...getSpecificTableColumns(sourceTableDefinitionEntities, realTablePath, displayAlias),
-			...getSpecificDerivedTableColumns(derivedTableEntities, displayAlias),
+			...getSpecificDerivedTableColumns(derivedTableEntities, displayAlias, realTablePath),
 			...getSpecificCTASTableColumns(ctasTableDefinitionEntities, realTablePath, displayAlias)
 		];
 
@@ -519,10 +553,13 @@ const getSpecificTableColumns = (
 		})
 		.map((tb) => {
 			const tableName = displayAlias || getPureEntityText(tb.text);
+			if (!isEntityName(tableName)) return [];
 			return (
 				tb.columns?.map((column) => {
 					const columnName =
 						column[AttrName.alias]?.text || getPureEntityText(column.text);
+					// Not `isEntityName`: an unaliased column is often an expression
+					// (`UPPER(name)`, `amount * 2`) and is still a usable label.
 					if (!columnName) return null;
 					const label =
 						columnName +
@@ -551,42 +588,52 @@ const getSpecificTableColumns = (
  */
 const getSpecificDerivedTableColumns = (
 	derivedTableEntities: CommonEntityContext[],
-	displayAlias?: string
+	displayAlias?: string,
+	tableText?: string
 ): any[] => {
-	return derivedTableEntities
-		.filter((tb) => {
-			return displayAlias ? tb[AttrName.alias]?.text === displayAlias : false;
-		})
-		.map((tb) => {
-			const derivedTableQueryResult = tb.relatedEntities?.find(
-				(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
-			) as CommonEntityContext | undefined;
+	const matched = derivedTableEntities.filter((tb) => {
+		if (displayAlias) {
+			return tb[AttrName.alias]?.text === displayAlias;
+		}
+		if (!tableText) return false;
+		return tb.text === tableText || getPureEntityText(tb.text) === getPureEntityText(tableText);
+	});
+	// The CTE definition and its reference share one outward column list.
+	const tb = matched[0];
+	if (!tb) return [];
 
-			const tableName =
-				displayAlias || tb[AttrName.alias]?.text || getPureEntityText(tb.text);
+	const derivedTableQueryResult = tb.relatedEntities?.find(
+		(entity) => entity.entityContextType === EntityContextType.QUERY_RESULT
+	) as CommonEntityContext | undefined;
 
-			return (
-				derivedTableQueryResult?.columns
-					?.filter((column) => column.declareType !== ColumnDeclareType.ALL)
-					.map((column) => {
-						const columnName =
-							column[AttrName.alias]?.text || getPureEntityText(column.text);
-						if (!columnName) return null;
-						return {
-							label: columnName,
-							filterText: removeBackticks(columnName),
-							insertText: columnName,
-							kind: languages.CompletionItemKind.EnumMember,
-							detail: `\`${tableName}\`'s column`,
-							sortText: '0' + tableName + columnName,
-							_columnText: columnName,
-							_tableName: tableName
-						};
-					}) || []
-			);
-		})
-		.flat()
-		.filter(Boolean);
+	const tableName =
+		displayAlias ||
+		(tableText ? getPureEntityText(tableText) : undefined) ||
+		tb[AttrName.alias]?.text ||
+		getPureEntityText(tb.text);
+
+	if (!isEntityName(tableName)) return [];
+
+	return (
+		derivedTableQueryResult?.columns
+			?.filter((column) => column.declareType !== ColumnDeclareType.ALL)
+			.map((column) => {
+				const columnName = column[AttrName.alias]?.text || getPureEntityText(column.text);
+				// Not `isEntityName`: an unaliased column is often an expression.
+				if (!columnName) return null;
+				return {
+					label: columnName,
+					filterText: removeBackticks(columnName),
+					insertText: columnName,
+					kind: languages.CompletionItemKind.EnumMember,
+					detail: `\`${tableName}\`'s column`,
+					sortText: '0' + tableName + columnName,
+					_columnText: columnName,
+					_tableName: tableName
+				};
+			})
+			.filter(Boolean) || []
+	);
 };
 
 /**
@@ -611,6 +658,7 @@ const getSpecificCTASTableColumns = (
 			) as CommonEntityContext | undefined;
 
 			const tableName = displayAlias || getPureEntityText(tb.text);
+			if (!isEntityName(tableName)) return [];
 
 			return (
 				ctasQueryResult?.columns
@@ -618,6 +666,7 @@ const getSpecificCTASTableColumns = (
 					.map((column) => {
 						const columnName =
 							column[AttrName.alias]?.text || getPureEntityText(column.text);
+						// Not `isEntityName`: an unaliased column is often an expression.
 						if (!columnName) return null;
 						const label =
 							columnName +
@@ -639,6 +688,33 @@ const getSpecificCTASTableColumns = (
 		})
 		.flat()
 		.filter(Boolean);
+};
+
+/** Visible CTE names. Definitions and references share `text`; keep one. */
+const getCteTableCompletions = (entities: EntityContext[] | null): ICompletionItem[] => {
+	const seen = new Set<string>();
+	const items: ICompletionItem[] = [];
+	for (const entity of entities ?? []) {
+		if (
+			entity.entityContextType !== EntityContextType.TABLE ||
+			!entity.isAccessible ||
+			!('declareType' in entity) ||
+			entity.declareType !== TableDeclareType.EXPRESSION
+		) {
+			continue;
+		}
+		const tableName = getPureEntityText(entity.text);
+		if (!isEntityName(tableName) || seen.has(tableName.toLowerCase())) continue;
+		seen.add(tableName.toLowerCase());
+		items.push({
+			label: tableName,
+			filterText: removeBackticks(tableName),
+			kind: languages.CompletionItemKind.Field,
+			detail: 'derived table',
+			sortText: '1' + tableName
+		});
+	}
+	return items;
 };
 
 const getSyntaxCompletionItems = async (
@@ -680,26 +756,68 @@ const getSyntaxCompletionItems = async (
 			tracker.markAsCompleted('db_objects');
 		}
 
-		// Add table completions from table entities created in context
+		// WITH names are TABLE + EXPRESSION. Suggest them wherever a table or a
+		// join condition can start, including an unfinished FROM / JOIN / ON.
 		if (
-			syntaxContextType === EntityContextType.TABLE &&
+			(syntaxContextType === EntityContextType.TABLE ||
+				syntaxContextType === EntityContextType.COLUMN) &&
+			words.length <= 1 &&
+			!tracker.hasCompletionType('cte_tables')
+		) {
+			syntaxCompletionItems = syntaxCompletionItems.concat(getCteTableCompletions(entities));
+			tracker.markAsCompleted('cte_tables');
+		}
+
+		// Add table completions from table entities created in context.
+		// COLUMN is included so a join condition (`JOIN t ON |`) sees them too.
+		// Skip a name that an accessible source table already shows, so
+		// `FROM orders JOIN t1 ON` does not list orders and t1 twice.
+		if (
+			(syntaxContextType === EntityContextType.TABLE ||
+				syntaxContextType === EntityContextType.COLUMN) &&
 			words.length <= 1 &&
 			!tracker.hasCompletionType('created_tables')
 		) {
+			const sourceTableLabels = new Set(
+				(entities ?? [])
+					.filter(
+						(entity): entity is CommonEntityContext =>
+							entity.entityContextType === EntityContextType.TABLE &&
+							!!entity.isAccessible &&
+							'declareType' in entity
+					)
+					.map((tb) => {
+						const alias = tb[AttrName.alias]?.text;
+						if (tb.declareType === TableDeclareType.EXPRESSION && !alias) {
+							return getPureEntityText(tb.text);
+						}
+						return alias ?? getPureEntityText(tb.text);
+					})
+					.filter(isEntityName)
+					.map((name) => name.toLowerCase())
+			);
 			const createTables =
 				entities
 					?.filter(
 						(entity) => entity.entityContextType === EntityContextType.TABLE_CREATE
 					)
-					.map((tb) => {
+					.flatMap((tb) => {
 						const tableName = getPureEntityText(tb.text);
-						return {
-							label: tableName,
-							filterText: removeBackticks(tableName),
-							kind: languages.CompletionItemKind.Field,
-							detail: 'table',
-							sortText: '1' + tableName
-						};
+						if (
+							!isEntityName(tableName) ||
+							sourceTableLabels.has(tableName.toLowerCase())
+						) {
+							return [];
+						}
+						return [
+							{
+								label: tableName,
+								filterText: removeBackticks(tableName),
+								kind: languages.CompletionItemKind.Field,
+								detail: 'table',
+								sortText: '1' + tableName
+							}
+						];
 					}) || [];
 
 			syntaxCompletionItems = syntaxCompletionItems.concat(createTables);

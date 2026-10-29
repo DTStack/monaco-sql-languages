@@ -89,12 +89,21 @@ npm install monaco-sql-languages
         completionItems: {
             enable: true,
             triggerCharacters: [' ', '.'],
+            // 选中补全项后自动触发下一轮补全
+            continuousCompletion: true,
             completionService: //... ,
         }
     });
     ```
 
     默认情况下，自动补全功能只提供关键字自动补全与内置SQL代码片段补全, 但你可以通过设置 `completionService` 自定义自动补全项。
+
+    将 `continuousCompletion` 设置为 `true` 可以开启连续补全：当选中一个补全项后，只要插入行为把光标带入了新的语法上下文，就会自动再次触发建议框，从而无需再次输入即可展示下一组建议。具体来说：
+
+    - 未显式设置 `insertText` 的**关键字**补全项会带一个尾随空格插入（如 `SELECT `），从而立即给出下一组建议（列名、`*` 等）；
+    - 当解析器报告当前位置处于 `function` 语法上下文时，关键字补全项会按原样插入（不带尾随空格），且不会再次触发建议框，方便你自行输入函数括号；
+    - `insertText` 以触发字符结尾的补全项会再次触发补全——例如自定义 `completionService` 可以让数据库项以 `insertText: 'my_database.'` 插入，这样选中数据库名后会立即提示该库下的表；
+    - 自定义了 `command` 的补全项不会被修改；普通的实体项（表、列等）不会再次触发，因为接受它们并没有改变补全上下文。
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';

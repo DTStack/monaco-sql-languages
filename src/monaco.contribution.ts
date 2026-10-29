@@ -48,6 +48,26 @@ export interface CompletionOptions {
 	completionService: CompletionService;
 	triggerCharacters: string[];
 	snippets: CompletionSnippetOption[];
+	/**
+	 * Whether to continuously trigger completion after a completion item is accepted.
+	 *
+	 * If enabled, a command re-triggering the suggest widget is attached to completion items
+	 * whose insertion moves the caret into a new syntactic context:
+	 * - keyword items without an explicit `insertText` are inserted with a trailing space
+	 *   (e.g. `SELECT `), so the next context (columns, `*`, ...) is offered automatically.
+	 *   In a function syntax context, keyword items are inserted as-is (no trailing space)
+	 *   and do not re-trigger, so the user can type the function's parentheses themselves;
+	 * - items whose `insertText` ends with a trigger character re-trigger completion, e.g. a
+	 *   custom `completionService` can insert a database as `my_database.` so that tables
+	 *   inside it are suggested right away.
+	 *
+	 * Items defining their own `command` are left untouched, and plain entity items (tables,
+	 * columns, ...) do not re-trigger: their context hasn't changed, so the re-triggered
+	 * widget would just re-offer the item that was just accepted.
+	 *
+	 * Defaults to false.
+	 */
+	continuousCompletion?: boolean;
 }
 
 export interface CompletionSnippet {
@@ -240,7 +260,8 @@ export const modeConfigurationDefault: Required<ModeConfiguration> = {
 		snippets: [],
 		enable: true,
 		completionService: defaultCompletionService,
-		triggerCharacters: ['.', ' ']
+		triggerCharacters: ['.', ' '],
+		continuousCompletion: false
 	},
 	diagnostics: true,
 	definitions: false,

@@ -7,7 +7,12 @@ export const viewExt: IExtension = {
 	activate(molecule) {
 		view.get().then((viewState) => {
 			if (viewState?.explorer) {
-				molecule.explorer.setActive(viewState.explorer.active);
+				// Molecule Collapse.performSizes crashes if active contains ids
+				// that are no longer in explorer.data (stale IndexedDB after panel list changes).
+				const validIds = new Set(molecule.explorer.getAll().map((item) => item.id));
+				molecule.explorer.setActive(
+					(viewState.explorer.active || []).filter((id) => validIds.has(id))
+				);
 			}
 			if (viewState?.layout) {
 				molecule.layout.setState(viewState.layout);

@@ -16,7 +16,11 @@ import {
 	Range,
 	Uri
 } from './fillers/monaco-editor-core';
-import type { CompletionSnippet, LanguageServiceDefaults } from './monaco.contribution';
+import type {
+	CompletionSnippet,
+	ICompletionItem,
+	LanguageServiceDefaults
+} from './monaco.contribution';
 
 export interface ColumnInfo {
 	/** 字段名 */
@@ -197,6 +201,7 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 		}
 
 		const resource = model.uri;
+		let hasFunctionContext = false;
 		return this._worker(resource)
 			.then((worker) => {
 				let code = editor.getModel(resource)?.getValue() || '';
@@ -206,6 +211,9 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 				return worker.doCompletionWithEntities(code, position);
 			})
 			.then(({ suggestions, allEntities, context: semanticContext }) => {
+				hasFunctionContext = !!suggestions?.syntax?.some(
+					(syntax) => syntax.syntaxContextType === EntityContextType.FUNCTION
+				);
 				let snippets: CompletionSnippet[] = [];
 				if (semanticContext?.isStatementBeginning) {
 					snippets = this._defaults.completionSnippets.map((item) => ({
@@ -213,7 +221,6 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 						insertText: typeof item.body === 'string' ? item.body : item.body.join('\n')
 					}));
 				}
-
 				return this._defaults.completionService(
 					model,
 					position,
@@ -234,14 +241,17 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 				const unwrappedCompletions = Array.isArray(completions)
 					? completions
 					: completions.suggestions;
+				const continuousCompletion =
+					this._defaults.modeConfiguration.completionItems.continuousCompletion;
 				const completionItems: languages.CompletionItem[] = unwrappedCompletions.map(
-					(item) => ({
-						...item,
-						insertText:
-							item.insertText ??
-							(typeof item.label === 'string' ? item.label : item.label.label),
-						range: item.range ?? wordRange
-					})
+					(item) =>
+						applyContinuousCompletion(
+							item,
+							wordRange,
+							continuousCompletion,
+							this.triggerCharacters,
+							hasFunctionContext
+						)
 				);
 
 				return {
@@ -251,6 +261,82 @@ export class CompletionAdapter<T extends BaseSQLWorker>
 				};
 			});
 	}
+}
+
+/**
+ * The command attached to completion items so the suggest widget is triggered again
+ * right after they are accepted (see https://github.com/DTStack/monaco-sql-languages/issues/184).
+ */
+const retriggerSuggestCommand: languages.Command = {
+	id: 'editor.action.triggerSuggest',
+	title: 'Trigger Suggest'
+};
+
+/**
+ * Normalize a completion item for continuous completion.
+ *
+ * A completion item should re-trigger the suggest widget only when accepting it moves the
+ * caret into a genuinely *new* syntactic context; otherwise the re-triggered widget would be
+ * filtered by the word just inserted and would re-offer the very same item, which cannot be
+ * dismissed without pressing Escape. Concretely, an item continues the completion session when:
+ *
+ * - it is a keyword without an explicit `insertText`: it is inserted with a trailing space
+ *   (e.g. `SELECT `) so the caret lands on a word separator and the parser can compute the
+ *   next context (columns, `*`, ...). Exception: in a function syntax context the keyword is
+ *   inserted as-is (no trailing space) and does not re-trigger, so the user can continue
+ *   typing the function's parentheses themselves;
+ * - its explicit `insertText` ends with a trigger character (e.g. a completionService that
+ *   inserts a database as `my_database.` so that tables inside it are offered next).
+ *
+ * Plain entity items (tables, columns, ...) and items defining their own `command` are left
+ * untouched: the former stay on the same context, the latter control their continuation
+ * themselves.
+ */
+function applyContinuousCompletion(
+	item: ICompletionItem,
+	wordRange: Range,
+	continuousCompletion: boolean | undefined,
+	triggerCharacters: string[],
+	hasFunctionContext: boolean
+): languages.CompletionItem {
+	const range = item.range ?? wordRange;
+	const labelText = typeof item.label === 'string' ? item.label : item.label.label;
+
+	if (!continuousCompletion || item.command) {
+		return {
+			...item,
+			insertText: item.insertText ?? labelText,
+			range
+		};
+	}
+
+	const isKeyword = item.kind === languages.CompletionItemKind.Keyword;
+	const isParenFunction = item.insertText === undefined && isKeyword && hasFunctionContext;
+
+	let insertText = item.insertText;
+	const insertTextRules = item.insertTextRules;
+	if (insertText === undefined && isKeyword) {
+		if (!isParenFunction) {
+			// Continuous completion needs the caret to land on a word separator
+			// (e.g. a space after `SELECT`), otherwise the next completion
+			// context cannot be computed correctly.
+			insertText = `${labelText} `;
+		}
+	}
+
+	const advancesContext =
+		!isParenFunction &&
+		((item.insertText === undefined && isKeyword) ||
+			(item.insertText !== undefined &&
+				triggerCharacters.some((ch) => ch.length > 0 && item.insertText!.endsWith(ch))));
+
+	return {
+		...item,
+		insertText: insertText ?? labelText,
+		insertTextRules,
+		range,
+		command: advancesContext ? retriggerSuggestCommand : undefined
+	};
 }
 /**
  * The adapter is for the definition of the symbol at the given position and document.

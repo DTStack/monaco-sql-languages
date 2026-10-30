@@ -32,7 +32,8 @@ define('vs/nls', [], {
 define('dt-sql-parser', [], {
 	EntityContextType: {
 		TABLE: 'table',
-		TABLE_CREATE: 'tableCreate'
+		TABLE_CREATE: 'tableCreate',
+		FUNCTION: 'function'
 	}
 });
 

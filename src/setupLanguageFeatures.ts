@@ -195,6 +195,13 @@ function processConfiguration(
 			? configuration.completionItems!.triggerCharacters
 			: (defaults?.modeConfiguration.completionItems.triggerCharacters ??
 				modeConfigurationDefault.completionItems.triggerCharacters);
+
+	const continuousCompletion =
+		typeof configuration.completionItems !== 'boolean' &&
+		typeof configuration.completionItems?.continuousCompletion === 'boolean'
+			? configuration.completionItems.continuousCompletion
+			: (defaults?.modeConfiguration.completionItems.continuousCompletion ??
+				modeConfigurationDefault.completionItems.continuousCompletion);
 	const references =
 		typeof configuration.references === 'boolean'
 			? configuration.references
@@ -248,7 +255,8 @@ function processConfiguration(
 			enable: completionEnable,
 			completionService,
 			triggerCharacters,
-			snippets
+			snippets,
+			continuousCompletion
 		},
 		references,
 		definitions,

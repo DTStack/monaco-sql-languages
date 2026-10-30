@@ -77,7 +77,8 @@ const preprocessCodeHive = (code: string, mark?: string): string => {
 setupLanguageFeatures(LanguageIdEnum.FLINK, {
 	completionItems: {
 		enable: true,
-		completionService
+		completionService,
+		continuousCompletion: true
 	},
 	references: true,
 	definitions: true,
@@ -89,7 +90,8 @@ setupLanguageFeatures(LanguageIdEnum.FLINK, {
 setupLanguageFeatures(LanguageIdEnum.SPARK, {
 	completionItems: {
 		enable: true,
-		completionService
+		completionService,
+		continuousCompletion: true
 	},
 	references: true,
 	definitions: true,
@@ -101,7 +103,8 @@ setupLanguageFeatures(LanguageIdEnum.SPARK, {
 setupLanguageFeatures(LanguageIdEnum.HIVE, {
 	completionItems: {
 		enable: true,
-		completionService
+		completionService,
+		continuousCompletion: true
 	},
 	references: true,
 	definitions: true,
@@ -113,7 +116,8 @@ setupLanguageFeatures(LanguageIdEnum.HIVE, {
 setupLanguageFeatures(LanguageIdEnum.MYSQL, {
 	completionItems: {
 		enable: true,
-		completionService
+		completionService,
+		continuousCompletion: true
 	},
 	references: true,
 	definitions: true,
@@ -125,7 +129,8 @@ setupLanguageFeatures(LanguageIdEnum.MYSQL, {
 setupLanguageFeatures(LanguageIdEnum.TRINO, {
 	completionItems: {
 		enable: true,
-		completionService
+		completionService,
+		continuousCompletion: true
 	},
 	references: true,
 	definitions: true,
@@ -137,7 +142,8 @@ setupLanguageFeatures(LanguageIdEnum.TRINO, {
 setupLanguageFeatures(LanguageIdEnum.PG, {
 	completionItems: {
 		enable: true,
-		completionService
+		completionService,
+		continuousCompletion: true
 	},
 	references: true,
 	definitions: true,
@@ -149,7 +155,8 @@ setupLanguageFeatures(LanguageIdEnum.PG, {
 setupLanguageFeatures(LanguageIdEnum.IMPALA, {
 	completionItems: {
 		enable: true,
-		completionService
+		completionService,
+		continuousCompletion: true
 	},
 	references: true,
 	definitions: true,

@@ -1,6 +1,6 @@
 {
 	"name": "monaco-sql-languages",
-	"version": "1.2.2-beta.0",
+	"version": "1.3.0",
 	"description": "SQL languages for the Monaco Editor, based on monaco-languages.",
 	"scripts": {
 		"prepublishOnly": "npm run build",
@@ -104,6 +104,6 @@
 		]
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.5.2-beta.1"
+		"dt-sql-parser": "4.6.0"
 	}
 }

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       dt-sql-parser:
-        specifier: 4.5.2-beta.1
-        version: 4.5.2-beta.1(antlr4ng-cli@1.0.7)
+        specifier: 4.6.0
+        version: 4.6.0(antlr4ng-cli@1.0.7)
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.7.2
@@ -723,8 +723,8 @@ packages:
     resolution: {integrity: sha512-sCm11ak2oY6DglEPpCB8TixLjWAxd3kJTs6UIcSasNYxXdFPV+YKlye92c8H4kKFqV5qYMIh7d+cYecEg0dIkA==}
     engines: {node: '>=6'}
 
-  dt-sql-parser@4.5.2-beta.1:
-    resolution: {integrity: sha512-lT2DUitA1gmR+eJIdrzWdX677vDks+YV+2Banxqw56NdbG8uCnCFGekUVG81mxLUN94QezGgiw4gUocSN4SNrA==}
+  dt-sql-parser@4.6.0:
+    resolution: {integrity: sha512-kxHZswBlArpmmJiTLyplsBO0h0XbT2nzPdTBlXnLhMGtixyP9KIR9qZqLZYQub/6Vj3jbBoMBXgqH+oj6TSm2Q==}
     engines: {node: '>=18'}
 
   eastasianwidth@0.2.0:
@@ -2769,7 +2769,7 @@ snapshots:
       find-up: 3.0.0
       minimatch: 3.1.2
 
-  dt-sql-parser@4.5.2-beta.1(antlr4ng-cli@1.0.7):
+  dt-sql-parser@4.6.0(antlr4ng-cli@1.0.7):
     dependencies:
       antlr4-c3: 3.3.7(antlr4ng-cli@1.0.7)
       antlr4ng: 2.0.11(antlr4ng-cli@1.0.7)

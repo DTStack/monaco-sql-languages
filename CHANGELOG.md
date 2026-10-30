@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/DTStack/monaco-sql-languages/compare/v1.2.2-beta.0...v1.3.0) (2026-10-30)
+
+
+### Features
+
+* [#184](https://github.com/DTStack/monaco-sql-languages/issues/184) support continuous SQL completion ([50fbb40](https://github.com/DTStack/monaco-sql-languages/commit/50fbb40c82160daefa5969ebdd452f114d1d79fe))
+* suggest CTE names and script-created tables in completion demo ([664686d](https://github.com/DTStack/monaco-sql-languages/commit/664686d8d156109e1758ce4efc862c4791df41b8))
+
 ### [1.2.1](https://github.com/DTStack/monaco-sql-languages/compare/v1.2.0...v1.2.1) (2026-08-25)
 
 

@@ -89,12 +89,21 @@ npm install monaco-sql-languages
         completionItems: {
             enable: true,
             triggerCharacters: [' ', '.'],
+            // Automatically trigger the next completion after a completion item is accepted
+            continuousCompletion: true,
             completionService: //... ,
         }
     });
     ```
 
     By default, Monaco SQL Languages only provides keyword autocompletion and built-in SQL snippets, and you can customize your completionItem list via `completionService`.
+
+    Set `continuousCompletion` to `true` to enable continuous completion: after a completion item is accepted, the suggest widget is triggered again automatically whenever the insertion moves the caret into a new syntactic context, so the next set of suggestions is offered without re-typing. Concretely:
+
+    - **keyword** items without an explicit `insertText` are inserted with a trailing space (e.g. `SELECT `), so the next suggestions (columns, `*`, ...) are offered immediately;
+    - when the parser reports that the current position is within a `function` syntactic context, keyword items are inserted as-is (without a trailing space) and do not re-trigger the suggest widget, so you can type the function's parentheses yourself;
+    - items whose `insertText` ends with a trigger character re-trigger completion — e.g. a custom `completionService` can emit database items with `insertText: 'my_database.'`, so that tables inside the database are suggested right after the database name is accepted;
+    - items that define their own `command` are left untouched, and plain entity items (tables, columns, ...) do not re-trigger, since accepting them does not change the completion context.
 
     ```typescript
     import { languages } from 'monaco-editor/esm/vs/editor/editor.api';

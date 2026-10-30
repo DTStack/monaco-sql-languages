@@ -30,6 +30,11 @@ export default defineConfig({
 		outDir: resolve(__dirname, '../docs')
 	},
 	server: {
+		// monaco-editor is aliased to ../node_modules; Vite blocks @fs outside the
+		// website root by default, which 403s codicon.ttf and similar assets.
+		fs: {
+			allow: [resolve(__dirname, '..')]
+		},
 		proxy: {
 			'^/api': 'http://example.com/'
 		}

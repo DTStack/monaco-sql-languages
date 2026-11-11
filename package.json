@@ -104,6 +104,6 @@
 		]
 	},
 	"dependencies": {
-		"dt-sql-parser": "4.6.0"
+		"dt-sql-parser": "4.6.1"
 	}
 }
